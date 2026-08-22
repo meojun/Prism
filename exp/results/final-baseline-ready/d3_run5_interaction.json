@@ -1,0 +1,138 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run5",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 25193,
+        "alg2_log_lines": 5
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": true,
+      "detail": {
+        "events": 25193,
+        "violations": []
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "0": {
+            "dispatch": 3071,
+            "backend_admit": 3068,
+            "prefill_start": 3067,
+            "prefill_complete": 3067
+          },
+          "1": {
+            "dispatch": 3230,
+            "backend_admit": 3230,
+            "prefill_start": 3230,
+            "prefill_complete": 3230
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": false,
+      "detail": {
+        "gaps": [
+          {
+            "gpu": 0,
+            "event": "backend_admit",
+            "non_consecutive": 1
+          },
+          {
+            "gpu": 0,
+            "event": "prefill_start",
+            "non_consecutive": 2
+          }
+        ]
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": true,
+      "detail": {
+        "migrations": 8,
+        "admission_events_during_migrations": 28336,
+        "violations": []
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": false,
+      "detail": {
+        "net_by_gpu": {
+          "0": 4,
+          "1": 0
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "143"
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": false,
+      "detail": {
+        "watchdog_state": "FAIL",
+        "failure_reason": "benchmark: no actual progress event"
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": true,
+      "detail": {
+        "offered": 8423,
+        "completed": 6158,
+        "aborted": 2265,
+        "accounted": 8423
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 6158,
+    "aborted": 2265,
+    "request_throughput": 9.211719954894567,
+    "mean_ttft_ms": 39133.58676743298,
+    "p99_ttft_ms": 265463.50244760513,
+    "mean_tpot_ms": 205.1712484548393,
+    "p99_tpot_ms": 1373.5632394938082
+  }
+}
