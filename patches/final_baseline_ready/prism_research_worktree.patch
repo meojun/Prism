@@ -5628,10 +5628,10 @@ index 3cf0db7..dff2e3c 100644
                  req.last_node = None
                  req.extend_input_len = 0
 diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
-index 31ec604..4383d6f 100644
+index 31ec604..e521261 100644
 --- a/python/sglang/srt/mem_cache/memory_pool.py
 +++ b/python/sglang/srt/mem_cache/memory_pool.py
-@@ -398,25 +398,45 @@ class MHATokenToKVPool(BaseTokenToKVPool):
+@@ -398,25 +398,42 @@ class MHATokenToKVPool(BaseTokenToKVPool):
          avail_phy_blocks = (avail_phy_pages // self.layer_num // 2) * (
              PAGE_SIZE // self.kv_allocator.block_mem_size
          )
@@ -5678,23 +5678,20 @@ index 31ec604..4383d6f 100644
 +            # free on GPU1 at 09:44:57 and cleared model_2 to activate there;
 +            # three seconds later the pools (token usage 1.00 and 0.96, 439
 +            # running requests) had taken all of it, and the activation's
-+            # `torch.empty_like` died with 185.25 MiB free. Re-reading free
-+            # memory closer to the decision does not fix that -- the pools can
-+            # absorb 18 GB between any reading and any use. Only refusing to
-+            # grow into the reserve does.
++            # `torch.empty_like` died with 185.25 MiB free.
 +            #
-+            # So both elastic paths bound admission by physical free memory.
-+            # The v0 path used to skip that check entirely; it now keeps back
-+            # the same reserve the engine already insists on before it will
-+            # bring a KV cache up at all (`_init_kv_cache(self.min_reserve_mem)`),
-+            # so the running invariant matches the initialization invariant.
-+            reserve = self.min_reserve_mem if self.use_kvcached_v0 else 0.5
-+            free_size = self._cached_physical_free_size(reserve)
++            # So both elastic paths bound admission by physical free memory,
++            # with the same 0.5 GB the non-v0 path has always kept back. The
++            # v0 path used to skip the check entirely. Holding a larger
++            # reserve here is not this layer's job: an activation waits for
++            # its own weights in `load_gpu_model`, which is where
++            # `min_reserve_mem` belongs.
++            free_size = self._cached_physical_free_size(0.5)
              return min(free_size, self.kv_allocator.available_size())
          return super().available_size()
  
 diff --git a/python/sglang/srt/model_executor/model_runner.py b/python/sglang/srt/model_executor/model_runner.py
-index 5bddef9..f52ba4f 100644
+index 5bddef9..829129e 100644
 --- a/python/sglang/srt/model_executor/model_runner.py
 +++ b/python/sglang/srt/model_executor/model_runner.py
 @@ -136,6 +136,13 @@ class BaseModelRunner:
@@ -5711,8 +5708,30 @@ index 5bddef9..f52ba4f 100644
          self._init_shared_memory()
  
          # Global vars
-@@ -253,6 +260,21 @@ class BaseModelRunner:
+@@ -251,8 +258,43 @@ class BaseModelRunner:
  
+         return min_per_gpu_memory
+ 
++    def _get_profiled_model_gpu_mem_usage(self):
++        """GiB of GPU weights for this model, from the profiled model info.
++
++        Lives here rather than on one subclass because both runners' memory
++        wait loops are written against `self.model_gpu_mem_usage`.
++        """
++        cur_dir = os.path.dirname(os.path.abspath(__file__))
++        profiled_model_info_path = os.path.join(
++            cur_dir, "../../multi_model/utils/model_info.json"
++        )
++        with open(profiled_model_info_path, "r") as f:
++            profiled_model_info = json.load(f)
++            model_path = self.model_config.path
++            model_info = profiled_model_info.get(model_path, None)
++            if model_info is None:
++                logger.warning(f"Model {model_path} not found in profiled model info.")
++                return 0
++            else:
++                return model_info["model_size"]
++
      def delete_gpu_model(self):
          if hasattr(self, "model") and self.model is not None:
 +            # Tell the model service to drop its reference first. It may hold
@@ -5733,6 +5752,52 @@ index 5bddef9..f52ba4f 100644
              del self.model
              self.model = None
  
+diff --git a/python/sglang/srt/model_executor/single_model_runner.py b/python/sglang/srt/model_executor/single_model_runner.py
+index 3ed4235..eb7768c 100644
+--- a/python/sglang/srt/model_executor/single_model_runner.py
++++ b/python/sglang/srt/model_executor/single_model_runner.py
+@@ -122,21 +122,6 @@ class SingleModelRunner(BaseModelRunner):
+             if self.tp_size > 1:
+                 self.delete_gpu_model()
+ 
+-    def _get_profiled_model_gpu_mem_usage(self):
+-        cur_dir = os.path.dirname(os.path.abspath(__file__))
+-        profiled_model_info_path = os.path.join(
+-            cur_dir, "../../multi_model/utils/model_info.json"
+-        )
+-        with open(profiled_model_info_path, "r") as f:
+-            profiled_model_info = json.load(f)
+-            model_path = self.model_config.path
+-            model_info = profiled_model_info.get(model_path, None)
+-            if model_info is None:
+-                logger.warning(f"Model {model_path} not found in profiled model info.")
+-                return 0
+-            else:
+-                return model_info["model_size"]
+-
+     def _get_max_num_reqs(self, max_total_num_tokens: int):
+         max_num_reqs = self.server_args.max_running_requests
+         if max_num_reqs is None:
+diff --git a/python/sglang/srt/model_executor/worker_pool_model_runner.py b/python/sglang/srt/model_executor/worker_pool_model_runner.py
+index e76c3ce..0b41a55 100644
+--- a/python/sglang/srt/model_executor/worker_pool_model_runner.py
++++ b/python/sglang/srt/model_executor/worker_pool_model_runner.py
+@@ -209,6 +209,15 @@ class WorkerPoolModelRunner(BaseModelRunner):
+         self.cell_size = self._get_cell_size()
+         self.max_total_num_tokens = self._get_max_total_num_tokens()
+         self.cpu_model_ref = self._get_cpu_model_ref(model_name)
++        # `load_gpu_model`'s wait loop is written as
++        #     free - min_reserve_mem < model_gpu_mem_usage
++        # but a worker-pool runner set this to 0 in __init__ and never updated
++        # it here, so the loop reduced to `free < min_reserve_mem` and never
++        # waited for the model's own weights. It logged nothing across five D2
++        # runs, and in run 4 an activation walked into a GPU with 185.25 MiB
++        # free and died in torch.empty_like. Each activation is a different
++        # model, so the size has to be refreshed with the rest of the params.
++        self.model_gpu_mem_usage = self._get_profiled_model_gpu_mem_usage()
+ 
+     def init_token_to_kv_pool(self):
+         self.token_to_kv_pool = MHATokenToKVPool(
 diff --git a/python/sglang/srt/redis_utils.py b/python/sglang/srt/redis_utils.py
 index ddd7bd5..650c1c2 100644
 --- a/python/sglang/srt/redis_utils.py

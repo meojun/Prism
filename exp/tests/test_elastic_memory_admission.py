@@ -48,6 +48,9 @@ class Allocator:
 
 def pool(virtual_blocks, physical_blocks, *, v0=True, elastic=True,
          min_reserve_mem=6.459):
+    """`min_reserve_mem` is carried but must NOT gate admission: an activation
+    waits for its own weights in load_gpu_model, which is where that reserve
+    belongs."""
     """An MHATokenToKVPool with CUDA and the allocator stubbed out."""
     obj = mp.MHATokenToKVPool.__new__(mp.MHATokenToKVPool)
     obj.enable_elastic_memory = elastic
@@ -72,8 +75,8 @@ def test_v0_is_bounded_by_physical_memory():
     check("the physical limit binds when it is the smaller of the two",
           size == 1_200)
     check("the physical check actually ran", p.calls)
-    check("it keeps back the engine's own reserve, not 0.5 GB",
-          p.calls and p.calls[0] == 6.459)
+    check("it keeps back the same 0.5 GB the non-v0 path always has",
+          p.calls and p.calls[0] == 0.5)
 
     # A nearly full device must stop admission rather than report the
     # allocator's virtual capacity.
