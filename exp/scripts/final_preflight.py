@@ -96,22 +96,22 @@ def main():
     # frozen at; the patch must still be byte-identical to the one it carried.
     runtime_freeze = os.environ.get("PRISM_RUNTIME_FREEZE", "8cb8e7a")
     patch_rel = "patches/final_baseline_ready/prism_research_worktree.patch"
-    frozen_patch = sh(["git", "-C", str(ROOT), "show",
-                       f"{runtime_freeze}:{patch_rel}"])
-    frozen_patch_sha = (hashlib.sha256(frozen_patch.encode()).hexdigest()
-                        if frozen_patch and not frozen_patch.startswith("<")
-                        else None)
-    current_patch_text = (ROOT / patch_rel).read_text()
-    current_patch_sha = hashlib.sha256(current_patch_text.encode()).hexdigest()
-    runtime_unchanged = frozen_patch_sha == current_patch_sha
+    # Compared as git blob identities: sh() strips trailing whitespace, which
+    # would make a byte-identical patch look changed.
+    frozen_patch_sha = sh(["git", "-C", str(ROOT), "rev-parse",
+                           f"{runtime_freeze}:{patch_rel}"])
+    current_patch_sha = sh(["git", "-C", str(ROOT), "hash-object", patch_rel])
+    runtime_unchanged = (
+        bool(frozen_patch_sha) and frozen_patch_sha == current_patch_sha
+        and not frozen_patch_sha.startswith("<"))
 
     env = {
         "recorded_utc": datetime.now(timezone.utc).isoformat(),
         "runtime_freeze": {
             "commit": runtime_freeze,
             "patch": patch_rel,
-            "patch_sha256_at_freeze": frozen_patch_sha,
-            "patch_sha256_now": current_patch_sha,
+            "patch_blob_at_freeze": frozen_patch_sha,
+            "patch_blob_now": current_patch_sha,
             "runtime_unchanged_since_freeze": runtime_unchanged,
         },
         "freeze": {

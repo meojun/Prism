@@ -1,0 +1,9 @@
+{
+  "stage": "00-preflight",
+  "result": "FAIL",
+  "git_sha": "8cb8e7a",
+  "started_at": "2026-08-22T17:46:59.239449+00:00",
+  "finished_at": "2026-08-22T17:47:11.526563+00:00",
+  "reason": "preflight or workload provenance failed",
+  "artifacts": []
+}

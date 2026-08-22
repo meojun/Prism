@@ -1,0 +1,35 @@
+{
+  "freeze": {
+    "git_sha": "8e21d63a9c19ddc43aed4c9eff91739e2df9cbe9",
+    "git_sha_short": "8e21d63",
+    "git_clean": false,
+    "git_dirty_files": [
+      "?? exp/results/final-evaluation/00-preflight/",
+      "?? exp/results/final-evaluation/pipeline_console.log"
+    ],
+    "source_repo_sha": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
+    "source_repo_dirty_files": 35,
+    "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
+    "source_patch_sha256": "301117f202db3518240744237e0249dc94620c4f4c50a59f05262f2200d288fe"
+  },
+  "gpus": [
+    "0, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0",
+    "1, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0"
+  ],
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.0+cu121",
+    "cuda_runtime": "12.1",
+    "cudnn": 90100,
+    "sglang": "0.3.4.post2",
+    "device_count": 2,
+    "flashinfer": "0.1.6+cu121torch2.4",
+    "kvcached": "unknown",
+    "vllm": "0.6.3.post1",
+    "transformers": "4.45.2"
+  },
+  "flashinfer_workspace_bytes": 1073741824
+}
+
+wrote /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/FINAL_ENVIRONMENT.json
+FATAL: the runtime source patch differs from the frozen commit
