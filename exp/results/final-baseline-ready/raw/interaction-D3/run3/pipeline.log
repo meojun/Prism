@@ -1,0 +1,21 @@
+[2026-08-22T14:33:32Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/run3/STAGE_CMD.sh
+### paper-faithful-v6_bursty_rate20_seed1  port=41500 trace=bursty_r20_s1.pkl workers=4 models=6
+waiting for server................................................................................................. -> ready
+system=paper-faithful-v6 workload=bursty rate=20 seed=1
+max_mem_usage=67.28
+model_config_file=/root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json
+flashinfer_workspace_size=1073741824
+alg1_log_lines=30
+alg1_migrations=4
+v4_weight_transfers=11
+v4_p2p_transfers=11
+v6_kv_transfers=3
+v6_p2p_transfers=3
+v6_resumed_requests=95
+alg2_log_lines=3
+alg2_underadmission_warnings=0
+proto_migrations=0
+activations=1
+deactivations=5
+idle_evictions=1
+### paper-faithful-v6_bursty_rate20_seed1 done
