@@ -1,0 +1,189 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run1",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 3521,
+        "alg2_log_lines": 2
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": false,
+      "detail": {
+        "events": 3521,
+        "violations": [
+          {
+            "actual_alg2_seqs": [],
+            "actual_model": "model_4",
+            "actual_rids": [
+              "model_4#1",
+              "model_4#7",
+              "model_4#10",
+              "model_4#14",
+              "model_4#15",
+              "model_4#2",
+              "model_4#25",
+              "model_4#26",
+              "model_4#30",
+              "model_4#39",
+              "model_4#40",
+              "model_4#41",
+              "model_4#52",
+              "model_4#53",
+              "model_4#54",
+              "model_4#56",
+              "model_4#66"
+            ],
+            "alg2_seq": null,
+            "event": "prefill_complete",
+            "event_time": 1787404942.0097058,
+            "expected_model": null,
+            "expected_rid": null,
+            "gpu_id": 1,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "0": {
+            "dispatch": 240,
+            "backend_admit": 237,
+            "prefill_start": 237,
+            "prefill_complete": 237
+          },
+          "1": {
+            "dispatch": 645,
+            "backend_admit": 641,
+            "prefill_start": 641,
+            "prefill_complete": 641
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": true,
+      "detail": {
+        "gaps": []
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": false,
+      "detail": {
+        "migrations": 2,
+        "admission_events_during_migrations": 168,
+        "violations": [
+          {
+            "actual_alg2_seqs": [],
+            "actual_model": "model_4",
+            "actual_rids": [
+              "model_4#1",
+              "model_4#7",
+              "model_4#10",
+              "model_4#14",
+              "model_4#15",
+              "model_4#2",
+              "model_4#25",
+              "model_4#26",
+              "model_4#30",
+              "model_4#39",
+              "model_4#40",
+              "model_4#41",
+              "model_4#52",
+              "model_4#53",
+              "model_4#54",
+              "model_4#56",
+              "model_4#66"
+            ],
+            "alg2_seq": null,
+            "event": "prefill_complete",
+            "event_time": 1787404942.0097058,
+            "expected_model": null,
+            "expected_rid": null,
+            "gpu_id": 1,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": false,
+      "detail": {
+        "net_by_gpu": {
+          "0": 3,
+          "1": 3
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "143"
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": false,
+      "detail": {
+        "watchdog_state": "FAIL",
+        "failure_reason": "benchmark: no actual progress event"
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": true,
+      "detail": {
+        "offered": 8423,
+        "completed": 876,
+        "aborted": 7547,
+        "accounted": 8423
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 876,
+    "aborted": 7547,
+    "request_throughput": 2.0856516741823894,
+    "mean_ttft_ms": 6543.511231468148,
+    "p99_ttft_ms": 24606.257259845734,
+    "mean_tpot_ms": 226.930485479796,
+    "p99_tpot_ms": 1013.9867194781178
+  }
+}
