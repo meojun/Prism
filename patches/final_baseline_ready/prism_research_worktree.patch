@@ -1755,7 +1755,7 @@ index 0000000..3101e94
 +        )
 +    return [(batch, workers) for batch, workers in ordered if batch]
 diff --git a/python/sglang/multi_model/scheduling/controller_global.py b/python/sglang/multi_model/scheduling/controller_global.py
-index 9f0dc7c..45e5be0 100644
+index 9f0dc7c..bca06bb 100644
 --- a/python/sglang/multi_model/scheduling/controller_global.py
 +++ b/python/sglang/multi_model/scheduling/controller_global.py
 @@ -16,8 +16,20 @@ import torch
@@ -1797,7 +1797,7 @@ index 9f0dc7c..45e5be0 100644
              self.gpu_ids = list(gpu_ids)
          else:
              self.gpu_ids = list(range(self.server_args.num_gpus))
-@@ -142,9 +160,82 @@ class GlobalController:
+@@ -142,9 +160,103 @@ class GlobalController:
                  model_weights_info=self.model_weights_info_after_renamed,
                  workers_per_gpu=self.server_args.workers_per_gpu,
              )
@@ -1861,6 +1861,27 @@ index 9f0dc7c..45e5be0 100644
 +            # keyword-only signature they already had.
 +            _extra = ({"server_args": self.server_args}
 +                      if self.server_args.policy == "kvpr-global-tp" else {})
++            if self.server_args.policy == "kvpr-global-v4":
++                # The headroom a target GPU must keep beyond the incoming
++                # weights, computed exactly as the engine computes its own
++                # min_reserve_mem in ModelRunner ("leave room for other
++                # model's activations"). The engine already refuses to bring a
++                # model up without it; passing it to the policy means the
++                # placement is refused where it is decided, instead of the
++                # engine blocking its event loop waiting for memory that is
++                # not coming.
++                _mfs = getattr(self.server_args, "mem_fraction_static", None)
++                if _mfs is None:
++                    _mfs = 0.88  # SGLang's tp_size == 1 default
++                _max_mem = getattr(self.server_args, "max_mem_usage", None)
++                if not _max_mem:
++                    _max_mem = gpu_mem * float(_mfs)
++                _reserve = float(_max_mem) * (1.0 - float(_mfs)) * 0.8
++                logger.info(
++                    f"[PAPER-ALG1-V4] target memory reserve: {_reserve:.3f} GB "
++                    f"(max_mem_usage={_max_mem}, mem_fraction_static={_mfs})"
++                )
++                _extra = {"target_reserve_gib": _reserve}
 +            self.policy = _cls(
 +                num_gpus=len(self.gpu_ids), gpu_mem=gpu_mem,
 +                model_weights_info=self.model_weights_info_after_renamed,
@@ -1880,7 +1901,7 @@ index 9f0dc7c..45e5be0 100644
          logger.info(f"Using policy: {self.policy.__class__.__name__}")
  
          self._start_run_policy = (
-@@ -302,24 +393,141 @@ class GlobalController:
+@@ -302,24 +414,141 @@ class GlobalController:
                  time.sleep(5)
  
      def execute_actions(self, actions: List[BaseAction]):
@@ -4113,10 +4134,10 @@ index 0000000..f1baa4a
 +        return [(name, src, dst)]
 diff --git a/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
 new file mode 100644
-index 0000000..0dd91b1
+index 0000000..6d66144
 --- /dev/null
 +++ b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
-@@ -0,0 +1,154 @@
+@@ -0,0 +1,171 @@
 +"""Algorithm 1 with a runtime placement audit.
 +
 +v3 already implements the paper's line-8 rule literally.  What it does not
@@ -4159,6 +4180,19 @@ index 0000000..0dd91b1
 +    """v3's rule, plus the planner-versus-runtime record v3 never kept."""
 +
 +    def __init__(self, *args, **kwargs):
++        # GiB the target GPU must have free *beyond* the incoming weights.
++        # A GPU is not ready to take a model just because the weights fit: the
++        # engine will not bring the model up until it also has its own
++        # `min_reserve_mem` free, and `load_gpu_model` blocks in the scheduler's
++        # event loop until it does. Measured in D2 runs 7 and 8 of 2026-08-22:
++        # activations for a 14.28 GiB model sat in that wait for 7 minutes on a
++        # GPU whose KV pools were full -- 2,661 waiting iterations in run 8 --
++        # and that model's scheduler served nothing for the duration, ending
++        # with 4,187 of 8,423 requests aborted on SLO. Refusing the placement
++        # up front is the existing `rejected_by_memory` branch doing its job;
++        # it is not a new rule, and Algorithm 1's line-8 test, tau, the
++        # cooldown and the one-migration-per-cycle emission are untouched.
++        self.target_reserve_gib = float(kwargs.pop("target_reserve_gib", 0.0) or 0.0)
 +        super().__init__(*args, **kwargs)
 +        self._audit = {
 +            "cycles": 0,
@@ -4214,11 +4248,14 @@ index 0000000..0dd91b1
 +                blocked.append({"model": name, "reason": "last active model on source gpu"})
 +                self._audit["rejected_last_model_on_gpu"] += 1
 +                continue
-+            need = self.model_weights_info[name]["model_size"]
++            weights_gib = self.model_weights_info[name]["model_size"]
++            need = weights_gib + self.target_reserve_gib
 +            if gpu_available_memory.get(dst, 0.0) < need:
 +                blocked.append({
 +                    "model": name, "reason": "target memory infeasible",
-+                    "need_gib": need, "free_gib": gpu_available_memory.get(dst, 0.0),
++                    "need_gib": need, "weights_gib": weights_gib,
++                    "reserve_gib": self.target_reserve_gib,
++                    "free_gib": gpu_available_memory.get(dst, 0.0),
 +                })
 +                self._audit["rejected_by_memory"] += 1
 +                continue
@@ -4251,6 +4288,7 @@ index 0000000..0dd91b1
 +            "cycle": self._cycle,
 +            "timestamp": now,
 +            "tau_mode": "absolute-line8",
++            "target_reserve_gib": self.target_reserve_gib,
 +            "tau": self.tau,
 +            "kvpr": kvpr_now,
 +            "peak_kvpr": peak_now,
