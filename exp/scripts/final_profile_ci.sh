@@ -27,8 +27,8 @@ json.dump([{"model_name": slot, "model_path": path, "tp_size": 1,
           open(cfg, "w"), indent=2)
 PY
   tmux kill-session -t "ci-$slot" 2>/dev/null || true
-  fuser -k -n tcp "$port" 2>/dev/null || true
-  rm -f /dev/shm/ipc_[0-9]*_root /dev/shm/cuda.shm.* 2>/dev/null || true
+  for p in $(seq "$port" $((port + 24))); do fuser -k -n tcp "$p" 2>/dev/null || true; done
+  rm -f "/dev/shm/ipc_0_${slot}_root" 2>/dev/null || true
   tmux new-session -d -s "ci-$slot" \
     "export CUDA_VISIBLE_DEVICES=$gpu; cd '$PRISM_REPO/benchmark/multi-model'; \
      source '$SCRIPT_DIR/env.sh'; export CUDA_VISIBLE_DEVICES=$gpu; \
@@ -61,9 +61,12 @@ PY
 
 # (slot, path, saturation concurrency) -- the bigger models saturate at lower
 # concurrency, as the earlier profiling round established.
+# The launcher derives a block of engine ports from --port, so the two slots
+# need bases far enough apart not to overlap. 35401/35402 did overlap, and the
+# second server died with "address already in use".
 run_pair() {
-  profile_one "$1" "$2" 0 35401 "$3" & local a=$!
-  profile_one "$4" "$5" 1 35402 "$6" & local b=$!
+  profile_one "$1" "$2" 0 35400 "$3" & local a=$!
+  profile_one "$4" "$5" 1 36400 "$6" & local b=$!
   wait $a; local ra=$?
   wait $b; local rb=$?
   return $(( ra != 0 || rb != 0 ))
