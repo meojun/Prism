@@ -289,6 +289,10 @@ count_file() { local n; n=$(grep -cF -- "$1" "$2" 2>/dev/null || true); echo "${
 {
   echo "system=$SYSTEM workload=$WORKLOAD rate=$RATE seed=$SEED"
   echo "max_mem_usage=$MAXMEM"
+  # Recorded so downstream analysis can map model names to paths without
+  # having to recover the launcher command line from a log.
+  echo "model_config_file=$CFG"
+  echo "flashinfer_workspace_size=${FLASHINFER_WORKSPACE_SIZE:-unset}"
   if [ "$SYSTEM" = "paper-faithful-v4" ] || [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
     echo "alg1_log_lines=$(count_gc '[PAPER-ALG1-V4]')"
     echo "alg1_migrations=$(count_gc '"migration_decision": "MIGRATE"')"

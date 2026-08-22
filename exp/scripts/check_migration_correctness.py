@@ -145,11 +145,18 @@ def main():
     # happened to land on the same GPU -- which is how a run whose migration
     # never ran at all can be reported as having used the wrong source.
     model_paths = {}
-    for candidate_cfg in (run / "STAGE_CMD.sh", run / "pipeline.log",
+    # The launcher command line survives in different places depending on how
+    # the run ended: stdout keeps it only when the server was killed, and the
+    # watchdog's pid snapshots keep it whenever the server was alive. Search
+    # all of them rather than depending on one.
+    for candidate_cfg in (run / "scheduler_proof.txt", run / "STAGE_CMD.sh",
+                          run / "pipeline.log",
                           run / "monitor" / "status.json",
+                          run / "monitor" / "heartbeat.jsonl",
                           logs / "stdout.log"):
         text = read(candidate_cfg)
-        found = re.search(r"--model-config-file[= ]+(\S+)", text)
+        found = re.search(
+            r"(?:--model-config-file[= ]+|model_config_file=)(\S+)", text)
         if not found:
             continue
         try:
@@ -159,13 +166,39 @@ def main():
         model_paths = {e["model_name"]: e["model_path"] for e in entries}
         break
 
+    # The controller runs idle-instance eviction *before* Algorithm 1 in the
+    # same cycle, and the action list it builds afterwards carries only the
+    # deactivation. Measured in run 6: cycle 20 logged
+    #   ACTION: deactivate model_4:1 on GPU 1. Reason: idle instance eviction
+    #   PLANNING: migrate model model_4 from GPU 1 to GPU 0
+    # and executed the deactivation alone. Such a decision is superseded, not
+    # a migration that failed to move its weights, so it is reported rather
+    # than gated -- while a decision that vanished for no stated reason still
+    # fails. Note this also means the policy's `migrations_emitted` audit
+    # counts decisions, not executed migrations.
+    evicted_in_cycle, pending_evictions = {}, set()
+    for line in read(controller).splitlines():
+        evicted = re.search(
+            r"ACTION: deactivate (\S+?):\d+ on GPU \d+\. "
+            r"Reason: idle instance eviction", line)
+        if evicted:
+            pending_evictions.add(evicted.group(1))
+            continue
+        if "[PAPER-ALG1-V4] " in line:
+            try:
+                cycle = json.loads(line.split("[PAPER-ALG1-V4] ", 1)[1])["cycle"]
+            except (IndexError, json.JSONDecodeError, KeyError):
+                continue
+            evicted_in_cycle[cycle] = set(pending_evictions)
+            pending_evictions = set()
+
     decisions = [
         r for r in marked(controller, "[PAPER-ALG1-V4] ")
         if r.get("migration_decision") == "MIGRATE"
     ]
     decisions.sort(key=lambda r: r["timestamp"])
     weights = jsonl(run / "weight_transfers.jsonl")
-    migrations, cold, missing = [], [], []
+    migrations, cold, missing, superseded = [], [], [], []
     for index, decision in enumerate(decisions, 1):
         candidate = decision["candidate"]
         model_path = candidate.get("model_path") or candidate.get("model")
@@ -200,7 +233,12 @@ def main():
         # The model was GPU-resident on `from` when the decision was taken, so
         # the transfer must read it from there rather than from host memory.
         if transfer is None:
-            missing.append(row)
+            if candidate.get("model") in evicted_in_cycle.get(
+                    decision.get("cycle"), set()):
+                row["superseded_by"] = "idle instance eviction in the same cycle"
+                superseded.append(row)
+            else:
+                missing.append(row)
         elif src != str(source_gpu):
             cold.append(row)
     record(
@@ -213,6 +251,11 @@ def main():
         not missing,
         {"decisions_without_a_weight_transfer": missing},
     )
+    checks.append({
+        "check": "decisions_superseded_by_idle_eviction (reported, not gating)",
+        "pass": True,
+        "detail": {"count": len(superseded), "decisions": superseded},
+    })
     # A gate that a run with zero migrations could pass would not test
     # migration at all, so the substance of the arm is required explicitly.
     p2p = [r for r in migrations

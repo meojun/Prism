@@ -1,0 +1,15 @@
+system=paper-migration-only workload=bursty rate=20 seed=1
+max_mem_usage=67.28
+alg1_log_lines=56
+alg1_migrations=5
+v4_weight_transfers=15
+v4_p2p_transfers=15
+v6_kv_transfers=4
+v6_p2p_transfers=4
+v6_resumed_requests=341
+alg2_log_lines=0
+alg2_underadmission_warnings=0
+proto_migrations=0
+activations=5
+deactivations=13
+idle_evictions=9

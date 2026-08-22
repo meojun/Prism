@@ -3,10 +3,10 @@
 ## Verdict
 
 ```text
-D2 CORRECTNESS GATE : PASS   (run5)
+D2 CORRECTNESS GATE : PASS   (run5, and again on run6 after the accounting fix)
 ```
 
-Five runs were needed, and only the fifth passed. Runs 1-4 are kept in full:
+Five runs were needed before the first pass. Runs 1-4 are kept in full:
 each failed for a different reason, and the sequence is what identified the
 causes. No run was rerun after a SUCCESS.
 
@@ -169,7 +169,7 @@ the admission bound, which keeps `min_reserve_mem` = 6.459 GB per GPU out of the
 KV pools -- about 13 GB of the 134 GB pool budget across two GPUs. The non-v0
 elastic path keeps back 0.5 GB for the same purpose.
 
-A related defect was found while reading this path and is **not** fixed here:
+A related defect was found while reading this path and is fixed in run 6 below:
 `WorkerPoolModelRunner.model_gpu_mem_usage` is set to `0` in `__init__` and
 never updated by `_set_model_params`, so the activation wait loop in
 `load_gpu_model` -- whose whole purpose is to wait until
@@ -181,9 +181,67 @@ instead of waiting.
 Whether to fix it, and whether the pool reserve can then drop to the 0.5 GB the
 sibling path uses, is a separate change that must be measured on its own.
 
+## Run 6: the accounting fix, measured
+
+`WorkerPoolModelRunner._set_model_params` now populates `model_gpu_mem_usage`,
+so `load_gpu_model`'s wait loop finally waits for the weights of the model being
+activated instead of collapsing to `free < min_reserve_mem`. With the reserve
+enforced there, the kvcached-v0 admission bound went back to the 0.5 GB the
+non-v0 elastic path has always kept back, returning roughly 13 GB of KV pool
+across the two GPUs.
+
+Run 6 is the same D2 -- same workload, seed, SLOs, GPUs, tau -- run once.
+
+| | run 5 | run 6 |
+|---|---:|---:|
+| completed | 7,047 | **7,921** |
+| aborted (SLO) | 1,376 | **502** |
+| request throughput (req/s) | 13.63 | **16.91** |
+| mean TTFT | 33,501 ms | **17,306 ms** |
+| P99 TTFT | 170,486 ms | **110,332 ms** |
+| mean TPOT | 219.5 ms | 226.3 ms |
+| P99 TPOT | 1,607 ms | 1,769 ms |
+| decode-retraction events | 32 (1,999 requests) | **0** |
+| CUDA OOM | 0 | 0 |
+| server crash | 0 | 0 |
+
+Aborts fell by 64%, throughput rose 24%, mean TTFT halved, and retraction
+disappeared entirely. TPOT is marginally worse. The wait loop is no longer
+silent: 809 lines of `Waiting for enough memory to load the model...` with real
+numbers (`available 19.18 GB, min reserve 6.46 GB, model memory usage 14.28`),
+against zero lines in every earlier run.
+
+The correctness gate passes again on run 6: 4 P2P migrations, all reading the
+resident GPU, forward and reverse both present, residency clean, KV transfers
+healthy, no OOM, no crash, clean shutdown.
+
+### A finding in the controller, reported not fixed
+
+Run 6 recorded five MIGRATE decisions but four weight transfers. The fifth is
+not a failed migration:
+
+```text
+cycle 20  ACTION: deactivate model_4:1 on GPU 1. Reason: idle instance eviction
+cycle 20  PLANNING: migrate model model_4 from GPU 1 to GPU 0
+cycle 20  Executed 2 actions ... [DeactivateAction(model_1), DeactivateAction(model_4)]
+```
+
+Idle-instance eviction runs before Algorithm 1 in the same cycle, and the action
+list built afterwards carried only the deactivation. The migration was
+superseded, and model_4 was re-activated on GPU1 later.
+
+The consequence worth carrying forward is an evidence one: the policy's
+`migrations_emitted` audit counts *decisions*, not executed migrations, so
+migration counts in any report must come from the weight-transfer records rather
+than from that counter. The correctness script now separates the two --
+`decisions_superseded_by_idle_eviction` is reported, while a decision that
+disappears with no stated reason still fails the gate. No controller behaviour
+was changed.
+
 ## Status
 
 ```text
-D2 correctness: PASS
+D2 correctness: PASS (run5, re-confirmed on run6)
+Memory accounting: fixed and measured
 Next: instrument the KV transfer path. No D3 until that is resolved.
 ```
