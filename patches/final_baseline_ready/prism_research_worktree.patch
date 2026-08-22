@@ -5241,7 +5241,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..8c10743 100644
+index 3cf0db7..5f2575b 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5278,7 +5278,7 @@ index 3cf0db7..8c10743 100644
          self.tp_size = server_args.tp_size
          self.schedule_policy = server_args.schedule_policy
          self.disable_regex_jump_forward = server_args.disable_regex_jump_forward
-@@ -338,6 +348,21 @@ class Scheduler:
+@@ -338,6 +348,24 @@ class Scheduler:
          self.last_tput_update_time = time.time()
          self.model_name = server_args.model_name
          self.instance_idx = getattr(server_args, "instance_idx", 0)
@@ -5291,6 +5291,9 @@ index 3cf0db7..8c10743 100644
 +        # the handoff invariant: nothing runnable while unaccounted.
 +        # rids already handed to this GPU's Algorithm 2, so holding several
 +        # requests does not re-ask for the earlier ones on every call.
++        # KV ownership tracing. Off unless PRISM_KV_OWN_TRACE=1, and it only
++        # writes log lines -- no scheduling decision reads it.
++        self._kv_own_trace = os.environ.get("PRISM_KV_OWN_TRACE") == "1"
 +        self._alg2_adoption_requested = set()
 +        self._alg2_pending_adoption = {}
 +        self._alg2_admission_seq_key = (
@@ -5300,7 +5303,7 @@ index 3cf0db7..8c10743 100644
  
          self.tput_update_thread = threading.Thread(
              target=self._send_token_tput_updates, daemon=True
-@@ -605,12 +630,27 @@ class Scheduler:
+@@ -605,12 +633,27 @@ class Scheduler:
              max_prefill_count = (
                  int(approx_remain_prefill_tokens // self.avg_input_len) + 1
              )
@@ -5330,7 +5333,7 @@ index 3cf0db7..8c10743 100644
              # if max_fetch_count > 0:
              #     recv_reqs = self.redis_client.recv_pyobj_non_block(
              #         key=f"{self.server_args.backend_generate_request_key_prefix}:{self.model_name}",
-@@ -666,8 +706,33 @@ class Scheduler:
+@@ -666,8 +709,33 @@ class Scheduler:
      def process_input_gen_requests(self, recv_reqs: List):
          for recv_req in recv_reqs:
              assert isinstance(recv_req, GenerateReqInput)
@@ -5364,7 +5367,7 @@ index 3cf0db7..8c10743 100644
  
      def process_input_other_requests(self, recv_reqs: List):
          recv_deactivate_reqs = []
-@@ -778,6 +843,9 @@ class Scheduler:
+@@ -778,6 +846,9 @@ class Scheduler:
              obj.lora_path,
              obj.arrival_time,
              obj.slo,
@@ -5374,7 +5377,7 @@ index 3cf0db7..8c10743 100644
          )
          return tokenized_obj
  
-@@ -807,6 +875,9 @@ class Scheduler:
+@@ -807,6 +878,9 @@ class Scheduler:
              lora_path=recv_req.lora_path,
              arrival_time=recv_req.arrival_time,
              slo=recv_req.slo,
@@ -5384,7 +5387,15 @@ index 3cf0db7..8c10743 100644
          )
          req.tokenizer = self.tokenizer
  
-@@ -923,14 +994,62 @@ class Scheduler:
+@@ -862,6 +936,7 @@ class Scheduler:
+         num_used = self.max_total_num_tokens - (
+             self.token_to_kv_pool.available_size() + self.tree_cache.evictable_size()
+         )
++        self._kv_ownership_snapshot("decode_stats")
+         throughput = self.num_generated_tokens / (time.time() - self.last_stats_tic)
+         self.num_generated_tokens = 0
+         self.last_stats_tic = time.time()
+@@ -923,14 +998,62 @@ class Scheduler:
          # Prefill first
          new_batch = self.get_new_batch_prefill()
          if new_batch is not None:
@@ -5453,19 +5464,50 @@ index 3cf0db7..8c10743 100644
              return new_batch
  
          # Check memory
-@@ -1156,7 +1275,10 @@ class Scheduler:
+@@ -1045,7 +1168,26 @@ class Scheduler:
+         # Update waiting queue
+         can_run_list = adder.can_run_list
+         if len(can_run_list) == 0:
++            # The refusal the D3 run 7 stall turned on: which request was at
++            # the head, how many tokens it needed, and what the pool had.
++            head = self.waiting_queue[0] if self.waiting_queue else None
++            self._kv_ownership_snapshot("prefill_refused", {
++                "head_rid": getattr(head, "rid", None),
++                "head_alg2_seq": getattr(head, "alg2_seq", None),
++                "head_backend_admitted": getattr(
++                    head, "alg2_backend_admitted", None),
++                "head_tokens_needed": (
++                    self._alg2_reprefill_tokens(head) if head else None),
++                "adder_rem_total_tokens": getattr(
++                    adder, "rem_total_tokens", None),
++                "batch_is_full": self.batch_is_full,
++                "refusal": "no request could be added to the prefill batch",
++            })
+             return None
++        for _req in can_run_list:
++            self._kv_rid_event("prefill_admitted_to_batch", _req)
++        self._kv_ownership_snapshot("prefill_batch_formed", {
++            "batch_rids": [r.rid for r in can_run_list][:8]})
+         self.waiting_queue = [
+             x for x in self.waiting_queue if x not in set(can_run_list)
+         ]
+@@ -1156,7 +1298,14 @@ class Scheduler:
                  f"#retracted_reqs: {len(retracted_reqs)}, "
                  f"#new_token_ratio: {old_ratio:.4f} -> {self.new_token_ratio:.4f}"
              )
 -            self.waiting_queue.extend(retracted_reqs)
++            for _req in retracted_reqs:
++                self._kv_rid_event("decode_retraction", _req)
 +            # Retraction is a re-entry into prefill, not a continuation: the
 +            # KV is freed and the prefix cleared, so this request has to be
 +            # ordered and accounted by Algorithm 2 again like anything else.
 +            self._alg2_hold_for_reentry(retracted_reqs, "decode-retraction")
++            self._kv_ownership_snapshot("after_retraction", {
++                "retracted": len(retracted_reqs)})
          else:
              self.new_token_ratio = max(
                  self.new_token_ratio - self.new_token_ratio_decay,
-@@ -1201,6 +1323,15 @@ class Scheduler:
+@@ -1201,6 +1350,15 @@ class Scheduler:
  
      def process_batch_result(self, batch: ScheduleBatch, result):
          if batch.forward_mode.is_decode():
@@ -5481,7 +5523,7 @@ index 3cf0db7..8c10743 100644
              self.process_batch_result_decode(batch, result)
              if batch.is_empty():
                  self.running_batch = None
-@@ -1208,6 +1339,7 @@ class Scheduler:
+@@ -1208,6 +1366,7 @@ class Scheduler:
              self.process_batch_result_prefill(batch, result)
  
      def process_batch_result_prefill(self, batch: ScheduleBatch, result):
@@ -5489,7 +5531,7 @@ index 3cf0db7..8c10743 100644
          if self.is_generation:
              logits_output, next_token_ids, bid = result
  
-@@ -1241,6 +1373,7 @@ class Scheduler:
+@@ -1241,11 +1400,13 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5497,7 +5539,13 @@ index 3cf0db7..8c10743 100644
                      req.completion_tokens_wo_jump_forward += 1
                      req.output_ids.append(next_token_ids[i])
                      req.check_finished()
-@@ -1278,16 +1411,37 @@ class Scheduler:
+ 
+                     if req.finished():
++                        self._kv_rid_event('completion_release', req)
+                         self.tree_cache.cache_finished_req(req)
+                     elif not batch.decoding_reqs or req not in batch.decoding_reqs:
+                         self.tree_cache.cache_unfinished_req(req)
+@@ -1278,16 +1439,38 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5507,6 +5555,7 @@ index 3cf0db7..8c10743 100644
                      req.check_finished()
 -
                  if req.finished():
++                    self._kv_rid_event('completion_release', req)
                      self.tree_cache.cache_finished_req(req)
                      req.set_finish_time()
                  else:
@@ -5536,7 +5585,15 @@ index 3cf0db7..8c10743 100644
          self.stream_output(batch.reqs)
  
      def process_batch_result_decode(self, batch: ScheduleBatch, result):
-@@ -1472,6 +1626,8 @@ class Scheduler:
+@@ -1333,6 +1516,7 @@ class Scheduler:
+ 
+             if req.finished():
+                 req.set_finish_time()
++                self._kv_rid_event('completion_release', req)
+                 self.tree_cache.cache_finished_req(req)
+ 
+             if req.return_logprob:
+@@ -1472,6 +1656,8 @@ class Scheduler:
                              else None
                          ),
                          "arrival_timestamp": req.arrival_time,
@@ -5545,7 +5602,7 @@ index 3cf0db7..8c10743 100644
                          "out_queue_timestamp": req.out_queue_timestamp,
                          "prefill_finish_timestamp": req.prefill_finish_timestamp,
                          "finish_timestamp": req.finish_timestamp,
-@@ -1596,9 +1752,49 @@ class Scheduler:
+@@ -1596,9 +1782,49 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -5597,7 +5654,7 @@ index 3cf0db7..8c10743 100644
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
                      gpu_id=gpu_id,
-@@ -1606,6 +1802,7 @@ class Scheduler:
+@@ -1606,6 +1832,7 @@ class Scheduler:
                      instance_idx=recv_req.instance_idx,
                      success=False,
                      memory_usage=self.get_memory_usage(),
@@ -5605,7 +5662,7 @@ index 3cf0db7..8c10743 100644
                  )
                  self.send_to_detokenizer.send_pyobj(
                      activate_req_output
-@@ -1619,6 +1816,26 @@ class Scheduler:
+@@ -1619,6 +1846,26 @@ class Scheduler:
          assert self.last_batch is None, "Last batch should be None"
          assert self.running_batch is None, "Running batch should be None"
  
@@ -5632,7 +5689,7 @@ index 3cf0db7..8c10743 100644
          start_time = time.perf_counter()
  
          self.tp_worker.activate_model_runner(
-@@ -1651,16 +1868,22 @@ class Scheduler:
+@@ -1651,16 +1898,22 @@ class Scheduler:
          self.update_memory_pool()
          logger.info("Memory pool updated")
          # restore waiting queue
@@ -5661,7 +5718,7 @@ index 3cf0db7..8c10743 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1674,6 +1897,7 @@ class Scheduler:
+@@ -1674,6 +1927,7 @@ class Scheduler:
                  instance_idx=recv_req.instance_idx,
                  success=True,
                  memory_usage=memory_usage,
@@ -5669,7 +5726,7 @@ index 3cf0db7..8c10743 100644
              )
              self.send_to_detokenizer.send_pyobj(activate_req_output)
  
-@@ -1690,8 +1914,15 @@ class Scheduler:
+@@ -1690,8 +1944,15 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -5686,7 +5743,7 @@ index 3cf0db7..8c10743 100644
              logger.info(f"Scheduler receives the deactivate requests with rid: {recv_req.rid}")
          else:
              if self.tp_rank == 0:
-@@ -1715,6 +1946,7 @@ class Scheduler:
+@@ -1715,6 +1976,7 @@ class Scheduler:
              return
  
          start_time = time.perf_counter()
@@ -5694,7 +5751,7 @@ index 3cf0db7..8c10743 100644
          logger.info(
              f"In handle deactivate request, waiting queue size: {len(self.waiting_queue)}. Running batch size: {0 if self.running_batch is None else len(self.running_batch.reqs)}, last batch size: {0 if self.last_batch is None else len(self.last_batch.reqs)}"
          )
-@@ -1748,12 +1980,49 @@ class Scheduler:
+@@ -1748,12 +2010,49 @@ class Scheduler:
                      f"Preempt mode {preempt_mode} is not supported"
                  )
          t1 = time.perf_counter()
@@ -5744,7 +5801,7 @@ index 3cf0db7..8c10743 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1816,6 +2085,8 @@ class Scheduler:
+@@ -1816,6 +2115,8 @@ class Scheduler:
              lora_path=req.lora_path,
              arrival_time=req.arrival_time,
              slo=req.slo,
@@ -5753,7 +5810,7 @@ index 3cf0db7..8c10743 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2094,90 @@ class Scheduler:
+@@ -1823,8 +2124,90 @@ class Scheduler:
          )
          return generate_req
  
@@ -5844,7 +5901,7 @@ index 3cf0db7..8c10743 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2190,310 @@ class Scheduler:
+@@ -1837,7 +2220,417 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -5944,6 +6001,8 @@ index 3cf0db7..8c10743 100644
 +                                            slots, cap, dev)
 +                    req = _build(cap, slots)
 +                    injected += 1
++                    self._kv_rid_event("migration_resume", req,
++                                       {"slots": len(slots)})
 +                    logger.info("[PAPER-KV-V6] " + _json.dumps({
 +                        "event": "resume", "rid": req.rid,
 +                        "tokens": len(slots), "gpu": self.gpu_id,
@@ -5956,6 +6015,8 @@ index 3cf0db7..8c10743 100644
 +                    try:
 +                        req = _build(cap)
 +                        recomputed += 1
++                        self._kv_rid_event("migration_recompute", req,
++                                           {"reason": str(e)[:120]})
 +                        logger.warning("[PAPER-KV-V6] " + _json.dumps({
 +                            "event": "recompute", "rid": req.rid,
 +                            "reason": str(e), "gpu": self.gpu_id}))
@@ -5982,6 +6043,109 @@ index 3cf0db7..8c10743 100644
 +                model=self.model_name)))
 +        except Exception as e:
 +            logger.warning(f"[PAPER-KV-V6] inject stage failed: {e}")
++
++    def _kv_tokens_held(self, req):
++        """Tokens of this request's KV that the pool is holding for it.
++
++        A request in the pool owns a row of `req_to_token` as long as it has a
++        `req_pool_idx`; that row is `origin_input_ids + output_ids` long. One
++        that has been rebuilt or retracted owns only its `prefix_indices`, which
++        is the migrated KV for a resume and empty after a retraction.
++        """
++        if getattr(req, "req_pool_idx", None) is not None:
++            return (len(getattr(req, "origin_input_ids", []) or [])
++                    + len(getattr(req, "output_ids", []) or []))
++        return len(getattr(req, "prefix_indices", []) or [])
++
++    def _kv_ownership_snapshot(self, reason, extra=None):
++        """Reconcile what the pool says it holds against who can account for it.
++
++        Recording only -- nothing here changes a scheduling decision. D3 run 7
++        ended with model_2's pool at 930,401 tokens and no running requests,
++        and the logs could not say whose KV that was. This writes the
++        decomposition the question needs:
++
++            pool_used = live-request-owned + migration-owned + unexplained
++        """
++        if not self._kv_own_trace:
++            return
++        try:
++            pool = self.token_to_kv_pool
++            available = int(pool.available_size())
++            evictable = int(self.tree_cache.evictable_size())
++            total = int(self.max_total_num_tokens)
++            pool_used = total - available
++
++            def bucket(reqs):
++                held = [(getattr(r, "rid", None), self._kv_tokens_held(r))
++                        for r in reqs]
++                return sum(t for _r, t in held), held
++
++            running = self.running_batch.reqs if self.running_batch else []
++            run_tokens, run_held = bucket(running)
++            wait_tokens, _ = bucket(self.waiting_queue)
++            pend_tokens, _ = bucket(list(self._alg2_pending_adoption.values()))
++            inflight = ([self.current_inflight_req]
++                        if getattr(self, "current_inflight_req", None) else [])
++            infl_tokens, _ = bucket(inflight)
++            migration_tokens = sum(
++                getattr(c, "num_tokens", 0) for c in self._v6_captured)
++
++            live_owned = run_tokens + wait_tokens + pend_tokens + infl_tokens
++            unexplained = pool_used - live_owned - migration_tokens - evictable
++
++            record = {
++                "event": "kv_ownership", "reason": reason,
++                "model": self.model_name, "gpu_id": self.gpu_id,
++                "engine_id": getattr(self, "engine_id", None),
++                "time": time.time(),
++                "pool_total_tokens": total,
++                "pool_available": available,
++                "pool_used": pool_used,
++                "tree_evictable": evictable,
++                "live_owned": live_owned,
++                "owned_running": run_tokens,
++                "owned_waiting": wait_tokens,
++                "owned_pending_adoption": pend_tokens,
++                "owned_inflight": infl_tokens,
++                "migration_owned": migration_tokens,
++                "unexplained": unexplained,
++                "n_running": len(running),
++                "n_waiting": len(self.waiting_queue),
++                "n_pending_adoption": len(self._alg2_pending_adoption),
++                "n_captured": len(self._v6_captured),
++                "running_detail": run_held[:8],
++            }
++            if extra:
++                record.update(extra)
++            logger.info("[PAPER-KV-OWN] " + json.dumps(record, sort_keys=True,
++                                                      default=str))
++        except Exception as e:
++            logger.warning(f"[PAPER-KV-OWN] snapshot failed ({reason}): {e}")
++
++    def _kv_rid_event(self, event, req, extra=None):
++        """One line per request per KV lifecycle transition. Recording only."""
++        if not self._kv_own_trace:
++            return
++        try:
++            record = {
++                "event": "kv_rid", "transition": event,
++                "rid": getattr(req, "rid", None),
++                "model": self.model_name, "gpu_id": self.gpu_id,
++                "time": time.time(),
++                "held_tokens": self._kv_tokens_held(req),
++                "prompt_tokens": len(getattr(req, "origin_input_ids", []) or []),
++                "output_tokens": len(getattr(req, "output_ids", []) or []),
++                "prefix_tokens": len(getattr(req, "prefix_indices", []) or []),
++                "req_pool_idx": getattr(req, "req_pool_idx", None),
++                "alg2_seq": getattr(req, "alg2_seq", None),
++            }
++            if extra:
++                record.update(extra)
++            logger.info("[PAPER-KV-RID] " + json.dumps(record, sort_keys=True,
++                                                      default=str))
++        except Exception as e:
++            logger.warning(f"[PAPER-KV-OWN] rid event failed ({event}): {e}")
 +
 +    @staticmethod
 +    def _alg2_reprefill_tokens(req):
@@ -6155,7 +6319,23 @@ index 3cf0db7..8c10743 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1898,6 +2554,99 @@ class Scheduler:
+@@ -1855,6 +2648,7 @@ class Scheduler:
+                     req.set_finish_time()
+                     if self.use_kvcached_v0:
+                         try:
++                            self._kv_rid_event('completion_release', req)
+                             self.tree_cache.cache_finished_req(req)
+                         except Exception as e:
+                             logger.error(f"Error in cache_finished_req: {e}")
+@@ -1881,6 +2675,7 @@ class Scheduler:
+                     req.set_finish_time()
+                     if self.use_kvcached_v0:
+                         try:
++                            self._kv_rid_event('completion_release', req)
+                             self.tree_cache.cache_finished_req(req)
+                         except Exception as e:
+                             logger.error(f"Error in cache_finished_req: {e}")
+@@ -1898,6 +2693,101 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6202,6 +6382,8 @@ index 3cf0db7..8c10743 100644
 +                    "prefill_finish_timestamp", "decode_timestamps",
 +                    "regex_fsm_state")})
 +            self._v6_captured.append(cap)
++            self._kv_rid_event("migration_capture", req,
++                               {"capsule_tokens": getattr(cap, "num_tokens", None)})
 +        except Exception as e:
 +            self._v6_capture_failures += 1
 +            logger.warning(f"[PAPER-KV-V6] capture failed for {req.rid}: {e}")
@@ -6255,7 +6437,7 @@ index 3cf0db7..8c10743 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2675,7 @@ class Scheduler:
+@@ -1926,6 +2816,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
@@ -6263,6 +6445,45 @@ index 3cf0db7..8c10743 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
+@@ -1936,6 +2827,7 @@ class Scheduler:
+                 self.waiting_queue.append(req)
+                 if self.use_kvcached_v0:
+                     try:
++                        self._kv_rid_event('completion_release', req)
+                         self.tree_cache.cache_finished_req(req)
+                     except Exception as e:
+                         logger.error(f"Error in cache_finished_req: {e}")
+@@ -1974,6 +2866,9 @@ class Scheduler:
+             if_success = False
+         return if_success
+ 
++    def _kv_abort_event(self, req, reason):
++        self._kv_rid_event("abort_release", req, {"abort_reason": reason})
++
+     def abort_request(self, recv_req: AbortReq):
+         # Delete requests in the waiting queue
+         to_del = None
+@@ -1990,15 +2885,20 @@ class Scheduler:
+             for req in self.running_batch.reqs:
+                 if req.rid == recv_req.rid and not req.finished():
+                     req.finished_reason = FINISH_ABORT()
++                    self._kv_rid_event('completion_release', req)
+                     self.tree_cache.cache_finished_req(req)
+                     break
+ 
+     def abort_exceed_slo_reqs(self, abort_reqs: List[Req]):
+         for req in abort_reqs:
++            self._kv_abort_event(req, "exceeded-slo")
+             self.waiting_queue.remove(req)
+             req.finished_reason = FINISH_ABORT()
+             req.set_finish_time()
+         self.stream_output(abort_reqs)
++        if abort_reqs:
++            self._kv_ownership_snapshot("after_slo_abort",
++                                        {"aborted": len(abort_reqs)})
+ 
+     def update_weights(self, recv_req: UpdateWeightReqInput):
+         """In-place update of the weights."""
 diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
 index 31ec604..e521261 100644
 --- a/python/sglang/srt/mem_cache/memory_pool.py
