@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-22T08:51:18.075766",
+  "exp_name": "paper-migration-only_bursty_rate20_seed1",
+  "num_gpus": 2,
+  "completed": 3064,
+  "aborted": 5359,
+  "request_throughput": 7.292853351017602,
+  "input_throughput": 6186.541302677839,
+  "output_throughput": 1002.8649229017974,
+  "mean_ttft_ms": 3182.466292194536,
+  "p99_ttft_ms": 33196.28681659678,
+  "mean_tpot_ms": 334.7174973537303,
+  "p99_tpot_ms": 2417.359134554863
+}

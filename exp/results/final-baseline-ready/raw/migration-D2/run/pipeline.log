@@ -1,0 +1,3 @@
+[2026-08-22T08:40:46Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/STAGE_CMD.sh
+### paper-migration-only_bursty_rate20_seed1  port=42600 trace=bursty_r20_s1.pkl workers=4 models=6
+waiting for server.................................................................................................... -> ready

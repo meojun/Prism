@@ -63,6 +63,17 @@ def stats(values):
     }
 
 
+# Columns that are not timestamps, and so are excluded from the
+# missing-timestamp audit below.
+NON_TIMESTAMP_FIELDS = {
+    "migration_id", "model", "source_gpu", "target_gpu",
+    "weight_bytes", "weight_source", "weight_transfer_path",
+    "weight_bytes_p2p", "weight_gbps",
+    "kv_bytes", "kv_transfer_path", "kv_gbps",
+    "kv_requests_moved", "kv_tokens_moved", "kv_requests_skipped_over_cap",
+}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", type=Path, required=True)
@@ -219,6 +230,21 @@ def main():
             "source_release": (release or {}).get("time"),
             "first_request_on_target": (first_request or {}).get("time"),
             "first_decode_on_target": (first_decode or {}).get("time"),
+            # Bytes and path, so a slow phase can be told apart from a wrong
+            # one: an intrinsic transfer cost is explained by its payload and
+            # bandwidth, an implementation stall is not.
+            "weight_bytes": (weight or {}).get("payload_bytes"),
+            "weight_source": (weight or {}).get("source"),
+            "weight_transfer_path": (weight or {}).get("transfer_path"),
+            "weight_bytes_p2p": (weight or {}).get("bytes_p2p"),
+            "weight_gbps": (weight or {}).get("payload_gbps"),
+            "kv_bytes": (kv_transfer or {}).get("kv_bytes"),
+            "kv_transfer_path": (kv_transfer or {}).get("transfer_path"),
+            "kv_gbps": (kv_transfer or {}).get("kv_gbps"),
+            "kv_requests_moved": (kv_transfer or {}).get("requests_moved"),
+            "kv_tokens_moved": (kv_transfer or {}).get("tokens_moved"),
+            "kv_requests_skipped_over_cap": (kv_transfer or {}).get(
+                "requests_skipped_over_cap"),
         }
         inject_total = duration(row["target_inject_end"], row["target_inject_start"])
         kv_transfer_duration = duration(row["kv_transfer_end"], row["kv_transfer_start"])
@@ -269,15 +295,36 @@ def main():
         "first_request_to_first_decode_s", "exposed_downtime_s",
         "total_migration_wall_s",
     ]
+    def total(key):
+        values = [r.get(key) for r in rows if r.get(key) is not None]
+        return sum(values) if values else 0
+
     summary = {
         "number_of_migrations": len(rows),
+        "transfer_paths": {
+            "weights": sorted({str(r.get("weight_transfer_path")) for r in rows}),
+            "kv": sorted({str(r.get("kv_transfer_path")) for r in rows}),
+        },
+        "p2p_weight_transfers": sum(
+            1 for r in rows if r.get("weight_transfer_path") == "gpu-to-gpu-p2p"),
+        "bytes": {
+            "weight_total": total("weight_bytes"),
+            "weight_p2p_total": total("weight_bytes_p2p"),
+            "kv_total": total("kv_bytes"),
+            "kv_requests_moved": total("kv_requests_moved"),
+            "kv_tokens_moved": total("kv_tokens_moved"),
+        },
+        "effective_bandwidth_gbps": {
+            "weight": stats([r.get("weight_gbps") for r in rows]),
+            "kv": stats([r.get("kv_gbps") for r in rows]),
+        },
         "phase_stats_seconds": {
             key: stats([row.get(key) for row in rows]) for key in duration_fields
         },
         "missing_timestamps": {
             key: sum(row.get(key) is None for row in rows)
             for key in fieldnames
-            if key not in {"migration_id", "model", "source_gpu", "target_gpu"}
+            if key not in NON_TIMESTAMP_FIELDS
             and not key.endswith("_s")
         },
     }

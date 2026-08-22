@@ -1,0 +1,29 @@
+{
+  "current_phase": "benchmark",
+  "failure_reason": "benchmark: inner server session exited without result",
+  "gpu": [
+    "0, 0 MiB, 0 %",
+    "1, 0 MiB, 0 %"
+  ],
+  "gpu_processes": [],
+  "heartbeat_iso_utc": "2026-08-22T08:48:00.739038+00:00",
+  "heartbeat_timestamp": 1787388480.7390382,
+  "last_actual_progress_event": "completed_responses=3070, arrivals=4546",
+  "last_log_timestamp": 1787388468.818135,
+  "last_progress_iso_utc": "2026-08-22T08:47:31.917805+00:00",
+  "last_progress_timestamp": 1787388451.9178047,
+  "no_progress_timeout_s": 180.0,
+  "phase_elapsed_s": 224.175,
+  "phase_hard_timeout_s": 1500.0,
+  "pids": [
+    "207817 bash exp/scripts/run_baseline_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/STAGE_CMD.sh",
+    "207826 bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/STAGE_CMD.sh",
+    "207827 tee -a /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/pipeline.log",
+    "207829 bash exp/scripts/run_v4_case.sh paper-migration-only bursty 20 1 /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run",
+    "216028 bash exp/scripts/run_v4_case.sh paper-migration-only bursty 20 1 /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run",
+    "216029 timeout --signal=TERM --kill-after=30s 1200 python3 benchmark.py --base-url http://127.0.0.1:42600 --num-models 6 --model-paths model_1 model_2 model_3 model_4 model_5 model_6 --exp-name paper-migration-only_bursty_rate20_seed1 --results-path /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run --request-path /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/requests --seed 1 --disable-tqdm --e2e-benchmark --real-trace /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl --time-scale 1 --replication 1 --num-gpus 2 --enable-elastic-memory --ttft-slo-scale 5 --tpot-slo-scale 3",
+    "216031 python3 benchmark.py --base-url http://127.0.0.1:42600 --num-models 6 --model-paths model_1 model_2 model_3 model_4 model_5 model_6 --exp-name paper-migration-only_bursty_rate20_seed1 --results-path /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run --request-path /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run/requests --seed 1 --disable-tqdm --e2e-benchmark --real-trace /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl --time-scale 1 --replication 1 --num-gpus 2 --enable-elastic-memory --ttft-slo-scale 5 --tpot-slo-scale 3"
+  ],
+  "progress_count": 3070,
+  "state": "FAIL"
+}
