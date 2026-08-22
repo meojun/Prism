@@ -1,0 +1,68 @@
+[2026-08-22 18:29:27.092] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.114] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.119] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.121] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.126] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.127] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.133] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.134] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.138] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.139] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.139] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+cannot import name 'PreTrainedModel' from 'transformers.modeling_utils' (/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/transformers/modeling_utils.py)
+[2026-08-22 18:29:27.155] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.159] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.163] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.164] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.165] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+cannot import name 'PreTrainedModel' from 'transformers.modeling_utils' (/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/transformers/modeling_utils.py)
+[2026-08-22 18:29:27.171] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.173] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.178] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.180] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.180] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+cannot import name 'PreTrainedModel' from 'transformers.modeling_utils' (/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/transformers/modeling_utils.py)
+[2026-08-22 18:29:27.187] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.189] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.192] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.193] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.194] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+cannot import name 'PreTrainedModel' from 'transformers.modeling_utils' (/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/transformers/modeling_utils.py)
+[2026-08-22 18:29:27.199] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.200] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.204] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.206] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.209] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.211] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.592] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.593] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.601] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.603] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.608] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.609] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.613] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.614] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.617] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.618] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:29:27.625] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:29:27.627] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'

@@ -1,0 +1,5 @@
+[model_5] prompts: short=40, medium=40, long=40
+[model_5] sequential ok=120/120
+[model_5] saturated ok=48/48
+[model_5] c_i  E1=9994  E2=11461  E3solo=11228  E3sat=9844 tok/s
+[model_5] SLO baseline TTFT p95=113.3ms  TPOT p95=18.95ms

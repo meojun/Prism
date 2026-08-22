@@ -1,0 +1,297 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+[ModelConfig(model_name='model_3', model_path='meta-llama/Llama-3.2-3B', tokenizer_path='meta-llama/Llama-3.2-3B', tp_size=1, init_placements=[{'gpu_ids': [0], 'on': True, 'max_memory_pool_size': 40.0}])]
+Initializing torch distributed...
+Torch distributed initialized.
+Loading 1 shared models to cpu...
+INFO 08-22 18:23:57 weight_utils.py:243] Using model weights format ['*.safetensors']
+Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:00<00:00,  1.19it/s]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:03<00:00,  1.93s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:03<00:00,  1.77s/it]
+
+Shared models loaded in 10.65 seconds.
+Preparing engine for model_3 (meta-llama/Llama-3.2-3B) on GPU [0] with initialize status on=True
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+INFO 08-22 18:24:16 weight_utils.py:243] Using model weights format ['*.safetensors']
+Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:00<00:00,  1.21it/s]
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:03<00:00,  1.92s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:03<00:00,  1.76s/it]
+
+Init PageAllocator: total_mem_size=694MB, page_size=2MB, shm: ipc_0_model_3_root
+Started page preallocation thread
+[2026-08-22 18:24:42] INFO:     Started server process [616855]
+[2026-08-22 18:24:42] INFO:     Waiting for application startup.
+[2026-08-22 18:24:42] INFO:     Application startup complete.
+[2026-08-22 18:24:42] INFO:     Uvicorn running on http://127.0.0.1:35400 (Press CTRL+C to quit)
+[2026-08-22 18:24:42] INFO:     127.0.0.1:59346 - "GET /get_model_names HTTP/1.1" 200 OK
+[2026-08-22 18:24:43] INFO:     127.0.0.1:59350 - "GET /get_model_names HTTP/1.1" 200 OK
+[2026-08-22 18:24:44] INFO:     127.0.0.1:59356 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:24:50] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:24:52] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:24:54] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:24:56] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:24:58] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:00] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:01] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:03] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:05] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:07] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:08] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:10] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:12] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:14] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:16] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:18] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:19] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:21] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:23] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:24] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:26] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:28] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:30] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:32] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:34] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:36] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:37] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:39] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:41] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:43] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:45] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:47] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:49] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:51] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:52] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:54] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:56] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:58] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:25:59] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:01] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:03] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:06] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:08] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:10] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:12] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:14] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:16] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:17] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:19] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:21] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:23] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:25] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:26] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:28] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:30] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:32] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:34] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:36] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:37] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:39] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:41] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:43] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:45] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:48] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:51] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:53] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:55] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:57] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:26:58] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:00] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:02] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:04] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:06] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:08] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:10] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:12] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:14] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:15] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:17] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:19] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:21] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:24] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:26] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:28] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:30] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:32] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:34] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:36] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:38] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:40] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:42] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:43] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:45] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:47] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:49] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:51] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:53] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:55] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:57] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:27:59] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:01] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:03] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:05] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:08] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:10] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:12] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:14] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:16] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:18] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:20] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:22] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:24] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:26] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:28] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:30] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:31] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:34] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:35] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:38] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:59362 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:40] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:41] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:42] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:44] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55858 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55906 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55960 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55976 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55792 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:56018 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55804 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55834 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55866 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55790 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55934 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55850 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55818 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55880 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55910 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55816 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55892 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55924 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55870 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:56004 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55994 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55862 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55986 - "POST /generate HTTP/1.1" 200 OK
+[2026-08-22 18:28:47] INFO:     127.0.0.1:55946 - "POST /generate HTTP/1.1" 200 OK

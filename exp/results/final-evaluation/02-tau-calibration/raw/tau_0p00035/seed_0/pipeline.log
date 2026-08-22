@@ -1,0 +1,3 @@
+[2026-08-22T18:29:17Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0/STAGE_CMD.sh
+### paper-faithful-v6_bursty_rate20_seed0  port=42750 trace=bursty_r20_s0.pkl workers=4 models=6
+waiting for server.......................
