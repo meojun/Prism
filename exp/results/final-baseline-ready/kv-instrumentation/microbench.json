@@ -1,0 +1,465 @@
+{
+  "gpus": {
+    "source": 0,
+    "target": 1,
+    "peer_access": {
+      "0->1": true,
+      "1->0": true
+    },
+    "can_access_peer": true
+  },
+  "runs": [
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_3",
+      "requests": 161,
+      "tokens_per_request": 323,
+      "kv_bytes": 5964120064,
+      "bytes_moved_by_the_call": 5964120064,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 2.3317843300756067,
+      "gbps": 2.5577494398063036,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5964120064,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 9016,
+      "copy_bytes_total": 5964120064,
+      "copy_bytes_mean": 661504.0,
+      "copy_bytes_min": 661504,
+      "copy_bytes_max": 661504,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 9016
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 161,
+      "synchronize_seconds_total": 0.0017558746039867401,
+      "synchronize_seconds_mean": 1.0906053440911429e-05,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_3",
+      "requests": 161,
+      "tokens_per_request": 323,
+      "kv_bytes": 5964120064,
+      "bytes_moved_by_the_call": 5964120064,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 92.12506682798266,
+      "gbps": 0.06473938385451916,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5964119040,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 9016,
+      "copy_bytes_total": 5964120064,
+      "copy_bytes_mean": 661504.0,
+      "copy_bytes_min": 661504,
+      "copy_bytes_max": 661504,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 9016
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 161,
+      "synchronize_seconds_total": 59.021476888563484,
+      "synchronize_seconds_mean": 0.3665930241525682,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_3",
+      "requests": 161,
+      "tokens_per_request": 323,
+      "kv_bytes": 5964120064,
+      "bytes_moved_by_the_call": 5964120064,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 2.262135843047872,
+      "gbps": 2.636499519836212,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5964121088,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 9016,
+      "copy_bytes_total": 5964120064,
+      "copy_bytes_mean": 661504.0,
+      "copy_bytes_min": 661504,
+      "copy_bytes_max": 661504,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 9016
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 161,
+      "synchronize_seconds_total": 0.0017893561162054539,
+      "synchronize_seconds_mean": 1.1114013144133254e-05,
+      "rep": 1
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_3",
+      "requests": 161,
+      "tokens_per_request": 323,
+      "kv_bytes": 5964120064,
+      "bytes_moved_by_the_call": 5964120064,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 93.74569225800224,
+      "gbps": 0.06362020398319577,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5964119040,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 9016,
+      "copy_bytes_total": 5964120064,
+      "copy_bytes_mean": 661504.0,
+      "copy_bytes_min": 661504,
+      "copy_bytes_max": 661504,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 9016
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 161,
+      "synchronize_seconds_total": 60.96153407776728,
+      "synchronize_seconds_mean": 0.37864306880600795,
+      "rep": 1
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_4",
+      "requests": 114,
+      "tokens_per_request": 390,
+      "kv_bytes": 1638973440,
+      "bytes_moved_by_the_call": 1638973440,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 0.9459892509039491,
+      "gbps": 1.7325497498347504,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 1638974464,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 8208,
+      "copy_bytes_total": 1638973440,
+      "copy_bytes_mean": 199680.0,
+      "copy_bytes_min": 199680,
+      "copy_bytes_max": 199680,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 8208
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 114,
+      "synchronize_seconds_total": 0.0011740687768906355,
+      "synchronize_seconds_mean": 1.0298848920093293e-05,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_4",
+      "requests": 114,
+      "tokens_per_request": 390,
+      "kv_bytes": 1638973440,
+      "bytes_moved_by_the_call": 1638973440,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 69.69633678114042,
+      "gbps": 0.023515919425531422,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 1638972416,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 8208,
+      "copy_bytes_total": 1638973440,
+      "copy_bytes_mean": 199680.0,
+      "copy_bytes_min": 199680,
+      "copy_bytes_max": 199680,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 8208
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 114,
+      "synchronize_seconds_total": 40.792065653251484,
+      "synchronize_seconds_mean": 0.35782513730922355,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_4",
+      "requests": 114,
+      "tokens_per_request": 390,
+      "kv_bytes": 1638973440,
+      "bytes_moved_by_the_call": 1638973440,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 0.9687670790590346,
+      "gbps": 1.6918137242978346,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 1638974464,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 8208,
+      "copy_bytes_total": 1638973440,
+      "copy_bytes_mean": 199680.0,
+      "copy_bytes_min": 199680,
+      "copy_bytes_max": 199680,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 8208
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 114,
+      "synchronize_seconds_total": 0.0011761132627725601,
+      "synchronize_seconds_mean": 1.0316783006776842e-05,
+      "rep": 1
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_4",
+      "requests": 114,
+      "tokens_per_request": 390,
+      "kv_bytes": 1638973440,
+      "bytes_moved_by_the_call": 1638973440,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 68.10652927914634,
+      "gbps": 0.02406485042399364,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 1638973440,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 8208,
+      "copy_bytes_total": 1638973440,
+      "copy_bytes_mean": 199680.0,
+      "copy_bytes_min": 199680,
+      "copy_bytes_max": 199680,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 8208
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 114,
+      "synchronize_seconds_total": 41.04863016796298,
+      "synchronize_seconds_mean": 0.36007570322774546,
+      "rep": 1
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_6",
+      "requests": 47,
+      "tokens_per_request": 239,
+      "kv_bytes": 644145152,
+      "bytes_moved_by_the_call": 644145152,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 0.17096503381617367,
+      "gbps": 3.7677011352660723,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 644143104,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 2632,
+      "copy_bytes_total": 644145152,
+      "copy_bytes_mean": 244736.0,
+      "copy_bytes_min": 244736,
+      "copy_bytes_max": 244736,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 2632
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 47,
+      "synchronize_seconds_total": 0.00047292420640587807,
+      "synchronize_seconds_mean": 1.0062217157571874e-05,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_6",
+      "requests": 47,
+      "tokens_per_request": 239,
+      "kv_bytes": 644145152,
+      "bytes_moved_by_the_call": 644145152,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 27.260504137026146,
+      "gbps": 0.02362924576750949,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 644146176,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 2632,
+      "copy_bytes_total": 644145152,
+      "copy_bytes_mean": 244736.0,
+      "copy_bytes_min": 244736,
+      "copy_bytes_max": 244736,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 2632
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 47,
+      "synchronize_seconds_total": 17.94885747716762,
+      "synchronize_seconds_mean": 0.38189058462058767,
+      "rep": 0
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_6",
+      "requests": 47,
+      "tokens_per_request": 239,
+      "kv_bytes": 644145152,
+      "bytes_moved_by_the_call": 644145152,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 0.17776882788166404,
+      "gbps": 3.6234988984052383,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 644146176,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 2632,
+      "copy_bytes_total": 644145152,
+      "copy_bytes_mean": 244736.0,
+      "copy_bytes_min": 244736,
+      "copy_bytes_max": 244736,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 2632
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 47,
+      "synchronize_seconds_total": 0.00047701294533908367,
+      "synchronize_seconds_mean": 1.0149211602959227e-05,
+      "rep": 1
+    },
+    {
+      "path": "kv_migration_v6.migrate_request_kv",
+      "profile": "model_6",
+      "requests": 47,
+      "tokens_per_request": 239,
+      "kv_bytes": 644145152,
+      "bytes_moved_by_the_call": 644145152,
+      "requests_skipped_over_cap": 0,
+      "wall_seconds": 27.667994511080906,
+      "gbps": 0.0232812375230891,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 644145152,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 2632,
+      "copy_bytes_total": 644145152,
+      "copy_bytes_mean": 244736.0,
+      "copy_bytes_min": 244736,
+      "copy_bytes_max": 244736,
+      "copy_device_pairs": {
+        "cuda:0->cuda:1": 2632
+      },
+      "host_staged_copies": 0,
+      "synchronize_calls": 47,
+      "synchronize_seconds_total": 16.71240141103044,
+      "synchronize_seconds_mean": 0.35558300874532855,
+      "rep": 1
+    },
+    {
+      "path": "parallel_loading_v4.copy_model_to_gpu_v4",
+      "kv_bytes": 5905580032,
+      "wall_seconds": 0.032920380122959614,
+      "gbps": 179.38978863373694,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5905581056,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 0,
+      "copy_bytes_total": 0,
+      "copy_bytes_mean": 0,
+      "copy_bytes_min": 0,
+      "copy_bytes_max": 0,
+      "copy_device_pairs": {},
+      "host_staged_copies": 0,
+      "synchronize_calls": 1,
+      "synchronize_seconds_total": 4.164990969002247e-05,
+      "synchronize_seconds_mean": 4.164990969002247e-05,
+      "rep": 0
+    },
+    {
+      "path": "parallel_loading_v4.copy_model_to_gpu_v4",
+      "kv_bytes": 5905580032,
+      "wall_seconds": 1.0819737100973725,
+      "gbps": 5.458154830276353,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5905576960,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 0,
+      "copy_bytes_total": 0,
+      "copy_bytes_mean": 0,
+      "copy_bytes_min": 0,
+      "copy_bytes_max": 0,
+      "copy_device_pairs": {},
+      "host_staged_copies": 0,
+      "synchronize_calls": 1,
+      "synchronize_seconds_total": 0.5191214110236615,
+      "synchronize_seconds_mean": 0.5191214110236615,
+      "rep": 0
+    },
+    {
+      "path": "parallel_loading_v4.copy_model_to_gpu_v4",
+      "kv_bytes": 5905580032,
+      "wall_seconds": 0.031666351947933435,
+      "gbps": 186.4938544771464,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5905584128,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": false,
+      "copy_calls": 0,
+      "copy_bytes_total": 0,
+      "copy_bytes_mean": 0,
+      "copy_bytes_min": 0,
+      "copy_bytes_max": 0,
+      "copy_device_pairs": {},
+      "host_staged_copies": 0,
+      "synchronize_calls": 1,
+      "synchronize_seconds_total": 4.601990804076195e-05,
+      "synchronize_seconds_mean": 4.601990804076195e-05,
+      "rep": 1
+    },
+    {
+      "path": "parallel_loading_v4.copy_model_to_gpu_v4",
+      "kv_bytes": 5905580032,
+      "wall_seconds": 1.0875783960800618,
+      "gbps": 5.4300269785473585,
+      "transfer_path_reported": "gpu-to-gpu-p2p",
+      "nvlink_delta": {
+        "tx_bytes": 5905575936,
+        "rx_bytes": 0
+      },
+      "background_load_on_target": true,
+      "copy_calls": 0,
+      "copy_bytes_total": 0,
+      "copy_bytes_mean": 0,
+      "copy_bytes_min": 0,
+      "copy_bytes_max": 0,
+      "copy_device_pairs": {},
+      "host_staged_copies": 0,
+      "synchronize_calls": 1,
+      "synchronize_seconds_total": 0.5191562708932906,
+      "synchronize_seconds_mean": 0.5191562708932906,
+      "rep": 1
+    }
+  ]
+}

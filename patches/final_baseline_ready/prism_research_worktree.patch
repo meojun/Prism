@@ -116,10 +116,10 @@ index 5e7290e..c40ce6d 100644
          # Output tokenization configs
 diff --git a/python/sglang/multi_model/kv_migration_v6.py b/python/sglang/multi_model/kv_migration_v6.py
 new file mode 100644
-index 0000000..58d86a0
+index 0000000..df17784
 --- /dev/null
 +++ b/python/sglang/multi_model/kv_migration_v6.py
-@@ -0,0 +1,351 @@
+@@ -0,0 +1,375 @@
 +"""KV-cache migration (paper §5.3) -- transport and request capsule.
 +
 +The paper migrates a model's KV cache with the model.  The released prototype
@@ -310,9 +310,11 @@ index 0000000..58d86a0
 +    with ctx:
 +        capsule.k = [_move(t) for t in capsule.k]
 +        capsule.v = [_move(t) for t in capsule.v]
-+    if stream is not None:
-+        stream.synchronize()
-+    else:
++    if stream is None:
++        # No stream given: nobody else will wait for these copies, so block
++        # here. With a stream the caller owns the synchronization and must
++        # wait on it before the capsule is read -- see `migrate_request_kv`,
++        # which waits once for a whole batch instead of once per request.
 +        torch.cuda.synchronize(target_gpu)
 +    capsule.source_gpu = target_gpu
 +    return capsule, path
@@ -438,11 +440,33 @@ index 0000000..58d86a0
 +        else:
 +            skipped.append(c)
 +
++    # One stream for the batch, waited on once, rather than a device-wide
++    # barrier per request.
++    #
++    # `torch.cuda.synchronize(target_gpu)` waits for everything queued on that
++    # device, not just the copy that was issued -- and the target is a GPU with
++    # several other models serving on it. Measured on this pair
++    # (exp/scripts/microbench_kv_migration.py, 2026-08-22): 161 requests,
++    # 5.96 GB, identical copies and the identical P2P path, took 2.33 s with
++    # the target idle and 92.1 s with the target busy, of which 59.0 s was
++    # spent inside those 161 synchronize calls -- 366 ms each, waiting on other
++    # models' prefill and decode. The weight path moves comparable bytes across
++    # the same link under the same load in 1.08 s because it synchronizes once.
++    #
++    # The source tensors are held until the wait completes: `_move` rebinds
++    # `capsule.k`/`capsule.v` to the target copies, which would otherwise drop
++    # the last reference to memory a copy is still reading from.
 +    paths, nbytes = set(), 0
++    stream = torch.cuda.Stream(device=target_gpu) if moved else None
++    sources = []
 +    for c in moved:
 +        nbytes += c.nbytes
-+        _, p = transfer_capsule(c, target_gpu)
++        sources.append((c.k, c.v))
++        _, p = transfer_capsule(c, target_gpu, stream=stream)
 +        paths.add(p)
++    if stream is not None:
++        stream.synchronize()
++    sources.clear()
 +    t1 = time.time()
 +    seconds = t1 - t0
 +

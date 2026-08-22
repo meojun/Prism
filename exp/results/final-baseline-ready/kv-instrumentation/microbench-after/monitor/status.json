@@ -1,0 +1,21 @@
+{
+  "current_phase": "failed",
+  "failure_reason": "pipeline failed with rc=134",
+  "gpu": [
+    "0, 0 MiB, 0 %",
+    "1, 0 MiB, 0 %"
+  ],
+  "gpu_processes": [],
+  "heartbeat_iso_utc": "2026-08-22T12:17:08.423328+00:00",
+  "heartbeat_timestamp": 1787401028.4233277,
+  "last_actual_progress_event": "pipeline rc=134",
+  "last_log_timestamp": 1787401025.9542139,
+  "last_progress_iso_utc": "2026-08-22T12:17:08.423328+00:00",
+  "last_progress_timestamp": 1787401028.4233277,
+  "no_progress_timeout_s": 900.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1800.0,
+  "pids": [],
+  "progress_count": 1,
+  "state": "FAIL"
+}

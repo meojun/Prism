@@ -1,0 +1,22 @@
+[2026-08-22T12:04:51Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/kv-instrumentation/microbench/STAGE_CMD.sh
+KV  model_3 bg=False rep=0: 5.96 GB in 2.332s = 2.558 GB/s, 9016 copies (mean 646 KiB), 161 syncs (0.002s)
+KV  model_3 bg=True rep=0: 5.96 GB in 92.125s = 0.065 GB/s, 9016 copies (mean 646 KiB), 161 syncs (59.021s)
+KV  model_3 bg=False rep=1: 5.96 GB in 2.262s = 2.636 GB/s, 9016 copies (mean 646 KiB), 161 syncs (0.002s)
+KV  model_3 bg=True rep=1: 5.96 GB in 93.746s = 0.064 GB/s, 9016 copies (mean 646 KiB), 161 syncs (60.962s)
+KV  model_4 bg=False rep=0: 1.64 GB in 0.946s = 1.733 GB/s, 8208 copies (mean 195 KiB), 114 syncs (0.001s)
+KV  model_4 bg=True rep=0: 1.64 GB in 69.696s = 0.024 GB/s, 8208 copies (mean 195 KiB), 114 syncs (40.792s)
+KV  model_4 bg=False rep=1: 1.64 GB in 0.969s = 1.692 GB/s, 8208 copies (mean 195 KiB), 114 syncs (0.001s)
+KV  model_4 bg=True rep=1: 1.64 GB in 68.107s = 0.024 GB/s, 8208 copies (mean 195 KiB), 114 syncs (41.049s)
+KV  model_6 bg=False rep=0: 0.64 GB in 0.171s = 3.768 GB/s, 2632 copies (mean 239 KiB), 47 syncs (0.000s)
+KV  model_6 bg=True rep=0: 0.64 GB in 27.261s = 0.024 GB/s, 2632 copies (mean 239 KiB), 47 syncs (17.949s)
+KV  model_6 bg=False rep=1: 0.64 GB in 0.178s = 3.623 GB/s, 2632 copies (mean 239 KiB), 47 syncs (0.000s)
+KV  model_6 bg=True rep=1: 0.64 GB in 27.668s = 0.023 GB/s, 2632 copies (mean 239 KiB), 47 syncs (16.712s)
+WT  bg=False rep=0: 5.91 GB in 0.033s = 179.390 GB/s, 0 copies (mean 0.0 MiB), 1 syncs (0.000s)
+WT  bg=True rep=0: 5.91 GB in 1.082s = 5.458 GB/s, 0 copies (mean 0.0 MiB), 1 syncs (0.519s)
+WT  bg=False rep=1: 5.91 GB in 0.032s = 186.494 GB/s, 0 copies (mean 0.0 MiB), 1 syncs (0.000s)
+WT  bg=True rep=1: 5.91 GB in 1.088s = 5.430 GB/s, 0 copies (mean 0.0 MiB), 1 syncs (0.519s)
+
+wrote /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/kv-instrumentation/microbench.json
+terminate called without an active exception
+/root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/kv-instrumentation/microbench/STAGE_CMD.sh: line 4: 320053 Aborted                 env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research bash -c source\ /root/Prism-final-regression-diagnosis/exp/scripts/env.sh\ \&\&\ python3\ /root/Prism-final-regression-diagnosis/exp/scripts/microbench_kv_migration.py\ --profiles\ model_3\ model_4\ model_6\ --reps\ 2\ --out\ /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/kv-instrumentation/microbench.json
+[2026-08-22T12:11:58Z] stage complete rc=134
