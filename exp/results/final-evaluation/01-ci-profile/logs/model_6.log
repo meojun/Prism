@@ -1,0 +1,104 @@
+[2026-08-22 17:55:28.711] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:55:28.730] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:55:28.733] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:55:28.734] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:55:28.738] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:55:28.739] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:55:28.861] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:55:28.862] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:56:02.786 model_6 GPU=0 TP0] Scheduler: Worker None bound to gpu_scheduler_0_to_worker_None
+[2026-08-22 17:56:03.359 model_6 GPU=0 TP0] [PAPER-TP] engine rank: tp_rank=0 gpu_id=0 tp_size=1 model_service=False
+[2026-08-22 17:56:03.359 model_6 GPU=0 TP0] Init torch distributed begin.
+[2026-08-22 17:56:03.593 model_6 GPU=0 TP0] Using mem_fraction_static: 0.88 and min_per_gpu_memory: 78.84 GB
+[2026-08-22 17:56:04.026 model_6 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:56:04.401 model_6 GPU=0 TP0] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:56:04.405 model_6 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:56:04.406 model_6 GPU=0 TP0] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:56:04.411 model_6 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:56:04.412 model_6 GPU=0 TP0] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:56:04.426 model_6 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 17:56:04.427 model_6 GPU=0 TP0] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 17:56:50.891 model_6 GPU=0 TP0] Load GPU model end. Time cost: 16.7460s. Current available memory: 64.51 GB, model GPU memory usage: 14.24 GB
+[2026-08-22 17:56:50.892 model_6 GPU=0 TP0] Init memory pool size: 39.00 GB, max_total_num_tokens: 725574, max_num_reqs: 4096, cell_size: 57344.00 bytes, 0.05 MB, kv_cache_dtype: torch.bfloat16
+[2026-08-22 17:56:50.901 model_6 GPU=0 TP0] Initialize req_to_token pool end. Takes 0.0086s. Wait time: 0.0000s. Init time: 0.0086s
+[2026-08-22 17:56:52.923 model_6 GPU=0 TP0] Elastic memory: kv_cache_manager_v0 initialized
+[2026-08-22 17:56:52.923 model_6 GPU=0 TP0] Create memory pool end. Time cost: 2.0314s. total memory pool memory=0.50 GB, req_to_token_pool memory=0.50 GB, token_to_kv_pool memory=0.00 GB
+[2026-08-22 17:56:53.083 model_6 GPU=0 TP0] Init attention backend end. Time cost: 0.0171s
+[2026-08-22 17:56:53.400 model_6 GPU=0 TP0] max_total_num_tokens=725574, max_prefill_tokens=16384, max_running_requests=4097, 
+[2026-08-22 17:56:53.749] Model model_6 instance 0 loaded in process 608514
+[2026-08-22 17:56:53.754] All 1 engines prepared in 59.14 seconds.
+[2026-08-22 17:56:53.761] Waiting for the server to be ready for model model_6...
+[2026-08-22 17:59:38.027] Initialization failed. warmup error: Traceback (most recent call last):
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connection.py", line 500, in request
+    self.endheaders()
+  File "/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1298, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/http/client.py", line 1058, in _send_output
+    self.send(msg)
+  File "/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/http/client.py", line 996, in send
+    self.connect()
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connection.py", line 331, in connect
+    self.sock = self._new_conn()
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=35402): Failed to establish a new connection: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/urllib3/util/retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=35402): Max retries exceeded with url: /get_model_names (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=35402): Failed to establish a new connection: [Errno 111] Connection refused"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/prism-exp/prism-research/python/sglang/multi_model/multi_model_server.py", line 1165, in _wait_and_warmup
+    res = requests.get(
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/api.py", line 87, in get
+    return request("get", url, params=params, **kwargs)
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/requests/adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=35402): Max retries exceeded with url: /get_model_names (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=35402): Failed to establish a new connection: [Errno 111] Connection refused"))
+
+[2026-08-22 17:59:38.106] Cleaning up RequestHandler ZMQ sockets and IPC files
+[2026-08-22 17:59:38.106] Removed IPC file: /tmp/tmp5cllz61k
+[2026-08-22 17:59:38.106] RequestHandler cleanup completed
+[2026-08-22 17:59:38.107] Removed leftover IPC file: request_handler_to_gpu_scheduler_0
+[2026-08-22 17:59:38.107] Removed leftover IPC file: request_handler_to_gpu_scheduler_1
+[2026-08-22 17:59:52.185] Cleaning up RequestHandler ZMQ sockets and IPC files
+[2026-08-22 17:59:52.186] RequestHandler cleanup completed
+[2026-08-22 17:59:52.186] Error during cleanup: sys.meta_path is None, Python is likely shutting down

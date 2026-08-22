@@ -100,6 +100,39 @@ def main():
         "c_i": json.loads(args.ci_file.read_text()),
         "frozen_utc": datetime.now(timezone.utc).isoformat(),
     }
+    # A selection of infinity means "never migrate", which is a claim about the
+    # mechanism rather than a tuning outcome, so it is not frozen unattended.
+    if chosen["tau_label"] == "inf":
+        doc["status"] = "TAU_REQUIRES_HUMAN_APPROVAL"
+        review = args.out.parent / "TAU_REQUIRES_HUMAN_APPROVAL.json"
+        finite = [a for a in agg if a["tau_label"] != "inf"]
+        doc["review"] = {
+            "why_infinity_won": {
+                "infinity_mean_goodput": chosen["mean_joint_slo_goodput"],
+                "best_finite": max(finite, key=lambda a: a["mean_joint_slo_goodput"])
+                if finite else None,
+                "tie_window_relative": 0.03,
+                "tied_candidates": [a["tau_label"] for a in tied],
+            },
+            "did_finite_tau_migrate_at_all": {
+                a["tau_label"]: a["migrations"] for a in finite},
+            "per_seed_consistency": {
+                a["tau_label"]: {
+                    r["seed"]: {"goodput": r["goodput_req_s"],
+                                "joint_slo": r["joint_slo_attainment"],
+                                "migrations": r["migrations_executed"],
+                                "completed": r["completed"],
+                                "aborted": r["aborted"],
+                                "client_errors": r["client_errors"]}
+                    for r in by_tau[a["tau_label"]]}
+                for a in agg},
+        }
+        review.write_text(json.dumps(doc, indent=2) + "\n")
+        print(json.dumps(doc["review"], indent=2)[:1800])
+        print(f"\nTAU_REQUIRES_HUMAN_APPROVAL -- wrote {review}")
+        print("FROZEN_TAU.json was NOT written; the chain stops here.")
+        return 1
+
     args.out.write_text(json.dumps(doc, indent=2) + "\n")
     print(json.dumps({k: doc[k] for k in
                       ("tau", "tau_label", "best_mean_goodput",
@@ -108,4 +141,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

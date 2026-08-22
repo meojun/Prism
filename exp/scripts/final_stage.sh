@@ -25,6 +25,52 @@ if [ -f "$rc_file" ] && [ "$(cat "$rc_file")" = "0" ] \
   exit 0
 fi
 
+ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
+EVAL="$ROOT/exp/results/final-evaluation"
+PY=/workspace/prism-exp/prism-venv/bin/python
+
+# A gate that failed earlier must not be walked past on the next run.
+if [ -f "$EVAL/STOP" ]; then
+  echo "[final_stage] STOP in force: $(cat "$EVAL/STOP")" >&2
+  exit 1
+fi
+
+# The runtime must still be the frozen one, checked before every expensive run.
+frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-8cb8e7a}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
+now_blob=$(git -C "$ROOT" hash-object patches/final_baseline_ready/prism_research_worktree.patch 2>/dev/null)
+if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
+  echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
+  echo "[final_stage] STOP: frozen source hash mismatch" >&2
+  exit 1
+fi
+
+case "$LABEL" in
+  cal-*)
+    # tau calibration may not start until the c_i measurement has been checked.
+    sanity="$EVAL/01-ci-profile/CI_SANITY.json"
+    if [ ! -f "$sanity" ]; then
+      $PY "$SCRIPT_DIR/final_ci_sanity.py"         --profile-dir "$EVAL/01-ci-profile" --out "$sanity"         --previous "$ROOT/exp/configs/v2/prefill_speed.json"         > "$EVAL/01-ci-profile/ci_sanity.log" 2>&1 || true
+    fi
+    if ! grep -q '"verdict": "PASS"' "$sanity" 2>/dev/null; then
+      echo "C_I_SANITY_FAIL: see 01-ci-profile/CI_SANITY.json" > "$EVAL/STOP"
+      echo "[final_stage] STOP: C_I_SANITY_FAIL" >&2
+      exit 1
+    fi
+    ;;
+  finalc-*|proto-*)
+    # Neither arm of the comparison starts until the two are shown to be
+    # running the same workload on the same models.
+    manifest="$EVAL/FAIRNESS_MANIFEST.json"
+    if ! grep -q '"verdict": "PASS"' "$manifest" 2>/dev/null; then
+      if [ ! -f "$EVAL/FAIRNESS_APPROVED" ]; then
+        echo "FAIRNESS_MANIFEST is not PASS and no human approval is on file" > "$EVAL/STOP"
+        echo "[final_stage] STOP: fairness manifest not approved" >&2
+        exit 1
+      fi
+    fi
+    ;;
+esac
+
 echo "[final_stage] RUN $LABEL -> $STAGE_DIR"
 SERVER_TIMEOUT=${SERVER_TIMEOUT:-1200} \
 BENCH_TIMEOUT=${BENCH_TIMEOUT:-1800} \
@@ -71,4 +117,22 @@ except Exception:
 PY
 )
 echo "[final_stage] $LABEL rc=$rc state=$state"
+
+blocker=""
+L="$STAGE_DIR/server-logs"
+grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log" "$L/stdout.log" 2>/dev/null \
+  && blocker="CUDA OOM"
+[ -z "$blocker" ] && grep -qE "NCCL error|ncclUnhandledCudaError|CUDA error:" "$L/server.log" 2>/dev/null \
+  && blocker="fatal CUDA/NCCL"
+[ -z "$blocker" ] && grep -q '"order_ok": false' "$L/server.log.gpu_scheduler.log" 2>/dev/null \
+  && blocker="Algorithm 2 ordering violation"
+[ -z "$blocker" ] && [ -f "$STAGE_DIR/monitor/FAIL" ] \
+  && grep -q "no actual progress" "$STAGE_DIR/monitor/FAIL" 2>/dev/null \
+  && blocker="no-progress / deadlock"
+if [ -n "$blocker" ]; then
+  echo "$blocker in $LABEL ($STAGE_DIR)" > "$EVAL/STOP"
+  echo "[final_stage] STOP: $blocker" >&2
+  exit 1
+fi
+
 [ "$rc" = "0" ] && [ "$state" = "COMPLETE" ]
