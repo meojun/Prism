@@ -37,7 +37,13 @@ def main():
 
     git_sha = sh(["git", "-C", str(ROOT), "rev-parse", "HEAD"])
     git_short = sh(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"])
-    dirty = sh(["git", "-C", str(ROOT), "status", "--porcelain"])
+    # The chain writes its own results and workloads as it runs, so those
+    # paths are excluded: what must be clean is the code and configuration the
+    # evaluation is running.
+    ignore = ("exp/results/final-evaluation", "exp/workloads/final-evaluation")
+    dirty = "\n".join(
+        line for line in sh(["git", "-C", str(ROOT), "status", "--porcelain"]).splitlines()
+        if not any(part in line for part in ignore))
     src = ROOT / "prism-research"
     src_sha = sh(["git", "-C", str(src), "rev-parse", "HEAD"])
     src_dirty = sh(["git", "-C", str(src), "status", "--porcelain"])
@@ -119,6 +125,7 @@ def main():
             "git_sha_short": git_short,
             "git_clean": dirty == "",
             "git_dirty_files": dirty.splitlines(),
+            "clean_check_excludes": list(ignore),
             "source_repo_sha": src_sha,
             "source_repo_dirty_files": len(src_dirty.splitlines()),
             "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
