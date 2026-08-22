@@ -109,6 +109,8 @@ def make_gpu_scheduler():
     scheduler._mh_runtime_gate = True
     scheduler._mh_gate_lock = Lock()
     scheduler._mh_outstanding_prefills = {}
+    scheduler._mh_retired_admit_seqs = set()
+    scheduler._mh_retired_start_seqs = set()
     scheduler._mh_dispatch_seq = 0
     scheduler._mh_next_backend_admit_seq = 1
     scheduler._mh_next_prefill_start_seq = 1
