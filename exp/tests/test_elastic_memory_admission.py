@@ -1,24 +1,19 @@
 #!/usr/bin/env python3
-"""Elastic KV admission must be bounded by physical GPU memory.
+"""Elastic KV admission: pool-local for v0, physically bounded for non-v0.
 
-With `--enable-elastic-memory --use-kvcached-v0` the KV pool's own
-`available_size()` is a *virtual* number: kvcached maps the pages behind those
-blocks on demand. The v0 branch returned it unchecked, so the scheduler kept
-admitting tokens while the pools grew into the whole device, and the attention
-backend's per-batch workspace -- allocated outside the pool -- had nowhere left
-to go:
+The v0 path was clamped to device-wide free memory for a while (ad8a76c,
+824caa7) to stop the pools taking memory an incoming activation needed. That
+protection now sits where it belongs -- the planner refuses a target without
+weights plus the engine's reserve, and `load_gpu_model` waits for the same
+thing immediately before the allocation that used to fail -- so the clamp is
+gone and v0 reports what its own allocator has.
 
-    RuntimeError: Failed to allocate memory for batch_prefill_tmp_v
-    with size 455999488 and alignment 16 in AlignedAllocator
+Its cost had been measured: `_physical_free_size` is device-wide, so one GPU
+tightening made every pool on it report as nearly full and cut every
+PrefillAdder budget at once. In the ownership trace model_2 reported 360,847
+tokens used while its live requests held 400, with 573,041 still available.
 
-That killed two D2 runs on 2026-08-22, the second on a GPU that was not
-migrating anything, which is what rules migration out as the cause.
-
-The non-v0 elastic branch already bounded admission by physical free memory.
-This test pins that both branches now do, that the v0 branch keeps back the
-reserve the engine already requires before it will bring a KV cache up
-(`_init_kv_cache(self.min_reserve_mem)`), and that the check stays rate-limited
-because it sits on the admission path.
+The non-v0 elastic path keeps the bound it has always had.
 """
 
 import sys
@@ -68,21 +63,17 @@ def pool(virtual_blocks, physical_blocks, *, v0=True, elastic=True,
     return obj
 
 
-def test_v0_is_bounded_by_physical_memory():
+def test_v0_is_pool_local():
     print("kvcached v0 admission")
     p = pool(virtual_blocks=1_000_000, physical_blocks=1_200)
-    size = p.available_size()
-    check("the physical limit binds when it is the smaller of the two",
-          size == 1_200)
-    check("the physical check actually ran", p.calls)
-    check("it keeps back the same 0.5 GB the non-v0 path always has",
-          p.calls and p.calls[0] == 0.5)
+    check("v0 reports what its own allocator has",
+          p.available_size() == 1_000_000)
+    check("and does not consult device-wide free memory", not p.calls)
 
-    # A nearly full device must stop admission rather than report the
-    # allocator's virtual capacity.
-    full = pool(virtual_blocks=1_000_000, physical_blocks=0)
-    check("a device with no physical headroom admits nothing",
-          full.available_size() == 0)
+    # The shape that stalled D3 run 7: the device is full, this pool is not.
+    tight = pool(virtual_blocks=573_041, physical_blocks=0)
+    check("a pool with room is not zeroed by a full device",
+          tight.available_size() == 573_041)
 
 
 def test_the_allocator_still_binds_when_it_is_smaller():
@@ -90,6 +81,8 @@ def test_the_allocator_still_binds_when_it_is_smaller():
     p = pool(virtual_blocks=64, physical_blocks=1_000_000)
     check("a small pool is not inflated by free device memory",
           p.available_size() == 64)
+    p = pool(virtual_blocks=64, physical_blocks=1_000_000, v0=False)
+    check("nor on the non-v0 path", p.available_size() == 64)
 
 
 def test_non_v0_elastic_is_unchanged():
@@ -100,8 +93,8 @@ def test_non_v0_elastic_is_unchanged():
 
 
 def test_the_check_is_rate_limited():
-    print("cost on the admission path")
-    p = pool(virtual_blocks=1_000_000, physical_blocks=1_200)
+    print("cost on the admission path, non-v0")
+    p = pool(virtual_blocks=1_000_000, physical_blocks=1_200, v0=False)
     for _ in range(200):
         p.available_size()
     check("200 admission checks do not mean 200 CUDA memory queries",
@@ -148,7 +141,7 @@ def test_non_elastic_is_untouched():
 
 
 def main():
-    test_v0_is_bounded_by_physical_memory()
+    test_v0_is_pool_local()
     test_the_allocator_still_binds_when_it_is_smaller()
     test_non_v0_elastic_is_unchanged()
     test_the_check_is_rate_limited()

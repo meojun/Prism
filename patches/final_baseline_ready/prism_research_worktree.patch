@@ -6485,10 +6485,10 @@ index 3cf0db7..5f2575b 100644
      def update_weights(self, recv_req: UpdateWeightReqInput):
          """In-place update of the weights."""
 diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
-index 31ec604..e521261 100644
+index 31ec604..4724111 100644
 --- a/python/sglang/srt/mem_cache/memory_pool.py
 +++ b/python/sglang/srt/mem_cache/memory_pool.py
-@@ -398,25 +398,42 @@ class MHATokenToKVPool(BaseTokenToKVPool):
+@@ -398,25 +398,67 @@ class MHATokenToKVPool(BaseTokenToKVPool):
          avail_phy_blocks = (avail_phy_pages // self.layer_num // 2) * (
              PAGE_SIZE // self.kv_allocator.block_mem_size
          )
@@ -6511,8 +6511,31 @@ index 31ec604..e521261 100644
  
      def available_size(self):
          if self.enable_elastic_memory:
--            if self.use_kvcached_v0:
--                return self.kv_allocator.available_size()
+             if self.use_kvcached_v0:
++                # Pool-local, as it was before the clamp of ad8a76c/824caa7.
++                #
++                # That clamp existed to stop the pools taking memory an
++                # incoming activation needed: D2 run 4's
++                # create_empty_gpu_model_from_cpu_model died with 185 MiB free
++                # three seconds after the planner had cleared it. At that
++                # moment the engine's own guard was dead logic --
++                # `model_gpu_mem_usage` was 0 until 70ad7b8, which came after --
++                # so the allocation site had nothing in front of it. It does
++                # now: `load_gpu_model` waits for weights + min_reserve_mem
++                # immediately before that same allocation, and the planner
++                # refuses a target without them on both its branches. Across
++                # the nine runs since, zero activation OOMs; the guard engages
++                # when the planner misses (run 5's 1,765 waits) and is not
++                # needed when it does not (runs 6, 7: none).
++                #
++                # The cost of keeping it is measured: `_physical_free_size` is
++                # device-wide, so one GPU tightening makes EVERY pool on it
++                # report as nearly full and cuts every PrefillAdder budget at
++                # once, however empty that pool is. In the ownership trace
++                # model_2 reported 360,847 tokens used while its live requests
++                # held 400, with 573,041 still available, and four independent
++                # pools lost availability together inside one 0.84 s step.
+                 return self.kv_allocator.available_size()
 -
 -            if self.last_available_size is None:
 -                free_size = self._physical_free_size(0.5)
