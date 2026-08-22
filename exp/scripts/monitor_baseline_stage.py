@@ -42,6 +42,7 @@ def main():
     phase = None
     phase_start = last_progress = time.time()
     last_count = -1
+    last_log_mtime = 0.0
     inner_missing_since = None
 
     def fail(reason, status):
@@ -95,13 +96,23 @@ def main():
             phase = new_phase
             phase_start = last_progress = now
             last_count = -1
-        if count > last_count:
-            last_count = count
-            last_progress = now
+            last_log_mtime = 0.0
         try:
             log_mtime = log_path.stat().st_mtime
         except OSError:
             log_mtime = None
+        # Progress is the counter advancing OR the log still being written to.
+        # The counter alone is not enough: it counts served responses, and a
+        # stage that has finished serving still has to drain, aggregate and
+        # write its scheduler proof. D2 run 7 finished its benchmark and wrote
+        # its result, and was killed anyway because no new response had been
+        # served for 180 s. Both signals are real progress; requiring both to
+        # stall is what "no actual progress" should mean.
+        if count > last_count or (
+                log_mtime is not None and log_mtime > last_log_mtime):
+            last_count = max(count, last_count)
+            last_log_mtime = log_mtime if log_mtime is not None else last_log_mtime
+            last_progress = now
 
         ps = shell(["ps", "-eo", "pid=,args="])
         pids = [
