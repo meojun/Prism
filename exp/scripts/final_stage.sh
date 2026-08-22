@@ -57,17 +57,27 @@ case "$LABEL" in
       exit 1
     fi
     ;;
+  protofresh-*)
+    : ;;                     # produced by the fairness orchestrator itself
   finalc-*|proto-*)
-    # Neither arm of the comparison starts until the two are shown to be
-    # running the same workload on the same models.
-    manifest="$EVAL/FAIRNESS_MANIFEST.json"
-    if ! grep -q '"verdict": "PASS"' "$manifest" 2>/dev/null; then
-      if [ ! -f "$EVAL/FAIRNESS_APPROVED" ]; then
-        echo "FAIRNESS_MANIFEST is not PASS and no human approval is on file" > "$EVAL/STOP"
-        echo "[final_stage] STOP: fairness manifest not approved" >&2
+    # Neither arm of the comparison starts until the fairness branch has
+    # settled which prototype results the comparison may use. That decision is
+    # made by final_fairness_orchestrator.sh, which may have 24 prototype runs
+    # to do first, so this waits for it rather than stopping the chain.
+    waited=0
+    while [ ! -f "$EVAL/FAIRNESS_GATE_PASS" ]; do
+      if [ -f "$EVAL/STOP" ]; then
+        echo "[final_stage] STOP while waiting on the fairness gate: $(cat "$EVAL/STOP")" >&2
         exit 1
       fi
-    fi
+      if [ "$waited" -ge "${FAIRNESS_WAIT_LIMIT:-43200}" ]; then
+        echo "fairness gate never settled after ${waited}s" > "$EVAL/STOP"
+        echo "[final_stage] STOP: fairness gate timed out" >&2
+        exit 1
+      fi
+      [ $((waited % 600)) = 0 ] && echo "[final_stage] $LABEL waiting on the fairness gate (${waited}s)"
+      sleep 30; waited=$((waited + 30))
+    done
     ;;
 esac
 

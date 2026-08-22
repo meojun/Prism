@@ -3,3 +3,4 @@
 [2026-08-22T17:55:19Z] stage 00-preflight -> PASS 
 [2026-08-22T17:59:53Z] stage 01-ci-profile -> FAIL (c_i profiling did not produce all six models)
 [2026-08-22T17:59:53Z] CHAIN STOPPED at 01-ci-profile
+[2026-08-22T18:11:11Z] skip 00-preflight

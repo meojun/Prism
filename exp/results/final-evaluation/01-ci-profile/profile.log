@@ -1,41 +1,1 @@
-[c_i] model_6: server never became ready
-Initializing torch distributed...
-Torch distributed initialized.
-Loading 1 shared models to cpu...
-INFO 08-22 17:55:29 weight_utils.py:243] Using model weights format ['*.safetensors']
-Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
-Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:02<00:06,  2.23s/it]
-Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:04<00:04,  2.48s/it]
-Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:07<00:02,  2.42s/it]
-Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:09<00:00,  2.45s/it]
-Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:09<00:00,  2.43s/it]
-
-Shared models loaded in 26.74 seconds.
-Preparing engine for model_6 (Qwen/Qwen2.5-7B-Instruct) on GPU [0] with initialize status on=True
-/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
-  from pkg_resources import resource_string
-INFO 08-22 17:56:04 weight_utils.py:243] Using model weights format ['*.safetensors']
-Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
-/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
-  from pkg_resources import resource_string
-Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:02<00:07,  2.34s/it]
-Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:05<00:05,  2.65s/it]
-Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:07<00:02,  2.55s/it]
-Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:10<00:00,  2.52s/it]
-Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:10<00:00,  2.53s/it]
-
-Init PageAllocator: total_mem_size=708MB, page_size=2MB, shm: ipc_0_model_6_root
-Started page preallocation thread
-[2026-08-22 17:56:53] INFO:     Started server process [607266]
-[2026-08-22 17:56:53] INFO:     Waiting for application startup.
-[2026-08-22 17:56:53] INFO:     Application startup complete.
-[2026-08-22 17:56:53] ERROR:    [Errno 98] error while attempting to bind on address ('127.0.0.1', 35402): address already in use
-[2026-08-22 17:56:53] INFO:     Waiting for application shutdown.
-[2026-08-22 17:56:53] INFO:     Application shutdown complete.
-[rank0]:W0822 17:59:38.132000 140279222273728 torch/_inductor/compile_worker/subproc_pool.py:126] SubprocPool unclean exit
-/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/multiprocessing/resource_tracker.py:104: UserWarning: resource_tracker: process died unexpectedly, relaunching.  Some resources might leak.
-  warnings.warn('resource_tracker: process died unexpectedly, '
-Traceback (most recent call last):
-  File "/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/multiprocessing/resource_tracker.py", line 209, in main
-    cache[rtype].remove(name)
-KeyError: '/mp-ir40qzi_'
+[c_i] model_1 already profiled

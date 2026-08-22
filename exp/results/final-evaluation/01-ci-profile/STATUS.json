@@ -1,9 +1,9 @@
 {
   "stage": "01-ci-profile",
-  "result": "FAIL",
+  "result": "RUNNING",
   "git_sha": "8cb8e7a",
-  "started_at": "2026-08-22T17:55:19.777535+00:00",
-  "finished_at": "2026-08-22T17:59:53.808947+00:00",
-  "reason": "c_i profiling did not produce all six models",
+  "started_at": "2026-08-22T18:11:12.023664+00:00",
+  "finished_at": null,
+  "reason": null,
   "artifacts": []
 }
