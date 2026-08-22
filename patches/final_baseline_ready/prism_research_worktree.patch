@@ -4994,7 +4994,7 @@ index 4a8f82c..76a5610 100644
  }
 \ No newline at end of file
 diff --git a/python/sglang/srt/managers/io_struct.py b/python/sglang/srt/managers/io_struct.py
-index 48bf592..fcc82d1 100644
+index 48bf592..4ff1a74 100644
 --- a/python/sglang/srt/managers/io_struct.py
 +++ b/python/sglang/srt/managers/io_struct.py
 @@ -62,6 +62,19 @@ class GenerateReqInput:
@@ -5049,7 +5049,7 @@ index 48bf592..fcc82d1 100644
  
  
  @dataclass
-@@ -495,6 +515,110 @@ class BatchRunReq:
+@@ -495,6 +515,116 @@ class BatchRunReq:
      model: str
      run_time: float
      gpu_id: Optional[int] = None
@@ -5131,13 +5131,18 @@ index 48bf592..fcc82d1 100644
 +
 +@dataclass
 +class AdoptResumedReq:
-+    """Ask this GPU's Algorithm 2 to schedule a request rebuilt from migrated KV.
++    """Ask this GPU's Algorithm 2 to schedule a request that re-enters prefill.
 +
-+    The target does not hand out a sequence on receipt: the request is put into
-+    the same queue as everything else, keeping its original arrival time and
-+    SLO, and takes its sequence when Algorithm 2 selects it. `prefill_tokens`
-+    is the prefill this GPU will actually do -- the resume extend length, since
-+    the rest of the prompt is already in the KV that was migrated here.
++    Two things reach prefill without having been dispatched: a request rebuilt
++    from migrated KV, and one that decode retraction returned to the waiting
++    queue. Both must be ordered and accounted like any other request.
++
++    No sequence is handed out on receipt: the request goes into the same queue
++    as everything else, keeping its original arrival time and SLO, and takes a
++    sequence when Algorithm 2 selects it. `prefill_tokens` is the prefill this
++    GPU will actually do -- for a resume, the extend length left after the
++    migrated KV; for a retraction, everything again, prompt and generated
++    tokens both, since retract_decode frees the KV and clears the prefix.
 +    """
 +
 +    rids: List[str]
@@ -5147,6 +5152,7 @@ index 48bf592..fcc82d1 100644
 +    arrival_times: List[float]
 +    slos: List[Optional[float]]
 +    request_time: float
++    reason: str = "kv-migration-resume"
 +
 +
 +@dataclass
@@ -5187,7 +5193,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..d0198a2 100644
+index 3cf0db7..ee3453a 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5396,7 +5402,19 @@ index 3cf0db7..d0198a2 100644
              return new_batch
  
          # Check memory
-@@ -1201,6 +1317,15 @@ class Scheduler:
+@@ -1156,7 +1272,10 @@ class Scheduler:
+                 f"#retracted_reqs: {len(retracted_reqs)}, "
+                 f"#new_token_ratio: {old_ratio:.4f} -> {self.new_token_ratio:.4f}"
+             )
+-            self.waiting_queue.extend(retracted_reqs)
++            # Retraction is a re-entry into prefill, not a continuation: the
++            # KV is freed and the prefix cleared, so this request has to be
++            # ordered and accounted by Algorithm 2 again like anything else.
++            self._alg2_hold_for_reentry(retracted_reqs, "decode-retraction")
+         else:
+             self.new_token_ratio = max(
+                 self.new_token_ratio - self.new_token_ratio_decay,
+@@ -1201,6 +1320,15 @@ class Scheduler:
  
      def process_batch_result(self, batch: ScheduleBatch, result):
          if batch.forward_mode.is_decode():
@@ -5412,7 +5430,7 @@ index 3cf0db7..d0198a2 100644
              self.process_batch_result_decode(batch, result)
              if batch.is_empty():
                  self.running_batch = None
-@@ -1208,6 +1333,7 @@ class Scheduler:
+@@ -1208,6 +1336,7 @@ class Scheduler:
              self.process_batch_result_prefill(batch, result)
  
      def process_batch_result_prefill(self, batch: ScheduleBatch, result):
@@ -5420,7 +5438,7 @@ index 3cf0db7..d0198a2 100644
          if self.is_generation:
              logits_output, next_token_ids, bid = result
  
-@@ -1241,6 +1367,7 @@ class Scheduler:
+@@ -1241,6 +1370,7 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5428,7 +5446,7 @@ index 3cf0db7..d0198a2 100644
                      req.completion_tokens_wo_jump_forward += 1
                      req.output_ids.append(next_token_ids[i])
                      req.check_finished()
-@@ -1278,16 +1405,37 @@ class Scheduler:
+@@ -1278,16 +1408,37 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5467,7 +5485,7 @@ index 3cf0db7..d0198a2 100644
          self.stream_output(batch.reqs)
  
      def process_batch_result_decode(self, batch: ScheduleBatch, result):
-@@ -1472,6 +1620,8 @@ class Scheduler:
+@@ -1472,6 +1623,8 @@ class Scheduler:
                              else None
                          ),
                          "arrival_timestamp": req.arrival_time,
@@ -5476,7 +5494,7 @@ index 3cf0db7..d0198a2 100644
                          "out_queue_timestamp": req.out_queue_timestamp,
                          "prefill_finish_timestamp": req.prefill_finish_timestamp,
                          "finish_timestamp": req.finish_timestamp,
-@@ -1596,9 +1746,49 @@ class Scheduler:
+@@ -1596,9 +1749,49 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -5509,7 +5527,8 @@ index 3cf0db7..d0198a2 100644
 +            else:
 +                logger.error("[PAPER-OVERLAP-V6] commit without matching prepare "
 +                             f"model={recv_req.model_name}")
-+            if self.tp_rank == 0:
+             if self.tp_rank == 0:
+-                logger.warning("Scheduler is already activated")
 +                activate_req_output = ActivateReqOutput(
 +                    rid=recv_req.rid, gpu_id=gpu_id,
 +                    model_name=recv_req.model_name,
@@ -5522,13 +5541,12 @@ index 3cf0db7..d0198a2 100644
 +            return
 +
 +        if self._activated or self._v6_prepared_model is not None:
-             if self.tp_rank == 0:
--                logger.warning("Scheduler is already activated")
++            if self.tp_rank == 0:
 +                logger.warning("Scheduler is already activated or prepared")
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
                      gpu_id=gpu_id,
-@@ -1606,6 +1796,7 @@ class Scheduler:
+@@ -1606,6 +1799,7 @@ class Scheduler:
                      instance_idx=recv_req.instance_idx,
                      success=False,
                      memory_usage=self.get_memory_usage(),
@@ -5536,7 +5554,7 @@ index 3cf0db7..d0198a2 100644
                  )
                  self.send_to_detokenizer.send_pyobj(
                      activate_req_output
-@@ -1619,6 +1810,26 @@ class Scheduler:
+@@ -1619,6 +1813,26 @@ class Scheduler:
          assert self.last_batch is None, "Last batch should be None"
          assert self.running_batch is None, "Running batch should be None"
  
@@ -5563,7 +5581,7 @@ index 3cf0db7..d0198a2 100644
          start_time = time.perf_counter()
  
          self.tp_worker.activate_model_runner(
-@@ -1651,16 +1862,22 @@ class Scheduler:
+@@ -1651,16 +1865,22 @@ class Scheduler:
          self.update_memory_pool()
          logger.info("Memory pool updated")
          # restore waiting queue
@@ -5592,7 +5610,7 @@ index 3cf0db7..d0198a2 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1674,6 +1891,7 @@ class Scheduler:
+@@ -1674,6 +1894,7 @@ class Scheduler:
                  instance_idx=recv_req.instance_idx,
                  success=True,
                  memory_usage=memory_usage,
@@ -5600,7 +5618,7 @@ index 3cf0db7..d0198a2 100644
              )
              self.send_to_detokenizer.send_pyobj(activate_req_output)
  
-@@ -1690,8 +1908,15 @@ class Scheduler:
+@@ -1690,8 +1911,15 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -5617,7 +5635,7 @@ index 3cf0db7..d0198a2 100644
              logger.info(f"Scheduler receives the deactivate requests with rid: {recv_req.rid}")
          else:
              if self.tp_rank == 0:
-@@ -1715,6 +1940,7 @@ class Scheduler:
+@@ -1715,6 +1943,7 @@ class Scheduler:
              return
  
          start_time = time.perf_counter()
@@ -5625,7 +5643,7 @@ index 3cf0db7..d0198a2 100644
          logger.info(
              f"In handle deactivate request, waiting queue size: {len(self.waiting_queue)}. Running batch size: {0 if self.running_batch is None else len(self.running_batch.reqs)}, last batch size: {0 if self.last_batch is None else len(self.last_batch.reqs)}"
          )
-@@ -1748,12 +1974,49 @@ class Scheduler:
+@@ -1748,12 +1977,49 @@ class Scheduler:
                      f"Preempt mode {preempt_mode} is not supported"
                  )
          t1 = time.perf_counter()
@@ -5675,7 +5693,7 @@ index 3cf0db7..d0198a2 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1816,6 +2079,8 @@ class Scheduler:
+@@ -1816,6 +2082,8 @@ class Scheduler:
              lora_path=req.lora_path,
              arrival_time=req.arrival_time,
              slo=req.slo,
@@ -5684,7 +5702,7 @@ index 3cf0db7..d0198a2 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2088,89 @@ class Scheduler:
+@@ -1823,8 +2091,89 @@ class Scheduler:
          )
          return generate_req
  
@@ -5774,7 +5792,7 @@ index 3cf0db7..d0198a2 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2183,258 @@ class Scheduler:
+@@ -1837,7 +2186,292 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -5857,14 +5875,11 @@ index 3cf0db7..d0198a2 100644
 +                            ("regex", req.sampling_params.regex))
 +                    if not self.disable_regex_jump_forward:
 +                        req.jump_forward_map = self.jump_forward_cache.query(regex)
-+                if self._alg2_runtime_gate:
-+                    # Held until the target's Algorithm 2 schedules it. Putting
-+                    # it in the waiting queue here would let a batch pick up a
-+                    # request this GPU never ordered or accounted for -- which
-+                    # is what made the D3 completion gate fail closed.
-+                    self._alg2_pending_adoption[req.rid] = req
-+                else:
-+                    self.waiting_queue.append(req)
++                # Held until the target's Algorithm 2 schedules it. Putting it
++                # in the waiting queue here would let a batch pick up a request
++                # this GPU never ordered or accounted for -- which is what made
++                # the D3 completion gate fail closed.
++                self._alg2_hold_for_reentry([req], "kv-migration-resume")
 +                return req
 +
 +            for cap in moved:
@@ -5908,7 +5923,6 @@ index 3cf0db7..d0198a2 100644
 +                    rebuild_failures += 1
 +                    logger.warning(
 +                        f"[PAPER-KV-V6] rebuild failed for {cap.rid}: {e}")
-+            self._alg2_request_adoption()
 +            logger.info("[PAPER-KV-V6] " + _json.dumps(dict(
 +                rec, event="inject", requests_injected=injected,
 +                requests_recomputed=recomputed,
@@ -5917,7 +5931,42 @@ index 3cf0db7..d0198a2 100644
 +        except Exception as e:
 +            logger.warning(f"[PAPER-KV-V6] inject stage failed: {e}")
 +
-+    def _alg2_request_adoption(self):
++    @staticmethod
++    def _alg2_reprefill_tokens(req):
++        """The tokens this GPU has to prefill for a request re-entering prefill.
++
++        SGLang's own extend length: everything the request holds, less whatever
++        prefix is already resident. It gives the right answer for both
++        re-entries without a special case. A request resumed from migrated KV
++        keeps that KV as its prefix, so this is the 1 token it still owes. A
++        retracted request had its KV freed and its prefix cleared by
++        `retract_decode`, so this is the prompt *and* everything generated so
++        far -- re-prefill costs more than the original prompt, not less, and
++        charging the original prompt would understate it.
++        """
++        held = len(getattr(req, "origin_input_ids", []) or []) + \
++            len(getattr(req, "output_ids", []) or [])
++        resident = len(getattr(req, "prefix_indices", []) or [])
++        return max(0, held - resident)
++
++    def _alg2_hold_for_reentry(self, reqs, reason):
++        """Hold requests out of the waiting queue until Algorithm 2 orders them.
++
++        Their previous sequence is dropped here: it belonged to a prefill that
++        already completed, and reusing it would put two different pieces of
++        work under one place in the order.
++        """
++        if not self._alg2_runtime_gate:
++            self.waiting_queue.extend(reqs)
++            return
++        for req in reqs:
++            req.alg2_seq = None
++            req.alg2_backend_admitted = False
++            req.alg2_started = False
++            self._alg2_pending_adoption[req.rid] = req
++        self._alg2_request_adoption(reason=reason)
++
++    def _alg2_request_adoption(self, reason="kv-migration-resume"):
 +        """Hand every held resumed request to this GPU's Algorithm 2.
 +
 +        It carries the request's original arrival time and SLO, so the target
@@ -5941,8 +5990,7 @@ index 3cf0db7..d0198a2 100644
 +                model=self.model_name,
 +                gpu_id=self.gpu_id,
 +                prefill_tokens=[
-+                    int(getattr(req, "extend_input_len", 0) or 0)
-+                    for _, req in pending
++                    self._alg2_reprefill_tokens(req) for _, req in pending
 +                ],
 +                arrival_times=[
 +                    float(getattr(req, "arrival_time", 0.0) or 0.0)
@@ -5950,11 +5998,15 @@ index 3cf0db7..d0198a2 100644
 +                ],
 +                slos=[getattr(req, "slo", None) for _, req in pending],
 +                request_time=time.time(),
++                reason=reason,
 +            ),
 +        )
 +        logger.info("[PAPER-ALG2-HANDOFF] " + json.dumps({
 +            "event": "adoption_requested", "gpu_id": self.gpu_id,
-+            "model": self.model_name, "rids": [rid for rid, _ in pending],
++            "model": self.model_name, "reason": reason,
++            "rids": [rid for rid, _ in pending],
++            "prefill_tokens": [self._alg2_reprefill_tokens(req)
++                               for _, req in pending],
 +        }, sort_keys=True))
 +
 +    def _alg2_report_migrated_away(self, rids, reason):
@@ -6033,7 +6085,7 @@ index 3cf0db7..d0198a2 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1898,6 +2495,99 @@ class Scheduler:
+@@ -1898,6 +2532,99 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6133,7 +6185,7 @@ index 3cf0db7..d0198a2 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2616,7 @@ class Scheduler:
+@@ -1926,6 +2653,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:

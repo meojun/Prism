@@ -399,16 +399,23 @@ def make_engine(model="model1", gpu_id=1):
 
 
 class HeldReq:
-    """Stands in for the Req rebuilt from a migrated capsule."""
+    """Stands in for the Req rebuilt from a migrated capsule.
 
-    def __init__(self, rid, arrival_time, slo, extend_input_len=1):
+    Shaped like `build_resumed_request` leaves one: the migrated KV is the
+    prefix, and the request owes the single token it has not computed yet.
+    """
+
+    def __init__(self, rid, arrival_time, slo, prompt=6, generated=3):
         self.rid = rid
         self.arrival_time = arrival_time
         self.slo = slo
-        self.extend_input_len = extend_input_len
-        self.prefix_indices = list(range(8))
+        self.origin_input_ids = [1] * prompt
+        self.output_ids = [2] * generated
+        self.prefix_indices = list(range(prompt + generated - 1))
+        self.extend_input_len = 1
         self.alg2_seq = None
         self.alg2_backend_admitted = False
+        self.alg2_started = False
 
 
 def test_engine_holds_then_promotes_the_request_it_rebuilt():
@@ -543,6 +550,148 @@ def test_the_drained_sequence_lets_the_frontier_move_on():
           not gpu._mh_outstanding_prefills)
 
 
+class RetractedReq:
+    """A request decode retraction has just returned to the waiting queue.
+
+    `retract_decode` frees its KV and clears the prefix, so what it owes on
+    re-entry is the prompt *and* everything it has generated so far.
+    """
+
+    def __init__(self, rid, prompt=100, generated=40, arrival_time=1000.0,
+                 slo=5.0, seq=None):
+        self.rid = rid
+        self.origin_input_ids = [1] * prompt
+        self.output_ids = [2] * generated
+        self.prefix_indices = []          # cleared by retract_decode
+        self.extend_input_len = 0         # cleared by retract_decode
+        self.arrival_time = arrival_time
+        self.slo = slo
+        self.alg2_seq = seq               # the sequence of its finished prefill
+        self.alg2_backend_admitted = True
+        self.alg2_started = True
+
+
+def test_reprefill_cost_is_the_work_actually_left():
+    print("p_i for a re-entering request")
+    from sglang.srt.managers.scheduler import Scheduler
+    cost = Scheduler._alg2_reprefill_tokens
+
+    retracted = RetractedReq("X", prompt=100, generated=40)
+    check("a retracted request owes prompt + generated, not the prompt alone",
+          cost(retracted) == 140)
+
+    # A request resumed from migrated KV keeps that KV as its prefix and owes
+    # the one token it has not computed yet.
+    resumed = RetractedReq("Y", prompt=434, generated=174)
+    resumed.prefix_indices = list(range(434 + 174 - 1))
+    check("a resumed request owes only the extend token", cost(resumed) == 1)
+
+    # A request rebuilt without its KV recomputes everything.
+    recomputed = RetractedReq("Z", prompt=200, generated=60)
+    check("a recomputed request owes all of it", cost(recomputed) == 260)
+
+    empty = RetractedReq("W", prompt=0, generated=0)
+    check("nothing owed is zero, not negative", cost(empty) == 0)
+
+
+def test_retraction_re_enters_through_algorithm_2():
+    print("decode retraction as a re-entry")
+    engine = make_engine(model="model_4", gpu_id=0)
+    finished = RetractedReq("model_4#43", prompt=434, generated=174, seq=878)
+
+    engine._alg2_hold_for_reentry([finished], "decode-retraction")
+
+    check("it is not runnable yet", not engine.waiting_queue)
+    check("it is held for scheduling",
+          list(engine._alg2_pending_adoption) == ["model_4#43"])
+    check("its completed sequence is dropped, not reused",
+          finished.alg2_seq is None)
+    check("and its admission state is cleared with it",
+          finished.alg2_backend_admitted is False
+          and finished.alg2_started is False)
+
+    asked = [obj for _key, obj in engine.redis_client.sent
+             if isinstance(obj, AdoptResumedReq)]
+    check("Algorithm 2 is asked to schedule it",
+          len(asked) == 1 and asked[0].rids == ["model_4#43"])
+    check("under its own reason", asked[0].reason == "decode-retraction")
+    check("with the original arrival time and SLO",
+          asked[0].arrival_times == [1000.0] and asked[0].slos == [5.0])
+    check("and the whole re-prefill as its cost",
+          asked[0].prefill_tokens == [434 + 174])
+
+
+def test_the_traced_failure_end_to_end():
+    """model_4#43 of D3 run 3: dispatch, complete, decode, retract, re-enter."""
+    print("the traced retraction, end to end")
+    gpu = make_scheduler(models=("model_4",))
+    rid = "model_4#43"
+
+    seq_first = dispatch(gpu, rid, "model_4")
+    admit_and_start(gpu, rid, "model_4", seq_first)
+    gpu._handle_mh_prefill_complete(PrefillCompleteReq(
+        rids=[rid], model="model_4", complete_time=0.0, gpu_id=1))
+    check("the first prefill retires cleanly",
+          not gpu._mh_outstanding_prefills)
+
+    # ... decode ... then retraction returns it for a second prefill.
+    gpu._handle_mh_adopt_resumed(AdoptResumedReq(
+        rids=[rid], model="model_4", gpu_id=1, prefill_tokens=[608],
+        arrival_times=[1000.0], slos=[5.0], request_time=0.0,
+        reason="decode-retraction"))
+    check("re-entry queues it rather than issuing a sequence",
+          gpu._mh_dispatch_seq == seq_first
+          and rid not in gpu._mh_outstanding_prefills)
+
+    seq_second = dispatch(gpu, rid, "model_4")
+    check("its second prefill gets a new sequence", seq_second == seq_first + 1)
+    admit_and_start(gpu, rid, "model_4", seq_second)
+    gpu._handle_mh_prefill_complete(PrefillCompleteReq(
+        rids=[rid], model="model_4", complete_time=0.0, gpu_id=1))
+    check("and completes through the same gate, ledger clean",
+          not gpu._mh_outstanding_prefills)
+
+
+def test_repeated_retraction_does_not_duplicate_the_ledger():
+    print("a request retracted more than once")
+    gpu = make_scheduler(models=("model_4",))
+    rid = "model_4#43"
+    seqs = []
+    for round_index in range(3):
+        gpu._handle_mh_adopt_resumed(AdoptResumedReq(
+            rids=[rid], model="model_4", gpu_id=1, prefill_tokens=[100 + round_index],
+            arrival_times=[1000.0], slos=[5.0], request_time=0.0,
+            reason="decode-retraction"))
+        queued = [w.req.rid for w in gpu.queue._queue]
+        check(f"round {round_index}: queued once, not {len(queued)} times",
+              queued.count(rid) == 1)
+        seq = dispatch(gpu, rid, "model_4")
+        seqs.append(seq)
+        check(f"round {round_index}: exactly one ledger entry",
+              len(gpu._mh_outstanding_prefills) == 1)
+        gpu.queue.remove_requests_by_rid([rid])
+        admit_and_start(gpu, rid, "model_4", seq)
+        gpu._handle_mh_prefill_complete(PrefillCompleteReq(
+            rids=[rid], model="model_4", complete_time=0.0, gpu_id=1))
+        check(f"round {round_index}: retired again",
+              not gpu._mh_outstanding_prefills)
+    check("every round took a fresh sequence", seqs == [1, 2, 3])
+
+    # And a duplicate re-entry request for one already in the ledger must not
+    # create a second entry.
+    gpu._handle_mh_adopt_resumed(AdoptResumedReq(
+        rids=[rid], model="model_4", gpu_id=1, prefill_tokens=[100],
+        arrival_times=[1000.0], slos=[5.0], request_time=0.0,
+        reason="decode-retraction"))
+    seq = dispatch(gpu, rid, "model_4")
+    gpu._handle_mh_adopt_resumed(AdoptResumedReq(
+        rids=[rid], model="model_4", gpu_id=1, prefill_tokens=[100],
+        arrival_times=[1000.0], slos=[5.0], request_time=0.0,
+        reason="decode-retraction"))
+    check("a repeat re-entry while already outstanding adds no second entry",
+          len(gpu._mh_outstanding_prefills) == 1)
+
+
 def main():
     test_h1_source_retires_and_repairs()
     test_h1_never_steps_over_a_live_sequence()
@@ -557,6 +706,10 @@ def main():
     test_engine_reports_both_ways_a_request_leaves()
     test_a_dispatch_still_in_redis_is_drained_and_retired()
     test_the_drained_sequence_lets_the_frontier_move_on()
+    test_reprefill_cost_is_the_work_actually_left()
+    test_retraction_re_enters_through_algorithm_2()
+    test_the_traced_failure_end_to_end()
+    test_repeated_retraction_does_not_duplicate_the_ledger()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         for name in FAIL:
