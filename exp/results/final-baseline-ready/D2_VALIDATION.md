@@ -238,10 +238,100 @@ than from that counter. The correctness script now separates the two --
 disappears with no stated reason still fails the gate. No controller behaviour
 was changed.
 
+## Runs 7-9: the KV path, and what the accounting fix exposed
+
+### The KV bottleneck, measured before anything was changed
+
+`exp/scripts/microbench_kv_migration.py` imports the shipped `kv_migration_v6`
+and `parallel_loading_v4` and only times them, on the same GPU pair, with the
+real per-layer shapes. 161 requests, 5.96 GB, 9,016 copies of 646 KiB, NVLink
+counters confirming P2P (tx 5,964,120,064 B, rx 0), zero host-staged copies:
+
+| | target idle | target busy |
+|---|---:|---:|
+| KV wall | 2.33 s | 92.1 s |
+| KV bandwidth | 2.56 GB/s | 0.065 GB/s |
+| time inside 161 `synchronize` calls | 0.002 s | **59.0 s** |
+| weight path, comparable bytes | 0.033 s | 1.08 s (one `synchronize`) |
+
+Same bytes, same copies, same path. The entire 40x difference is time spent in
+`torch.cuda.synchronize(target_gpu)` -- a device-wide barrier taken once per
+request, which waits for every other model's prefill and decode queued on that
+GPU: 366 ms each. It also explains why field wall times never tracked bytes
+(run 5 moved 166 MB in 4.3 s and 5,967 MB in 5.6 s).
+
+The batch now runs on one stream and is waited on once, which is what the weight
+path already does and what `transfer_capsule`'s unused `stream` parameter was
+for. Source tensors are held until that wait completes. Re-measured under load:
+model_3 92.1 -> 10.9 s, model_4 69.7 -> 8.4 s, model_6 27.3 -> 3.0 s -- 7.3x to
+9.3x. Idle is unchanged, as it should be. The remaining gap to the weight path
+is the second cause, 9,016 copies of 646 KiB against large chunked ones, and is
+left alone.
+
+### What runs 7 and 8 exposed
+
+With the activation guard live, an activation whose target lacks
+weights-plus-reserve does not fail -- it blocks in `load_gpu_model`'s wait loop
+*inside the scheduler's event loop*, so that model serves nothing while it
+waits. Run 7: two migrations decided at 12:24:26 and 12:25:13 never ran, their
+activations waiting from 12:25:15 to 12:32:51. Run 8: one worker waited 2,661
+iterations (~266 s) for a 14.28 GiB model on a GPU whose KV pools were full; the
+server stopped serving and 4,187 of 8,423 requests aborted.
+
+That is the case the weights-plus-reserve feasibility gate refuses up front, so
+it was reinstated on the policy's existing `rejected_by_memory` branch, with the
+reserve being the engine's own `min_reserve_mem`. No timeout and no fallback
+policy were introduced; the activation guard stays as a safety check.
+
+### Run 9
+
+| | run 5 | run 6 | run 7 | run 8 | run 9 |
+|---|---:|---:|---:|---:|---:|
+| completed | 7,047 | 7,921 | 7,442 | 4,236 | **8,423** |
+| aborted (SLO) | 1,376 | 502 | 981 | 4,187 | **0** |
+| throughput (req/s) | 13.63 | 16.91 | 11.71 | 7.56 | **18.44** |
+| mean TTFT (ms) | 33,501 | 17,306 | 2,497 | 3,001 | 5,535 |
+| P99 TTFT (ms) | 170,486 | 110,332 | 28,978 | 30,548 | 30,805 |
+| mean TPOT (ms) | 219.5 | 226.3 | 227.8 | 235.4 | **219.2** |
+| activation wait lines | 0 | 809 | 3,309 | 2,885 | **0** |
+| decode retractions | 32 | 0 | 0 | 1 | **0** |
+| exposed downtime (s) | 13.23 | 20.94 | 10.12 | -- | **9.42** |
+
+Every request in the workload completed and none was aborted. `rejected_by_memory`
+reached 25, so the gate is refusing targets rather than sitting idle, and 7 of 7
+migrations moved their weights over P2P from the GPU that held them.
+
+Mean TTFT is higher than run 7's, which is the expected shape: run 7 dropped 981
+requests, and dropped requests do not contribute a TTFT. Run 9 served all 8,423
+at the same P99.
+
+### A gate refinement, with the evidence for it
+
+Run 9 host-loaded three activations that followed a MIGRATE decision. Each was
+preceded by an owner release with `dropped=True` -- the model had been fully
+deactivated before the load, so no GPU copy remained and a host load is the only
+thing the loader can do:
+
+```text
+load 13:01:56 Qwen2.5-7B    -> gpu1 | released gpu0 dropped=True 24.9s earlier
+load 13:02:53 Llama-3.2-1B  -> gpu0 | released gpu1 dropped=True  5.5s earlier
+load 13:04:26 Qwen2.5-3B    -> gpu1 | released gpu0 dropped=True 98.0s earlier
+```
+
+That is not the original defect. The original defect was a host load *while the
+model was still GPU-resident*, because a completed migration had deleted its own
+residency record. The check now separates the two using the release log, and
+still fails the original diagnostic run -- which shows
+`host_loads_after_deactivation: 0` alongside its wrong-source migration.
+
 ## Status
 
 ```text
-D2 correctness: PASS (run5, re-confirmed on run6)
-Memory accounting: fixed and measured
-Next: instrument the KV transfer path. No D3 until that is resolved.
+D2 correctness: PASS (run5, run6, run9)
+Memory accounting: fixed; infeasible placements refused at the decision
+KV transfer: per-request device barrier removed, 7.3-9.3x under load
+Remaining, reported not fixed: KV moves 9,016 copies of 646 KiB where the
+  weight path moves large chunks; migrations_emitted counts decisions, not
+  executed migrations
+Next: D3 interaction gate.
 ```

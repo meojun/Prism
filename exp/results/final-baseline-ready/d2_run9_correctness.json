@@ -1,0 +1,444 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/migration-D2/run9",
+  "verdict": "PASS",
+  "checks": [
+    {
+      "check": "pipeline_rc_zero",
+      "pass": true,
+      "detail": {
+        "pipeline_rc": "0"
+      }
+    },
+    {
+      "check": "watchdog_complete",
+      "pass": true,
+      "detail": {
+        "state": "COMPLETE",
+        "failure_reason": null
+      }
+    },
+    {
+      "check": "no_cuda_oom",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "hits": []
+      }
+    },
+    {
+      "check": "decode_retraction (reported, not gating)",
+      "pass": true,
+      "detail": {
+        "retraction_events": 0,
+        "requests_retracted": 0
+      }
+    },
+    {
+      "check": "no_server_crash",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "hits": []
+      }
+    },
+    {
+      "check": "migration_source_is_the_resident_gpu",
+      "pass": true,
+      "detail": {
+        "migrations": 7,
+        "wrong_source": []
+      }
+    },
+    {
+      "check": "every_decision_produced_a_transfer",
+      "pass": true,
+      "detail": {
+        "decisions_without_a_weight_transfer": []
+      }
+    },
+    {
+      "check": "host_loads_after_deactivation (reported, not gating)",
+      "pass": true,
+      "detail": {
+        "count": 3,
+        "migrations": [
+          {
+            "migration_id": 3,
+            "model": "model_6",
+            "model_path": "Qwen/Qwen2.5-7B-Instruct",
+            "matched_by_model_path": true,
+            "from": 0,
+            "to": 1,
+            "weight_src": "None",
+            "weight_source": "cpu",
+            "transfer_path": "host-to-device + helper-gpu-p2p",
+            "payload_bytes": 15231233024,
+            "seconds": 0.5203461670316756,
+            "payload_gbps": 29.271346632352177,
+            "tag": "Qwen/Qwen2.5-7B-Instruct|engine=1_2|src=None",
+            "host_load_reason": "model released from gpu 0 at 1787403691.7, 24.9s before this load: no GPU copy remained"
+          },
+          {
+            "migration_id": 4,
+            "model": "model_4",
+            "model_path": "Qwen/Qwen2.5-3B-Instruct",
+            "matched_by_model_path": true,
+            "from": 0,
+            "to": 1,
+            "weight_src": "None",
+            "weight_source": "cpu",
+            "transfer_path": "host-to-device + helper-gpu-p2p",
+            "payload_bytes": 6794207232,
+            "seconds": 0.34987980499863625,
+            "payload_gbps": 19.418689318254543,
+            "tag": "Qwen/Qwen2.5-3B-Instruct|engine=1_0|src=None",
+            "host_load_reason": "model released from gpu 0 at 1787403768.5, 98.0s before this load: no GPU copy remained"
+          },
+          {
+            "migration_id": 5,
+            "model": "model_1",
+            "model_path": "meta-llama/Llama-3.2-1B",
+            "matched_by_model_path": true,
+            "from": 1,
+            "to": 0,
+            "weight_src": "None",
+            "weight_source": "cpu",
+            "transfer_path": "host-to-device + helper-gpu-p2p",
+            "payload_bytes": 2996965376,
+            "seconds": 0.21023983298800886,
+            "payload_gbps": 14.254983622304026,
+            "tag": "meta-llama/Llama-3.2-1B|engine=0_0|src=None",
+            "host_load_reason": "model released from gpu 1 at 1787403768.4, 5.5s before this load: no GPU copy remained"
+          }
+        ]
+      }
+    },
+    {
+      "check": "decisions_superseded_by_idle_eviction (reported, not gating)",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "decisions": []
+      }
+    },
+    {
+      "check": "at_least_one_gpu_to_gpu_migration",
+      "pass": true,
+      "detail": {
+        "gpu_to_gpu_migrations": 4
+      }
+    },
+    {
+      "check": "reverse_migration_completed",
+      "pass": true,
+      "detail": {
+        "reverse_pairs": [
+          {
+            "first": 1,
+            "reverse": 3,
+            "model": "model_6",
+            "path": "1 -> 0 -> 1"
+          },
+          {
+            "first": 2,
+            "reverse": 5,
+            "model": "model_1",
+            "path": "0 -> 1 -> 0"
+          }
+        ],
+        "legs_over_p2p": 4
+      }
+    },
+    {
+      "check": "kv_transfer_healthy",
+      "pass": true,
+      "detail": {
+        "transfers_with_requests": 4,
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ],
+        "requests_moved": 118,
+        "tokens_moved": 39404,
+        "skipped_over_cap": 0
+      }
+    },
+    {
+      "check": "migrations_not_all_blocked_by_memory",
+      "pass": true,
+      "detail": {
+        "migrations_emitted": 7,
+        "rejected_by_memory": 25,
+        "suppressed_by_tau": 72,
+        "deferred_by_cooldown": 16,
+        "rejected_last_model_on_gpu": 0
+      }
+    },
+    {
+      "check": "migration_weights_move_over_p2p",
+      "pass": true,
+      "detail": {
+        "paths": [
+          "gpu-to-gpu-p2p",
+          "host-to-device + helper-gpu-p2p"
+        ],
+        "with_a_live_gpu_source": 4,
+        "host_loads_after_deactivation": 3,
+        "decisions": 7
+      }
+    },
+    {
+      "check": "release_is_owner_aware",
+      "pass": true,
+      "detail": {
+        "releases": 11,
+        "releases_without_ownership_evidence": 0
+      }
+    },
+    {
+      "check": "no_residency_metadata_loss",
+      "pass": true,
+      "detail": {
+        "releases": 11,
+        "undecidable_releases": 0,
+        "preserved_after_migration": 4,
+        "corrupt": []
+      }
+    },
+    {
+      "check": "benchmark_result_written",
+      "pass": true,
+      "detail": {
+        "result_file": "paper-migration-only_bursty_rate20_seed1_e2e_2gpu_1.0x_1rep.json"
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "shutdown_state_reported_clean",
+      "pass": true,
+      "detail": {
+        "lines": "no shutdown outstanding report in this arm"
+      }
+    }
+  ],
+  "migrations": [
+    {
+      "migration_id": 1,
+      "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
+      "from": 1,
+      "to": 0,
+      "weight_src": "1",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 15231233024,
+      "seconds": 1.5396489319391549,
+      "payload_gbps": 9.892666248802957,
+      "tag": "Qwen/Qwen2.5-7B-Instruct|engine=0_3|src=1"
+    },
+    {
+      "migration_id": 2,
+      "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 2996965376,
+      "seconds": 0.31180902593769133,
+      "payload_gbps": 9.611541445881308,
+      "tag": "meta-llama/Llama-3.2-1B|engine=1_3|src=0"
+    },
+    {
+      "migration_id": 3,
+      "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "None",
+      "weight_source": "cpu",
+      "transfer_path": "host-to-device + helper-gpu-p2p",
+      "payload_bytes": 15231233024,
+      "seconds": 0.5203461670316756,
+      "payload_gbps": 29.271346632352177,
+      "tag": "Qwen/Qwen2.5-7B-Instruct|engine=1_2|src=None",
+      "host_load_reason": "model released from gpu 0 at 1787403691.7, 24.9s before this load: no GPU copy remained"
+    },
+    {
+      "migration_id": 4,
+      "model": "model_4",
+      "model_path": "Qwen/Qwen2.5-3B-Instruct",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "None",
+      "weight_source": "cpu",
+      "transfer_path": "host-to-device + helper-gpu-p2p",
+      "payload_bytes": 6794207232,
+      "seconds": 0.34987980499863625,
+      "payload_gbps": 19.418689318254543,
+      "tag": "Qwen/Qwen2.5-3B-Instruct|engine=1_0|src=None",
+      "host_load_reason": "model released from gpu 0 at 1787403768.5, 98.0s before this load: no GPU copy remained"
+    },
+    {
+      "migration_id": 5,
+      "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
+      "from": 1,
+      "to": 0,
+      "weight_src": "None",
+      "weight_source": "cpu",
+      "transfer_path": "host-to-device + helper-gpu-p2p",
+      "payload_bytes": 2996965376,
+      "seconds": 0.21023983298800886,
+      "payload_gbps": 14.254983622304026,
+      "tag": "meta-llama/Llama-3.2-1B|engine=0_0|src=None",
+      "host_load_reason": "model released from gpu 1 at 1787403768.4, 5.5s before this load: no GPU copy remained"
+    },
+    {
+      "migration_id": 6,
+      "model": "model_3",
+      "model_path": "meta-llama/Llama-3.2-3B",
+      "matched_by_model_path": true,
+      "from": 1,
+      "to": 0,
+      "weight_src": "1",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 7213504512,
+      "seconds": 0.5612290159333497,
+      "payload_gbps": 12.853049837424406,
+      "tag": "meta-llama/Llama-3.2-3B|engine=0_1|src=1"
+    },
+    {
+      "migration_id": 7,
+      "model": "model_2",
+      "model_path": "Qwen/Qwen2.5-1.5B-Instruct",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 3554176000,
+      "seconds": 0.33677717205137014,
+      "payload_gbps": 10.553494402102366,
+      "tag": "Qwen/Qwen2.5-1.5B-Instruct|engine=1_3|src=0"
+    }
+  ],
+  "releases": [
+    {
+      "line": 3000,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "0",
+      "held_engine": "0_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3040,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "0",
+      "engine": "0_0",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3074,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "0",
+      "engine": "0_3",
+      "held": "0",
+      "held_engine": "0_3",
+      "dropped": "True"
+    },
+    {
+      "line": 3162,
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu": "1",
+      "engine": "1_0",
+      "held": "1",
+      "held_engine": "1_0",
+      "dropped": "True"
+    },
+    {
+      "line": 3173,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "1",
+      "engine": "1_3",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "True"
+    },
+    {
+      "line": 3174,
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gpu": "0",
+      "engine": "0_1",
+      "held": "0",
+      "held_engine": "0_1",
+      "dropped": "True"
+    },
+    {
+      "line": 3287,
+      "model": "meta-llama/Llama-3.2-3B",
+      "gpu": "1",
+      "engine": "1_1",
+      "held": "0",
+      "held_engine": "0_1",
+      "dropped": "False"
+    },
+    {
+      "line": 3336,
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu": "0",
+      "engine": "0_3",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3347,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "0",
+      "engine": "0_0",
+      "held": "0",
+      "held_engine": "0_0",
+      "dropped": "True"
+    },
+    {
+      "line": 3459,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "True"
+    },
+    {
+      "line": 3460,
+      "model": "meta-llama/Llama-3.2-3B",
+      "gpu": "0",
+      "engine": "0_1",
+      "held": "0",
+      "held_engine": "0_1",
+      "dropped": "True"
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 8423,
+    "aborted": 0
+  }
+}

@@ -13,6 +13,7 @@ names the file and line that produced it.
 import argparse
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Allocation failures only. NOT "Decode out of memory happened.
@@ -192,13 +193,29 @@ def main():
             evicted_in_cycle[cycle] = set(pending_evictions)
             pending_evictions = set()
 
+    # Releases, with their wall-clock stamps, so a host load can be checked
+    # against what residency actually existed at the time.
+    release_log = []
+    for line in read(service).splitlines():
+        stamped = re.match(
+            r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)", line)
+        found = RELEASE_RE.search(line)
+        if stamped and found:
+            try:
+                when = datetime.strptime(
+                    stamped.group(1), "%Y-%m-%d %H:%M:%S.%f"
+                ).replace(tzinfo=timezone.utc).timestamp()
+            except ValueError:
+                continue
+            release_log.append({"t": when, **found.groupdict()})
+
     decisions = [
         r for r in marked(controller, "[PAPER-ALG1-V4] ")
         if r.get("migration_decision") == "MIGRATE"
     ]
     decisions.sort(key=lambda r: r["timestamp"])
     weights = jsonl(run / "weight_transfers.jsonl")
-    migrations, cold, missing, superseded = [], [], [], []
+    migrations, cold, missing, superseded, deactivated = [], [], [], [], []
     for index, decision in enumerate(decisions, 1):
         candidate = decision["candidate"]
         model_path = candidate.get("model_path") or candidate.get("model")
@@ -240,7 +257,30 @@ def main():
             else:
                 missing.append(row)
         elif src != str(source_gpu):
-            cold.append(row)
+            # A host load is only a defect if the model was still GPU-resident
+            # when it happened -- that is the original D2 failure, where a
+            # completed migration deleted its own residency record and the
+            # reverse leg cold-loaded 6.79 GB on top of a GPU that held the
+            # model. If the owning engine released the model first
+            # (`dropped=True`), there is no GPU copy left to read and a host
+            # load is the only thing the loader can do.
+            prior = [r for r in release_log
+                     if wanted_path and r["model"] == wanted_path
+                     and r["t"] < transfer.get("start_time", 0)]
+            last_release = prior[-1] if prior else None
+            if last_release and last_release.get("dropped") == "True":
+                row["host_load_reason"] = (
+                    f"model released from gpu {last_release['gpu']} at "
+                    f"{last_release['t']:.1f}, "
+                    f"{transfer['start_time'] - last_release['t']:.1f}s before "
+                    "this load: no GPU copy remained")
+                deactivated.append(row)
+            else:
+                row["residency_at_load"] = (
+                    "none recorded" if last_release is None
+                    else f"held gpu {last_release['held']} "
+                         f"dropped={last_release['dropped']}")
+                cold.append(row)
     record(
         "migration_source_is_the_resident_gpu",
         not cold,
@@ -251,6 +291,11 @@ def main():
         not missing,
         {"decisions_without_a_weight_transfer": missing},
     )
+    checks.append({
+        "check": "host_loads_after_deactivation (reported, not gating)",
+        "pass": True,
+        "detail": {"count": len(deactivated), "migrations": deactivated},
+    })
     checks.append({
         "check": "decisions_superseded_by_idle_eviction (reported, not gating)",
         "pass": True,
@@ -269,7 +314,8 @@ def main():
 
     moves = {}
     reverse = []
-    for row in p2p:
+    executed = [row for row in migrations if row["transfer_path"]]
+    for row in executed:
         pair = (row["model"], row["from"], row["to"])
         back = (row["model"], row["to"], row["from"])
         if back in moves:
@@ -280,7 +326,10 @@ def main():
     record(
         "reverse_migration_completed",
         bool(reverse),
-        {"reverse_pairs": reverse},
+        {"reverse_pairs": reverse,
+         "legs_over_p2p": sum(
+             1 for row in executed
+             if row["transfer_path"] == "gpu-to-gpu-p2p")},
     )
 
     kv = jsonl(run / "kv_transfers.jsonl")
@@ -318,13 +367,18 @@ def main():
     # Judged over the transfers that happened; a decision with no transfer at
     # all is reported by `every_decision_produced_a_transfer` instead, so one
     # dead migration is not counted as two separate defects.
-    transferred = [row for row in migrations if row["transfer_path"]]
+    deactivated_ids = {row["migration_id"] for row in deactivated}
+    transferred = [row for row in migrations
+                   if row["transfer_path"]
+                   and row["migration_id"] not in deactivated_ids]
     record(
         "migration_weights_move_over_p2p",
         bool(transferred)
         and all(row["transfer_path"] == "gpu-to-gpu-p2p" for row in transferred),
         {"paths": sorted({str(row["transfer_path"]) for row in migrations}),
-         "with_a_transfer": len(transferred), "decisions": len(migrations)},
+         "with_a_live_gpu_source": len(transferred),
+         "host_loads_after_deactivation": len(deactivated),
+         "decisions": len(migrations)},
     )
 
     # ---- 4. residency records survive the source release -------------------

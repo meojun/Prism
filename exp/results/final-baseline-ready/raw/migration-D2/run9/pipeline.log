@@ -1,0 +1,22 @@
+[2026-08-22T12:56:22Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run9/STAGE_CMD.sh
+### paper-migration-only_bursty_rate20_seed1  port=41100 trace=bursty_r20_s1.pkl workers=4 models=6
+waiting for server....................................................................................................... -> ready
+system=paper-migration-only workload=bursty rate=20 seed=1
+max_mem_usage=67.28
+model_config_file=/root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json
+flashinfer_workspace_size=1073741824
+alg1_log_lines=84
+alg1_migrations=7
+v4_weight_transfers=16
+v4_p2p_transfers=16
+v6_kv_transfers=4
+v6_p2p_transfers=4
+v6_resumed_requests=118
+alg2_log_lines=0
+alg2_underadmission_warnings=0
+proto_migrations=0
+activations=6
+deactivations=11
+idle_evictions=7
+### paper-migration-only_bursty_rate20_seed1 done
+[2026-08-22T13:07:43Z] stage complete rc=0
