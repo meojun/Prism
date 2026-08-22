@@ -1,186 +1,189 @@
-# D2 migration-only gate, run 1 (after the residency fix)
+# D2 migration-only correctness gate
 
 ## Verdict
 
 ```text
-RESIDENCY DEFECT      : FIXED AND VERIFIED
-D2 CORRECTNESS GATE   : FAIL -- new, different blocker
+D2 CORRECTNESS GATE : PASS   (run5)
 ```
 
-The defect this rerun existed to test is gone. The run then died of a second,
-unrelated memory blocker, so the gate as a whole does not pass and no wider
-experiment may follow (`STOP B`).
+Five runs were needed, and only the fifth passed. Runs 1-4 are kept in full:
+each failed for a different reason, and the sequence is what identified the
+causes. No run was rerun after a SUCCESS.
 
 ## Setting
 
-Identical to the diagnostic D2, only the output directory differs.
+Identical across all five runs; only the output directory changed.
 
 ```text
 Algorithm 2 = OFF (PRISM_DIAG_ALG2=0)
 migration = ON, overlap migration = ON, KV migration = ON
 tau = 0.07 (diagnostic, not a final threshold)
-bursty rate 20, seed 1, 6 models, A100 80GB x2
+bursty rate 20, seed 1, 6 models, A100 80GB x2, 420 s
 ```
 
-The workload was reused, not regenerated. All three input hashes match the
-preregistered values in `../baseline-readiness/META.txt`:
+The workload was reused, never regenerated; all three input hashes match the
+preregistered values in `../baseline-readiness/META.txt`.
 
-```text
-bursty_r20_s1.pkl         666c453234519310d868fde79e02616522aa26077a2f48889790bc317174f27a
-paired_requests_r20_s1    31d80a6f1157d3a1441fb2c1ab62c38e56672ccec1a5de22737f0126e562ad96
-phases_r20_s1.json        a40d42de086acf7698b171a9c607353667b3fdf677efe15beef9fe62cdc02640
-```
+## What each run established
 
-## What the fix changed
+| run | outcome | what it showed |
+|---|---|---|
+| 1 | server killed at 3,070 responses | residency fix verified: 5/5 migrations read the resident GPU over P2P, including the reverse migration that used to cold-load 6.79 GB. Died of a flashinfer workspace allocation. |
+| 2 | server killed at 4,203 responses | with the weights+reserve feasibility gate active (`rejected_by_memory: 20`), the same allocation failed **on a GPU that was not migrating anything** -- ruling migration out as the cause. |
+| 3 | server killed at 2,706 responses | same failure with the kvcached admission bound added. Still not it. |
+| 4 | server killed at 2,909 responses | with `FLASHINFER_WORKSPACE_SIZE` restored the workspace failure vanished (0 occurrences against 1 fatal occurrence in each earlier run), and the run died instead of a genuine CUDA OOM during an activation. |
+| 5 | **completed, rc 0, watchdog COMPLETE** | gate PASS. |
 
-Five migration decisions, five weight transfers, all reading the GPU that
-actually held the model:
+## The two causes, and how they were told apart
 
-| # | model | from | to | weight src | path | GB/s |
-|---:|---|---:|---:|---:|---|---:|
-| 1 | model_6 | 1 | 0 | 1 | gpu-to-gpu-p2p | 12.70 |
-| 2 | model_6 | 0 | 1 | 0 | gpu-to-gpu-p2p | 17.40 |
-| 3 | model_1 | 0 | 1 | 0 | gpu-to-gpu-p2p | 14.99 |
-| 4 | model_2 | 1 | 0 | 1 | gpu-to-gpu-p2p | 14.00 |
-| 5 | model_6 | 1 | 0 | 1 | gpu-to-gpu-p2p | 9.78 |
-
-Migration 2 is the reverse migration that failed before: it now reads GPU0 over
-NVLink instead of cold-loading 6.79 GB from host memory. Zero migrations used
-the host path, against one of four in the diagnostic run.
-
-The release log now carries ownership, and shows the invariant holding:
-
-```text
-release model_6 gpu 1 engine=1_2 held=0 held_engine=0_3 dropped=False
-release model_6 gpu 0 engine=0_3 held=1 held_engine=1_3 dropped=False
-release model_6 gpu 1 engine=1_3 held=1 held_engine=1_3 dropped=True
-release model_1 gpu 0 engine=0_0 held=1 held_engine=1_2 dropped=False
-release model_2 gpu 1 engine=1_0 held=0 held_engine=0_3 dropped=False
-release model_2 gpu 0 engine=0_3 held=0 held_engine=0_3 dropped=True
-release model_6 gpu 1 engine=1_3 held=0 held_engine=0_0 dropped=False
-release model_4 gpu 0 engine=0_1 held=0 held_engine=0_1 dropped=True
-```
-
-Five late source releases preserved a committed target record; three genuine
-deactivations by the owning engine dropped it. No release deleted a record it
-did not own.
-
-`kvcached cuMemCreate` did not fail, and peak GPU0 memory was 77,106 MiB
-against 81,152 MiB in the diagnostic run.
-
-## Correctness checks
-
-`exp/scripts/check_migration_correctness.py`, full output in
-`d2_correctness.json`.
-
-| check | result |
-|---|---|
-| migration source is the resident GPU | PASS (5/5) |
-| migration weights move over P2P | PASS (5/5) |
-| release is owner-aware | PASS (8 releases, all with ownership evidence) |
-| no residency metadata loss | PASS |
-| no CUDA OOM | PASS |
-| no migration-induced abort | PASS |
-| benchmark result written | PASS |
-| shutdown state reported clean | PASS |
-| no server crash | **FAIL** |
-| watchdog COMPLETE | **FAIL** |
-
-## A harness flaw found while reading this run
-
-`pipeline.rc` for this stage reads `0` even though the stage failed. Two
-fail-open paths in `exp/scripts/run_baseline_stage.sh` produced that: `tee`
-masked the stage command's exit status, and the EXIT trap recorded `$?` of an
-unrelated last command when the watchdog killed the session. Both are now
-closed -- a killed stage records 143 -- and the script self-checks. For this
-run the watchdog `monitor/FAIL` marker is the authoritative record:
-`benchmark: inner server session exited without result`.
-
-## The new blocker
-
-At 08:47:24, `GPU=0 Worker 0 (model_6)` took a prefill batch at `token usage:
-0.95` and flashinfer could not allocate its workspace:
+**The workspace.** Runs 1-3 all died of
 
 ```text
 RuntimeError: Failed to allocate memory for batch_prefill_tmp_v
-with size 448659456 and alignment 16 in AlignedAllocator
+              with size 443-456 MB in AlignedAllocator
 ```
 
-The worker died, and the launcher was killed 22 seconds later. The benchmark
-stopped at 3,070 completed responses.
+That is flashinfer's *fixed* prefill scratch buffer, not GPU memory: upstream
+defaults to 384 MiB and model_6 (Qwen2.5-7B, GQA 28 query heads to 4 KV heads)
+asks for 420-455 MiB at these rates. A worker treats the raise as fatal and
+calls `kill_parent_process()`, taking the server with it. This was already
+diagnosed in the v4 milestone -- `paper-faithful-v4/provenance/ENVIRONMENT.md`
+and `HANDOVER.md` 4.4 record `FLASHINFER_WORKSPACE_SIZE=1073741824` "for all
+runs and all arms", and the `int()` cast that makes the variable readable at all
+is in this tree. The value lived only in `/workspace/.env`, which this
+instance's rebuild recreated with `HF_TOKEN` alone. It now lives in
+`exp/scripts/env.sh`, inside the repository.
 
-The cause is the definition of feasibility in the placement policy, not
-residency. `kvpr_global_v4._find_optimal_migrations` refuses a target only when
+**The elastic pools.** Run 4 then produced a real CUDA OOM, and it discriminates
+between the two memory changes that had been made speculatively:
 
-```python
-need = self.model_weights_info[name]["model_size"]
-if gpu_available_memory.get(dst, 0.0) < need:   # weights only
+```text
+GPU=1 Worker 3, activate -> create_empty_gpu_model_from_cpu_model
+torch.OutOfMemoryError: Tried to allocate 260.00 MiB.
+GPU 1 ... 185.25 MiB is free
 ```
 
-`gpu_available_memory` is real free memory, refreshed every cycle, so the
-reading was correct -- the *requirement* is not. At the migration-5 decision
-(08:47:00) GPU0 had 18.64 GB free and model_6 needs 15.23 GB of weights, so the
-test passed with about 3.4 GB left for that model's KV pool and every
-attention workspace on the GPU. Fifteen seconds later GPU0 was down to 3.70 GB,
-and the first 8,192-token prefill batch that needed a 448 MB scratch buffer
-failed. The policy audit confirms it never saw a problem: `rejected_by_memory:
-0`, `blocked: []`.
+At 09:44:57 the controller read 18.15 GB free on GPU1 and cleared the
+activation. Three seconds later the KV pools -- `token usage 1.00` and `0.96`,
+439 running requests -- had taken all of it. A weights-plus-reserve test at
+decision time would have passed too (18.15 >= 3.01 + 6.46), so that change was
+not the fix and stays reverted; Algorithm 1's emission behaviour is untouched.
+What does fix it is refusing to let the pools grow into the reserve at all:
+`MHATokenToKVPool.available_size()` returned the kvcached allocator's *virtual*
+availability unchecked on the `use_kvcached_v0` path, while the non-v0 elastic
+path already bounded admission by physical free memory. Both paths now take
+that bound.
 
-This is the second half of the fix that `MIGRATION_DIAGNOSIS.md` identified
-("target preparation must also fail closed against actual target memory
-headroom") and that Stage 1 deliberately left out. The D2 evidence now says it
-is required.
+## Correctness checks (run5)
 
-## Migration timing (n=5 decisions; 4 complete timelines)
+`exp/scripts/check_migration_correctness.py`, full output in
+`d2_run5_correctness.json`. The same script still fails runs 1-4 and the
+original diagnostic run.
 
-Seconds, from `migration_timeline.csv` / `migration_summary.json`.
+| check | result |
+|---|---|
+| pipeline rc zero | PASS |
+| watchdog COMPLETE | PASS |
+| no CUDA OOM | PASS |
+| no server crash | PASS |
+| migration source is the resident GPU | PASS (13/13) |
+| every decision produced a transfer | PASS |
+| at least one GPU-to-GPU migration | PASS |
+| reverse migration completed | PASS |
+| KV transfer healthy | PASS (369 requests, 0 skipped over cap) |
+| migrations not all blocked by memory | PASS (13 emitted) |
+| migration weights move over P2P | PASS (13/13) |
+| release is owner-aware | PASS |
+| no residency metadata loss | PASS |
+| benchmark result written | PASS |
+| no migration-induced abort | PASS |
+| shutdown state clean | PASS |
 
-| phase | mean | P50 | P95 | max |
-|---|---:|---:|---:|---:|
-| target prepare | 2.8524 | 2.5400 | 4.6992 | 5.1750 |
-| target ready to quiesce | 0.0360 | 0.0154 | 0.0931 | 0.1085 |
-| quiesce control | 0.0305 | 0.0095 | 0.0881 | 0.1034 |
-| request drain | 0.3363 | 0.1011 | 1.0966 | 1.3341 |
-| KV stash | 0.9467 | 1.2047 | 1.6589 | 1.6687 |
-| weight transfer | 0.8174 | 0.8755 | 1.4862 | 1.5578 |
-| KV transfer | 4.2636 | 4.1996 | 6.7664 | 7.0406 |
-| target inject total | 6.9641 | 6.6022 | 11.5041 | 11.8837 |
-| KV inject exclusive | 3.5532 | 4.7728 | 4.9585 | 4.9874 |
-| routing switch | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
-| routing to first request | 0.0597 | 0.0560 | 0.0984 | 0.1008 |
-| first request to first decode | 2.7952 | 3.2194 | 4.3412 | 4.4250 |
-| exposed service downtime | 11.8043 | 11.2909 | 15.7384 | 16.2751 |
-| total migration wall | 17.5744 | 16.4659 | 21.2622 | 21.9721 |
+`Decode out of memory happened. #retracted_reqs: N` is recorded but does not
+gate: it is upstream SGLang's designed decode-retraction backpressure -- the
+scheduler sends a `BatchRetractDecodeReq` and lowers `new_token_ratio`, nothing
+fails to allocate and no request is lost. Run 5 logged 32 such events. It is
+reported because it measures how hard the pools were squeezed; see the cost
+section below.
+
+## Migration timing (13 decisions, 11 complete timelines)
+
+Seconds, from `migration_timeline_run5.csv` / `migration_summary_run5.json`.
+
+| phase | n | mean | P50 | P95 | max |
+|---|---:|---:|---:|---:|---:|
+| target prepare | 13 | 2.4612 | 1.9169 | 4.0490 | 5.2493 |
+| target ready to quiesce | 13 | 0.0402 | 0.0181 | 0.1321 | 0.2455 |
+| quiesce control | 13 | 0.0349 | 0.0142 | 0.1274 | 0.2410 |
+| request drain | 13 | 0.5524 | 0.1437 | 1.3923 | 1.4528 |
+| KV stash | 13 | 0.8681 | 1.0815 | 1.7454 | 1.8204 |
+| weight transfer | 13 | 0.5635 | 0.3213 | 1.2119 | 1.2710 |
+| KV transfer | 10 | 3.7866 | 4.5266 | 6.8152 | 7.4130 |
+| target inject total | 13 | 5.2934 | 4.5189 | 12.9682 | 14.4284 |
+| KV inject exclusive | 13 | 2.3806 | 1.7075 | 6.6952 | 7.0154 |
+| routing switch | 13 | 0.0000 | 0.0000 | 0.0000 | 0.0001 |
+| routing to first request | 11 | 3.1114 | 0.0517 | 15.6208 | 29.3671 |
+| first request to first decode | 11 | 2.7791 | 2.7317 | 7.7661 | 10.4000 |
+| exposed service downtime | 11 | 13.2310 | 12.4706 | 28.1373 | 36.4090 |
+| total migration wall | 11 | 18.9385 | 18.4004 | 34.6807 | 42.6673 |
 
 Bytes and effective bandwidth:
 
 ```text
-weights : 52,244,840,448 B, 100% P2P, mean 13.77 GB/s
-KV      :  1,860,280,320 B, 100% P2P, mean  0.14 GB/s
-          115 requests, 40,515 tokens moved, 0 skipped over cap
+weights : 97,720,946,688 B, 13/13 gpu-to-gpu-p2p, mean 13.05 GB/s
+KV      :  4,522,926,080 B, 10/10 gpu-to-gpu-p2p, mean 0.31 GB/s (P50 0.13)
+          369 requests, 130,681 tokens moved, 0 skipped over cap
 ```
 
 ## Reading of the timing
 
-Routing is ~12 microseconds and is not the cost. Weight transfer is not the
-cost either: 52.2 GB moved at 13.77 GB/s mean is NVLink working as intended.
+Routing is ~12 microseconds. Weight transfer is not the cost either: 97.7 GB at
+13.05 GB/s mean is NVLink doing its job, and every one of the 13 transfers took
+the P2P path.
 
-The cost is the KV path. KV transfer and the exclusive target-side inject
-together average 7.82 s of the 11.80 s exposed downtime -- 66% -- and the KV
-transfer moves its bytes at **0.14 GB/s over the same P2P link on which the
-weights move at 13.77 GB/s**, a factor of about 100. A payload of 1.86 GB
-should not take 17 seconds of link time on hardware that moved 52.2 GB in 3.8
-seconds. Under the criteria in the handoff (section 12) that is an
-implementation-stall signature, not intrinsic work cost: the bytes and the
-measured link bandwidth do not explain the duration.
+The cost is concentrated in the KV path. KV transfer plus the exclusive
+target-side inject average 6.17 s of the 13.23 s exposed downtime -- 47% -- and
+the KV transfer moves its bytes at **0.31 GB/s mean (0.13 GB/s median) over the
+same P2P link on which the weights move at 13.05 GB/s**, a factor of 40 to 100.
+A 4.5 GB payload should not take 38 s of link time on hardware that moved
+97.7 GB in 7.3 s. Under the handoff's section 12 criteria that is an
+implementation-stall signature: the bytes and the measured link bandwidth do not
+explain the duration.
 
-This is recorded as a finding, not acted on: the run failed its correctness
-gate, and a performance change on top of an unfinished gate is not evidence of
-anything.
+`routing to first request` also deserves a look -- mean 3.11 s against a P50 of
+0.05 s, with a 29.4 s maximum -- but it is a tail, not a systematic cost.
+
+Neither is acted on here. The next step is to instrument the KV path and find
+the concrete cause (P2P fast path not taken, host staging, serialization,
+per-block synchronization, target rebuild) before changing anything.
+
+## Cost of the admission bound, reported honestly
+
+Run 5 completed 7,047 of 8,423 requests with 1,376 aborted (the benchmark aborts
+a request when it exceeds its SLO), mean TTFT 33.5 s and P99 TTFT 170.5 s, and
+32 decode-retraction events. The Released Prototype's own clean runs at this
+rate recorded **zero** retractions.
+
+Part of that is this arm (migration on, tau 0.07 diagnostic) and part of it is
+the admission bound, which keeps `min_reserve_mem` = 6.459 GB per GPU out of the
+KV pools -- about 13 GB of the 134 GB pool budget across two GPUs. The non-v0
+elastic path keeps back 0.5 GB for the same purpose.
+
+A related defect was found while reading this path and is **not** fixed here:
+`WorkerPoolModelRunner.model_gpu_mem_usage` is set to `0` in `__init__` and
+never updated by `_set_model_params`, so the activation wait loop in
+`load_gpu_model` -- whose whole purpose is to wait until
+`free - min_reserve_mem >= model_gpu_mem_usage` -- only ever waits for the
+reserve and never for the model's own weights. It logged nothing in any of the
+five runs. That is why run 4's activation walked into a GPU with 185 MiB free
+instead of waiting.
+
+Whether to fix it, and whether the pool reserve can then drop to the 0.5 GB the
+sibling path uses, is a separate change that must be measured on its own.
 
 ## Status
 
 ```text
-STOP B -- new concrete integration blocker found in D2.
-No D3, no tau calibration, no c_i reprofiling, no sweep.
+D2 correctness: PASS
+Next: instrument the KV transfer path. No D3 until that is resolved.
 ```

@@ -15,10 +15,16 @@ import json
 import re
 from pathlib import Path
 
+# Allocation failures only. NOT "Decode out of memory happened.
+# #retracted_reqs: N" -- that is upstream SGLang's designed decode-retraction
+# backpressure (scheduler.py sends a BatchRetractDecodeReq and lowers
+# new_token_ratio); nothing failed to allocate and no request is lost. It is
+# reported below as a load metric instead of gating the run.
 OOM_PATTERNS = [
-    "cuMemCreate", "out of memory", "OutOfMemoryError",
-    "CUDA out of memory", "CUDA error: out of memory",
+    "cuMemCreate", "OutOfMemoryError", "CUDA out of memory",
+    "CUDA error: out of memory", "failed in CUDA driver",
 ]
+RETRACTION_MARKER = "Decode out of memory happened"
 CRASH_PATTERNS = [
     "Killed", "Segmentation fault", "core dumped",
     "terminated by signal", "NCCL error", "CUDA error:",
@@ -113,6 +119,21 @@ def main():
     oom = (hits(read(stdout), OOM_PATTERNS, "server-logs/stdout.log")
            + hits(read(server), OOM_PATTERNS, "server-logs/server.log"))
     record("no_cuda_oom", not oom, {"count": len(oom), "hits": oom[:5]})
+
+    retractions = read(server).count(RETRACTION_MARKER)
+    retracted = sum(
+        int(m) for m in re.findall(
+            RETRACTION_MARKER + r"[^\n]*?#retracted_reqs: (\d+)", read(server))
+    )
+    # Reported, not gated: retraction is a designed response to a full KV pool,
+    # so it measures how hard the pools were squeezed rather than whether
+    # anything broke.
+    checks.append({
+        "check": "decode_retraction (reported, not gating)",
+        "pass": True,
+        "detail": {"retraction_events": retractions,
+                   "requests_retracted": retracted},
+    })
 
     crash = (hits(read(stdout), CRASH_PATTERNS, "server-logs/stdout.log")
              + hits(read(server), CRASH_PATTERNS, "server-logs/server.log"))
