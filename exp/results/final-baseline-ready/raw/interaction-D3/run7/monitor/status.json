@@ -1,0 +1,32 @@
+{
+  "current_phase": "failed",
+  "failure_reason": "pipeline failed with rc=124",
+  "gpu": [
+    "0, 57720 MiB, 0 %",
+    "1, 63543 MiB, 48 %"
+  ],
+  "gpu_processes": [
+    "2898394, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 3186 MiB",
+    "2898459, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 22122 MiB",
+    "2898733, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 414 MiB",
+    "2898797, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 16114 MiB",
+    "2898669, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 414 MiB",
+    "2898668, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 15442 MiB",
+    "2898538, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 16788 MiB",
+    "2898733, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 7204 MiB",
+    "2898669, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 39116 MiB",
+    "2898668, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 414 MiB"
+  ],
+  "heartbeat_iso_utc": "2026-08-22T16:28:10.425480+00:00",
+  "heartbeat_timestamp": 1787416090.4254801,
+  "last_actual_progress_event": "pipeline rc=124",
+  "last_log_timestamp": 1787416082.3214238,
+  "last_progress_iso_utc": "2026-08-22T16:28:10.425480+00:00",
+  "last_progress_timestamp": 1787416090.4254801,
+  "no_progress_timeout_s": 180.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [],
+  "progress_count": 1,
+  "state": "FAIL"
+}

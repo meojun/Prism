@@ -1,0 +1,129 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run7",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 33933,
+        "alg2_log_lines": 9
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": true,
+      "detail": {
+        "events": 33933,
+        "violations": []
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "1": {
+            "dispatch": 5475,
+            "backend_admit": 5472,
+            "prefill_start": 5471,
+            "prefill_complete": 5471
+          },
+          "0": {
+            "dispatch": 3011,
+            "backend_admit": 3011,
+            "prefill_start": 3011,
+            "prefill_complete": 3011
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": true,
+      "detail": {
+        "gaps": [],
+        "retirements_seen": {
+          "1": {
+            "admit": 0,
+            "start": 0
+          },
+          "0": {
+            "admit": 0,
+            "start": 0
+          }
+        }
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": true,
+      "detail": {
+        "migrations": 5,
+        "admission_events_during_migrations": 22633,
+        "violations": []
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": false,
+      "detail": {
+        "net_by_gpu": {
+          "1": 4,
+          "0": 0
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "124"
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": false,
+      "detail": {
+        "watchdog_state": "FAIL",
+        "failure_reason": "pipeline failed with rc=124"
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": false,
+      "detail": {
+        "offered": 8423,
+        "completed": null,
+        "aborted": null,
+        "accounted": 0
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {}
+}
