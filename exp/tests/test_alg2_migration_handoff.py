@@ -91,7 +91,12 @@ def make_scheduler(models=("model1", "model2")):
 
 
 def dispatch(gpu, rid, model, seq=None, exec_s=0.01):
-    """What the scheduler's dispatch loop records for any request."""
+    """What the scheduler's dispatch loop records for any request.
+
+    Dispatching also takes the request out of the queue, the way
+    `admission_control` does when it selects one.
+    """
+    gpu.queue.remove_requests_by_rid([rid])
     with gpu._mh_gate_lock:
         gpu._mh_dispatch_seq += 1
         gpu._mh_outstanding_prefills[rid] = {
@@ -389,6 +394,7 @@ def make_engine(model="model1", gpu_id=1):
     engine.waiting_queue = []
     engine._alg2_staged_generation_reqs = []
     engine._alg2_pending_adoption = {}
+    engine._alg2_adoption_requested = set()
     engine._alg2_runtime_gate = True
     engine._alg2_admission_seq_key = f"alg2-next:{gpu_id}"
     engine.redis_client = Redis()
@@ -669,7 +675,6 @@ def test_repeated_retraction_does_not_duplicate_the_ledger():
         seqs.append(seq)
         check(f"round {round_index}: exactly one ledger entry",
               len(gpu._mh_outstanding_prefills) == 1)
-        gpu.queue.remove_requests_by_rid([rid])
         admit_and_start(gpu, rid, "model_4", seq)
         gpu._handle_mh_prefill_complete(PrefillCompleteReq(
             rids=[rid], model="model_4", complete_time=0.0, gpu_id=1))
@@ -692,6 +697,54 @@ def test_repeated_retraction_does_not_duplicate_the_ledger():
           len(gpu._mh_outstanding_prefills) == 1)
 
 
+def test_holding_several_requests_asks_about_each_once():
+    """D3 run 4: every hold re-asked for the ones already held.
+
+    `adoption_requested` fired with ["#33"], then ["#33", "#34"], then
+    ["#33", "#34", "#35"] ... so #33 was queued repeatedly, dispatched twice,
+    and took sequences 643 and 647 for one piece of work -- an order violation
+    and a gap in the sequence.
+    """
+    print("holding several requests asks about each one once")
+    engine = make_engine(model="model_1", gpu_id=1)
+    for index in range(4):
+        engine._alg2_hold_for_reentry(
+            [RetractedReq(f"model_1#{33 + index}")], "kv-migration-resume")
+
+    asked = [obj for _key, obj in engine.redis_client.sent
+             if isinstance(obj, AdoptResumedReq)]
+    every_rid = [rid for req in asked for rid in req.rids]
+    check("four requests produce four asks, not ten",
+          len(every_rid) == 4)
+    check("and no request is asked about twice",
+          len(set(every_rid)) == len(every_rid))
+    check("all four were asked about",
+          sorted(every_rid) == ["model_1#33", "model_1#34",
+                                "model_1#35", "model_1#36"])
+
+
+def test_the_scheduler_refuses_to_queue_a_request_twice():
+    print("the scheduler side is idempotent too")
+    gpu = make_scheduler(models=("model_1",))
+    ask = AdoptResumedReq(
+        rids=["model_1#33"], model="model_1", gpu_id=1, prefill_tokens=[290],
+        arrival_times=[1000.0], slos=[5.0], request_time=0.0,
+        reason="kv-migration-resume")
+
+    gpu._handle_mh_adopt_resumed(ask)
+    gpu._handle_mh_adopt_resumed(ask)
+    queued = [w.req.rid for w in gpu.queue._queue]
+    check("a repeated ask does not queue it twice",
+          queued.count("model_1#33") == 1)
+
+    seq = dispatch(gpu, "model_1#33", "model_1")
+    gpu._handle_mh_adopt_resumed(ask)
+    check("nor once it is already outstanding",
+          [w.req.rid for w in gpu.queue._queue].count("model_1#33") == 0
+          and len(gpu._mh_outstanding_prefills) == 1)
+    check("so it holds exactly one sequence", seq == 1)
+
+
 def main():
     test_h1_source_retires_and_repairs()
     test_h1_never_steps_over_a_live_sequence()
@@ -710,6 +763,8 @@ def main():
     test_retraction_re_enters_through_algorithm_2()
     test_the_traced_failure_end_to_end()
     test_repeated_retraction_does_not_duplicate_the_ledger()
+    test_holding_several_requests_asks_about_each_once()
+    test_the_scheduler_refuses_to_queue_a_request_twice()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         for name in FAIL:

@@ -1,0 +1,167 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run4",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 7611,
+        "alg2_log_lines": 2
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": false,
+      "detail": {
+        "events": 7611,
+        "violations": [
+          {
+            "actual_alg2_seqs": [
+              643
+            ],
+            "actual_model": "model_1",
+            "actual_rids": [
+              "model_1#33"
+            ],
+            "alg2_seq": 647,
+            "event": "backend_admit",
+            "event_time": 1787411449.9774566,
+            "expected_model": "model_1",
+            "expected_rid": "model_1#33",
+            "gpu_id": 1,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "1": {
+            "dispatch": 648,
+            "backend_admit": 643,
+            "prefill_start": 642,
+            "prefill_complete": 642
+          },
+          "0": {
+            "dispatch": 1259,
+            "backend_admit": 1259,
+            "prefill_start": 1259,
+            "prefill_complete": 1259
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": false,
+      "detail": {
+        "gaps": [
+          {
+            "gpu": 1,
+            "event": "backend_admit",
+            "non_consecutive": 1
+          }
+        ]
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": false,
+      "detail": {
+        "migrations": 2,
+        "admission_events_during_migrations": 3957,
+        "violations": [
+          {
+            "actual_alg2_seqs": [
+              643
+            ],
+            "actual_model": "model_1",
+            "actual_rids": [
+              "model_1#33"
+            ],
+            "alg2_seq": 647,
+            "event": "backend_admit",
+            "event_time": 1787411449.9774566,
+            "expected_model": "model_1",
+            "expected_rid": "model_1#33",
+            "gpu_id": 1,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": false,
+      "detail": {
+        "net_by_gpu": {
+          "1": 6,
+          "0": 0
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "143"
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": false,
+      "detail": {
+        "watchdog_state": "FAIL",
+        "failure_reason": "benchmark: no actual progress event"
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": true,
+      "detail": {
+        "offered": 8423,
+        "completed": 1876,
+        "aborted": 6547,
+        "accounted": 8423
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 1876,
+    "aborted": 6547,
+    "request_throughput": 4.2935975268034765,
+    "mean_ttft_ms": 21525.426523644786,
+    "p99_ttft_ms": 76888.02868127823,
+    "mean_tpot_ms": 295.9686456729988,
+    "p99_tpot_ms": 938.1713196635246
+  }
+}
