@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""Record exactly what the final evaluation is being run on, once, before it starts."""
+
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def sh(args):
+    try:
+        return subprocess.run(args, capture_output=True, text=True,
+                              timeout=60).stdout.strip()
+    except Exception as e:
+        return f"<unavailable: {e}>"
+
+
+def sha256(path):
+    path = Path(path)
+    if not path.exists():
+        return None
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def main():
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "exp/results/final-evaluation/FINAL_ENVIRONMENT.json"
+
+    git_sha = sh(["git", "-C", str(ROOT), "rev-parse", "HEAD"])
+    git_short = sh(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"])
+    dirty = sh(["git", "-C", str(ROOT), "status", "--porcelain"])
+    src = ROOT / "prism-research"
+    src_sha = sh(["git", "-C", str(src), "rev-parse", "HEAD"])
+    src_dirty = sh(["git", "-C", str(src), "status", "--porcelain"])
+
+    versions = {}
+    py = "/workspace/prism-exp/prism-venv/bin/python"
+    code = ("import json,sys,torch;"
+            "import sglang;"
+            "print(json.dumps({'python':sys.version.split()[0],"
+            "'torch':torch.__version__,'cuda_runtime':torch.version.cuda,"
+            "'cudnn':torch.backends.cudnn.version(),"
+            "'sglang':getattr(sglang,'__version__','unknown'),"
+            "'device_count':torch.cuda.device_count()}))")
+    raw = sh([py, "-c", code])
+    try:
+        versions = json.loads(raw.splitlines()[-1])
+    except Exception:
+        versions = {"error": raw[:400]}
+    for pkg in ("flashinfer", "kvcached", "vllm", "transformers"):
+        versions[pkg] = sh([py, "-c",
+                            f"import {pkg};print(getattr({pkg},'__version__','unknown'))"]).splitlines()[-1:] or None
+        versions[pkg] = versions[pkg][0] if versions[pkg] else None
+
+    gpus = sh(["nvidia-smi",
+               "--query-gpu=index,name,memory.total,driver_version,compute_cap",
+               "--format=csv,noheader"])
+    topo = sh(["nvidia-smi", "topo", "-m"])
+    nvlink = sh(["nvidia-smi", "nvlink", "--status"])
+
+    exp = ROOT / "exp"
+    workload_dir = exp / "results/baseline-readiness/raw/migration-D2/workload"
+    hashes = {
+        "config_6model_2gpu": sha256(exp / "configs/v2/6model_2gpu.json"),
+        "slo_base": sha256(exp / "configs/v2/slo_base.json"),
+        "prefill_speed_current": sha256(exp / "configs/v2/prefill_speed.json"),
+        "bursty_r20_s1_pkl": sha256(workload_dir / "bursty_r20_s1.pkl"),
+        "paired_requests_r20_s1": sha256(workload_dir / "paired_requests_r20_s1.json"),
+        "phases_r20_s1": sha256(workload_dir / "phases_r20_s1.json"),
+        "run_v4_case_sh": sha256(exp / "scripts/run_v4_case.sh"),
+    }
+
+    models = {}
+    for entry in json.loads((exp / "configs/v2/6model_2gpu.json").read_text()):
+        path = entry["model_path"]
+        cache = list(Path("/workspace/.hf_home/hub").glob(
+            f"models--{path.replace('/', '--')}/snapshots/*"))
+        models[entry["model_name"]] = {
+            "model_path": path,
+            "tp_size": entry["tp_size"],
+            "hf_snapshot": str(cache[0]) if cache else None,
+        }
+
+    # The runtime lives in prism-research/, which this repo gitignores, so the
+    # thing to pin is the source patch -- not this repo's HEAD, which moves as
+    # pipeline scripts are added. RUNTIME_FREEZE is the commit the runtime was
+    # frozen at; the patch must still be byte-identical to the one it carried.
+    runtime_freeze = os.environ.get("PRISM_RUNTIME_FREEZE", "8cb8e7a")
+    patch_rel = "patches/final_baseline_ready/prism_research_worktree.patch"
+    frozen_patch = sh(["git", "-C", str(ROOT), "show",
+                       f"{runtime_freeze}:{patch_rel}"])
+    frozen_patch_sha = (hashlib.sha256(frozen_patch.encode()).hexdigest()
+                        if frozen_patch and not frozen_patch.startswith("<")
+                        else None)
+    current_patch_text = (ROOT / patch_rel).read_text()
+    current_patch_sha = hashlib.sha256(current_patch_text.encode()).hexdigest()
+    runtime_unchanged = frozen_patch_sha == current_patch_sha
+
+    env = {
+        "recorded_utc": datetime.now(timezone.utc).isoformat(),
+        "runtime_freeze": {
+            "commit": runtime_freeze,
+            "patch": patch_rel,
+            "patch_sha256_at_freeze": frozen_patch_sha,
+            "patch_sha256_now": current_patch_sha,
+            "runtime_unchanged_since_freeze": runtime_unchanged,
+        },
+        "freeze": {
+            "git_sha": git_sha,
+            "git_sha_short": git_short,
+            "git_clean": dirty == "",
+            "git_dirty_files": dirty.splitlines(),
+            "source_repo_sha": src_sha,
+            "source_repo_dirty_files": len(src_dirty.splitlines()),
+            "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
+            "source_patch_sha256": sha256(
+                ROOT / "patches/final_baseline_ready/prism_research_worktree.patch"),
+        },
+        "gpus": gpus.splitlines(),
+        "nvidia_smi_topo_m": topo,
+        "nvlink_status": nvlink.splitlines()[:8],
+        "versions": versions,
+        "flashinfer_workspace_bytes": int(os.environ.get(
+            "FLASHINFER_WORKSPACE_SIZE", 1073741824)),
+        "flashinfer_workspace_source": "exp/scripts/env.sh",
+        "hashes": hashes,
+        "models": models,
+        "workload_dir": str(workload_dir),
+        "python_interpreter": py,
+    }
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(env, indent=2, sort_keys=True) + "\n")
+    print(json.dumps({k: env[k] for k in ("freeze", "gpus", "versions",
+                                          "flashinfer_workspace_bytes")},
+                     indent=2)[:1600])
+    print(f"\nwrote {out}")
+    if not runtime_unchanged:
+        print("FATAL: the runtime source patch differs from the frozen commit",
+              file=sys.stderr)
+        return 1
+    if not env["freeze"]["git_clean"]:
+        print("FATAL: the experiment repository has uncommitted changes",
+              file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
