@@ -102,18 +102,51 @@ def main():
         per_gpu.setdefault(event.get("gpu_id"), {}).setdefault(
             event.get("event"), []).append(seq)
 
+    # Sequences a request took with it when it left the GPU. Retirement skips
+    # them deliberately -- the frontier steps over a retired sequence so the
+    # GPU does not wait for work that will never arrive -- so a gap those
+    # explain is correct behaviour. A gap nothing explains is a lost sequence.
+    retired_seqs = {}
+    for line in read(logs / "server.log.gpu_scheduler.log").splitlines():
+        if "[PAPER-ALG2-HANDOFF] " not in line:
+            continue
+        try:
+            rec = json.loads(line.split("[PAPER-ALG2-HANDOFF] ", 1)[1])
+        except (IndexError, json.JSONDecodeError):
+            continue
+        if rec.get("event") != "migrated_away":
+            continue
+        gpu = rec.get("gpu_id")
+        seen = retired_seqs.setdefault(gpu, {"admit": set(), "start": set()})
+        for entry in rec.get("retired", []):
+            # A retired request had not been admitted or started, or it would
+            # not have been in the ledger; both frontiers may step over it.
+            if entry.get("seq") is not None:
+                seen["admit"].add(entry["seq"])
+                seen["start"].add(entry["seq"])
+        seen["admit"].update(rec.get("drained_admit_seqs", []) or [])
+        seen["start"].update(rec.get("drained_start_seqs", []) or [])
+
     stale, gaps = [], []
     for gpu, by_event in per_gpu.items():
+        explained = retired_seqs.get(gpu, {"admit": set(), "start": set()})
         for event_name, seqs in by_event.items():
             if event_name not in ("backend_admit", "prefill_start"):
                 continue
             if any(b <= a for a, b in zip(seqs, seqs[1:])):
                 stale.append({"gpu": gpu, "event": event_name,
                               "not_increasing": True})
-            missing = [b for a, b in zip(seqs, seqs[1:]) if b != a + 1]
-            if missing:
+            key = "admit" if event_name == "backend_admit" else "start"
+            missing = []
+            for a, b in zip(seqs, seqs[1:]):
+                missing.extend(range(a + 1, b))
+            unexplained = sorted(set(missing) - explained[key])
+            if unexplained:
                 gaps.append({"gpu": gpu, "event": event_name,
-                             "non_consecutive": len(missing)})
+                             "missing": len(missing),
+                             "explained_by_retirement":
+                                 len(set(missing) & explained[key]),
+                             "unexplained_seqs": unexplained[:20]})
     record(
         "sequence_tokens_are_monotonic",
         not stale,
@@ -123,7 +156,9 @@ def main():
     record(
         "sequence_tokens_have_no_gaps",
         not gaps,
-        {"gaps": gaps},
+        {"gaps": gaps,
+         "retirements_seen": {g: {k: len(v) for k, v in d.items()}
+                              for g, d in retired_seqs.items()}},
     )
 
     # ---- 4. admission stayed ordered across every migration --------------

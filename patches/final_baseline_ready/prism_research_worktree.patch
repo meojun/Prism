@@ -4291,7 +4291,7 @@ index 0000000..f1baa4a
 +        return [(name, src, dst)]
 diff --git a/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
 new file mode 100644
-index 0000000..6d66144
+index 0000000..f5e29fb
 --- /dev/null
 +++ b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
 @@ -0,0 +1,171 @@
@@ -4406,7 +4406,7 @@ index 0000000..6d66144
 +                self._audit["rejected_last_model_on_gpu"] += 1
 +                continue
 +            weights_gib = self.model_weights_info[name]["model_size"]
-+            need = weights_gib + self.target_reserve_gib
++            need = self._target_memory_required(name)
 +            if gpu_available_memory.get(dst, 0.0) < need:
 +                blocked.append({
 +                    "model": name, "reason": "target memory infeasible",
@@ -4467,10 +4467,40 @@ index 0000000..6d66144
 +            return []
 +        return [(chosen["model"], chosen["from"], chosen["to"])]
 diff --git a/python/sglang/multi_model/scheduling/policy/simple_global.py b/python/sglang/multi_model/scheduling/policy/simple_global.py
-index 316cdf8..57d455d 100644
+index 316cdf8..de629b6 100644
 --- a/python/sglang/multi_model/scheduling/policy/simple_global.py
 +++ b/python/sglang/multi_model/scheduling/policy/simple_global.py
-@@ -708,7 +708,8 @@ class SimpleGlobalPolicy(GlobalPolicy):
+@@ -700,6 +700,29 @@ class SimpleGlobalPolicy(GlobalPolicy):
+         
+         return inactive_models_with_requests
+     
++    def _target_memory_required(self, model_name: str) -> float:
++        """Free memory a GPU must have before it can take this model.
++
++        The weights, plus the reserve the engine itself insists on before it
++        will bring a model up (`ModelRunner.min_reserve_mem`). One definition
++        for both planner branches: `_find_optimal_migrations` applies it to a
++        migration target, and inactive-model activation applies it here.
++
++        Without it the planner can order an activation the engine cannot
++        perform, and `load_gpu_model` then blocks *inside the scheduler's event
++        loop* waiting for memory that is not coming -- measured in D2 runs 7
++        and 8 (2,661 waiting iterations, the server serving nothing) and again
++        in D3 run 5, where 1,765 waiting lines followed
++        "ACTION: activate inactive model model_6 on GPU 0".
++
++        `target_reserve_gib` is 0.0 for policies that do not set it, so this is
++        the previous behaviour for them.
++        """
++        return (
++            self.model_weights_info[model_name]["model_size"]
++            + float(getattr(self, "target_reserve_gib", 0.0) or 0.0)
++        )
++
+     def _place_inactive_model(
+         self,
+         model_name: str,
+@@ -708,7 +731,8 @@ class SimpleGlobalPolicy(GlobalPolicy):
          gpu_available_memory: Dict[int, float],
          sorted_clusters: List[List[int]],
          model_queues: Dict[str, ModelQueueTracker],
@@ -4480,7 +4510,7 @@ index 316cdf8..57d455d 100644
      ) -> Optional[int]:
          """Place an inactive model with requests.
          Uses cluster-based approach to find suitable GPU.
-@@ -717,6 +718,11 @@ class SimpleGlobalPolicy(GlobalPolicy):
+@@ -717,6 +741,11 @@ class SimpleGlobalPolicy(GlobalPolicy):
          for cluster in sorted_clusters:
              gpu_time_budgets = []
              for gpu_id in cluster:
@@ -4492,7 +4522,7 @@ index 316cdf8..57d455d 100644
                  # Check if the GPU has enough memory
                  if gpu_available_memory[gpu_id] < model_memory_required:
                      continue
-@@ -875,15 +881,25 @@ class SimpleGlobalPolicy(GlobalPolicy):
+@@ -875,15 +904,28 @@ class SimpleGlobalPolicy(GlobalPolicy):
          sorted_clusters = self._prepare_gpu_clusters(gpu_available_memory)
          
          activation_plan = {}
@@ -4505,7 +4535,11 @@ index 316cdf8..57d455d 100644
 +        for _, _, target_gpu_id in migrations:
 +            gpu_planned_active_count[target_gpu_id] += 1
          for model_name in sorted_inactive_models:
-             model_memory_required = self.model_weights_info[model_name]["model_size"]
+-            model_memory_required = self.model_weights_info[model_name]["model_size"]
++            # Same condition a migration target has to meet; an activation the
++            # engine cannot carry out is worse than no activation, because it
++            # blocks that engine's event loop instead of being retried.
++            model_memory_required = self._target_memory_required(model_name)
              target_gpu = self._place_inactive_model(
                  model_name, 0, model_memory_required,  # instance_idx doesn't matter here
 -                gpu_available_memory, sorted_clusters, model_queues, model_instance_state_dict
@@ -4519,7 +4553,7 @@ index 316cdf8..57d455d 100644
              else:
                  logger.warning(f"No suitable GPU found for inactive model {model_name}")
  
-@@ -899,12 +915,19 @@ class SimpleGlobalPolicy(GlobalPolicy):
+@@ -899,12 +941,19 @@ class SimpleGlobalPolicy(GlobalPolicy):
          for model_name, source_gpu_id, target_gpu_id in migrations:
              # Deactivate the instance on source GPU
              source_instance_key = (model_name, source_gpu_id)
@@ -4540,7 +4574,7 @@ index 316cdf8..57d455d 100644
                          preempt_mode="RECOMPUTE",
                          evict_waiting_requests=True,
                          gpu_id=source_gpu_id,
-@@ -942,9 +965,17 @@ class SimpleGlobalPolicy(GlobalPolicy):
+@@ -942,9 +991,17 @@ class SimpleGlobalPolicy(GlobalPolicy):
          logger.info(f"Total time for global scheduling: {end_total - start_total:.4f}s")
  
          all_actions = []

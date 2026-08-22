@@ -159,11 +159,57 @@ def test_replays_the_recorded_d2_decisions():
     print(f"        allowed={allowed} refused={refused} reserve={reserve:.3f} GiB")
 
 
+def test_activation_uses_the_same_condition_as_migration():
+    """The planner's other branch: activating an inactive model.
+
+    D3 run 5 stalled on it. `ACTION: activate inactive model model_6 on GPU 0`
+    was ordered against a weights-only test, the engine could not carry it out,
+    and it blocked in load_gpu_model's wait *inside its event loop* -- 1,765
+    waiting lines, that GPU serving nothing for the rest of the run. The
+    migration branch had been refusing exactly this since Fix A; this branch
+    was not checked at all.
+    """
+    print("inactive-model activation, judged like a migration target")
+    pol = policy(reserve=6.459)
+
+    weights = WEIGHTS["model_6"]["model_size"]
+    check("one definition, used by both branches",
+          pol._target_memory_required("model_6") == weights + 6.459)
+
+    lenient = policy(reserve=0.0)
+    check("a policy without a reserve is unchanged",
+          lenient._target_memory_required("model_6") == weights)
+
+    # 18.64 GB free -- the D2 shape, and enough for the weights alone.
+    marginal = {0: 18.64, 1: 4.0}
+    clusters = pol._prepare_gpu_clusters(marginal)
+    target = pol._place_inactive_model(
+        "model_6", 0, pol._target_memory_required("model_6"),
+        marginal, clusters, {}, {}, {0: 0, 1: 0})
+    check("a GPU that fits only the weights is not chosen", target is None)
+
+    target_old = pol._place_inactive_model(
+        "model_6", 0, weights, marginal, clusters, {}, {}, {0: 0, 1: 0})
+    check("which is a change: the weights-only test did choose it",
+          target_old == 0)
+
+    roomy = {0: 44.67, 1: 4.0}
+    clusters = pol._prepare_gpu_clusters(roomy)
+    target = pol._place_inactive_model(
+        "model_6", 0, pol._target_memory_required("model_6"),
+        roomy, clusters, {}, {}, {0: 0, 1: 0})
+    check("a GPU with real headroom is still chosen", target == 0)
+
+    check("and the refusal happens in the planner, before any engine call",
+          not hasattr(pol, "load_gpu_model"))
+
+
 def main():
     test_reserve_blocks_a_target_that_only_fits_the_weights()
     test_reserve_still_allows_a_target_with_real_headroom()
     test_the_gate_is_reported_not_silent()
     test_replays_the_recorded_d2_decisions()
+    test_activation_uses_the_same_condition_as_migration()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         for name in FAIL:
