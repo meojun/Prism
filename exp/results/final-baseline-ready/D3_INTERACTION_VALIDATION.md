@@ -3,9 +3,12 @@
 ## Verdict
 
 ```text
-D3 INTERACTION GATE : FAIL -- concrete integration gap
-STOP C: no tau calibration, no c_i reprofiling, no sweep.
+D3 INTERACTION GATE : PASS   (run 8)
 ```
+
+Eight runs. The first seven each failed, and each one named a different place
+where a request could reach prefill, or leave a GPU, without Algorithm 2's
+runtime ledger knowing. The eighth completed.
 
 ## Setting
 
@@ -19,103 +22,95 @@ workload       bursty rate 20, seed 1  (same trace, hashes unchanged)
 run            one
 ```
 
-## What happened
-
-The run served 882 requests and then stopped. No CUDA fault, no NCCL error, no
-OOM, no crash, and no request was lost -- the server simply stopped making
-progress and the watchdog ended it.
+## Result
 
 ```text
-13:22:11  MIGRATE model_4 GPU0 -> GPU1
-13:22:1x  17 [PAPER-KV-V6] "resume" events: model_4's in-flight requests are
-          rebuilt on GPU1 from their migrated KV
-13:22:22  PAPER-ALG2-RUNTIME prefill_complete, model_4, 17 rids,
-          alg2_seq null, expected_rid null, order_ok FALSE
-13:22:22  GPU_Scheduler_1: "WorkerPool GPU 1 cleanup completed"
-13:22:31  last GPU0 activity
-13:22:44  last served response
-13:22:50  controller sends a deactivate and never returns
+completed          8,422 of 8,423
+aborted                1
+throughput         18.49 req/s
+mean TTFT       7,393.6 ms      P99 TTFT   84,953.5 ms
+mean TPOT         143.7 ms      P99 TPOT      877.3 ms
+migrations            10        weight transfers 22, all P2P
+KV transfers           7, all P2P
+rc 0, watchdog COMPLETE
 ```
-
-The ordering gate did exactly what it was built to do. `_handle_mh_prefill_complete`
-looks each completing request up in `_mh_outstanding_prefills`, finds nothing,
-and fails closed -- `_shutdown_event.set()` and a raise -- rather than accept a
-completion it cannot place in the global order. GPU scheduler 1 went down with
-it, GPU scheduler 0 kept looping with nothing to do, and the controller blocked
-on a deactivate that would never be acknowledged.
-
-## The gap
-
-Algorithm 2's runtime bookkeeping is per GPU scheduler. A request is entered
-into `_mh_outstanding_prefills` on the GPU that *dispatched* it, carrying that
-GPU's monotonic `alg2_seq`, and is removed when its prefill completes there.
-
-KV migration moves in-flight requests to another GPU. `build_resumed_request`
-rebuilds them on the target and they re-enter prefill there. Nothing hands them
-to the target's Algorithm 2 bookkeeping: they were dispatched under GPU0's
-sequence and complete under GPU1's gate, which has no record of them.
-
-The 17 rids in the failing message are exactly the 17 resume events, and their
-request numbers (`model_4#1`, `#2`, `#7`, `#10` ...) are the old, long-running
-requests that were in flight when model_4 moved -- not the freshly dispatched
-`model_4#100..#102` that carried sequences 642-645 moments earlier.
-
-So this is not a scheduling-policy question and not a Moore--Hodgson defect. It
-is an integration gap between two mechanisms that were each verified alone:
-
-```text
-D1  Algorithm 2 correct, migration off   PASS
-D2  migration correct, Algorithm 2 off   PASS (runs 5, 6, 9)
-D3  both on                              FAIL, at the seam
-```
-
-## Gate output
-
-`exp/scripts/check_alg2_interaction.py`, full output in
-`d3_run1_interaction.json`. The same script passes the D1 Algorithm 2 evidence
-and fails a run with Algorithm 2 off, so it discriminates in both directions.
 
 | check | result |
 |---|---|
-| Algorithm 2 ran | PASS (3,521 runtime events) |
-| no Algorithm 2 order violation | **FAIL** (1, the resumed batch) |
+| Algorithm 2 ran | PASS |
+| no Algorithm 2 order violation | PASS |
+| runtime raised no ordering error | PASS |
 | sequence tokens monotonic | PASS |
-| sequence tokens have no gaps | PASS |
-| admission ordered across migrations | **FAIL** (same event) |
-| outstanding work retired | **FAIL** (net 3 on each GPU) |
-| pipeline rc zero | **FAIL** (143) |
-| no deadlock | **FAIL** |
+| sequence tokens have no unexplained gaps | PASS |
+| admission ordered across migrations | PASS |
+| outstanding work retired | PASS |
+| pipeline rc zero | PASS |
+| no deadlock | PASS |
 | no request loss | PASS |
 | no migration-induced abort | PASS |
 | no fatal CUDA or NCCL | PASS |
 
-`outstanding work retired` failing with a net of 3 per GPU is the same defect
-seen from the accounting side: requests that left one GPU's outstanding map by
-migrating never arrived in the other's.
+## What each run found
 
-## What a fix has to decide, and why it is not made here
+| run | completed | what it named |
+|---|---:|---|
+| 1 | 882 | a request resumed from migrated KV re-entered prefill with no entry in the target's ledger; the completion gate failed closed |
+| 2 | 2,895 | a request dispatched into a model's Redis queue and not yet fetched was retired by no eviction path |
+| 3 | 2,019 | decode retraction returns a request to the waiting queue, and it re-enters prefill unregistered |
+| 4 | 1,882 | holding several requests re-asked for the earlier ones, so one was queued twice and took two sequences |
+| 5 | 6,164 | the inactive-model activation branch had no feasibility test, so an activation blocked its engine's event loop |
+| 6 | 1,624 | a worker slot is reused, so an adoption grant could be admitted under the wrong model |
+| 7 | 8,253 | an admitted request could not be scheduled because every pool on the GPU reported full for a device-wide reason |
+| 8 | **8,422** | **PASS** |
 
-Two shapes are possible, and they are not equivalent:
+The handoff invariant those fixes were written against is in
+`ALG2_MIGRATION_HANDOFF_INVARIANT.md`; the ownership question run 7 raised is
+answered in `KV_OWNERSHIP_DIAGNOSIS.md`.
 
-1. **Adopt resumed requests into the target's schedule.** The target assigns
-   them a fresh `alg2_seq` when it rebuilds them, so they are ordered and
-   accounted like any other request on that GPU. This is the more faithful
-   reading -- a resumed request really does occupy prefill capacity on the
-   target, and Algorithm 2 is supposed to be the order in which that capacity
-   is granted.
+## The last change, and its evidence
 
-2. **Exempt them from the ordering check** while still counting their work as
-   outstanding. Smaller, but it puts requests through prefill on a GPU whose
-   global order did not schedule them, which weakens exactly the invariant D1
-   established.
+Run 8 differs from run 7 by one thing: `available_size()` on the elastic v0
+path is pool-local again.
 
-Choosing between them changes what "the global order" means for a migrated
-request, so it is a decision to be taken deliberately rather than folded into a
-bug fix. Nothing was changed in response to this run.
+That clamp was added (ad8a76c, reinstated 824caa7) to stop the KV pools taking
+memory an incoming activation needed -- D2 run 4's
+`create_empty_gpu_model_from_cpu_model` died with 185.25 MiB free three seconds
+after the planner had cleared it. Checking whether it was still needed turned up
+that **when it was chosen, the engine's own guard at that allocation was dead
+logic**: `model_gpu_mem_usage` was 0 until 70ad7b8, which lands after 824caa7,
+so the wait in `load_gpu_model` collapsed to `free < min_reserve_mem` and the
+allocation that OOMed had nothing in front of it.
+
+It does now. The wait requires weights plus `min_reserve_mem` and sits
+immediately before that same call, and since 56636e1 the planner refuses a
+target without them on both its branches. Across the nine runs since the guard
+came alive there were **zero activation OOMs**; the guard engages when the
+planner misses (run 5, 1,765 waits, before the activation branch was gated) and
+is not needed once it does not (runs 6, 7, 8: none).
+
+The clamp's cost had been measured in the ownership trace: `_physical_free_size`
+is device-wide, so one GPU tightening made every pool on it report as nearly
+full and cut every `PrefillAdder` budget at once -- model_2 reporting 360,847
+tokens used while its live requests held 400, with 573,041 still available, and
+four independent pools losing availability together inside one 0.84 s step. That
+is what left run 7's sequence 5472 unable to start on a pool that was nearly
+empty.
+
+So the conclusion this change records:
+
+> The physical clamp was needed while the activation guard was dead logic. The
+> planner feasibility gate and the engine's allocation guard now cover that
+> condition directly and in two places, and the clamp was left doing nothing for
+> activation safety while cutting KV prefill liveness.
+
+Run 8 bears that out on all three of the conditions that would have said
+otherwise: **zero CUDA OOMs, zero activation waits, and zero decode
+retractions** -- the last meaning no pool was driven into genuine KV pressure,
+so the existing backpressure path was never needed rather than broken.
 
 ## Status
 
 ```text
-STOP C. D2 stays PASS; D3 fails at the Algorithm 2 x migration seam.
-No tau calibration, no c_i reprofiling, no final sweep.
+D3 interaction: PASS
+Next: 6-model c_i reprofiling, then tau calibration, then the final sweep.
 ```

@@ -1,0 +1,137 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run8",
+  "verdict": "PASS",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 34200,
+        "alg2_log_lines": 6
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": true,
+      "detail": {
+        "events": 34200,
+        "violations": []
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "0": {
+            "dispatch": 4036,
+            "backend_admit": 4036,
+            "prefill_start": 4036,
+            "prefill_complete": 4036
+          },
+          "1": {
+            "dispatch": 4514,
+            "backend_admit": 4514,
+            "prefill_start": 4514,
+            "prefill_complete": 4514
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": true,
+      "detail": {
+        "gaps": [],
+        "retirements_seen": {
+          "1": {
+            "admit": 0,
+            "start": 0
+          },
+          "0": {
+            "admit": 0,
+            "start": 0
+          }
+        }
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": true,
+      "detail": {
+        "migrations": 10,
+        "admission_events_during_migrations": 42456,
+        "violations": []
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": true,
+      "detail": {
+        "net_by_gpu": {
+          "0": 0,
+          "1": 0
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": true,
+      "detail": {
+        "pipeline_rc": "0"
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": true,
+      "detail": {
+        "watchdog_state": "COMPLETE",
+        "failure_reason": null
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": true,
+      "detail": {
+        "offered": 8423,
+        "completed": 8422,
+        "aborted": 1,
+        "accounted": 8423
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 8422,
+    "aborted": 1,
+    "request_throughput": 18.48581444595239,
+    "mean_ttft_ms": 7393.622497854366,
+    "p99_ttft_ms": 84953.46347332,
+    "mean_tpot_ms": 143.68262191339636,
+    "p99_tpot_ms": 877.2800525146362
+  }
+}
