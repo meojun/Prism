@@ -1,0 +1,300 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/migration-D2/run4",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "143"
+      }
+    },
+    {
+      "check": "watchdog_complete",
+      "pass": false,
+      "detail": {
+        "state": "FAIL",
+        "failure_reason": "benchmark: inner server session exited without result"
+      }
+    },
+    {
+      "check": "no_cuda_oom",
+      "pass": false,
+      "detail": {
+        "count": 2,
+        "hits": [
+          {
+            "file": "server-logs/server.log",
+            "line": 1877,
+            "pattern": "out of memory",
+            "text": "[2026-08-22 09:43:35.162 GPU=0 Worker 2 (model_5) TP=0] Decode out of memory happened. #retracted_reqs: 7, #new_token_ratio: 0.1000 -> 0.2134"
+          },
+          {
+            "file": "server-logs/server.log",
+            "line": 3018,
+            "pattern": "out of memory",
+            "text": "torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 260.00 MiB. GPU 1 has a total capacity of 79.25 GiB of which 185.25 MiB is free. Process 1636755 has 434.00 MiB memory in use. Process 1637195 has 434.00 MiB memory in use. Process 1637905 has 580.00 MiB memory in use. Process 1638674 has 434.00 MiB memory in use. Process 1642187 has 434.00 MiB memory in use. Process 1642728 has 434.00 "
+          }
+        ]
+      }
+    },
+    {
+      "check": "no_server_crash",
+      "pass": false,
+      "detail": {
+        "count": 1,
+        "hits": [
+          {
+            "file": "server-logs/stdout.log",
+            "line": 3185,
+            "pattern": "Killed",
+            "text": "bash: line 1: 253574 Killed                  python3 -m sglang.launch_multi_model_server --model-config-file /root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json --host 127.0.0.1 --port 41150 --disable-cuda-graph --disable-radix-cache --log-file /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run4/server-logs/server.log --enable-elastic-me"
+          }
+        ]
+      }
+    },
+    {
+      "check": "migration_source_is_the_resident_gpu",
+      "pass": true,
+      "detail": {
+        "migrations": 4,
+        "wrong_source": []
+      }
+    },
+    {
+      "check": "every_decision_produced_a_transfer",
+      "pass": true,
+      "detail": {
+        "decisions_without_a_weight_transfer": []
+      }
+    },
+    {
+      "check": "at_least_one_gpu_to_gpu_migration",
+      "pass": true,
+      "detail": {
+        "gpu_to_gpu_migrations": 4
+      }
+    },
+    {
+      "check": "reverse_migration_completed",
+      "pass": false,
+      "detail": {
+        "reverse_pairs": []
+      }
+    },
+    {
+      "check": "kv_transfer_healthy",
+      "pass": true,
+      "detail": {
+        "transfers_with_requests": 3,
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ],
+        "requests_moved": 115,
+        "tokens_moved": 35088,
+        "skipped_over_cap": 0
+      }
+    },
+    {
+      "check": "migrations_not_all_blocked_by_memory",
+      "pass": true,
+      "detail": {
+        "migrations_emitted": 4,
+        "rejected_by_memory": 0,
+        "suppressed_by_tau": 44,
+        "deferred_by_cooldown": 9,
+        "rejected_last_model_on_gpu": 0
+      }
+    },
+    {
+      "check": "migration_weights_move_over_p2p",
+      "pass": true,
+      "detail": {
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ],
+        "with_a_transfer": 4,
+        "decisions": 4
+      }
+    },
+    {
+      "check": "release_is_owner_aware",
+      "pass": true,
+      "detail": {
+        "releases": 8,
+        "releases_without_ownership_evidence": 0
+      }
+    },
+    {
+      "check": "no_residency_metadata_loss",
+      "pass": true,
+      "detail": {
+        "releases": 8,
+        "undecidable_releases": 0,
+        "preserved_after_migration": 4,
+        "corrupt": []
+      }
+    },
+    {
+      "check": "benchmark_result_written",
+      "pass": true,
+      "detail": {
+        "result_file": "paper-migration-only_bursty_rate20_seed1_e2e_2gpu_1.0x_1rep.json"
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "shutdown_state_reported_clean",
+      "pass": true,
+      "detail": {
+        "lines": "no shutdown outstanding report in this arm"
+      }
+    }
+  ],
+  "migrations": [
+    {
+      "migration_id": 1,
+      "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
+      "from": 1,
+      "to": 0,
+      "weight_src": "1",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 15231233024,
+      "seconds": 1.2519331900402904,
+      "payload_gbps": 12.166170803020103,
+      "tag": "Qwen/Qwen2.5-7B-Instruct|engine=0_3|src=1"
+    },
+    {
+      "migration_id": 2,
+      "model": "model_4",
+      "model_path": "Qwen/Qwen2.5-3B-Instruct",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 6794207232,
+      "seconds": 0.44792196387425065,
+      "payload_gbps": 15.168283272457256,
+      "tag": "Qwen/Qwen2.5-3B-Instruct|engine=1_3|src=0"
+    },
+    {
+      "migration_id": 3,
+      "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 2996965376,
+      "seconds": 0.18916851887479424,
+      "payload_gbps": 15.842833648148474,
+      "tag": "meta-llama/Llama-3.2-1B|engine=1_2|src=0"
+    },
+    {
+      "migration_id": 4,
+      "model": "model_2",
+      "model_path": "Qwen/Qwen2.5-1.5B-Instruct",
+      "matched_by_model_path": true,
+      "from": 1,
+      "to": 0,
+      "weight_src": "1",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 3554176000,
+      "seconds": 0.272117568179965,
+      "payload_gbps": 13.061178018647604,
+      "tag": "Qwen/Qwen2.5-1.5B-Instruct|engine=0_1|src=1"
+    }
+  ],
+  "releases": [
+    {
+      "line": 3058,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "0",
+      "held_engine": "0_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3107,
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gpu": "0",
+      "engine": "0_1",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3147,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "0",
+      "engine": "0_0",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "False"
+    },
+    {
+      "line": 3173,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "0",
+      "engine": "0_3",
+      "held": "0",
+      "held_engine": "0_3",
+      "dropped": "True"
+    },
+    {
+      "line": 3218,
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu": "1",
+      "engine": "1_0",
+      "held": "0",
+      "held_engine": "0_1",
+      "dropped": "False"
+    },
+    {
+      "line": 3245,
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu": "0",
+      "engine": "0_1",
+      "held": "0",
+      "held_engine": "0_1",
+      "dropped": "True"
+    },
+    {
+      "line": 3251,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "True"
+    },
+    {
+      "line": 3253,
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gpu": "1",
+      "engine": "1_3",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "True"
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 2903,
+    "aborted": 5520
+  }
+}
