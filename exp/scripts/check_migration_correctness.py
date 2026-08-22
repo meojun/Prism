@@ -119,21 +119,43 @@ def main():
     record("no_server_crash", not crash, {"count": len(crash), "hits": crash[:5]})
 
     # ---- 3. every migration used the GPU source it actually has ------------
+    # Match each decision to *its own* model's transfer. Matching on target
+    # GPU alone silently pairs a migration with an unrelated activation that
+    # happened to land on the same GPU -- which is how a run whose migration
+    # never ran at all can be reported as having used the wrong source.
+    model_paths = {}
+    for candidate_cfg in (run / "STAGE_CMD.sh", run / "pipeline.log",
+                          run / "monitor" / "status.json",
+                          logs / "stdout.log"):
+        text = read(candidate_cfg)
+        found = re.search(r"--model-config-file[= ]+(\S+)", text)
+        if not found:
+            continue
+        try:
+            entries = json.loads(read(Path(found.group(1).strip("'\""))))
+        except (json.JSONDecodeError, OSError):
+            continue
+        model_paths = {e["model_name"]: e["model_path"] for e in entries}
+        break
+
     decisions = [
         r for r in marked(controller, "[PAPER-ALG1-V4] ")
         if r.get("migration_decision") == "MIGRATE"
     ]
     decisions.sort(key=lambda r: r["timestamp"])
     weights = jsonl(run / "weight_transfers.jsonl")
-    migrations, cold = [], []
+    migrations, cold, missing = [], [], []
     for index, decision in enumerate(decisions, 1):
         candidate = decision["candidate"]
         model_path = candidate.get("model_path") or candidate.get("model")
         source_gpu, target_gpu = candidate["from"], candidate["to"]
+        wanted_path = model_paths.get(candidate.get("model"))
         after = [
             w for w in weights
             if w.get("target_gpu") == target_gpu
             and w.get("start_time", 0) >= decision["timestamp"]
+            and (wanted_path is None
+                 or str(w.get("tag", "")).startswith(wanted_path + "|"))
         ]
         transfer = min(after, key=lambda w: w["start_time"]) if after else None
         tag = TAG_RE.match(str(transfer.get("tag", ""))) if transfer else None
@@ -141,6 +163,8 @@ def main():
         row = {
             "migration_id": index,
             "model": candidate.get("model"),
+            "model_path": wanted_path,
+            "matched_by_model_path": wanted_path is not None,
             "from": source_gpu,
             "to": target_gpu,
             "weight_src": src,
@@ -154,12 +178,19 @@ def main():
         migrations.append(row)
         # The model was GPU-resident on `from` when the decision was taken, so
         # the transfer must read it from there rather than from host memory.
-        if src != str(source_gpu):
+        if transfer is None:
+            missing.append(row)
+        elif src != str(source_gpu):
             cold.append(row)
     record(
         "migration_source_is_the_resident_gpu",
         not cold,
         {"migrations": len(migrations), "wrong_source": cold},
+    )
+    record(
+        "every_decision_produced_a_transfer",
+        not missing,
+        {"decisions_without_a_weight_transfer": missing},
     )
     # A gate that a run with zero migrations could pass would not test
     # migration at all, so the substance of the arm is required explicitly.
@@ -220,11 +251,16 @@ def main():
             "deferred_by_cooldown", "rejected_last_model_on_gpu")},
     )
 
+    # Judged over the transfers that happened; a decision with no transfer at
+    # all is reported by `every_decision_produced_a_transfer` instead, so one
+    # dead migration is not counted as two separate defects.
+    transferred = [row for row in migrations if row["transfer_path"]]
     record(
         "migration_weights_move_over_p2p",
-        all(row["transfer_path"] == "gpu-to-gpu-p2p" for row in migrations)
-        if migrations else False,
-        {"paths": sorted({row["transfer_path"] for row in migrations})},
+        bool(transferred)
+        and all(row["transfer_path"] == "gpu-to-gpu-p2p" for row in transferred),
+        {"paths": sorted({str(row["transfer_path"]) for row in migrations}),
+         "with_a_transfer": len(transferred), "decisions": len(migrations)},
     )
 
     # ---- 4. residency records survive the source release -------------------

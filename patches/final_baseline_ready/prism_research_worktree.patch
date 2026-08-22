@@ -1731,7 +1731,7 @@ index 0000000..3101e94
 +        )
 +    return [(batch, workers) for batch, workers in ordered if batch]
 diff --git a/python/sglang/multi_model/scheduling/controller_global.py b/python/sglang/multi_model/scheduling/controller_global.py
-index 9f0dc7c..8afe3d3 100644
+index 9f0dc7c..45e5be0 100644
 --- a/python/sglang/multi_model/scheduling/controller_global.py
 +++ b/python/sglang/multi_model/scheduling/controller_global.py
 @@ -16,8 +16,20 @@ import torch
@@ -1773,7 +1773,7 @@ index 9f0dc7c..8afe3d3 100644
              self.gpu_ids = list(gpu_ids)
          else:
              self.gpu_ids = list(range(self.server_args.num_gpus))
-@@ -142,9 +160,101 @@ class GlobalController:
+@@ -142,9 +160,82 @@ class GlobalController:
                  model_weights_info=self.model_weights_info_after_renamed,
                  workers_per_gpu=self.server_args.workers_per_gpu,
              )
@@ -1837,25 +1837,6 @@ index 9f0dc7c..8afe3d3 100644
 +            # keyword-only signature they already had.
 +            _extra = ({"server_args": self.server_args}
 +                      if self.server_args.policy == "kvpr-global-tp" else {})
-+            if self.server_args.policy == "kvpr-global-v4":
-+                # The headroom a target GPU must keep beyond the incoming
-+                # weights, computed exactly as the engine computes its own
-+                # min_reserve_mem in ModelRunner ("leave room for other
-+                # model's activations").  Passing it to the policy enforces
-+                # the same invariant where the placement is decided, instead
-+                # of only inside an engine that is already committed.
-+                _mfs = getattr(self.server_args, "mem_fraction_static", None)
-+                if _mfs is None:
-+                    _mfs = 0.88  # SGLang's tp_size == 1 default
-+                _max_mem = getattr(self.server_args, "max_mem_usage", None)
-+                if not _max_mem:
-+                    _max_mem = gpu_mem * float(_mfs)
-+                _reserve = float(_max_mem) * (1.0 - float(_mfs)) * 0.8
-+                logger.info(
-+                    f"[PAPER-ALG1-V4] target memory reserve: {_reserve:.3f} GB "
-+                    f"(max_mem_usage={_max_mem}, mem_fraction_static={_mfs})"
-+                )
-+                _extra = {"target_reserve_gib": _reserve}
 +            self.policy = _cls(
 +                num_gpus=len(self.gpu_ids), gpu_mem=gpu_mem,
 +                model_weights_info=self.model_weights_info_after_renamed,
@@ -1875,7 +1856,7 @@ index 9f0dc7c..8afe3d3 100644
          logger.info(f"Using policy: {self.policy.__class__.__name__}")
  
          self._start_run_policy = (
-@@ -302,24 +412,141 @@ class GlobalController:
+@@ -302,24 +393,141 @@ class GlobalController:
                  time.sleep(5)
  
      def execute_actions(self, actions: List[BaseAction]):
@@ -4108,10 +4089,10 @@ index 0000000..f1baa4a
 +        return [(name, src, dst)]
 diff --git a/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
 new file mode 100644
-index 0000000..c01fc1b
+index 0000000..0dd91b1
 --- /dev/null
 +++ b/python/sglang/multi_model/scheduling/policy/kvpr_global_v4.py
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,154 @@
 +"""Algorithm 1 with a runtime placement audit.
 +
 +v3 already implements the paper's line-8 rule literally.  What it does not
@@ -4154,17 +4135,6 @@ index 0000000..c01fc1b
 +    """v3's rule, plus the planner-versus-runtime record v3 never kept."""
 +
 +    def __init__(self, *args, **kwargs):
-+        # GiB the target GPU must have free *beyond* the incoming weights.
-+        # A GPU is not ready to serve a model just because the weights fit:
-+        # the attention backend allocates a per-batch workspace outside the
-+        # KV pool, and with kvcached the pools grow into whatever is left.
-+        # The D2 run of 2026-08-22 moved a 15.23 GB model into 18.64 GB of
-+        # free memory, and the first 8,192-token prefill on the target died
-+        # allocating a 448 MB flashinfer workspace. This is the engine's own
-+        # `min_reserve_mem` ("leave room for other model's activations")
-+        # applied where the placement decision is actually made; it is not a
-+        # new policy term and does not touch Algorithm 1's line-8 rule.
-+        self.target_reserve_gib = float(kwargs.pop("target_reserve_gib", 0.0) or 0.0)
 +        super().__init__(*args, **kwargs)
 +        self._audit = {
 +            "cycles": 0,
@@ -4220,14 +4190,11 @@ index 0000000..c01fc1b
 +                blocked.append({"model": name, "reason": "last active model on source gpu"})
 +                self._audit["rejected_last_model_on_gpu"] += 1
 +                continue
-+            weights_gib = self.model_weights_info[name]["model_size"]
-+            need = weights_gib + self.target_reserve_gib
++            need = self.model_weights_info[name]["model_size"]
 +            if gpu_available_memory.get(dst, 0.0) < need:
 +                blocked.append({
 +                    "model": name, "reason": "target memory infeasible",
-+                    "need_gib": need, "weights_gib": weights_gib,
-+                    "reserve_gib": self.target_reserve_gib,
-+                    "free_gib": gpu_available_memory.get(dst, 0.0),
++                    "need_gib": need, "free_gib": gpu_available_memory.get(dst, 0.0),
 +                })
 +                self._audit["rejected_by_memory"] += 1
 +                continue
@@ -4260,7 +4227,6 @@ index 0000000..c01fc1b
 +            "cycle": self._cycle,
 +            "timestamp": now,
 +            "tau_mode": "absolute-line8",
-+            "target_reserve_gib": self.target_reserve_gib,
 +            "tau": self.tau,
 +            "kvpr": kvpr_now,
 +            "peak_kvpr": peak_now,
@@ -5661,66 +5627,6 @@ index 3cf0db7..dff2e3c 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
-diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
-index 31ec604..45d1801 100644
---- a/python/sglang/srt/mem_cache/memory_pool.py
-+++ b/python/sglang/srt/mem_cache/memory_pool.py
-@@ -398,25 +398,39 @@ class MHATokenToKVPool(BaseTokenToKVPool):
-         avail_phy_blocks = (avail_phy_pages // self.layer_num // 2) * (
-             PAGE_SIZE // self.kv_allocator.block_mem_size
-         )
--        return avail_phy_blocks
-+        # Below the reserve the subtraction above goes negative, and the GiB
-+        # reserve makes the whole expression a float. Callers compare and
-+        # index with this, so hand back a plain non-negative count: "less
-+        # room than we insist on keeping" is zero admissible blocks.
-+        return max(0, int(avail_phy_blocks))
-+
-+    def _cached_physical_free_size(self, reserve_gib: float) -> int:
-+        """`_physical_free_size`, rate-limited: this is on the admission path."""
-+        now = time.perf_counter()
-+        if (
-+            self.last_available_size is None
-+            or now - self.last_available_size[1] > PHYSICAL_MEM_CHECK_FREQ
-+        ):
-+            self.last_available_size = (self._physical_free_size(reserve_gib), now)
-+        return self.last_available_size[0]
- 
-     def available_size(self):
-         if self.enable_elastic_memory:
--            if self.use_kvcached_v0:
--                return self.kv_allocator.available_size()
--
--            if self.last_available_size is None:
--                free_size = self._physical_free_size(0.5)
--                check_time = time.perf_counter()
--                self.last_available_size = (free_size, check_time)
--            elif (
--                time.perf_counter() - self.last_available_size[1]
--                > PHYSICAL_MEM_CHECK_FREQ
--            ):
--                free_size = self._physical_free_size(0.5)
--                self.last_available_size = (free_size, time.perf_counter())
--            else:
--                free_size, _ = self.last_available_size
-+            # The allocator's own availability is virtual: with kvcached the
-+            # pages behind those blocks are mapped on demand. Admitting tokens
-+            # against it alone lets the pools grow into the whole device, and
-+            # the attention backend's per-batch workspace -- allocated outside
-+            # the pool -- then has nowhere to go: measured on 2026-08-22 as
-+            # `Failed to allocate memory for batch_prefill_tmp_v with size
-+            # 455999488`, twice, on a GPU that was not migrating anything.
-+            #
-+            # So both elastic paths bound admission by physical free memory.
-+            # The v0 path used to skip that check entirely; it now keeps back
-+            # the same reserve the engine already insists on before it will
-+            # bring a KV cache up at all (`_init_kv_cache(self.min_reserve_mem)`),
-+            # so the running invariant matches the initialization invariant.
-+            reserve = self.min_reserve_mem if self.use_kvcached_v0 else 0.5
-+            free_size = self._cached_physical_free_size(reserve)
-             return min(free_size, self.kv_allocator.available_size())
-         return super().available_size()
- 
 diff --git a/python/sglang/srt/model_executor/model_runner.py b/python/sglang/srt/model_executor/model_runner.py
 index 5bddef9..f52ba4f 100644
 --- a/python/sglang/srt/model_executor/model_runner.py

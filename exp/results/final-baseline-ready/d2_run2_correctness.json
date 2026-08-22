@@ -56,6 +56,13 @@
       }
     },
     {
+      "check": "every_decision_produced_a_transfer",
+      "pass": true,
+      "detail": {
+        "decisions_without_a_weight_transfer": []
+      }
+    },
+    {
       "check": "at_least_one_gpu_to_gpu_migration",
       "pass": true,
       "detail": {
@@ -99,7 +106,9 @@
       "detail": {
         "paths": [
           "gpu-to-gpu-p2p"
-        ]
+        ],
+        "with_a_transfer": 4,
+        "decisions": 4
       }
     },
     {
@@ -146,6 +155,8 @@
     {
       "migration_id": 1,
       "model": "model_4",
+      "model_path": "Qwen/Qwen2.5-3B-Instruct",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",
@@ -159,6 +170,8 @@
     {
       "migration_id": 2,
       "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",
@@ -172,6 +185,8 @@
     {
       "migration_id": 3,
       "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",
@@ -185,6 +200,8 @@
     {
       "migration_id": 4,
       "model": "model_5",
+      "model_path": "meta-llama/Llama-3.1-8B",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",

@@ -49,12 +49,72 @@
       }
     },
     {
+      "check": "every_decision_produced_a_transfer",
+      "pass": true,
+      "detail": {
+        "decisions_without_a_weight_transfer": []
+      }
+    },
+    {
+      "check": "at_least_one_gpu_to_gpu_migration",
+      "pass": true,
+      "detail": {
+        "gpu_to_gpu_migrations": 5
+      }
+    },
+    {
+      "check": "reverse_migration_completed",
+      "pass": true,
+      "detail": {
+        "reverse_pairs": [
+          {
+            "first": 1,
+            "reverse": 2,
+            "model": "model_6",
+            "path": "1 -> 0 -> 1"
+          },
+          {
+            "first": 2,
+            "reverse": 5,
+            "model": "model_6",
+            "path": "0 -> 1 -> 0"
+          }
+        ]
+      }
+    },
+    {
+      "check": "kv_transfer_healthy",
+      "pass": true,
+      "detail": {
+        "transfers_with_requests": 4,
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ],
+        "requests_moved": 115,
+        "tokens_moved": 40515,
+        "skipped_over_cap": 0
+      }
+    },
+    {
+      "check": "migrations_not_all_blocked_by_memory",
+      "pass": true,
+      "detail": {
+        "migrations_emitted": 5,
+        "rejected_by_memory": 0,
+        "suppressed_by_tau": 46,
+        "deferred_by_cooldown": 16,
+        "rejected_last_model_on_gpu": 0
+      }
+    },
+    {
       "check": "migration_weights_move_over_p2p",
       "pass": true,
       "detail": {
         "paths": [
           "gpu-to-gpu-p2p"
-        ]
+        ],
+        "with_a_transfer": 5,
+        "decisions": 5
       }
     },
     {
@@ -101,6 +161,8 @@
     {
       "migration_id": 1,
       "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
       "from": 1,
       "to": 0,
       "weight_src": "1",
@@ -114,6 +176,8 @@
     {
       "migration_id": 2,
       "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",
@@ -127,6 +191,8 @@
     {
       "migration_id": 3,
       "model": "model_1",
+      "model_path": "meta-llama/Llama-3.2-1B",
+      "matched_by_model_path": true,
       "from": 0,
       "to": 1,
       "weight_src": "0",
@@ -140,6 +206,8 @@
     {
       "migration_id": 4,
       "model": "model_2",
+      "model_path": "Qwen/Qwen2.5-1.5B-Instruct",
+      "matched_by_model_path": true,
       "from": 1,
       "to": 0,
       "weight_src": "1",
@@ -153,6 +221,8 @@
     {
       "migration_id": 5,
       "model": "model_6",
+      "model_path": "Qwen/Qwen2.5-7B-Instruct",
+      "matched_by_model_path": true,
       "from": 1,
       "to": 0,
       "weight_src": "1",
