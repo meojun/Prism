@@ -2060,7 +2060,7 @@ index 9f0dc7c..bca06bb 100644
          logger.info(
              f"Executed {len(actions)} actions in {toc - tic:.2f} seconds. Actions: {actions}"
 diff --git a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
-index 681fc35..eab866f 100644
+index 681fc35..1d83c4b 100644
 --- a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 +++ b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 @@ -1,10 +1,12 @@
@@ -2347,7 +2347,7 @@ index 681fc35..eab866f 100644
                  # Can record additional activation completion status here, such as updating model state dictionaries
  
              elif isinstance(message, DeactivateReqOutput):
-@@ -236,11 +389,216 @@ class GPUScheduler:
+@@ -236,11 +389,218 @@ class GPUScheduler:
                  if success:
                      self._set_model_state(model_name, "deactivated")
                  # Can record additional deactivation completion status here, such as cleaning up resources
@@ -2399,13 +2399,15 @@ index 681fc35..eab866f 100644
 +        while self._mh_next_prefill_start_seq in self._mh_retired_start_seqs:
 +            self._mh_retired_start_seqs.discard(self._mh_next_prefill_start_seq)
 +            drained_start.append(self._mh_next_prefill_start_seq)
-+            self._mh_next_prefill_start_seq += 1
-+            # The engines fetch against the shared token, so it follows the
-+            # prefill-start frontier or every model on this GPU stops.
-+            current = self.redis_client.get_int(self._mh_admission_seq_key)
-+            if current is not None and current < self._mh_next_prefill_start_seq:
++            # The engines fetch against the shared token, so it has to step
++            # over this retired sequence too, or every model on this GPU stops
++            # fetching. Only over THIS sequence: if the token sits somewhere
++            # else it is waiting on a live request and must not be moved.
++            if self.redis_client.get_int(
++                    self._mh_admission_seq_key) == self._mh_next_prefill_start_seq:
 +                self.redis_client.compare_and_advance_int(
-+                    self._mh_admission_seq_key, current)
++                    self._mh_admission_seq_key, self._mh_next_prefill_start_seq)
++            self._mh_next_prefill_start_seq += 1
 +        return drained_admit, drained_start
 +
 +    def _handle_mh_migrated_away(self, message):
@@ -2564,7 +2566,7 @@ index 681fc35..eab866f 100644
      def _recv_from_request_handler(self):
          """Receive activate/deactivate requests from request handler."""
          try:
-@@ -285,8 +643,13 @@ class GPUScheduler:
+@@ -285,8 +645,13 @@ class GPUScheduler:
                      logger.info(
                          f"Received activate request for model {message.model_name}"
                      )
@@ -2580,7 +2582,7 @@ index 681fc35..eab866f 100644
                      logger.info(
                          f"Received activate request for {message.model_name}, "
                          f"model_states: {self._model_states}"
-@@ -308,7 +671,10 @@ class GPUScheduler:
+@@ -308,7 +673,10 @@ class GPUScheduler:
          old_state = self._model_states.get(model_name, "deactivated")
          self._model_states[model_name] = new_state
  
@@ -2592,7 +2594,7 @@ index 681fc35..eab866f 100644
          old_need = old_state in states_need_resource
          new_need = new_state in states_need_resource
  
-@@ -338,14 +704,34 @@ class GPUScheduler:
+@@ -338,14 +706,34 @@ class GPUScheduler:
                  f"Error sending preempted requests: {get_exception_traceback()}"
              )
  
@@ -5185,7 +5187,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..b84b0fd 100644
+index 3cf0db7..d0198a2 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5682,9 +5684,71 @@ index 3cf0db7..b84b0fd 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1824,6 +2089,22 @@ class Scheduler:
+@@ -1823,8 +2088,89 @@ class Scheduler:
+         )
          return generate_req
  
++    def _drain_backend_queue(self):
++        """Return this model's undelivered dispatches, and retire their sequences.
++
++        The third way a request leaves a GPU, and the one that stalled D3 run 2.
++        A request dispatched into the model's Redis queue but not yet fetched is
++        in neither the waiting queue nor the staged list, so neither eviction
++        path saw it. Traced there: `model_4#187` took sequence 1256 at
++        14:02:37.593, the deactivate arrived 43 ms later, the engine had staged
++        only 1254 and 1255 -- and GPU1's admission frontier waited on 1256 for
++        the rest of the run, admitting nothing after that instant.
++
++        Same semantics as the other two exits: back to the frontend to be
++        scheduled afresh, and reported so this GPU stops expecting it.
++        """
++        if self.tp_rank != 0:
++            return
++        key = (f"{self.server_args.backend_generate_request_key_prefix}:"
++               f"{self.model_name}")
++        drained, returned, placeholders = [], 0, 0
++        try:
++            while True:
++                batch = self.redis_client.recv_pyobj_non_block(key=key, count=64)
++                if not batch:
++                    break
++                drained.extend(batch)
++        except Exception as e:
++            logger.error(f"[PAPER-ALG2-HANDOFF] backend drain failed: {e}")
++        for req in drained:
++            rid = getattr(req, "rid", None)
++            if rid is None:
++                continue
++            if getattr(req, "alg2_resumed", False):
++                # A grant for a request this engine is holding; the request
++                # itself is returned by the pending-adoption eviction below.
++                placeholders += 1
++                continue
++            # Scheduled again from scratch, so it must not carry this GPU's
++            # sequence into whichever GPU picks it up next.
++            req.alg2_seq = None
++            try:
++                self.redis_client.send_pyobj(
++                    key=(f"{self.server_args.frontend_generate_request_key_prefix}:"
++                         f"{self.model_name}"),
++                    obj=req,
++                )
++                returned += 1
++            except Exception as e:
++                logger.error(
++                    f"[PAPER-ALG2-HANDOFF] could not return {rid} to the "
++                    f"frontend: {e}")
++        if drained:
++            self._alg2_report_migrated_away(
++                [getattr(r, "rid", None) for r in drained if getattr(r, "rid", None)],
++                "backend-queue-drain")
++        logger.info("[PAPER-ALG2-HANDOFF] " + json.dumps({
++            "event": "backend_queue_drained", "gpu_id": self.gpu_id,
++            "model": self.model_name, "drained": len(drained),
++            "returned_to_frontend": returned,
++            "adoption_placeholders": placeholders,
++        }, sort_keys=True))
++
      def _evict_all_waiting_requests(self):
 +        # A request rebuilt from migrated KV but not yet adopted is held out of
 +        # the waiting queue, so it would otherwise be dropped silently here --
@@ -5703,9 +5767,14 @@ index 3cf0db7..b84b0fd 100644
 +            self.waiting_queue.append(req)
 +        self._alg2_pending_adoption = {}
          if not self.waiting_queue:
++            # An empty waiting queue says nothing about the Redis queue: the
++            # request that stalled D3 run 2 was dispatched into it 43 ms before
++            # the deactivate, with the waiting queue at zero.
++            self._drain_backend_queue()
              return
          try:
-@@ -1837,8 +2118,258 @@ class Scheduler:
+             # send back to frontend queue
+@@ -1837,7 +2183,258 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -5719,7 +5788,8 @@ index 3cf0db7..b84b0fd 100644
 +             if getattr(req, "rid", None)], "staged-never-admitted")
 +        self._alg2_staged_generation_reqs = []
          self.waiting_queue.clear()
- 
++        self._drain_backend_queue()
++
 +    def _v6_inject_migrated_kv(self):
 +        """Pull this model's migrated KV, if any, and rebuild its requests.
 +
@@ -5960,11 +6030,10 @@ index 3cf0db7..b84b0fd 100644
 +        except Exception as e:
 +            logger.warning(f"[PAPER-KV-V6] stale-clear failed: {e}")
 +            return False
-+
+ 
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-         self.waiting_queue_stash = []
-@@ -1898,6 +2429,99 @@ class Scheduler:
+@@ -1898,6 +2495,99 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6064,7 +6133,7 @@ index 3cf0db7..b84b0fd 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2550,7 @@ class Scheduler:
+@@ -1926,6 +2616,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:

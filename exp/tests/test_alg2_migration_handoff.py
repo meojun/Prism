@@ -43,6 +43,12 @@ class Redis:
     def __init__(self):
         self.sent = []
         self.ints = {}
+        self.queues = {}
+
+    def recv_pyobj_non_block(self, key, count=1):
+        queue = self.queues.setdefault(key, [])
+        out, self.queues[key] = queue[:count], queue[count:]
+        return out
 
     def send_pyobj(self, key, obj):
         self.sent.append((key, obj))
@@ -102,6 +108,9 @@ def admit_and_start(gpu, rid, model, seq):
         rids=[rid], model=model, alg2_seqs=[seq], admit_time=0.0, gpu_id=1))
     gpu._handle_mh_prefill_start(BatchRunReq(
         rids=[rid], model=model, run_time=0.0, gpu_id=1, alg2_seqs=[seq]))
+    # The engine advances the shared token at prefill start; mirror it so the
+    # token in these tests means what it means at runtime.
+    gpu.redis_client.compare_and_advance_int(gpu._mh_admission_seq_key, seq)
 
 
 def test_h1_source_retires_and_repairs():
@@ -457,6 +466,83 @@ def test_engine_reports_both_ways_a_request_leaves():
     check("an empty report is not sent at all", len(reports) == 1)
 
 
+def test_a_dispatch_still_in_redis_is_drained_and_retired():
+    """The third exit: dispatched, never fetched, model deactivates.
+
+    Traced in D3 run 2: `model_4#187` took sequence 1256 at 14:02:37.593, the
+    deactivate arrived 43 ms later with the engine holding only 1254 and 1255,
+    and GPU1's admission frontier waited on 1256 for the rest of the run --
+    zero admissions after that instant. The waiting queue and the staged list
+    were both drained; the Redis queue was not.
+    """
+    print("a dispatch still sitting in Redis when the model deactivates")
+    from sglang.srt.managers.io_struct import AdoptGrantReq
+    engine = make_engine(model="model_4", gpu_id=1)
+    backend_key = "backend:model_4"
+    frontend_key = "frontend:model_4"
+    engine.server_args = SimpleNamespace(
+        engine_to_gpu_scheduler_key_prefix="e2s",
+        backend_generate_request_key_prefix="backend",
+        frontend_generate_request_key_prefix="frontend")
+
+    still_queued = GenerateReqInput(
+        rid="model_4#187", model="model_4", alg2_seq=1256, prompt_len=100,
+        arrival_time=1000.0, slo=5.0, input_ids=[1] * 100,
+        sampling_params={"max_new_tokens": 4}, output_len=4)
+    placeholder = GenerateReqInput(
+        rid="R", model="model_4", alg2_seq=1257, alg2_resumed=True,
+        prompt_len=1, arrival_time=999.0, slo=5.0)
+    engine.redis_client.queues = {backend_key: [still_queued, placeholder]}
+
+    engine._drain_backend_queue()
+
+    check("the Redis queue is emptied",
+          not engine.redis_client.queues.get(backend_key))
+    returned = [obj for key, obj in engine.redis_client.sent if key == frontend_key]
+    check("the undelivered request goes back to the frontend",
+          [r.rid for r in returned] == ["model_4#187"])
+    check("and drops this GPU's sequence on the way out",
+          returned[0].alg2_seq is None)
+    check("an adoption placeholder is not sent to the frontend as a request",
+          all(r.rid != "R" for r in returned))
+    reports = [obj for _key, obj in engine.redis_client.sent
+               if isinstance(obj, MigratedAwayReq)]
+    check("both are reported so the GPU stops expecting their sequences",
+          len(reports) == 1
+          and sorted(reports[0].rids) == ["R", "model_4#187"]
+          and reports[0].reason == "backend-queue-drain")
+
+
+def test_the_drained_sequence_lets_the_frontier_move_on():
+    """End to end for the stall: dispatch, leave it in Redis, deactivate, drain."""
+    print("the frontier advances once the undelivered dispatch is retired")
+    gpu = make_scheduler(models=("model_4",))
+    seq_a = dispatch(gpu, "model_4#182", "model_4")   # 1: fetched and admitted
+    seq_b = dispatch(gpu, "model_4#187", "model_4")   # 2: stays in Redis
+    seq_c = dispatch(gpu, "model_4#190", "model_4")   # 3: behind it
+
+    admit_and_start(gpu, "model_4#182", "model_4", seq_a)
+    check("the frontier is waiting on the undelivered dispatch",
+          gpu._mh_next_backend_admit_seq == seq_b)
+
+    gpu._handle_mh_migrated_away(MigratedAwayReq(
+        rids=["model_4#187"], model="model_4", gpu_id=1,
+        reason="backend-queue-drain", report_time=0.0))
+    check("retiring it moves the frontier to the next live request",
+          gpu._mh_next_backend_admit_seq == seq_c
+          and gpu._mh_next_prefill_start_seq == seq_c)
+    check("and the shared admission token follows",
+          gpu.redis_client.get_int(gpu._mh_admission_seq_key) == seq_c)
+
+    admit_and_start(gpu, "model_4#190", "model_4", seq_c)
+    gpu._handle_mh_prefill_complete(PrefillCompleteReq(
+        rids=["model_4#182"], model="model_4", complete_time=0.0, gpu_id=1))
+    gpu._handle_mh_prefill_complete(PrefillCompleteReq(
+        rids=["model_4#190"], model="model_4", complete_time=0.0, gpu_id=1))
+    check("the GPU is serving again and its ledger is empty",
+          not gpu._mh_outstanding_prefills)
+
+
 def main():
     test_h1_source_retires_and_repairs()
     test_h1_never_steps_over_a_live_sequence()
@@ -469,6 +555,8 @@ def main():
     test_resumed_request_keeps_its_place_when_it_is_late()
     test_engine_holds_then_promotes_the_request_it_rebuilt()
     test_engine_reports_both_ways_a_request_leaves()
+    test_a_dispatch_still_in_redis_is_drained_and_retired()
+    test_the_drained_sequence_lets_the_frontier_move_on()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         for name in FAIL:
