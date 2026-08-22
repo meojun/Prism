@@ -161,6 +161,65 @@ def main():
         not cold,
         {"migrations": len(migrations), "wrong_source": cold},
     )
+    # A gate that a run with zero migrations could pass would not test
+    # migration at all, so the substance of the arm is required explicitly.
+    p2p = [r for r in migrations
+           if r["transfer_path"] == "gpu-to-gpu-p2p"
+           and r["weight_src"] == str(r["from"])]
+    record(
+        "at_least_one_gpu_to_gpu_migration",
+        bool(p2p),
+        {"gpu_to_gpu_migrations": len(p2p)},
+    )
+
+    moves = {}
+    reverse = []
+    for row in p2p:
+        pair = (row["model"], row["from"], row["to"])
+        back = (row["model"], row["to"], row["from"])
+        if back in moves:
+            reverse.append({"first": moves[back], "reverse": row["migration_id"],
+                            "model": row["model"],
+                            "path": f'{row["to"]} -> {row["from"]} -> {row["to"]}'})
+        moves[pair] = row["migration_id"]
+    record(
+        "reverse_migration_completed",
+        bool(reverse),
+        {"reverse_pairs": reverse},
+    )
+
+    kv = jsonl(run / "kv_transfers.jsonl")
+    moved = [r for r in kv if (r.get("requests_moved") or 0) > 0]
+    record(
+        "kv_transfer_healthy",
+        bool(moved)
+        and all(r.get("transfer_path") == "gpu-to-gpu-p2p" for r in moved)
+        and all((r.get("requests_skipped_over_cap") or 0) == 0 for r in moved),
+        {"transfers_with_requests": len(moved),
+         "paths": sorted({str(r.get("transfer_path")) for r in kv}),
+         "requests_moved": sum(r.get("requests_moved") or 0 for r in kv),
+         "tokens_moved": sum(r.get("tokens_moved") or 0 for r in kv),
+         "skipped_over_cap": sum(r.get("requests_skipped_over_cap") or 0 for r in kv)},
+    )
+
+    audit = {}
+    for line in read(controller).splitlines():
+        if "[PAPER-ALG1-V4] " in line:
+            try:
+                audit = json.loads(line.split("[PAPER-ALG1-V4] ", 1)[1]).get(
+                    "audit_totals", audit)
+            except (IndexError, json.JSONDecodeError):
+                pass
+    record(
+        # The memory gate must refuse reckless targets without refusing the
+        # workload's migrations wholesale.
+        "migrations_not_all_blocked_by_memory",
+        (audit.get("migrations_emitted", 0) or 0) > 0,
+        {k: audit.get(k) for k in (
+            "migrations_emitted", "rejected_by_memory", "suppressed_by_tau",
+            "deferred_by_cooldown", "rejected_last_model_on_gpu")},
+    )
+
     record(
         "migration_weights_move_over_p2p",
         all(row["transfer_path"] == "gpu-to-gpu-p2p" for row in migrations)
