@@ -5661,6 +5661,66 @@ index 3cf0db7..dff2e3c 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
+diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
+index 31ec604..45d1801 100644
+--- a/python/sglang/srt/mem_cache/memory_pool.py
++++ b/python/sglang/srt/mem_cache/memory_pool.py
+@@ -398,25 +398,39 @@ class MHATokenToKVPool(BaseTokenToKVPool):
+         avail_phy_blocks = (avail_phy_pages // self.layer_num // 2) * (
+             PAGE_SIZE // self.kv_allocator.block_mem_size
+         )
+-        return avail_phy_blocks
++        # Below the reserve the subtraction above goes negative, and the GiB
++        # reserve makes the whole expression a float. Callers compare and
++        # index with this, so hand back a plain non-negative count: "less
++        # room than we insist on keeping" is zero admissible blocks.
++        return max(0, int(avail_phy_blocks))
++
++    def _cached_physical_free_size(self, reserve_gib: float) -> int:
++        """`_physical_free_size`, rate-limited: this is on the admission path."""
++        now = time.perf_counter()
++        if (
++            self.last_available_size is None
++            or now - self.last_available_size[1] > PHYSICAL_MEM_CHECK_FREQ
++        ):
++            self.last_available_size = (self._physical_free_size(reserve_gib), now)
++        return self.last_available_size[0]
+ 
+     def available_size(self):
+         if self.enable_elastic_memory:
+-            if self.use_kvcached_v0:
+-                return self.kv_allocator.available_size()
+-
+-            if self.last_available_size is None:
+-                free_size = self._physical_free_size(0.5)
+-                check_time = time.perf_counter()
+-                self.last_available_size = (free_size, check_time)
+-            elif (
+-                time.perf_counter() - self.last_available_size[1]
+-                > PHYSICAL_MEM_CHECK_FREQ
+-            ):
+-                free_size = self._physical_free_size(0.5)
+-                self.last_available_size = (free_size, time.perf_counter())
+-            else:
+-                free_size, _ = self.last_available_size
++            # The allocator's own availability is virtual: with kvcached the
++            # pages behind those blocks are mapped on demand. Admitting tokens
++            # against it alone lets the pools grow into the whole device, and
++            # the attention backend's per-batch workspace -- allocated outside
++            # the pool -- then has nowhere to go: measured on 2026-08-22 as
++            # `Failed to allocate memory for batch_prefill_tmp_v with size
++            # 455999488`, twice, on a GPU that was not migrating anything.
++            #
++            # So both elastic paths bound admission by physical free memory.
++            # The v0 path used to skip that check entirely; it now keeps back
++            # the same reserve the engine already insists on before it will
++            # bring a KV cache up at all (`_init_kv_cache(self.min_reserve_mem)`),
++            # so the running invariant matches the initialization invariant.
++            reserve = self.min_reserve_mem if self.use_kvcached_v0 else 0.5
++            free_size = self._cached_physical_free_size(reserve)
+             return min(free_size, self.kv_allocator.available_size())
+         return super().available_size()
+ 
 diff --git a/python/sglang/srt/model_executor/model_runner.py b/python/sglang/srt/model_executor/model_runner.py
 index 5bddef9..f52ba4f 100644
 --- a/python/sglang/srt/model_executor/model_runner.py

@@ -1,0 +1,259 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/migration-D2/run2",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": "143"
+      }
+    },
+    {
+      "check": "watchdog_complete",
+      "pass": false,
+      "detail": {
+        "state": "FAIL",
+        "failure_reason": "benchmark: inner server session exited without result"
+      }
+    },
+    {
+      "check": "no_cuda_oom",
+      "pass": false,
+      "detail": {
+        "count": 1,
+        "hits": [
+          {
+            "file": "server-logs/server.log",
+            "line": 3517,
+            "pattern": "out of memory",
+            "text": "[2026-08-22 09:12:22.902 GPU=0 Worker 3 (model_6) TP=0] Decode out of memory happened. #retracted_reqs: 3, #new_token_ratio: 0.1000 -> 0.2057"
+          }
+        ]
+      }
+    },
+    {
+      "check": "no_server_crash",
+      "pass": false,
+      "detail": {
+        "count": 1,
+        "hits": [
+          {
+            "file": "server-logs/stdout.log",
+            "line": 4545,
+            "pattern": "Killed",
+            "text": "bash: line 1: 225141 Killed                  python3 -m sglang.launch_multi_model_server --model-config-file /root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json --host 127.0.0.1 --port 42550 --disable-cuda-graph --disable-radix-cache --log-file /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/migration-D2/run2/server-logs/server.log --enable-elastic-me"
+          }
+        ]
+      }
+    },
+    {
+      "check": "migration_source_is_the_resident_gpu",
+      "pass": true,
+      "detail": {
+        "migrations": 4,
+        "wrong_source": []
+      }
+    },
+    {
+      "check": "at_least_one_gpu_to_gpu_migration",
+      "pass": true,
+      "detail": {
+        "gpu_to_gpu_migrations": 4
+      }
+    },
+    {
+      "check": "reverse_migration_completed",
+      "pass": false,
+      "detail": {
+        "reverse_pairs": []
+      }
+    },
+    {
+      "check": "kv_transfer_healthy",
+      "pass": true,
+      "detail": {
+        "transfers_with_requests": 2,
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ],
+        "requests_moved": 59,
+        "tokens_moved": 22195,
+        "skipped_over_cap": 0
+      }
+    },
+    {
+      "check": "migrations_not_all_blocked_by_memory",
+      "pass": true,
+      "detail": {
+        "migrations_emitted": 4,
+        "rejected_by_memory": 20,
+        "suppressed_by_tau": 58,
+        "deferred_by_cooldown": 7,
+        "rejected_last_model_on_gpu": 0
+      }
+    },
+    {
+      "check": "migration_weights_move_over_p2p",
+      "pass": true,
+      "detail": {
+        "paths": [
+          "gpu-to-gpu-p2p"
+        ]
+      }
+    },
+    {
+      "check": "release_is_owner_aware",
+      "pass": true,
+      "detail": {
+        "releases": 6,
+        "releases_without_ownership_evidence": 0
+      }
+    },
+    {
+      "check": "no_residency_metadata_loss",
+      "pass": true,
+      "detail": {
+        "releases": 6,
+        "undecidable_releases": 0,
+        "preserved_after_migration": 2,
+        "corrupt": []
+      }
+    },
+    {
+      "check": "benchmark_result_written",
+      "pass": true,
+      "detail": {
+        "result_file": "paper-migration-only_bursty_rate20_seed1_e2e_2gpu_1.0x_1rep.json"
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "shutdown_state_reported_clean",
+      "pass": true,
+      "detail": {
+        "lines": "no shutdown outstanding report in this arm"
+      }
+    }
+  ],
+  "migrations": [
+    {
+      "migration_id": 1,
+      "model": "model_4",
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 6794207232,
+      "seconds": 0.4159171120263636,
+      "payload_gbps": 16.335483767182286,
+      "tag": "Qwen/Qwen2.5-3B-Instruct|engine=1_3|src=0"
+    },
+    {
+      "migration_id": 2,
+      "model": "model_1",
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 2996965376,
+      "seconds": 0.18686871090903878,
+      "payload_gbps": 16.03781265157236,
+      "tag": "meta-llama/Llama-3.2-1B|engine=1_2|src=0"
+    },
+    {
+      "migration_id": 3,
+      "model": "model_1",
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 2996965376,
+      "seconds": 0.18686871090903878,
+      "payload_gbps": 16.03781265157236,
+      "tag": "meta-llama/Llama-3.2-1B|engine=1_2|src=0"
+    },
+    {
+      "migration_id": 4,
+      "model": "model_5",
+      "from": 0,
+      "to": 1,
+      "weight_src": "0",
+      "weight_source": "gpu",
+      "transfer_path": "gpu-to-gpu-p2p",
+      "payload_bytes": 16060522496,
+      "seconds": 0.8777102909516543,
+      "payload_gbps": 18.298204614402362,
+      "tag": "meta-llama/Llama-3.1-8B|engine=1_2|src=0"
+    }
+  ],
+  "releases": [
+    {
+      "line": 3062,
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gpu": "0",
+      "engine": "0_1",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "False"
+    },
+    {
+      "line": 3095,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "True"
+    },
+    {
+      "line": 3147,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "0",
+      "engine": "0_0",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "False"
+    },
+    {
+      "line": 3194,
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu": "1",
+      "engine": "1_0",
+      "held": "1",
+      "held_engine": "1_0",
+      "dropped": "True"
+    },
+    {
+      "line": 3201,
+      "model": "meta-llama/Llama-3.2-1B",
+      "gpu": "1",
+      "engine": "1_2",
+      "held": "1",
+      "held_engine": "1_2",
+      "dropped": "True"
+    },
+    {
+      "line": 3202,
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "gpu": "1",
+      "engine": "1_3",
+      "held": "1",
+      "held_engine": "1_3",
+      "dropped": "True"
+    }
+  ],
+  "benchmark_summary": {
+    "completed": 4197,
+    "aborted": 4226
+  }
+}
