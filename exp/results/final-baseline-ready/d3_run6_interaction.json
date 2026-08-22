@@ -1,0 +1,179 @@
+{
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/run6",
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "check": "algorithm2_ran",
+      "pass": true,
+      "detail": {
+        "runtime_events": 6593,
+        "alg2_log_lines": 2
+      }
+    },
+    {
+      "check": "no_alg2_order_violation",
+      "pass": false,
+      "detail": {
+        "events": 6593,
+        "violations": [
+          {
+            "actual_alg2_seqs": [
+              419
+            ],
+            "actual_model": "model_6",
+            "actual_rids": [
+              "model_1#122"
+            ],
+            "alg2_seq": 419,
+            "event": "backend_admit",
+            "event_time": 1787413953.889226,
+            "expected_model": "model_1",
+            "expected_rid": "model_1#122",
+            "gpu_id": 0,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "runtime_raised_no_ordering_error",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    },
+    {
+      "check": "sequence_tokens_are_monotonic",
+      "pass": true,
+      "detail": {
+        "per_gpu": {
+          "1": {
+            "dispatch": 1229,
+            "backend_admit": 1229,
+            "prefill_start": 1229,
+            "prefill_complete": 1229
+          },
+          "0": {
+            "dispatch": 422,
+            "backend_admit": 419,
+            "prefill_start": 418,
+            "prefill_complete": 418
+          }
+        },
+        "stale": []
+      }
+    },
+    {
+      "check": "sequence_tokens_have_no_gaps",
+      "pass": true,
+      "detail": {
+        "gaps": [],
+        "retirements_seen": {
+          "1": {
+            "admit": 0,
+            "start": 0
+          },
+          "0": {
+            "admit": 0,
+            "start": 0
+          }
+        }
+      }
+    },
+    {
+      "check": "admission_ordered_across_migrations",
+      "pass": false,
+      "detail": {
+        "migrations": 4,
+        "admission_events_during_migrations": 6882,
+        "violations": [
+          {
+            "actual_alg2_seqs": [
+              419
+            ],
+            "actual_model": "model_6",
+            "actual_rids": [
+              "model_1#122"
+            ],
+            "alg2_seq": 419,
+            "event": "backend_admit",
+            "event_time": 1787413953.889226,
+            "expected_model": "model_1",
+            "expected_rid": "model_1#122",
+            "gpu_id": 0,
+            "order_ok": false
+          },
+          {
+            "actual_alg2_seqs": [
+              419
+            ],
+            "actual_model": "model_6",
+            "actual_rids": [
+              "model_1#122"
+            ],
+            "alg2_seq": 419,
+            "event": "backend_admit",
+            "event_time": 1787413953.889226,
+            "expected_model": "model_1",
+            "expected_rid": "model_1#122",
+            "gpu_id": 0,
+            "order_ok": false
+          }
+        ]
+      }
+    },
+    {
+      "check": "outstanding_work_retired",
+      "pass": false,
+      "detail": {
+        "net_by_gpu": {
+          "1": 0,
+          "0": 4
+        },
+        "shutdown_lines": []
+      }
+    },
+    {
+      "check": "pipeline_rc_zero",
+      "pass": false,
+      "detail": {
+        "pipeline_rc": null
+      }
+    },
+    {
+      "check": "no_deadlock",
+      "pass": false,
+      "detail": {
+        "watchdog_state": "FAIL",
+        "failure_reason": "benchmark: no actual progress event"
+      }
+    },
+    {
+      "check": "no_request_loss",
+      "pass": false,
+      "detail": {
+        "offered": 8329,
+        "completed": null,
+        "aborted": null,
+        "accounted": 0
+      }
+    },
+    {
+      "check": "no_migration_induced_abort",
+      "pass": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "check": "no_fatal_cuda_or_nccl",
+      "pass": true,
+      "detail": {
+        "count": 0,
+        "lines": []
+      }
+    }
+  ],
+  "benchmark_summary": {}
+}

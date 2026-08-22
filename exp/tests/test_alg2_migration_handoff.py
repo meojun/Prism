@@ -745,6 +745,48 @@ def test_the_scheduler_refuses_to_queue_a_request_twice():
     check("so it holds exactly one sequence", seq == 1)
 
 
+def test_a_grant_for_another_model_is_not_admitted_here():
+    """Worker slots are reused, and a stale grant must not be admitted.
+
+    D3 run 6: a BackendAdmitReq for model_1#122 went out tagged model_6,
+    because the slot holding it had been re-activated as model_6 by the time
+    the grant arrived. The gate rejected it as a model mismatch -- correctly.
+    """
+    print("a grant that belongs to a model this slot no longer serves")
+    engine = make_engine(model="model_6", gpu_id=0)
+    stale = RetractedReq("model_1#122")
+    engine._alg2_pending_adoption["model_1#122"] = stale
+
+    engine.process_input_gen_requests([GenerateReqInput(
+        rid="model_1#122", model="model_1", alg2_seq=419, alg2_resumed=True,
+        prompt_len=1, arrival_time=1000.0, slo=5.0)])
+
+    check("it is not put into this engine's waiting queue",
+          not engine.waiting_queue)
+    check("and no admission is announced for it",
+          not [obj for _k, obj in engine.redis_client.sent
+               if isinstance(obj, BackendAdmitReq)])
+    check("the request is left held rather than silently dropped",
+          "model_1#122" in engine._alg2_pending_adoption)
+
+
+def test_an_admission_carries_the_model_it_was_scheduled_under():
+    print("an admission names the model Algorithm 2 scheduled")
+    engine = make_engine(model="model_1", gpu_id=0)
+    held = RetractedReq("model_1#122")
+    engine._alg2_pending_adoption["model_1#122"] = held
+
+    engine.process_input_gen_requests([GenerateReqInput(
+        rid="model_1#122", model="model_1", alg2_seq=419, alg2_resumed=True,
+        prompt_len=1, arrival_time=1000.0, slo=5.0)])
+
+    admits = [obj for _k, obj in engine.redis_client.sent
+              if isinstance(obj, BackendAdmitReq)]
+    check("the matching grant is admitted", len(admits) == 1)
+    check("under the model it was granted for", admits[0].model == "model_1")
+    check("with the sequence it was granted", admits[0].alg2_seqs == [419])
+
+
 def main():
     test_h1_source_retires_and_repairs()
     test_h1_never_steps_over_a_live_sequence()
@@ -765,6 +807,8 @@ def main():
     test_repeated_retraction_does_not_duplicate_the_ledger()
     test_holding_several_requests_asks_about_each_once()
     test_the_scheduler_refuses_to_queue_a_request_twice()
+    test_a_grant_for_another_model_is_not_admitted_here()
+    test_an_admission_carries_the_model_it_was_scheduled_under()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         for name in FAIL:

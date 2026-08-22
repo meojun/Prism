@@ -5241,7 +5241,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..c90257c 100644
+index 3cf0db7..8c10743 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5578,8 +5578,7 @@ index 3cf0db7..c90257c 100644
 +            else:
 +                logger.error("[PAPER-OVERLAP-V6] commit without matching prepare "
 +                             f"model={recv_req.model_name}")
-             if self.tp_rank == 0:
--                logger.warning("Scheduler is already activated")
++            if self.tp_rank == 0:
 +                activate_req_output = ActivateReqOutput(
 +                    rid=recv_req.rid, gpu_id=gpu_id,
 +                    model_name=recv_req.model_name,
@@ -5592,7 +5591,8 @@ index 3cf0db7..c90257c 100644
 +            return
 +
 +        if self._activated or self._v6_prepared_model is not None:
-+            if self.tp_rank == 0:
+             if self.tp_rank == 0:
+-                logger.warning("Scheduler is already activated")
 +                logger.warning("Scheduler is already activated or prepared")
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
@@ -5844,7 +5844,7 @@ index 3cf0db7..c90257c 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2190,295 @@ class Scheduler:
+@@ -1837,7 +2190,310 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -6089,6 +6089,18 @@ index 3cf0db7..c90257c 100644
 +        is the one that goes into the waiting queue; the placeholder only
 +        carries the sequence.
 +        """
++        # A worker slot is reused: this engine may already be serving a
++        # different model than the one the grant was issued for. Admitting it
++        # under the current name is how D3 run 6 sent a BackendAdmitReq for
++        # model_1#122 tagged model_6, which the gate rejected as a model
++        # mismatch. A grant that does not match what this engine is serving is
++        # not ours to admit.
++        if getattr(granted, "model", None) not in (None, self.model_name):
++            logger.warning(
++                "[PAPER-ALG2-HANDOFF] ignoring an adoption grant for "
++                f"{granted.rid}: granted for {granted.model}, this engine "
++                f"serves {self.model_name}")
++            return
 +        req = self._alg2_pending_adoption.pop(granted.rid, None)
 +        if req is None:
 +            logger.warning("[PAPER-ALG2-HANDOFF] adoption grant for an unknown "
@@ -6104,7 +6116,10 @@ index 3cf0db7..c90257c 100644
 +                key=(f"{self.server_args.engine_to_gpu_scheduler_key_prefix}:"
 +                     f"{self.gpu_id}"),
 +                obj=BackendAdmitReq(
-+                    rids=[req.rid], model=self.model_name,
++                    # The model Algorithm 2 scheduled this request under, not
++                    # whatever this worker slot happens to be named now.
++                    rids=[req.rid],
++                    model=getattr(granted, "model", None) or self.model_name,
 +                    alg2_seqs=[req.alg2_seq], admit_time=admit_time,
 +                    gpu_id=self.gpu_id,
 +                ),
@@ -6140,7 +6155,7 @@ index 3cf0db7..c90257c 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1898,6 +2539,99 @@ class Scheduler:
+@@ -1898,6 +2554,99 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6240,7 +6255,7 @@ index 3cf0db7..c90257c 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2660,7 @@ class Scheduler:
+@@ -1926,6 +2675,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
