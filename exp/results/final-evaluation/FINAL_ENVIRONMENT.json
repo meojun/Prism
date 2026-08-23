@@ -1,4 +1,19 @@
 {
+  "client_fd": {
+    "login_shell": {
+      "hard": "524288",
+      "soft": "524288"
+    },
+    "pass": true,
+    "required": 65535,
+    "tmux_child": {
+      "hard": "524288",
+      "soft": "1024"
+    },
+    "tmux_child_after_raise": {
+      "soft": "65535"
+    }
+  },
   "flashinfer_workspace_bytes": 1073741824,
   "flashinfer_workspace_source": "exp/scripts/env.sh",
   "freeze": {
@@ -6,10 +21,15 @@
       "exp/results/final-evaluation",
       "exp/workloads/final-evaluation"
     ],
-    "git_clean": true,
-    "git_dirty_files": [],
-    "git_sha": "468a759afd68d8b4ba632a0e649ec39407a0e460",
-    "git_sha_short": "468a759",
+    "git_clean": false,
+    "git_dirty_files": [
+      " M exp/scripts/final_preflight.py",
+      " M exp/scripts/final_stage.sh",
+      " M exp/scripts/run_v4_case.sh",
+      "?? exp/scripts/check_client_fd.py"
+    ],
+    "git_sha": "b0722201ea017616743a785d281291edceb2d554",
+    "git_sha_short": "b072220",
     "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
     "source_patch_sha256": "52fb66e96cde9928bd25abf14adba31f336d8789fc9f564e296e0630e54987a7",
     "source_repo_dirty_files": 35,
@@ -25,7 +45,7 @@
     "paired_requests_r20_s1": "31d80a6f1157d3a1441fb2c1ab62c38e56672ccec1a5de22737f0126e562ad96",
     "phases_r20_s1": "a40d42de086acf7698b171a9c607353667b3fdf677efe15beef9fe62cdc02640",
     "prefill_speed_current": "a57dffcd117e05295488d9222a17a1c97cfaa262b54692743fb93c1c06fda599",
-    "run_v4_case_sh": "5660aa4c247e17941e8421121c64d94a812dc7f33db46d5d00ee90e76804c669",
+    "run_v4_case_sh": "69352ece428106248862f5ab490136f30b442a32855d44c6b7bcb263ddcb56b5",
     "slo_base": "4e6b20b0fe7cb558683b3d80afbbbe3f5e055b963c368ff5b34ed075686a508f"
   },
   "models": {
@@ -72,7 +92,7 @@
     "\t Link 6: 25 GB/s"
   ],
   "python_interpreter": "/workspace/prism-exp/prism-venv/bin/python",
-  "recorded_utc": "2026-08-23T05:07:40.590827+00:00",
+  "recorded_utc": "2026-08-23T06:50:43.190610+00:00",
   "runtime_freeze": {
     "commit": "47564b8",
     "patch": "patches/final_baseline_ready/prism_research_worktree.patch",

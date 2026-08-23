@@ -19,6 +19,25 @@
 # warm-up and measurement window are identical by construction.
 set -euo pipefail
 
+# ---------------------------------------------------------------- client fds
+# The benchmark client runs in THIS shell, not in the server's tmux command,
+# and a tmux child inherits a soft nofile limit of 1024 while the hard limit is
+# 524288. The server's launch raises its own limit inline; nothing raised this
+# one, so the client ran out of descriptors and could not open connections --
+# 1,971 requests in cal-0p00035-s42 failed with OSError Errno 24 before ever
+# reaching the server, and every run in this pipeline shows thousands of them
+# while the previous pipeline's runs show none.
+#
+# Raise it here, where the client actually starts, and refuse to run if it
+# cannot be raised: a run under a low limit measures the client, not tau.
+PRISM_CLIENT_NOFILE=${PRISM_CLIENT_NOFILE:-65535}
+ulimit -n "$PRISM_CLIENT_NOFILE" 2>/dev/null || true
+_soft=$(ulimit -Sn); _hard=$(ulimit -Hn)
+if [ "$_soft" != "unlimited" ] && [ "$_soft" -lt "$PRISM_CLIENT_NOFILE" ]; then
+  echo "FATAL: benchmark client nofile soft limit is $_soft, need $PRISM_CLIENT_NOFILE (hard=$_hard)" >&2
+  exit 78
+fi
+
 SYSTEM=${1:?usage: run_v4_case.sh <system> <workload> <rate> <seed> <trace> <outdir>}
 WORKLOAD=${2:?}
 RATE=${3:?}
@@ -265,6 +284,39 @@ echo " -> ready"
 SAMPLER=$!
 
 cd "$PRISM_REPO/benchmark/multi-model"
+# Evidence, per run, that the client started with enough descriptors.
+python3 - "$OUTDIR" "$(ulimit -Sn)" "$(ulimit -Hn)" "$PRISM_CLIENT_NOFILE" <<'PYFD'
+import json, os, sys
+out, soft, hard, need = sys.argv[1:5]
+json.dump({"required_nofile": int(need),
+           "shell_soft_nofile": soft, "shell_hard_nofile": hard,
+           "recorded_before_benchmark_start": True},
+          open(os.path.join(out, "client_fd_limits.json"), "w"), indent=2)
+PYFD
+# The shell's limit is what the client inherits, but record what the client
+# process itself actually got -- that is the number that decides the run.
+( for _ in $(seq 1 40); do
+    _bpid=$(pgrep -f "python3 benchmark.py --base-url http://127.0.0.1:$PORT" | head -1)
+    if [ -n "$_bpid" ] && [ -r "/proc/$_bpid/limits" ]; then
+      _lim=$(grep "Max open files" "/proc/$_bpid/limits" | tr -s ' ')
+      python3 - "$OUTDIR" "$_bpid" "$_lim" <<'PYP'
+import json, os, sys
+out, pid, lim = sys.argv[1], sys.argv[2], sys.argv[3]
+f = os.path.join(out, "client_fd_limits.json")
+d = json.load(open(f)) if os.path.exists(f) else {}
+parts = lim.split()
+d["benchmark_pid"] = int(pid)
+d["proc_limits_line"] = lim
+try:
+    d["proc_soft_nofile"], d["proc_hard_nofile"] = int(parts[-3]), int(parts[-2])
+except Exception:
+    pass
+json.dump(d, open(f, "w"), indent=2)
+PYP
+      break
+    fi
+    sleep 0.5
+  done ) &
 set +e
 timeout --signal=TERM --kill-after=30s "${BENCHMARK_TIMEOUT:-1800}" python3 benchmark.py \
   --base-url "http://127.0.0.1:$PORT" \

@@ -1,0 +1,17 @@
+{
+  "invalid": true,
+  "class": "INVALID_CLIENT_FD_EXHAUSTION",
+  "reason": "8013 client descriptor exhaustion failures; those requests never reached the server, so the run measured the client",
+  "fd_exhaustion": 8013,
+  "connection_failures": 6359,
+  "client_failures": {
+    "too_many_open_files": 5342,
+    "errno_24": 2671,
+    "server_disconnected": 1017,
+    "connection_reset": 0,
+    "connection_refused": 2671,
+    "client_os_error": 2671
+  },
+  "marked_utc": "2026-08-23T06:52:36.065981+00:00",
+  "artifacts": "preserved; excluded from calibration input"
+}

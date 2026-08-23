@@ -33,10 +33,21 @@ def main():
     args = ap.parse_args()
 
     rows, by_tau = [], {}
+    excluded = []
     for tau_dir in sorted(args.calibration.glob("tau_*")):
         label = tau_dir.name[len("tau_"):]
         tau = float("inf") if label == "inf" else float(label.replace("p", "."))
         for seed_dir in sorted(tau_dir.glob("seed_*")):
+            # A run whose client could not open sockets measured the client,
+            # not tau. Its artifacts are kept as evidence and excluded here.
+            if (seed_dir / "INVALID").exists():
+                excluded.append({
+                    "run": str(seed_dir),
+                    "class": (seed_dir / "INVALID").read_text().strip()})
+                continue
+            # Preserved failed attempts are evidence, not calibration input.
+            if "." in seed_dir.name:
+                continue
             seed = seed_dir.name.split("_")[1]
             if seed in EVALUATION_SEEDS:
                 raise SystemExit(
@@ -116,6 +127,7 @@ def main():
             },
             "did_finite_tau_migrate_at_all": {
                 a["tau_label"]: a["migrations"] for a in finite},
+            "excluded_runs": excluded,
             "per_seed_consistency": {
                 a["tau_label"]: {
                     r["seed"]: {"goodput": r["goodput_req_s"],

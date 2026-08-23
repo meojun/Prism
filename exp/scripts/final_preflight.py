@@ -143,6 +143,7 @@ def main():
         "models": models,
         "workload_dir": str(workload_dir),
         "python_interpreter": py,
+        "client_fd": _client_fd_gate(),
     }
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(env, indent=2, sort_keys=True) + "\n")
@@ -150,6 +151,12 @@ def main():
                                           "flashinfer_workspace_bytes")},
                      indent=2)[:1600])
     print(f"\nwrote {out}")
+    # A run under a low client descriptor limit measures the client, so the
+    # experiment must not start at all.
+    if not env["client_fd"].get("pass"):
+        print("\nFAIL: benchmark client fd limit\n"
+              + json.dumps(env["client_fd"], indent=2), file=sys.stderr)
+        return 1
     if not runtime_unchanged:
         print("FATAL: the runtime source patch differs from the frozen commit",
               file=sys.stderr)
@@ -159,6 +166,19 @@ def main():
               file=sys.stderr)
         return 1
     return 0
+
+
+def _client_fd_gate():
+    """The benchmark client's descriptor limit, checked the way runs launch."""
+    import subprocess, json as _json
+    here = os.path.dirname(os.path.abspath(__file__))
+    r = subprocess.run(
+        [sys.executable, os.path.join(here, "check_client_fd.py"),
+         "--mode", "preflight"], capture_output=True, text=True, timeout=120)
+    try:
+        return _json.loads(r.stdout)
+    except Exception:
+        return {"pass": False, "reason": "client fd preflight did not report"}
 
 
 if __name__ == "__main__":

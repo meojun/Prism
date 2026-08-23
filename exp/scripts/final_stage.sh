@@ -83,6 +83,17 @@ case "$LABEL" in
     ;;
 esac
 
+# The benchmark client must be able to reach its descriptor limit before the
+# run starts. Under a low limit the client fails to open connections and the
+# run measures the client rather than the system.
+if ! $PY "$SCRIPT_DIR/check_client_fd.py" --mode preflight \
+     --out "$STAGE_DIR/client_fd_preflight.json" >/dev/null 2>&1; then
+  echo "[final_stage] STOP: client fd preflight failed" >&2
+  cat "$STAGE_DIR/client_fd_preflight.json" 2>/dev/null >&2
+  echo "client fd preflight failed before $LABEL" > "$EVAL/STOP"
+  exit 1
+fi
+
 echo "[final_stage] RUN $LABEL -> $STAGE_DIR"
 SERVER_TIMEOUT=${SERVER_TIMEOUT:-1200} \
 BENCH_TIMEOUT=${BENCH_TIMEOUT:-1800} \
@@ -139,6 +150,15 @@ echo "[final_stage] $LABEL rc=$rc state=$state"
 
 blocker=""
 L="$STAGE_DIR/server-logs"
+# One 'Too many open files' or connection failure and the numbers are the
+# client's, not the system's. Checked before anything else, because it explains
+# symptoms that otherwise look like server faults.
+if ! $PY "$SCRIPT_DIR/check_client_fd.py" --mode postrun --run "$STAGE_DIR" \
+     --out "$STAGE_DIR/CLIENT_FD_VALIDATION.json" >/dev/null 2>&1; then
+  blocker="client fd exhaustion / connection failures"
+  echo "INVALID_CLIENT_FD_EXHAUSTION" > "$STAGE_DIR/INVALID"
+  rc=1
+fi
 grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log" "$L/stdout.log" 2>/dev/null \
   && blocker="CUDA OOM"
 [ -z "$blocker" ] && grep -qE "NCCL error|ncclUnhandledCudaError|CUDA error:" "$L/server.log" 2>/dev/null \
