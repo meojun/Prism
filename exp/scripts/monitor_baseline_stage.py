@@ -43,6 +43,7 @@ def main():
     phase_start = last_progress = time.time()
     last_count = -1
     last_log_mtime = 0.0
+    last_signal = (-1, -1, -1)
     inner_missing_since = None
 
     def fail(reason, status):
@@ -92,27 +93,56 @@ def main():
             event = load[-1][-300:] if load else "launcher started"
             log_path = slog if slog.exists() else plog
 
+        # Semantic progress signals only. Each is a monotonic counter of
+        # something the run actually accomplished:
+        #   count         phase counter -- served responses in the benchmark,
+        #                 load milestones during startup
+        #   stage_steps   lines the harness itself wrote to pipeline.log, which
+        #                 advance on real stage steps and cover the drain and
+        #                 aggregation window after serving ends
+        #   markers       the explicit end-of-benchmark markers
+        # Arrivals are deliberately excluded: arrivals climbing while
+        # completions sit still is the deadlock signature, not progress.
+        stage_steps = pipeline.count("\n")
+        markers = len(re.findall(r"Completed requests:|stage complete",
+                                 pipeline + bench))
+        signal = (count, stage_steps, markers)
+
         if new_phase != phase:
             phase = new_phase
             phase_start = last_progress = now
             last_count = -1
             last_log_mtime = 0.0
+            last_signal = (-1, -1, -1)
         try:
             log_mtime = log_path.stat().st_mtime
         except OSError:
             log_mtime = None
-        # Progress is the counter advancing OR the log still being written to.
-        # The counter alone is not enough: it counts served responses, and a
-        # stage that has finished serving still has to drain, aggregate and
-        # write its scheduler proof. D2 run 7 finished its benchmark and wrote
-        # its result, and was killed anyway because no new response had been
-        # served for 180 s. Both signals are real progress; requiring both to
-        # stall is what "no actual progress" should mean.
-        if count > last_count or (
-                log_mtime is not None and log_mtime > last_log_mtime):
+        # A log file merely being written to is NOT progress. The tau=0.00035
+        # seed-0 deadlock proved the cost of treating it as such: GPU 0's
+        # admission frontier was stuck on a leaked sequence and nothing was
+        # served for 26 minutes, while the benchmark client kept printing
+        # "Waiting for task req_..." into bench.log every few seconds. That
+        # write traffic reset the timer on every pass, so the 240 s no-progress
+        # watchdog never fired and only the 1800 s hard timeout ended the run.
+        #
+        # D2 run 7 -- killed while legitimately draining after its benchmark
+        # finished -- is still covered, by `stage_steps` and `markers` rather
+        # than by raw file activity.
+        # During startup there is no request lifecycle to measure and the
+        # server's own log is the only evidence it is doing anything, so log
+        # growth still counts there -- bounded by the server hard timeout.
+        # In the benchmark phase it does not: that is where the deadlock class
+        # lives, and where the client's chatter is loud enough to mask it.
+        log_growth = (
+            phase in ("server_startup", "model_load")
+            and log_mtime is not None and log_mtime > last_log_mtime
+        )
+        if log_growth or any(new > old for new, old in zip(signal, last_signal)):
+            last_signal = tuple(max(n, o) for n, o in zip(signal, last_signal))
             last_count = max(count, last_count)
-            last_log_mtime = log_mtime if log_mtime is not None else last_log_mtime
             last_progress = now
+        last_log_mtime = log_mtime if log_mtime is not None else last_log_mtime
 
         ps = shell(["ps", "-eo", "pid=,args="])
         pids = [
@@ -145,6 +175,8 @@ def main():
             ).isoformat(),
             "last_actual_progress_event": event,
             "progress_count": count,
+            "progress_signal": list(signal),
+            # Diagnostic only -- deliberately not a progress signal.
             "last_log_timestamp": log_mtime,
             "pids": pids,
             "gpu": gpu,
