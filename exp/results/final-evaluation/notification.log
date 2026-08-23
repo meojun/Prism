@@ -17,3 +17,4 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T10:18:58Z] DUP  stop-dc7197404680458a (already sent) -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
 [2026-08-23T13:29:12Z] SENT stop-0dd1422b51dc0426ea6c -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=0 | 8225/8227 | stalled with 1204 requests unanswered (INVALID_CLIENT_FD_EXHAUSTION) | autopsy ready
 [2026-08-23T14:03:30Z] SENT stop-a068964ffac2569611f4 -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=42 | 3907/7072 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
+[2026-08-23T14:03:52Z] SENT stop-319297444233c9617916 -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
