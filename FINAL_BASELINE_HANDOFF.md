@@ -9,7 +9,7 @@ FINAL             = 0/24
 NEXT_STAGE        = 04-prototype-fresh
 NEXT_RUN          = bursty_r2_s2
 FINAL_RUNTIME_SHA = 6618671
-HANDOFF_SHA       = ff1c302
+HANDOFF_SHA       = f9264c9
 ```
 
 `FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`

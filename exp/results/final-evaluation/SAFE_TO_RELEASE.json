@@ -1,31 +1,43 @@
 {
-  "decided_utc": "2026-08-23T21:34:35.636139+00:00",
-  "PIPELINE_STATUS": "STOPPED",
-  "HANDOFF_COMPLETE": "NO",
-  "SAFE_TO_RELEASE_SERVER": "NO",
+  "decided_utc": "2026-08-23T22:45:54.477335+00:00",
+  "HANDOFF_COMPLETE": "YES",
+  "SERVER_MAY_BE_RELEASED": "YES",
+  "PIPELINE_STATUS": "INCOMPLETE",
   "FINAL_RUNTIME_SHA": "6618671",
-  "HANDOFF_SHA": "2ea0275f25dd74a4a1ce12fa2daf02aa89a12cbd",
+  "HANDOFF_SHA": "f9264c9a9df248a3cf61c28510e0b366d03d7c63",
+  "handoff_tag": "final-baseline-handoff",
   "branch": "exp/final-baseline-ready",
+  "SELECTED_TAU": 0.00035,
+  "NEXT_STAGE": "04-prototype-fresh",
+  "NEXT_RUN": "bursty_r2_s2",
   "conditions": {
-    "runtime_and_harness_pushed": true,
-    "raw_evidence_archived": true,
-    "pipeline_state_recorded": true,
-    "resume_point_recorded": true,
-    "provenance_recorded": true,
-    "handoff_document": true,
-    "clean_clone_validation": false,
-    "no_secrets_in_git": true,
-    "runtime_unchanged_by_packaging": true
+    "workloads_archived_or_restorable": true,
+    "workload_sha_verification_pass": true,
+    "machine_local_unknown_zero": true,
+    "bootstrap_usable": true,
+    "preflight_pass": true,
+    "c_i_provenance_recorded": true,
+    "resume_manifest_valid": true,
+    "dry_run_resumes_at_expected_run": true,
+    "artifact_backup_hash_verified": true,
+    "clean_clone_validation_pass": true,
+    "secret_scan_pass": true,
+    "remote_push_verified": true,
+    "handoff_tag_points_at_head": true,
+    "worktree_clean_outside_results": true
   },
-  "failed_steps": [
-    "dependency-audit",
-    "clean-clone"
-  ],
-  "resume": {
-    "stage": "04-prototype-fresh",
-    "run": "bursty r2 s2",
-    "command": "bash exp/scripts/final_overnight.sh",
-    "note": "the chain is resumable: a stage that passed under this runtime freeze is skipped, and a run with rc=0 and a passing VERIFICATION.json is not repeated. Clear exp/results/final-evaluation/STOP first, deliberately, after reading why it is there."
+  "unmet": [],
+  "workload_archive": {
+    "mechanism": "deterministic rebuild, verified by SHA256",
+    "manifest": "exp/final-handoff/workloads_manifest.json",
+    "command": "bash exp/scripts/restore_workloads.sh",
+    "verified": "PASS"
   },
-  "reason": "unmet: clean_clone_validation, dependency-audit, clean-clone"
+  "raw_artifact_archive": {
+    "archive": "final-handoff/evidence/prism-final-evidence-20260823T223812Z.tar.zst",
+    "sha256": "c09a27f57b47fab132767e07c0ced8649919d915bcb531122387c54bcdcebd3c",
+    "size_bytes": 35513251,
+    "durable_location": "committed to this git repository and pushed to the remote; this instance has no host volume, so nothing under /workspace survives its release"
+  },
+  "next_server_command": "git clone https://github.com/meojun/Prism.git prism-exp && cd prism-exp && git checkout final-baseline-handoff && ./bootstrap.sh && bash exp/scripts/restore_workloads.sh && bash exp/scripts/resume_baseline.sh"
 }
