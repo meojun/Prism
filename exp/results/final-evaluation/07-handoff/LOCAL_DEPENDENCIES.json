@@ -1,0 +1,873 @@
+{
+  "scanned_harness_files": 147,
+  "absolute_path_dependencies": [
+    {
+      "path": "/dev/shm",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_status_report.py",
+        "exp/scripts/env.sh",
+        "exp/scripts/final_handoff_doc.py",
+        "exp/scripts/final_local_dependency_audit.py",
+        "exp/scripts/handoff_preflight.py",
+        "exp/scripts/run_v6_sweep.sh"
+      ],
+      "reference_count": 6
+    },
+    {
+      "path": "/dev/shm/cuda.shm",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/resume_after_validation.sh",
+        "exp/scripts/run_tau_study_v4.sh",
+        "exp/scripts/run_tp2_validation.sh",
+        "exp/scripts/run_v4_case.sh",
+        "exp/scripts/run_v6_validation_merge.sh",
+        "exp/scripts/shm_clean.sh",
+        "exp/scripts/watchdog_v4.sh"
+      ],
+      "reference_count": 10
+    },
+    {
+      "path": "/dev/shm/ipc_",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/final_stage.sh",
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/resume_after_validation.sh",
+        "exp/scripts/run_70b_sustained.sh",
+        "exp/scripts/run_tau_study_v4.sh",
+        "exp/scripts/run_tp2_validation.sh",
+        "exp/scripts/run_tp_boot.sh",
+        "exp/scripts/run_tp_case.sh"
+      ],
+      "reference_count": 17
+    },
+    {
+      "path": "/dev/shm/ipc_0_",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/final_profile_ci.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/dev/shm/ipc_0_model_",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/run_tp2_validation.sh",
+        "exp/scripts/run_v2_case.sh",
+        "exp/scripts/run_v4_case.sh",
+        "exp/scripts/watchdog_v2.sh",
+        "exp/scripts/watchdog_v3.sh",
+        "exp/scripts/watchdog_v3_validation.sh",
+        "exp/scripts/watchdog_v4.sh"
+      ],
+      "reference_count": 7
+    },
+    {
+      "path": "/dev/shm/mp-",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/run_70b_sustained.sh",
+        "exp/scripts/run_tp_boot.sh",
+        "exp/scripts/run_tp_case.sh",
+        "exp/scripts/run_tp_case2.sh",
+        "exp/scripts/run_tp_cycle.sh",
+        "exp/scripts/run_tp_serve.sh",
+        "exp/scripts/run_v6_validation_merge.sh"
+      ],
+      "reference_count": 9
+    },
+    {
+      "path": "/dev/shm/sem.mp-",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/shm_clean.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/dev/shm/torch_",
+      "kind": "machine_local",
+      "note": "kvcached-v0 shares KV pages through POSIX shared memory; a crashed server leaves ipc_*_root segments that the next run must not inherit -- preflight checks for them",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/run_v6_validation_merge.sh",
+        "exp/scripts/shm_clean.sh"
+      ],
+      "reference_count": 3
+    },
+    {
+      "path": "/root/.git-credentials",
+      "kind": "secret",
+      "note": "the GitHub push credential; never in the repository",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_local_dependency_audit.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/root/Prism-final-regression-diagnosis",
+      "kind": "in_repo",
+      "note": "inside the repository",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/monitor_d1_pipeline.py",
+        "exp/scripts/run_alg2_audit_sanity.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_status_report.py",
+        "exp/scripts/final_local_dependency_audit.py",
+        "exp/scripts/finalize_and_push.sh",
+        "exp/scripts/notify.sh",
+        "exp/scripts/preflight_v2.sh",
+        "exp/scripts/run_v6_sweep.sh"
+      ],
+      "reference_count": 6
+    },
+    {
+      "path": "/workspace/.env",
+      "kind": "secret",
+      "note": "HF_TOKEN and PRISM_NTFY_TOPIC live here, outside the repository; see .env.example for the names",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/env.sh",
+        "exp/scripts/final_handoff_doc.py",
+        "exp/scripts/final_local_dependency_audit.py",
+        "exp/scripts/final_secret_scan.sh",
+        "exp/scripts/resume_after_validation.sh",
+        "exp/scripts/run_v4_case.sh",
+        "exp/scripts/run_v6_sweep.sh",
+        "exp/scripts/run_v6_validation.sh"
+      ],
+      "reference_count": 9
+    },
+    {
+      "path": "/workspace/.hf_home",
+      "kind": "reproducible",
+      "note": "Hugging Face cache holding the six model snapshots; bootstrap.sh downloads them, HF_HOME points here",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/env.sh",
+        "exp/scripts/final_local_dependency_audit.py",
+        "exp/scripts/handoff_preflight.py",
+        "exp/scripts/microbench_loading_v4.py",
+        "exp/scripts/microbench_migration_v4.py",
+        "exp/scripts/run_v6_sweep.sh",
+        "exp/scripts/run_v6_validation.sh",
+        "exp/scripts/run_v6_validation_merge.sh"
+      ],
+      "reference_count": 8
+    },
+    {
+      "path": "/workspace/.hf_home/hub",
+      "kind": "reproducible",
+      "note": "Hugging Face cache holding the six model snapshots; bootstrap.sh downloads them, HF_HOME points here",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_preflight.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/.hf_home/hub/models--",
+      "kind": "reproducible",
+      "note": "Hugging Face cache holding the six model snapshots; bootstrap.sh downloads them, HF_HOME points here",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/build_status_report.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/datasets",
+      "kind": "reproducible",
+      "note": "ShareGPT source data; SETUP.md documents the download and exp/scripts/build_sharegpt_trace.py rebuilds the derived pickles",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/env.sh",
+        "exp/scripts/final_local_dependency_audit.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/datasets/sharegpt",
+      "kind": "reproducible",
+      "note": "ShareGPT source data; SETUP.md documents the download and exp/scripts/build_sharegpt_trace.py rebuilds the derived pickles",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_sharegpt_trace.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/datasets/sharegpt/ShareGPT_V3_unfiltered_cleaned_split.json",
+      "kind": "reproducible",
+      "note": "ShareGPT source data; SETUP.md documents the download and exp/scripts/build_sharegpt_trace.py rebuilds the derived pickles",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_paired_workload.py",
+        "exp/scripts/build_sharegpt_trace.py",
+        "exp/scripts/profile_v2.py"
+      ],
+      "reference_count": 3
+    },
+    {
+      "path": "/workspace/logs",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/orchestrate_overlap_pipeline.sh",
+        "exp/scripts/preflight_v2.sh",
+        "exp/scripts/watchdog_v2.sh",
+        "exp/scripts/watchdog_v3.sh",
+        "exp/scripts/watchdog_v3_validation.sh",
+        "exp/scripts/watchdog_v4.sh",
+        "exp/scripts/watchdog_v5.sh"
+      ],
+      "reference_count": 9
+    },
+    {
+      "path": "/workspace/logs/chosen_rates.txt",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/pick_rates_v2.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/preflight.ok",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/preflight_v2.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/preflight_canary.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/preflight_v2.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/status_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4.status",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/status_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_ensure.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/ensure_v4_running.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_finalize.lock",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_finalize.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_p2p_decision.txt",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/resume_after_validation.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_push.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_and_push.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_resume.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/resume_after_validation.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_tau.lock",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/run_tau_study_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v4_tau.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/run_tau_study_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v5_report.lock",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/report_v5.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/prism_v5_report.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/report_v5.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/v3-finalizer.status",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_v3.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/v3-pipeline.status",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_v3.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/logs/v3-watchdog-tmux.log",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/finalize_v3.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-backups",
+      "kind": "machine_local",
+      "note": "off-repo artifact backup directory; set PRISM_BACKUP_DIR to relocate it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_archive_raw.sh",
+        "exp/scripts/final_backup_watcher.sh",
+        "exp/scripts/final_local_dependency_audit.py"
+      ],
+      "reference_count": 3
+    },
+    {
+      "path": "/workspace/prism-base",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/compare_arms.py",
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/orchestrate_overlap_pipeline.sh"
+      ],
+      "reference_count": 3
+    },
+    {
+      "path": "/workspace/prism-exp",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_report_v2.py",
+        "exp/scripts/calibrate_tau_v4.sh",
+        "exp/scripts/env.sh",
+        "exp/scripts/final_fairness_orchestrator.sh",
+        "exp/scripts/final_local_dependency_audit.py",
+        "exp/scripts/final_pipeline.sh",
+        "exp/scripts/final_resume.sh",
+        "exp/scripts/finalize_and_push.sh"
+      ],
+      "reference_count": 27
+    },
+    {
+      "path": "/workspace/prism-exp/exp",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/collect_metrics.py",
+        "exp/scripts/compare_fig7.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/prism-exp/exp/configs/v2/6model_2gpu.json",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/collect_v4_metrics.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/configs/v2/slo_base.json",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_paired_workload.py",
+        "exp/scripts/collect_v4_metrics.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/analyze_slowdown.py",
+        "exp/scripts/derive_slo_baseline.py",
+        "exp/scripts/report_slowdown.py",
+        "exp/scripts/summarize_sanity.py"
+      ],
+      "reference_count": 4
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/final-regression-diagnosis/profile_pair.rc",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/monitor_d1_pipeline.py",
+        "exp/scripts/run_d1_diagnosis_pipeline.sh"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/final-regression-diagnosis/profiling/model_1.json",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/run_d1_diagnosis_pipeline.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/final-regression-diagnosis/profiling/model_6.json",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/run_d1_diagnosis_pipeline.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/final-regression-diagnosis/profiling/model_6_profile.log",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/monitor_d1_pipeline.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/paper-faithful-v4",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/analyze_v5_2.py",
+        "exp/scripts/ensure_v4_running.sh",
+        "exp/scripts/status_v4.sh"
+      ],
+      "reference_count": 3
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/paper-faithful-v4/calibration",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/calibrate_tau_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/results/paper-faithful-v6/e2e/paper-faithful-v6",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/run_v6_validation.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/run_pipeline_v3.sh",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/watchdog_v3.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/scripts/ensure_v4_running.sh",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/resume_after_validation.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/scripts/env.sh",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/env.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/scripts/status_v4.sh",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/status_v4.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/scripts/watchdog_v3.sh",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/finalize_v3.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/exp/workloads/paper-faithful-v4",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/calibrate_tau_v4.sh",
+        "exp/scripts/collect_v4_metrics.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/prism-exp/prism-research",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/build_sharegpt_trace.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-exp/prism-venv",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_env_capture.sh",
+        "exp/scripts/final_local_dependency_audit.py"
+      ],
+      "reference_count": 2
+    },
+    {
+      "path": "/workspace/prism-exp/prism-venv/bin/python",
+      "kind": "reproducible",
+      "note": "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT to wherever the repository is checked out",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_archive_raw.sh",
+        "exp/scripts/final_clean_clone_validate.sh",
+        "exp/scripts/final_fairness_orchestrator.sh",
+        "exp/scripts/final_handoff.sh",
+        "exp/scripts/final_handoff_supervisor.sh",
+        "exp/scripts/final_pipeline.sh",
+        "exp/scripts/final_pipeline_watchdog.sh",
+        "exp/scripts/final_preflight.py"
+      ],
+      "reference_count": 10
+    },
+    {
+      "path": "/workspace/prism-handoff-validate",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/final_clean_clone_validate.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-merge",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/compare_arms.py",
+        "exp/scripts/final_fairness_audit.py",
+        "exp/scripts/orchestrate_final_compare.sh",
+        "exp/scripts/orchestrate_overlap_pipeline.sh",
+        "exp/scripts/publish_overlap_pipeline.sh",
+        "exp/scripts/run_v6_validation_merge.sh"
+      ],
+      "reference_count": 6
+    },
+    {
+      "path": "/workspace/prism-merge/",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/final_fairness_audit.py"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-merge/exp/results/final-overlap-pipeline",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/monitor_overlap_pipeline.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/prism-merge/exp/results/final-prototype-vs-paper-faithful/raw/armC-final-overlap/raw/paper-faithful-v6/",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": true,
+      "referenced_by": [
+        "exp/scripts/monitor_overlap_pipeline.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/run_pipeline.sh",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/watchdog_v2.sh"
+      ],
+      "reference_count": 1
+    },
+    {
+      "path": "/workspace/shm_clean.sh",
+      "kind": "machine_local",
+      "note": "not classified; check before relying on it",
+      "exists_here": false,
+      "referenced_by": [
+        "exp/scripts/run_v6_sweep.sh",
+        "exp/scripts/run_v6_validation.sh",
+        "exp/scripts/run_v6_validation_merge.sh"
+      ],
+      "reference_count": 3
+    }
+  ],
+  "counts": {
+    "in_repo": 1,
+    "reproducible": 27,
+    "machine_local": 37,
+    "secret": 2
+  },
+  "environment_variables_referenced": [
+    "DATASETS",
+    "FLASHINFER_WORKSPACE_SIZE",
+    "FLASHINFER_WORKSPACE_SIZE_OVERRIDE",
+    "HF_HOME",
+    "HF_TOKEN",
+    "KVPR_COOLDOWN",
+    "KVPR_TAU",
+    "KVPR_WINDOW",
+    "PRISM_BACKLOG_SCOPE",
+    "PRISM_BACKUP_DIR",
+    "PRISM_CLIENT_NOFILE",
+    "PRISM_CLIENT_RECEIPTS",
+    "PRISM_CLONE_DIR",
+    "PRISM_DIAG_ALG2",
+    "PRISM_EVAL_DIR",
+    "PRISM_EXP",
+    "PRISM_FAIRNESS_BYPASS",
+    "PRISM_KV_OWN_TRACE",
+    "PRISM_NTFY_PRIORITY",
+    "PRISM_NTFY_SERVER",
+    "PRISM_NTFY_TIMEOUT",
+    "PRISM_NTFY_TITLE",
+    "PRISM_NTFY_TOPIC",
+    "PRISM_OBS",
+    "PRISM_PIPELINE_SESSION",
+    "PRISM_PORT_JITTER_SLOTS",
+    "PRISM_PY",
+    "PRISM_REPO",
+    "PRISM_ROOT",
+    "PRISM_RUNTIME_FREEZE",
+    "PRISM_SOFT_BEFORE",
+    "PRISM_SYS",
+    "PRISM_V4_",
+    "PRISM_V4_LOAD_TRACE",
+    "PRISM_V4_P2P_MIGRATION",
+    "PRISM_V4_PAGELOCK",
+    "PRISM_V6_KV_MIGRATION",
+    "PRISM_V6_KV_TRACE",
+    "PRISM_VENV",
+    "SHAREGPT_CONTENT",
+    "SHAREGPT_FULL",
+    "SHAREGPT_JSON"
+  ],
+  "secret_variable_names": [
+    "HF_TOKEN",
+    "PRISM_NTFY_TOPIC",
+    "GITHUB_TOKEN",
+    "GH_TOKEN",
+    "HUGGING_FACE_HUB_TOKEN",
+    "OPENAI_API_KEY"
+  ],
+  "services": {
+    "redis_server_on_path": true,
+    "redis_reachable": true,
+    "tmux": true,
+    "nvidia_smi": true,
+    "git": true,
+    "curl": true
+  },
+  "stale_shared_memory_segments": [],
+  "fd_limit_soft": "1024",
+  "fd_limit_hard": "524288",
+  "unclassified": [
+    "/workspace",
+    "/workspace/logs",
+    "/workspace/logs/chosen_rates.txt",
+    "/workspace/logs/preflight.ok",
+    "/workspace/logs/preflight_canary.log",
+    "/workspace/logs/prism_v4.log",
+    "/workspace/logs/prism_v4.status",
+    "/workspace/logs/prism_v4_ensure.log",
+    "/workspace/logs/prism_v4_finalize.lock",
+    "/workspace/logs/prism_v4_finalize.log",
+    "/workspace/logs/prism_v4_p2p_decision.txt",
+    "/workspace/logs/prism_v4_push.log",
+    "/workspace/logs/prism_v4_resume.log",
+    "/workspace/logs/prism_v4_tau.lock",
+    "/workspace/logs/prism_v4_tau.log",
+    "/workspace/logs/prism_v5_report.lock",
+    "/workspace/logs/prism_v5_report.log",
+    "/workspace/logs/v3-finalizer.status",
+    "/workspace/logs/v3-pipeline.status",
+    "/workspace/logs/v3-watchdog-tmux.log",
+    "/workspace/prism-base",
+    "/workspace/prism-handoff-validate",
+    "/workspace/prism-merge",
+    "/workspace/prism-merge/",
+    "/workspace/prism-merge/exp/results/final-overlap-pipeline",
+    "/workspace/prism-merge/exp/results/final-prototype-vs-paper-faithful/raw/armC-final-overlap/raw/paper-faithful-v6/",
+    "/workspace/run_pipeline.sh",
+    "/workspace/shm_clean.sh"
+  ]
+}

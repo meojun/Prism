@@ -1,8 +1,10 @@
 {
-  "PIPELINE_STATUS": "INCOMPLETE",
+  "PIPELINE_STATUS": "STOPPED",
   "FINAL_RUNTIME_SHA": "6618671",
-  "stop_reason": null,
-  "failed_stages": [],
+  "stop_reason": "Algorithm 2 interaction gate FAIL: algorithm2_ran in protofresh-bursty-r2-s1 (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1)",
+  "failed_stages": [
+    "04-prototype-fresh"
+  ],
   "stages": {
     "00-preflight": {
       "result": "PASS",
@@ -17,28 +19,28 @@
       "finished_at": "2026-08-22T18:29:17.771374+00:00"
     },
     "02-tau-calibration": {
-      "result": "RUNNING",
+      "result": "PASS",
       "git_sha": "6618671",
       "reason": null,
-      "finished_at": null
+      "finished_at": "2026-08-23T21:22:36.747446+00:00"
     },
     "03-readiness": {
-      "result": null,
-      "git_sha": null,
+      "result": "PASS",
+      "git_sha": "6618671",
       "reason": null,
-      "finished_at": null
+      "finished_at": "2026-08-23T21:22:37.461140+00:00"
     },
     "03b-fairness": {
-      "result": null,
-      "git_sha": null,
+      "result": "PASS",
+      "git_sha": "6618671",
       "reason": null,
-      "finished_at": null
+      "finished_at": "2026-08-23T21:22:39.279553+00:00"
     },
     "04-prototype-fresh": {
-      "result": null,
-      "git_sha": null,
-      "reason": null,
-      "finished_at": null
+      "result": "FAIL",
+      "git_sha": "6618671",
+      "reason": "a prototype run failed",
+      "finished_at": "2026-08-23T21:33:15.266783+00:00"
     },
     "05-final-c": {
       "result": null,
@@ -53,13 +55,12 @@
       "finished_at": null
     }
   },
-  "selected_tau": null,
-  "tau_frozen": false,
+  "selected_tau": 0.00035,
+  "tau_frozen": true,
   "calibration": {
     "expected": 12,
-    "complete": 0,
-    "done": [],
-    "remaining": [
+    "complete": 12,
+    "done": [
       "tau=0p00035 seed=0",
       "tau=0p00035 seed=42",
       "tau=0p07 seed=0",
@@ -72,14 +73,16 @@
       "tau=0p171086 seed=42",
       "tau=inf seed=0",
       "tau=inf seed=42"
-    ]
+    ],
+    "remaining": []
   },
   "prototype_arm": {
     "expected": 24,
-    "complete": 0,
-    "done": [],
+    "complete": 1,
+    "done": [
+      "bursty r2 s1"
+    ],
     "remaining": [
-      "bursty r2 s1",
       "bursty r2 s2",
       "bursty r2 s3",
       "bursty r4 s1",
@@ -137,8 +140,8 @@
     ]
   },
   "resume": {
-    "stage": "02-tau-calibration",
-    "run": "tau=0p00035 seed=0",
+    "stage": "04-prototype-fresh",
+    "run": "bursty r2 s2",
     "command": "bash exp/scripts/final_overnight.sh",
     "note": "the chain is resumable: a stage that passed under this runtime freeze is skipped, and a run with rc=0 and a passing VERIFICATION.json is not repeated. Clear exp/results/final-evaluation/STOP first, deliberately, after reading why it is there."
   },

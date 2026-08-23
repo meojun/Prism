@@ -1,9 +1,9 @@
 {
   "stage": "04-prototype-fresh",
-  "result": "RUNNING",
+  "result": "FAIL",
   "git_sha": "6618671",
   "started_at": "2026-08-23T21:22:39.318518+00:00",
-  "finished_at": null,
-  "reason": null,
+  "finished_at": "2026-08-23T21:33:15.266783+00:00",
+  "reason": "a prototype run failed",
   "artifacts": []
 }

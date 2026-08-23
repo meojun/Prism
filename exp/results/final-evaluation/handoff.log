@@ -1,0 +1,22 @@
+[2026-08-23T21:33:59Z] [handoff] -> pipeline state
+PIPELINE_STATUS = STOPPED
+  calibration 12/12, prototype 1/24, final 0/24
+  resume at: 04-prototype-fresh / bursty r2 s2
+[2026-08-23T21:33:59Z] [handoff] PIPELINE_STATUS = STOPPED
+[2026-08-23T21:33:59Z] [handoff] runtime unchanged since 6618671 (patch blob 072389ce999105a635a000cd6293cb22ad2a7d20)
+[2026-08-23T21:33:59Z] [handoff] -> manifest
+[2026-08-23T21:33:59Z] [handoff]    manifest PASS
+[2026-08-23T21:33:59Z] [handoff] -> dependency-audit
+[2026-08-23T21:34:00Z] [handoff]    dependency-audit FAIL (see /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/07-handoff/dependency-audit.log)
+[2026-08-23T21:34:00Z] [handoff] -> environment-capture
+[2026-08-23T21:34:12Z] [handoff]    environment-capture PASS
+[2026-08-23T21:34:12Z] [handoff] -> archive
+[2026-08-23T21:34:15Z] [handoff]    archive PASS
+[2026-08-23T21:34:15Z] [handoff] -> results-index
+[2026-08-23T21:34:15Z] [handoff]    results-index PASS
+[2026-08-23T21:34:15Z] [handoff] -> secret-scan
+[2026-08-23T21:34:21Z] [handoff]    secret-scan PASS
+[2026-08-23T21:34:21Z] [handoff] -> large-file audit
+[2026-08-23T21:34:21Z] [handoff]    large-file audit PASS: nothing staged over 50 MB
+[2026-08-23T21:34:21Z] [handoff] -> handoff-document
+[2026-08-23T21:34:21Z] [handoff]    handoff-document PASS

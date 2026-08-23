@@ -1,0 +1,20 @@
+{
+  "created_utc": "2026-08-23T21:34:15.138014+00:00",
+  "stamp": "20260823T213412Z",
+  "note": "raw per-request dumps and server logs, which are not in git; verify with sha256sum before trusting a copy",
+  "archives": [
+    {
+      "archive": "/workspace/prism-backups/prism-final-02-tau-calibration-20260823T213412Z.tar.zst",
+      "sha256": "7b28a64a09ccf944a769766296c834cf0900a049ab63994fe08ec8213526f13c",
+      "size_bytes": 371283706
+    },
+    {
+      "archive": "/workspace/prism-backups/prism-final-04b-prototype-fresh-20260823T213412Z.tar.zst",
+      "sha256": "dbf4b82729a577542e32c2662ccab2b745711d1d885f7cad539323a225df800b",
+      "size_bytes": 1887227
+    }
+  ],
+  "archive": "/workspace/prism-backups/prism-final-02-tau-calibration-20260823T213412Z.tar.zst",
+  "sha256": "7b28a64a09ccf944a769766296c834cf0900a049ab63994fe08ec8213526f13c",
+  "size_bytes": 373170933
+}

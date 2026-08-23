@@ -5,3 +5,4 @@
 [2026-08-23T18:28:24Z] [watchdog] session gone at 00-preflight with no terminal state; reporting
 [2026-08-23T18:31:27Z] [watchdog] watching session prism-overnight
 [2026-08-23T18:31:29Z] [watchdog] session prism-overnight is up; watching
+[2026-08-23T21:33:43Z] [watchdog] session gone with a STOP already recorded at 04-prototype-fresh; it reported itself

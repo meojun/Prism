@@ -1,0 +1,54 @@
+{
+  "captured_utc": "2026-08-23T21:34:12.160048+00:00",
+  "note": "setup/requirements.lock.txt remains the source of truth for rebuilding this stack; the lists below say where this machine drifted from it, which is what a new server needs to know",
+  "python": "3.10.20",
+  "python_executable": "/workspace/prism-exp/prism-venv/bin/python",
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.39",
+  "torch_cuda": "12.1",
+  "driver": "570.195.03",
+  "nvcc": "Cuda compilation tools, release 12.6, V12.6.85",
+  "gpus": [
+    "0, NVIDIA A100-SXM4-80GB, 81920 MiB, 8.0",
+    "1, NVIDIA A100-SXM4-80GB, 81920 MiB, 8.0"
+  ],
+  "key_module_versions": {
+    "torch": "2.4.0+cu121",
+    "sglang": "0.3.4.post2",
+    "transformers": "4.45.2",
+    "vllm": "0.6.3.post1",
+    "flashinfer": "0.1.6+cu121torch2.4",
+    "kvcached": "unknown",
+    "redis": "8.1.0",
+    "aiohttp": "3.14.3",
+    "numpy": "1.26.4"
+  },
+  "system_packages": {
+    "libnuma1": "2.0.18-1ubuntu0.24.04.1",
+    "build-essential": "12.10ubuntu1",
+    "redis-server": "5:7.0.15-1ubuntu0.24.04.4",
+    "tmux": "3.4-1ubuntu0.1",
+    "zstd": "1.5.5+dfsg2-2build1.1",
+    "git": "1:2.43.0-1ubuntu7.3"
+  },
+  "installed_package_count": 156,
+  "locked_package_count": 153,
+  "installed_but_not_locked": {
+    "-e git+https://github.com/Multi-LLM/prism-research.git@595ec1f170e75a43897a7a2ad58ac5a9820aa2e8#egg=sglang&subdirectory=python": null,
+    "-e git+https://github.com/ovg-project/kvcached.git@d78649d0c2b7d2ff32eb48a423df7bf60054f4c9#egg=kvcached": null,
+    "flashinfer": "0.1.6+cu121torch2.4",
+    "pyairports @ git+https://github.com/NICTA/pyairports.git@9699eae8c6b03c97239018dea92e01daa8594936": null,
+    "torch": "2.4.0+cu121",
+    "torchvision": "0.19.0+cu121"
+  },
+  "locked_but_not_installed": {
+    "pip": "26.2",
+    "setuptools": "80.10.2",
+    "wheel": "0.47.0"
+  },
+  "version_mismatch_against_lockfile": {},
+  "editable_or_vcs_installs": [
+    "-e git+https://github.com/Multi-LLM/prism-research.git@595ec1f170e75a43897a7a2ad58ac5a9820aa2e8#egg=sglang&subdirectory=python",
+    "-e git+https://github.com/ovg-project/kvcached.git@d78649d0c2b7d2ff32eb48a423df7bf60054f4c9#egg=kvcached",
+    "pyairports @ git+https://github.com/NICTA/pyairports.git@9699eae8c6b03c97239018dea92e01daa8594936"
+  ]
+}

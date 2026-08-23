@@ -1,0 +1,12 @@
+wrote /root/Prism-final-regression-diagnosis/exp/HANDOFF_ENVIRONMENT.json
+  156 installed, 153 locked
+  not in the lockfile: 6
+  in the lockfile but absent: 3
+  version mismatches: 0
+  packages a new server would not get from the lockfile alone:
+    -e git+https://github.com/Multi-LLM/prism-research.git@595ec1f170e75a43897a7a2ad58ac5a9820aa2e8#egg=sglang&subdirectory=python==None
+    -e git+https://github.com/ovg-project/kvcached.git@d78649d0c2b7d2ff32eb48a423df7bf60054f4c9#egg=kvcached==None
+    flashinfer==0.1.6+cu121torch2.4
+    pyairports @ git+https://github.com/NICTA/pyairports.git@9699eae8c6b03c97239018dea92e01daa8594936==None
+    torch==2.4.0+cu121
+    torchvision==0.19.0+cu121

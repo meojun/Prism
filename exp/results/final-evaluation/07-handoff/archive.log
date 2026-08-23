@@ -1,0 +1,3 @@
+archiving 02-tau-calibration -> /workspace/prism-backups/prism-final-02-tau-calibration-20260823T213412Z.tar.zst
+archiving 04b-prototype-fresh -> /workspace/prism-backups/prism-final-04b-prototype-fresh-20260823T213412Z.tar.zst
+wrote /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/ARCHIVE_MANIFEST.json: 2 archive(s), 0.37 GB
