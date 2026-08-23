@@ -1,0 +1,23 @@
+{
+  "generated_utc": "2026-08-23T21:33:08.687585+00:00",
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1",
+  "label": "protofresh-bursty-r2-s1",
+  "symptoms": {
+    "cuda_oom": 0,
+    "fatal_cuda_nccl": 0,
+    "alg2_order_violations": 0,
+    "activation_waits": 0,
+    "decode_retractions": 0,
+    "killed": false,
+    "watchdog": null,
+    "pipeline_rc": "0"
+  },
+  "alg2_frontier_by_gpu": {},
+  "violations": [],
+  "failing_request_lifecycles": [],
+  "classification": "new lifecycle class, not seen before",
+  "matched_known_classes": [],
+  "causal_chain": "no single cause is evident from the logs; see symptoms",
+  "proposed_minimal_fix": "Establish the causal chain before proposing a change.",
+  "policy": "Diagnosis only. No runtime change, no timeout, no bypass, no retry was made; the pipeline is left stopped."
+}

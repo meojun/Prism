@@ -143,3 +143,17 @@ To https://github.com/meojun/Prism.git
 }
 To https://github.com/meojun/Prism.git
    7d5bd58..34866ac  exp/final-baseline-ready -> exp/final-baseline-ready
+{
+  "classification": "new lifecycle class, not seen before",
+  "symptoms": {
+    "cuda_oom": 0,
+    "fatal_cuda_nccl": 0,
+    "alg2_order_violations": 0,
+    "activation_waits": 0,
+    "decode_retractions": 0,
+    "killed": false,
+    "watchdog": null,
+    "pipeline_rc": "0"
+  },
+  "causal_chain": "no single cause is evident from the logs; see symptoms"
+}

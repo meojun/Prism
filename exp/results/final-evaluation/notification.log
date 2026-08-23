@@ -64,3 +64,5 @@ handoff runs whatever the outcome; the phone gets the verdict
 [2026-08-23T21:22:22Z] SENT ok-28da6144971f215413ba -- ✅ SUCCESS | Calibration | τ=inf seed=42 | 8498/8498
 [2026-08-23T21:22:37Z] SENT calibration-complete -- ✅ SUCCESS | Calibration Complete | selected τ=0.00035
 [2026-08-23T21:22:37Z] SENT tau-frozen -- ✅ SUCCESS | τ frozen | τ=0.00035
+[2026-08-23T21:33:08Z] SENT stop-711c9ee5d384b833f543 -- ❌ FAILED | prototype | seed=1 | 858/858 | Algorithm 2 interaction gate FAIL: algorithm2_ran
+[2026-08-23T21:33:08Z] SENT stop-711c9ee5d384b833f543-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=prototype | reason=Algorithm 2 interaction gate FAIL: algorithm2_ran

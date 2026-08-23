@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-23T21:32:40.327872",
+  "exp_name": "released-prototype_bursty_rate2_seed1",
+  "num_gpus": 2,
+  "completed": 858,
+  "aborted": 0,
+  "request_throughput": 1.9882165933859104,
+  "input_throughput": 582.7235742875931,
+  "output_throughput": 327.80315561417746,
+  "mean_ttft_ms": 255.53962873134302,
+  "p99_ttft_ms": 3915.6205725669793,
+  "mean_tpot_ms": 36.133000130402884,
+  "p99_tpot_ms": 79.68294445011337
+}
