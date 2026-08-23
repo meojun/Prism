@@ -220,10 +220,11 @@ def test_the_retired_sequence_lets_the_frontier_move():
     from test_alg2_migration_handoff import (  # noqa: E402
         make_scheduler, dispatch, admit_and_start,
     )
-    gpu = make_scheduler(models=("model_3",))
+    # model_6 stays resident, so its sequence stays live while model_3 leaves.
+    gpu = make_scheduler(models=("model_3", "model_6"))
     seq_a = dispatch(gpu, "model_3#1", "model_3")
     seq_b = dispatch(gpu, "model_3#3", "model_3")     # staged, never admitted
-    seq_c = dispatch(gpu, "model_3#5", "model_3")
+    seq_c = dispatch(gpu, "model_6#5", "model_6")
     admit_and_start(gpu, "model_3#1", "model_3", seq_a)
     check("the frontier waits on the staged request",
           gpu._mh_next_backend_admit_seq == seq_b)

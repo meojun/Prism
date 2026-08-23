@@ -77,6 +77,7 @@ def make_scheduler(models=("model1", "model2")):
     gpu._mh_outstanding_prefills = {}
     gpu._mh_retired_admit_seqs = set()
     gpu._mh_retired_start_seqs = set()
+    gpu._mh_scheduler_retired_rids = {}
     gpu._mh_dispatch_seq = 0
     gpu._mh_next_backend_admit_seq = 1
     gpu._mh_next_prefill_start_seq = 1
@@ -144,12 +145,18 @@ def test_h1_source_retires_and_repairs():
 
 
 def test_h1_never_steps_over_a_live_sequence():
-    """The frontier may only cross a *contiguous* run of retired sequences."""
+    """The frontier may only cross a *contiguous* run of retired sequences.
+
+    A and B are on model2, which stays resident. Only model1 departs, so its
+    unacknowledged sequence is the only one that may be retired -- the
+    scheduler owns it, and owning it does not license stepping over anyone
+    else's live sequence.
+    """
     print("H1: a retired sequence behind a live one waits its turn")
     gpu = make_scheduler()
-    seq_a = dispatch(gpu, "A", "model1")   # 1, live
+    seq_a = dispatch(gpu, "A", "model2")   # 1, live, stays resident
     seq_r = dispatch(gpu, "R", "model1")   # 2, about to migrate away
-    seq_b = dispatch(gpu, "B", "model1")   # 3, live
+    seq_b = dispatch(gpu, "B", "model2")   # 3, live, stays resident
 
     gpu._handle_mh_migrated_away(MigratedAwayReq(
         rids=["R"], model="model1", gpu_id=1, reason="kv-stash",
@@ -161,17 +168,17 @@ def test_h1_never_steps_over_a_live_sequence():
 
     # A now runs; the retired sequence behind it must be crossed automatically,
     # or B would wait for an admission that is never coming.
-    admit_and_start(gpu, "A", "model1", seq_a)
+    admit_and_start(gpu, "A", "model2", seq_a)
     check("once A is admitted the retired sequence is crossed",
           gpu._mh_next_backend_admit_seq == seq_b)
     check("and the start frontier reaches B as well",
           gpu._mh_next_prefill_start_seq == seq_b)
 
-    admit_and_start(gpu, "B", "model1", seq_b)
+    admit_and_start(gpu, "B", "model2", seq_b)
     gpu._handle_mh_prefill_complete(PrefillCompleteReq(
-        rids=["A"], model="model1", complete_time=0.0, gpu_id=1))
+        rids=["A"], model="model2", complete_time=0.0, gpu_id=1))
     gpu._handle_mh_prefill_complete(PrefillCompleteReq(
-        rids=["B"], model="model1", complete_time=0.0, gpu_id=1))
+        rids=["B"], model="model2", complete_time=0.0, gpu_id=1))
     check("the source ledger ends empty", not gpu._mh_outstanding_prefills)
 
 
@@ -529,10 +536,12 @@ def test_a_dispatch_still_in_redis_is_drained_and_retired():
 def test_the_drained_sequence_lets_the_frontier_move_on():
     """End to end for the stall: dispatch, leave it in Redis, deactivate, drain."""
     print("the frontier advances once the undelivered dispatch is retired")
-    gpu = make_scheduler(models=("model_4",))
+    # model_6 stays resident, so seq 3 is a live sequence the frontier must
+    # stop at rather than run past.
+    gpu = make_scheduler(models=("model_4", "model_6"))
     seq_a = dispatch(gpu, "model_4#182", "model_4")   # 1: fetched and admitted
     seq_b = dispatch(gpu, "model_4#187", "model_4")   # 2: stays in Redis
-    seq_c = dispatch(gpu, "model_4#190", "model_4")   # 3: behind it
+    seq_c = dispatch(gpu, "model_6#190", "model_6")   # 3: behind it
 
     admit_and_start(gpu, "model_4#182", "model_4", seq_a)
     check("the frontier is waiting on the undelivered dispatch",
@@ -547,11 +556,11 @@ def test_the_drained_sequence_lets_the_frontier_move_on():
     check("and the shared admission token follows",
           gpu.redis_client.get_int(gpu._mh_admission_seq_key) == seq_c)
 
-    admit_and_start(gpu, "model_4#190", "model_4", seq_c)
+    admit_and_start(gpu, "model_6#190", "model_6", seq_c)
     gpu._handle_mh_prefill_complete(PrefillCompleteReq(
         rids=["model_4#182"], model="model_4", complete_time=0.0, gpu_id=1))
     gpu._handle_mh_prefill_complete(PrefillCompleteReq(
-        rids=["model_4#190"], model="model_4", complete_time=0.0, gpu_id=1))
+        rids=["model_6#190"], model="model_6", complete_time=0.0, gpu_id=1))
     check("the GPU is serving again and its ledger is empty",
           not gpu._mh_outstanding_prefills)
 

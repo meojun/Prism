@@ -1,34 +1,50 @@
 {
-  "recorded_utc": "2026-08-23T01:14:46.884076+00:00",
-  "previous_runtime_freeze": {
-    "commit": "8cb8e7a",
-    "patch_blob": "0734d67ab932aa8f3746c0d2584a505fc9fe3276"
-  },
-  "change": "A+B request lifecycle / accounting identity patch only",
-  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
-  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
-  "explicitly_unchanged": [
-    "tau",
-    "frozen c_i",
-    "Moore-Hodgson select()",
-    "deadline and arrival semantics",
-    "migration policy",
-    "activation policy",
-    "KV allocator",
-    "workload",
-    "SLOs",
-    "admission ordering semantics"
+ "recorded_utc": "2026-08-23T01:57:55.026208+00:00",
+ "previous_runtime_freeze": {
+  "commit": "6ec7357",
+  "patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd"
+ },
+ "change": "Algorithm 2 dispatch-side sequence ownership, on top of the A+B request lifecycle / accounting identity patch",
+ "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
+ "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
+ "explicitly_unchanged": [
+  "tau",
+  "frozen c_i",
+  "Moore-Hodgson select()",
+  "deadline and arrival semantics",
+  "migration policy",
+  "activation policy",
+  "KV allocator",
+  "workload",
+  "SLOs",
+  "admission ordering semantics"
+ ],
+ "c_i_reuse": {
+  "decision": "keep the frozen c_i; stage 01 is NOT re-run",
+  "why": "The c_i profiling arm launches a solo server with no --enable-gpu-scheduler, --enable-controller or --enable-moore-hodgson, so _alg2_runtime_gate is False and the dispatch ledger is never populated. _handle_mh_migrated_away, _mh_scheduler_retired_rids, scheduler_retired_unacked and backend_admit_after_retire appear zero times in final_profile_ci.sh and profile_v2.py, and a solo profile performs no deactivation. The watchdog patch touches monitor_baseline_stage.py, which the c_i stage does not invoke (0 references). Stage 01 STATUS remains PASS from 2026-08-22T18:29:17Z and its artifacts are untouched.",
+  "audited_utc": "2026-08-23T01:57:55.026221+00:00"
+ },
+ "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
+ "patch_blob": "843815cf073d25fa94d15e4f6081a5fef5854a11",
+ "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
+ "dispatch_seq_ownership": {
+  "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
+  "fix": "On a model departure the GPU scheduler retires the sequences it still owns for that model -- dispatched, not yet acknowledged -- through the existing _mh_retired_admit_seqs / _mh_retired_start_seqs and the existing contiguous-prefix drain. Already-acknowledged requests are untouched and remain the engine-side lifecycle's responsibility.",
+  "race_handling": "An acknowledgement, prefill start or completion still in flight when the sequence was retired names a tombstoned rid: it is recognised as already accounted exactly once, logged, and moves no frontier. It is not an ordering violation. A tombstone is cleared when the same rid is dispatched again on that GPU, so a returning request is always governed by its live record.",
+  "not_added": [
+   "timeout",
+   "seq skip",
+   "bypass",
+   "ordering relaxation",
+   "heuristic",
+   "magic constant"
   ],
-  "c_i_reuse": {
-    "decision": "keep the frozen c_i; stage 01 is not re-run",
-    "why": "The c_i profiling arm launches a solo server without --enable-gpu-scheduler, --enable-controller or --enable-moore-hodgson, so _alg2_runtime_gate is False: the staged list is never populated, BackendAdmitReq is never sent, and a solo profile performs no deactivation, so _evict_all_waiting_requests is never reached. Neither symbol appears anywhere in profile_v2.py or final_profile_ci.sh. The patch cannot reach the prefill-throughput measurement.",
-    "audited_symbols": [
-      "_evict_all_waiting_requests",
-      "_alg2_staged_generation_reqs",
-      "BackendAdmitReq",
-      "process_input_gen_requests"
-    ],
-    "frozen_c_i_file": "exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json"
-  },
-  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd"
+  "all_departure_reasons_verified": [
+   "kv-stash",
+   "staged-never-admitted",
+   "evicted-to-frontend",
+   "backend-queue-drain"
+  ],
+  "call_site_audit": "Every MigratedAwayReq originates from the deactivate handler (scheduler.py:1993 and :2055 call _evict_all_waiting_requests; _drain_backend_queue is reached only from it; the kv-stash report is inside _v6_stash_captured). There is no path that reports a request as gone while its model stays resident, so the sweep can never retire a live sequence of a resident model."
+ }
 }
