@@ -15,7 +15,7 @@ ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 OUT="$ROOT/exp/results/final-evaluation"
 WL="$ROOT/exp/workloads/final-evaluation"
 PY=/workspace/prism-exp/prism-venv/bin/python
-RUNTIME_FREEZE=${PRISM_RUNTIME_FREEZE:-444a216}
+RUNTIME_FREEZE=${PRISM_RUNTIME_FREEZE:-6618671}
 mkdir -p "$OUT"
 
 log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$OUT/pipeline.log"; }
@@ -270,3 +270,36 @@ fi
 bash "$SCRIPT_DIR/notify.sh" "pipeline-complete" \
   "✅ SUCCESS | Prism Baseline Pipeline Complete" || true
 log "CHAIN COMPLETE"
+
+# ---------------------------------------------------------------- stage 7
+# Packaging, not experiment: the evaluation has already succeeded and its
+# results stand whatever happens here. It runs last, alone, because it reads
+# several GB and builds a clean clone -- work that must never overlap a run.
+if stage_done 07-handoff; then log "skip 07-handoff"; else
+  stage_start 07-handoff
+  if bash "$SCRIPT_DIR/final_handoff.sh" >> "$OUT/07-handoff/handoff_console.log" 2>&1; then
+    log "stage 07-handoff -> PASS (SAFE TO RELEASE SERVER = YES)"
+    $PY - "$(status_path 07-handoff)" PASS "" "$OUT/SAFE_TO_RELEASE.json" <<'PY2'
+import json, sys, datetime
+path, result, reason, *artifacts = sys.argv[1:]
+rec = json.load(open(path))
+rec.update(result=result, reason=reason or None, artifacts=artifacts,
+           finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
+json.dump(rec, open(path, "w"), indent=2)
+PY2
+  else
+    # The handoff driver has already reported itself; do not overwrite its
+    # verdict with a generic stop, and do not claim the baseline is complete.
+    log "stage 07-handoff -> FAIL (SAFE TO RELEASE SERVER = NO)"
+    $PY - "$(status_path 07-handoff)" FAIL "handoff packaging or push failed" <<'PY2'
+import json, sys, datetime
+path, result, reason = sys.argv[1:4]
+rec = json.load(open(path))
+rec.update(result=result, reason=reason,
+           finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
+json.dump(rec, open(path, "w"), indent=2)
+PY2
+    exit 1
+  fi
+fi
+log "HANDOFF COMPLETE"

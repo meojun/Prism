@@ -72,3 +72,5 @@
 [2026-08-23T17:49:18Z] stage 00-preflight -> PASS 
 [2026-08-23T17:49:18Z] skip 01-ci-profile
 [2026-08-23T17:49:18Z] calibration tau=0.00035 seed=0
+[2026-08-23T18:06:36Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T18:06:36Z] CHAIN STOPPED at 02-tau-calibration

@@ -31,8 +31,16 @@ while true; do
   date -u +%FT%TZ > "$BEAT"
   if ! tmux has-session -t "$SESSION" 2>/dev/null; then
     stage=$(last_stage)
-    if grep -q '"result": "PASS"' "$EVAL/06-aggregate/STATUS.json" 2>/dev/null; then
-      log "session gone and 06-aggregate passed; the chain completed"
+    if grep -q '"result": "PASS"' "$EVAL/07-handoff/STATUS.json" 2>/dev/null; then
+      log "session gone and 07-handoff passed; the chain completed"
+      exit 0
+    fi
+    if [ -f "$EVAL/SAFE_TO_RELEASE.json" ]; then
+      log "session gone with a release verdict recorded; the handoff reported itself"
+      exit 0
+    fi
+    if grep -q '"result": "FAIL"' "$EVAL/07-handoff/STATUS.json" 2>/dev/null; then
+      log "session gone after a handoff failure it already reported"
       exit 0
     fi
     if [ -f "$EVAL/STOP" ]; then

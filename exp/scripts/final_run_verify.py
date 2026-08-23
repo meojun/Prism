@@ -56,8 +56,18 @@ def main():
     fd_failures = fd.get("fd_exhaustion")
     conn_failures = fd.get("connection_failures")
 
+    # A staged payload that could not be handed back is a lost request, read
+    # from the run's own server log rather than inferred from the totals.
+    server_log = run / "server-logs/server.log"
+    staged_failures = 0
+    if server_log.is_file():
+        text = server_log.read_text(errors="replace")
+        staged_failures = (text.count("staged_return_failed")
+                           + text.count("could not return staged"))
+
     gates = {
         "rc_zero": rc == "0",
+        "no_staged_return_failure": staged_failures == 0,
         "all_requests_accounted": (m["accounted"] == m["offered_requests"]
                                    if m["offered_requests"] else False),
         "no_stale_dispatched_sequences": gate("no_stale_dispatched_sequences"),
@@ -97,6 +107,7 @@ def main():
             "migrated_weight_bytes": m["weight_bytes"],
             "migrated_kv_bytes": m["kv_bytes"],
             "alg2_order_violations": m["alg2_order_violations"],
+            "staged_return_failures": staged_failures,
         },
     }
     args.out.write_text(json.dumps(record, indent=2) + "\n")

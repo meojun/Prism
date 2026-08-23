@@ -50,12 +50,18 @@ fi
 
 SERVER=${PRISM_NTFY_SERVER:-https://ntfy.sh}
 PRIO=${PRISM_NTFY_PRIORITY:-default}
-TITLE=${PRISM_NTFY_TITLE:-Prism pipeline}
+# The verdict has to be the thing a phone shows on the lock screen, so the
+# first line of the message becomes the notification title and anything after
+# it becomes the body. A single-line message reads the same as before.
+TITLE=$(printf '%s' "$MSG" | head -1)
+BODY=$(printf '%s' "$MSG" | tail -n +2)
+[ -z "$BODY" ] && BODY="$TITLE"
+TITLE=${PRISM_NTFY_TITLE:-$TITLE}
 
 # Short timeouts so an ntfy outage cannot hold up a run, and one retry only.
 if curl -fsS --max-time "${PRISM_NTFY_TIMEOUT:-6}" --connect-timeout 3 --retry 1 \
      -H "Title: $TITLE" -H "Priority: $PRIO" \
-     -d "$MSG" "$SERVER/$PRISM_NTFY_TOPIC" >/dev/null 2>>"$LOG"; then
+     -d "$BODY" "$SERVER/$PRISM_NTFY_TOPIC" >/dev/null 2>>"$LOG"; then
   : > "$marker" 2>/dev/null || true
   log "SENT $KEY -- $MSG"
 else

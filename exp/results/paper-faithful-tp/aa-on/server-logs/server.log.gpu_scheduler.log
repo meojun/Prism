@@ -1,0 +1,777 @@
+[2026-08-20 09:25:28.319 GPU_Scheduler_0] starting GPU scheduler for GPU 0
+[2026-08-20 09:25:28.321 GPU_Scheduler_0] Model states init: {'model_1': 'deactivated'}
+[2026-08-20 09:25:28.321 GPU_Scheduler_0] [PAPER-TP] WorkerPool gpu=0 owned=[0, 1, 2, 3] shadow=[] {0: 1, 1: 2, 2: 2, 3: 2}
+[2026-08-20 09:25:30.261 GPU_Scheduler_0] [PAPER-TP] activating model_1 tp_size=2 on gpus=[0, 1] slot=1 (owner gpu=0)
+[2026-08-20 09:25:30.261 GPU_Scheduler_0] Assign worker 1 to model_1. Current model_to_worker: {'model_1': 1}
+[2026-08-20 09:25:30.263 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.273 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.283 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.293 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.304 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.314 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.324 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.335 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.345 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.355 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.365 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.376 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.386 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.397 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.407 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.417 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.427 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.438 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.448 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.458 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.468 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.479 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.489 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.499 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.509 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.520 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.530 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.540 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.550 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.561 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.571 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.581 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.591 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.602 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.612 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.622 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.633 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.643 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.653 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.663 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.674 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.684 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.694 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.704 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.715 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.725 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.735 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.745 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.756 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.766 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.776 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.786 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.797 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.807 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.817 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.827 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.838 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.848 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.858 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.868 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.879 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.889 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.899 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.910 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.920 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.930 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.940 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.951 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.961 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.971 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.982 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:30.992 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.002 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.012 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.023 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.033 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.043 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.054 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.064 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.074 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.084 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.095 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.105 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.115 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.126 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.136 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.146 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.157 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.167 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.177 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.187 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.198 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.208 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.218 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.228 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.239 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.249 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.259 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.269 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.280 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.290 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.300 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.310 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.321 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.331 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.341 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.351 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.362 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.372 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.382 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.393 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.403 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.413 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.423 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.434 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.444 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.454 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.464 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.475 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.485 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.495 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.505 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.516 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.526 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.536 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.547 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.557 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.567 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.577 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.588 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.598 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.608 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.619 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.629 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.639 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.649 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.660 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.670 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.680 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.690 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.701 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.711 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.721 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.732 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.742 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.752 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.762 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.773 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.783 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.793 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.803 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.814 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.824 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.834 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.845 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.855 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.865 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.875 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.886 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.896 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.906 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.917 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.927 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.937 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.947 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.958 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.968 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.978 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.988 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:31.999 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.009 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.019 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.029 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.040 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.050 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.060 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.070 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.081 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.091 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.101 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.111 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.121 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.132 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.142 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.152 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.162 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.173 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.183 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.193 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.204 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.214 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.224 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.235 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.245 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.255 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.265 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.276 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.286 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.296 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.307 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.317 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.327 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.337 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.348 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.358 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.368 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.378 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.388 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.399 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.409 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.419 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.429 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.440 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.450 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.460 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.470 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.481 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.491 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.501 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.511 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.521 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.532 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.542 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.552 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.562 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.573 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.583 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.593 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.603 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.614 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.624 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.634 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.644 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.654 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.665 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.675 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.685 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.695 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.706 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.716 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.726 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.736 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.747 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.757 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.767 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.778 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.788 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.798 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.808 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.819 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.829 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.839 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.849 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.860 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.870 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.880 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.891 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.901 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.911 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.922 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.932 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.942 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.953 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.963 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.974 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.984 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:32.995 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.005 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.016 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.026 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.036 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.047 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.057 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.067 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.078 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.088 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.098 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.109 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.119 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.129 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.139 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.150 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.160 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.171 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.181 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.192 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.202 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.212 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.223 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.233 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.243 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.253 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.264 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.274 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.284 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.294 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.305 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.315 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.325 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.335 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.346 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.356 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.366 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.376 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.387 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.397 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.407 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.418 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.428 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.438 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.448 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.459 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.469 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.479 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.490 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.500 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.510 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.521 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.531 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.541 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.552 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.562 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.572 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.583 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.593 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.604 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.614 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.624 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.635 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.645 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.655 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.666 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.676 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.687 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.697 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.708 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.718 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.728 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.739 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.749 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.759 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.770 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.780 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.790 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.801 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.811 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.821 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.832 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.842 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.852 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.863 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.873 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.884 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.894 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.904 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.914 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.925 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.935 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.945 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.955 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.966 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.976 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.986 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:33.996 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.007 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.017 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.027 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.037 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.048 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.058 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.068 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.078 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.088 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.099 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.109 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.119 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.129 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.140 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.150 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.160 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.170 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.181 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.191 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.201 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.211 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.222 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.232 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.243 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.253 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.263 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.273 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.283 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.294 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.304 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.314 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.324 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.335 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.345 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.355 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.365 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.376 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.386 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.396 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.406 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.417 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.427 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.437 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.448 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.458 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.469 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.479 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.489 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.500 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.510 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.520 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.531 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.541 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.551 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.561 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.571 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.582 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.592 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.602 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.612 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.623 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.633 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.643 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.653 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.664 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.674 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.684 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.694 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.705 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.715 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.725 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.736 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.746 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.756 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.766 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.777 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.787 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.797 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.807 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.818 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.828 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.838 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.848 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.859 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.869 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.879 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.889 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.900 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.910 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.920 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.930 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.941 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.951 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.961 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.971 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.982 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:34.992 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.002 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.013 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.023 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.033 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.043 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.054 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.064 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.074 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.084 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.095 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.105 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.115 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.125 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.136 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.146 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.156 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.166 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.177 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.187 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.197 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.208 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.218 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.228 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.238 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.249 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.259 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.269 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.280 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.290 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.301 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.311 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.322 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.332 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.342 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.352 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.363 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.373 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.383 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.393 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.404 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.414 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.424 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.434 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.445 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.455 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.465 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.475 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.486 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.496 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.506 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.516 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.527 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.537 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.547 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.557 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.568 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.578 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.588 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.598 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.609 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.619 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.629 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.639 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.650 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.660 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.670 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.680 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.691 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.701 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.711 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.721 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.732 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.742 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.752 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.762 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.773 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.783 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.794 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.804 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.814 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.825 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.835 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.846 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.856 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.867 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.877 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.888 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.898 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.909 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.919 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.930 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.940 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.951 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.961 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.971 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.981 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:35.991 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.002 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.012 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.022 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.032 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.043 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.053 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.063 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.074 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.084 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.094 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.105 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.115 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.125 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.136 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.146 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.156 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.167 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.177 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.187 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.198 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.208 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.218 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.228 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.238 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.249 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.259 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.269 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.279 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.290 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.300 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.310 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.320 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.330 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.341 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.351 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.361 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.371 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.381 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.392 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.402 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.412 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.422 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.433 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.443 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.453 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.463 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.474 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.484 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.494 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.504 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.515 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.525 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.535 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.545 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.556 GPU_Scheduler_0] Waiting for models to be activated: {'model_1': 'activating'}
+[2026-08-20 09:25:36.566 GPU_Scheduler_0] Model model_1 (instance 0) activation succeeded on GPU 0
+[2026-08-20 09:25:36.569 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:37.570 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:38.570 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:39.576 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:40.582 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:41.577 GPU_Scheduler_0] [V5-LOOP] {"iters": 481, "t_mem": 0.016326761106029153, "t_redis": 0.14350668340921402, "t_admit": 0.005460295593366027, "t_send": 0.0005576915573328733, "t_iter": 0.16585143166594207, "admitted": 0, "iter_max": 0.00851594703271985, "gpu_id": 0, "window_s": 5.010162591934204}
+[2026-08-20 09:25:41.588 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:42.597 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:43.600 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:44.605 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:45.097 GPU_Scheduler_1] starting GPU scheduler for GPU 1
+[2026-08-20 09:25:45.099 GPU_Scheduler_1] Model states init: {'model_1': 'deactivated'}
+[2026-08-20 09:25:45.099 GPU_Scheduler_1] [PAPER-TP] WorkerPool gpu=1 owned=[0, 4, 5] shadow=[1] {0: 1, 1: 2, 4: 2, 5: 2}
+[2026-08-20 09:25:45.612 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:46.201 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:46.584 GPU_Scheduler_0] [V5-LOOP] {"iters": 480, "t_mem": 0.008877347921952605, "t_redis": 0.14643471455201507, "t_admit": 0.005480163963511586, "t_send": 0.0005841599777340889, "t_iter": 0.16137638641521335, "admitted": 0, "iter_max": 0.0010239460971206427, "gpu_id": 0, "window_s": 5.00572943687439}
+[2026-08-20 09:25:46.615 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:47.206 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:47.620 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:48.210 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:48.631 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:49.213 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:49.633 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:50.220 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:50.641 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:51.206 GPU_Scheduler_1] [V5-LOOP] {"iters": 494, "t_mem": 0.010816043708473444, "t_redis": 0.0033335015177726746, "t_admit": 0.00874627847224474, "t_send": 0.0008824905380606651, "t_iter": 0.023778314236551523, "admitted": 0, "iter_max": 0.0007426640950143337, "gpu_id": 1, "window_s": 5.004860162734985}
+[2026-08-20 09:25:51.227 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:51.594 GPU_Scheduler_0] [V5-LOOP] {"iters": 477, "t_mem": 0.011313344351947308, "t_redis": 0.17693292605690658, "t_admit": 0.006344740279018879, "t_send": 0.0006905714981257915, "t_iter": 0.19528158218599856, "admitted": 0, "iter_max": 0.0014284481294453144, "gpu_id": 0, "window_s": 5.009484767913818}
+[2026-08-20 09:25:51.648 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:52.233 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:52.655 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:53.240 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:53.660 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:53.976 GPU_Scheduler_2] starting GPU scheduler for GPU 2
+[2026-08-20 09:25:53.978 GPU_Scheduler_2] Model states init: {'model_1': 'deactivated'}
+[2026-08-20 09:25:53.978 GPU_Scheduler_2] [PAPER-TP] WorkerPool gpu=2 owned=[0, 6] shadow=[2, 4] {0: 1, 2: 2, 4: 2, 6: 2}
+[2026-08-20 09:25:54.249 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:54.667 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:54.960 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:25:55.256 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:55.670 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:55.963 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:25:56.210 GPU_Scheduler_1] [V5-LOOP] {"iters": 492, "t_mem": 0.013706838013604283, "t_redis": 0.0052415961399674416, "t_admit": 0.011480299988761544, "t_send": 0.0011084205470979214, "t_iter": 0.03153715468943119, "admitted": 0, "iter_max": 0.0014591380022466183, "gpu_id": 1, "window_s": 5.002896547317505}
+[2026-08-20 09:25:56.261 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:56.604 GPU_Scheduler_0] [V5-LOOP] {"iters": 474, "t_mem": 0.011712908744812012, "t_redis": 0.20405136072076857, "t_admit": 0.006652964279055595, "t_send": 0.0007820595055818558, "t_iter": 0.22319929325021803, "admitted": 0, "iter_max": 0.0011482560075819492, "gpu_id": 0, "window_s": 5.009826183319092}
+[2026-08-20 09:25:56.677 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:56.965 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:25:57.266 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:57.686 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:57.969 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:25:58.271 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:58.696 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:58.970 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:25:59.276 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:25:59.698 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:25:59.969 GPU_Scheduler_2] [V5-LOOP] {"iters": 495, "t_mem": 0.009795733960345387, "t_redis": 0.002617849735543132, "t_admit": 0.007535999407991767, "t_send": 0.0007092040032148361, "t_iter": 0.020658787107095122, "admitted": 0, "iter_max": 0.000543943140655756, "gpu_id": 2, "window_s": 5.009388208389282}
+[2026-08-20 09:25:59.980 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:00.285 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:00.700 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:00.981 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:01.218 GPU_Scheduler_1] [V5-LOOP] {"iters": 493, "t_mem": 0.011746351141482592, "t_redis": 0.0040196392219513655, "t_admit": 0.009710368001833558, "t_send": 0.0010672910138964653, "t_iter": 0.02654364937916398, "admitted": 0, "iter_max": 0.0006832841318100691, "gpu_id": 1, "window_s": 5.007389783859253}
+[2026-08-20 09:26:01.290 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:01.609 GPU_Scheduler_0] [V5-LOOP] {"iters": 485, "t_mem": 0.006575258914381266, "t_redis": 0.1028330095577985, "t_admit": 0.003542005317285657, "t_send": 0.00043894792906939983, "t_iter": 0.11338922171853483, "admitted": 0, "iter_max": 0.0005511629860848188, "gpu_id": 0, "window_s": 5.004267692565918}
+[2026-08-20 09:26:01.702 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:01.983 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:02.294 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:02.704 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:02.984 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:03.192 GPU_Scheduler_3] starting GPU scheduler for GPU 3
+[2026-08-20 09:26:03.195 GPU_Scheduler_3] Model states init: {'model_1': 'deactivated'}
+[2026-08-20 09:26:03.195 GPU_Scheduler_3] [PAPER-TP] WorkerPool gpu=3 owned=[0] shadow=[3, 5, 6] {0: 1, 3: 2, 5: 2, 6: 2}
+[2026-08-20 09:26:03.256 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:03.298 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:03.704 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:03.736 GPU_Scheduler_0] Admitted 1 requests for model_1
+[2026-08-20 09:26:03.986 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:04.261 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:04.275 GPU_Scheduler_0] Admitted 1 requests for model_1
+[2026-08-20 09:26:04.303 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:04.712 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:04.978 GPU_Scheduler_2] [V5-LOOP] {"iters": 495, "t_mem": 0.00743096717633307, "t_redis": 0.0016231092158704996, "t_admit": 0.005292861722409725, "t_send": 0.0004391223192214966, "t_iter": 0.014786060433834791, "admitted": 0, "iter_max": 0.00041058193892240524, "gpu_id": 2, "window_s": 5.008180856704712}
+[2026-08-20 09:26:04.989 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:05.266 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:05.308 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:05.714 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:05.992 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:06.222 GPU_Scheduler_1] [V5-LOOP] {"iters": 493, "t_mem": 0.01071310555562377, "t_redis": 0.003780233208090067, "t_admit": 0.00892972806468606, "t_send": 0.0010508401319384575, "t_iter": 0.024473906960338354, "admitted": 0, "iter_max": 0.00045602209866046906, "gpu_id": 1, "window_s": 5.003014326095581}
+[2026-08-20 09:26:06.270 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:06.314 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:06.613 GPU_Scheduler_0] [V5-LOOP] {"iters": 482, "t_mem": 0.007341456366702914, "t_redis": 0.12874738220125437, "t_admit": 0.00422293390147388, "t_send": 0.0014958172105252743, "t_iter": 0.14180758967995644, "admitted": 2, "iter_max": 0.0007965941913425922, "gpu_id": 0, "window_s": 5.003886938095093}
+[2026-08-20 09:26:06.717 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:06.997 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:07.273 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:07.320 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:07.720 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:08.000 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:08.259 GPU_Scheduler_3] [V5-LOOP] {"iters": 494, "t_mem": 0.009325850754976273, "t_redis": 0.0021773837506771088, "t_admit": 0.006695398595184088, "t_send": 0.0005714842118322849, "t_iter": 0.018770117312669754, "admitted": 0, "iter_max": 0.0004868418909609318, "gpu_id": 3, "window_s": 5.002474308013916}
+[2026-08-20 09:26:08.279 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:08.325 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:08.721 GPU_Scheduler_0] net_available: inf, queue_len: 0, model_backend_queue_lens: {'model_1': 0}
+[2026-08-20 09:26:08.721 GPU_Scheduler_0] Admitted 1 requests for model_1
+[2026-08-20 09:26:08.949 GPU_Scheduler_0] Admitted 1 requests for model_1
+[2026-08-20 09:26:09.002 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:09.282 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:09.331 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:09.661 GPU_Scheduler_0] Admitted 1 requests for model_1
+[2026-08-20 09:26:09.723 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:09.983 GPU_Scheduler_2] [V5-LOOP] {"iters": 494, "t_mem": 0.009146406780928373, "t_redis": 0.001927326899021864, "t_admit": 0.006235436070710421, "t_send": 0.0005354876630008221, "t_iter": 0.01784465741366148, "admitted": 0, "iter_max": 0.0005200530868023634, "gpu_id": 2, "window_s": 5.004333972930908}
+[2026-08-20 09:26:10.003 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:10.288 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:10.336 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:10.725 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:11.004 GPU_Scheduler_2] net_available: inf, queue_len: 0
+[2026-08-20 09:26:11.229 GPU_Scheduler_1] [V5-LOOP] {"iters": 493, "t_mem": 0.011891295202076435, "t_redis": 0.00409822934307158, "t_admit": 0.009490133030340075, "t_send": 0.0010186906438320875, "t_iter": 0.026498348219320178, "admitted": 0, "iter_max": 0.0005510130431503057, "gpu_id": 1, "window_s": 5.00683069229126}
+[2026-08-20 09:26:11.293 GPU_Scheduler_3] net_available: inf, queue_len: 0
+[2026-08-20 09:26:11.341 GPU_Scheduler_1] net_available: inf, queue_len: 0
+[2026-08-20 09:26:11.623 GPU_Scheduler_0] [V5-LOOP] {"iters": 485, "t_mem": 0.006500540534034371, "t_redis": 0.10673687234520912, "t_admit": 0.0034631204325705767, "t_send": 0.0017160663846880198, "t_iter": 0.11841659969650209, "admitted": 3, "iter_max": 0.000816053943708539, "gpu_id": 0, "window_s": 5.009395122528076}
+[2026-08-20 09:26:11.727 GPU_Scheduler_0] net_available: inf, queue_len: 0
+[2026-08-20 09:26:11.776 GPU_Scheduler_0] Received signal to shutdown
+[2026-08-20 09:26:11.777 GPU_Scheduler_3] Received signal to shutdown
+[2026-08-20 09:26:11.777 GPU_Scheduler_2] Received signal to shutdown
+[2026-08-20 09:26:11.777 GPU_Scheduler_1] Received signal to shutdown
+[2026-08-20 09:26:11.782 GPU_Scheduler_2] Cleaning up GPUScheduler GPU 2 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.783 GPU_Scheduler_2] GPUScheduler GPU 2 cleanup completed
+[2026-08-20 09:26:11.783 GPU_Scheduler_2] Cleaning up WorkerPool GPU 2 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.783 GPU_Scheduler_2] Removed IPC file: gpu_scheduler_2_to_worker_0
+[2026-08-20 09:26:11.783 GPU_Scheduler_2] WorkerPool GPU 2 cleanup completed
+[2026-08-20 09:26:11.786 GPU_Scheduler_1] Cleaning up GPUScheduler GPU 1 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.786 GPU_Scheduler_1] GPUScheduler GPU 1 cleanup completed
+[2026-08-20 09:26:11.787 GPU_Scheduler_1] Cleaning up WorkerPool GPU 1 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.787 GPU_Scheduler_1] Removed IPC file: gpu_scheduler_1_to_worker_0
+[2026-08-20 09:26:11.787 GPU_Scheduler_1] WorkerPool GPU 1 cleanup completed
+[2026-08-20 09:26:11.796 GPU_Scheduler_0] Cleaning up GPUScheduler GPU 0 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.796 GPU_Scheduler_0] GPUScheduler GPU 0 cleanup completed
+[2026-08-20 09:26:11.796 GPU_Scheduler_0] Cleaning up WorkerPool GPU 0 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.796 GPU_Scheduler_0] Removed IPC file: gpu_scheduler_0_to_worker_0
+[2026-08-20 09:26:11.796 GPU_Scheduler_0] WorkerPool GPU 0 cleanup completed
+[2026-08-20 09:26:11.797 GPU_Scheduler_3] Cleaning up GPUScheduler GPU 3 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.798 GPU_Scheduler_3] GPUScheduler GPU 3 cleanup completed
+[2026-08-20 09:26:11.798 GPU_Scheduler_3] Cleaning up WorkerPool GPU 3 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.798 GPU_Scheduler_3] Removed IPC file: gpu_scheduler_3_to_worker_0
+[2026-08-20 09:26:11.798 GPU_Scheduler_3] WorkerPool GPU 3 cleanup completed
+[2026-08-20 09:26:11.825 GPU_Scheduler_0] Cleaning up GPUScheduler GPU 0 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.825 GPU_Scheduler_0] GPUScheduler GPU 0 cleanup completed
+[2026-08-20 09:26:11.825 GPU_Scheduler_0] Cleaning up WorkerPool GPU 0 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.825 GPU_Scheduler_0] WorkerPool GPU 0 cleanup completed
+[2026-08-20 09:26:11.825 GPU_Scheduler_1] Cleaning up GPUScheduler GPU 1 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.825 GPU_Scheduler_1] GPUScheduler GPU 1 cleanup completed
+[2026-08-20 09:26:11.825 GPU_Scheduler_1] Cleaning up WorkerPool GPU 1 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.825 GPU_Scheduler_1] WorkerPool GPU 1 cleanup completed
+[2026-08-20 09:26:11.833 GPU_Scheduler_3] Cleaning up GPUScheduler GPU 3 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.833 GPU_Scheduler_3] GPUScheduler GPU 3 cleanup completed
+[2026-08-20 09:26:11.833 GPU_Scheduler_3] Cleaning up WorkerPool GPU 3 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.833 GPU_Scheduler_3] WorkerPool GPU 3 cleanup completed
+[2026-08-20 09:26:11.909 GPU_Scheduler_2] Cleaning up GPUScheduler GPU 2 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.910 GPU_Scheduler_2] GPUScheduler GPU 2 cleanup completed
+[2026-08-20 09:26:11.910 GPU_Scheduler_2] Cleaning up WorkerPool GPU 2 ZMQ sockets and IPC files
+[2026-08-20 09:26:11.910 GPU_Scheduler_2] WorkerPool GPU 2 cleanup completed

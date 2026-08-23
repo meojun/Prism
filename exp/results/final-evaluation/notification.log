@@ -36,3 +36,5 @@ This line is the body.
 Verdict should appear as the title on your phone.
 [2026-08-23T18:06:27Z] SENT stop-c1c49d5678c163de9ac9 -- ❌ FAILED | tau-calibration | τ=0.00035 seed=0 | 8225/8227 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
 [2026-08-23T18:06:27Z] SENT stop-c1c49d5678c163de9ac9-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=tau-calibration | reason=client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
+[2026-08-23T18:06:36Z] SENT stop-0a920b41391c956c1399 -- ❌ FAILED | 02-tau-calibration | a calibration run failed or tau selection failed
+[2026-08-23T18:06:36Z] SENT stop-0a920b41391c956c1399-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=02-tau-calibration | reason=a calibration run failed or tau selection failed

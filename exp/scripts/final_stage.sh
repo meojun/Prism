@@ -75,7 +75,7 @@ if [ -f "$EVAL/STOP" ]; then
 fi
 
 # The runtime must still be the frozen one, checked before every expensive run.
-frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-444a216}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
+frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-6618671}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
 now_blob=$(git -C "$ROOT" hash-object patches/final_baseline_ready/prism_research_worktree.patch 2>/dev/null)
 if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
   echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
@@ -234,6 +234,12 @@ fi
   && blocker="fatal CUDA/NCCL"
 [ -z "$blocker" ] && grep -q '"order_ok": false' "$L/server.log.gpu_scheduler.log" 2>/dev/null \
   && blocker="Algorithm 2 ordering violation"
+# A staged payload that could not be handed back is a lost request: the
+# sequence retires, the ledger stays consistent, and the client waits forever.
+# tau=0.00035 seed-0 ended at 8,225 of 8,227 that way.
+[ -z "$blocker" ] && grep -qE "staged_return_failed|could not return staged" \
+  "$L/server.log" 2>/dev/null \
+  && blocker="staged request could not be returned to the frontend"
 # If the server disappeared without the harness asking it to, gather the
 # evidence now, while /proc and the cgroup counters still mean something.
 if grep -q "inner server session exited without result" \
