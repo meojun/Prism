@@ -1,0 +1,65 @@
+{
+  "generated_utc": "2026-08-23T16:35:43.465792+00:00",
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runB1-global-backlog",
+  "label": "d3-B1",
+  "symptoms": {
+    "cuda_oom": 0,
+    "fatal_cuda_nccl": 0,
+    "alg2_order_violations": 0,
+    "activation_waits": 0,
+    "decode_retractions": 0,
+    "killed": false,
+    "watchdog": "benchmark: no actual progress event",
+    "pipeline_rc": "143"
+  },
+  "alg2_frontier_by_gpu": {
+    "1": {
+      "dispatch": {
+        "last": 4712,
+        "n": 4712
+      },
+      "backend_admit": {
+        "last": 4712,
+        "n": 4712
+      },
+      "prefill_start": {
+        "last": 4712,
+        "n": 4712
+      },
+      "prefill_complete": {
+        "last": 4712,
+        "n": 4712
+      }
+    },
+    "0": {
+      "dispatch": {
+        "last": 3747,
+        "n": 3747
+      },
+      "backend_admit": {
+        "last": 3747,
+        "n": 3746
+      },
+      "prefill_start": {
+        "last": 3747,
+        "n": 3746
+      },
+      "prefill_complete": {
+        "last": 3747,
+        "n": 3746
+      }
+    }
+  },
+  "violations": [],
+  "failing_request_lifecycles": [],
+  "classification": "recurrence of a class already fixed",
+  "matched_known_classes": [
+    {
+      "class": "stale staged request (fixed fcaaeff / B)",
+      "evidence": "a staged request survived a deactivation"
+    }
+  ],
+  "causal_chain": "the watchdog ended the run: benchmark: no actual progress event",
+  "proposed_minimal_fix": "This matches a class already fixed: stale staged request (fixed fcaaeff / B). Check whether the fix covers this path before changing anything.",
+  "policy": "Diagnosis only. No runtime change, no timeout, no bypass, no retry was made; the pipeline is left stopped."
+}
