@@ -9,7 +9,7 @@ FINAL             = 0/24
 NEXT_STAGE        = 04-prototype-fresh
 NEXT_RUN          = bursty_r2_s2
 FINAL_RUNTIME_SHA = 6618671
-HANDOFF_SHA       = 438f54b
+HANDOFF_SHA       = ff1c302
 ```
 
 `FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`
@@ -44,7 +44,7 @@ and KV migration between them.
 
 ```bash
 git clone https://github.com/meojun/Prism.git prism-exp && cd prism-exp
-git checkout 438f54b
+git checkout final-baseline-handoff   # the tag on HANDOFF_SHA
 
 ./bootstrap.sh                              # pinned venv + the six models
 cp .env.example /workspace/.env && chmod 600 /workspace/.env
@@ -156,7 +156,7 @@ python exp/scripts/final_aggregate.py --out-dir exp/results/final-evaluation
 
 ```bash
 git clone <this repo> prism-exp && cd prism-exp
-git checkout 438f54b
+git checkout final-baseline-handoff   # the tag on HANDOFF_SHA
 ./bootstrap.sh
 cp .env.example /workspace/.env && $EDITOR /workspace/.env
 source exp/scripts/env.sh

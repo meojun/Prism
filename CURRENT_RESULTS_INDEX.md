@@ -6,7 +6,7 @@ Where every number and artifact is, as of this handoff. The comparison is not fi
 | --- | --- |
 | PIPELINE_STATUS | **INCOMPLETE** |
 | FINAL_RUNTIME_SHA | `6618671` |
-| HANDOFF_SHA | `438f54b` |
+| HANDOFF_SHA | `ff1c302` |
 | SELECTED_TAU | **0.00035** |
 | calibration | 12/12 PASS |
 | prototype arm | 1/24 PASS, 23 pending |
