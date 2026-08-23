@@ -265,6 +265,9 @@ V4ENV="export PRISM_V4_LOAD_TRACE='$PRISM_V4_LOAD_TRACE'"
 # Backlog probe scope for models_to_skip: local (default) or global. Selects
 # what the backpressure guard reads; request transport is GPU-local either way.
 [ -n "${PRISM_BACKLOG_SCOPE:-}" ] && V4ENV="$V4ENV PRISM_BACKLOG_SCOPE=$PRISM_BACKLOG_SCOPE"
+# Client-side per-rid final receipts, written as each request settles so a
+# killed run still has them. Only meaningful with PRISM_OBS=1.
+[ -n "${PRISM_OBS:-}" ] && export PRISM_CLIENT_RECEIPTS="$OUTDIR/client_receipts.jsonl"
 tmux new-session -d -s "$SESSION" \
   "ulimit -n 65535 && export PRISM_ROOT='$PRISM_ROOT' PRISM_REPO='$PRISM_REPO' \
    PRISM_EXP='$PRISM_EXP' PYTHONPATH='$PRISM_REPO/python' && \

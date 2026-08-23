@@ -22,3 +22,4 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T15:00:01Z] SENT stop-54a541913c859a550a2b -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
 [2026-08-23T15:06:01Z] SENT audit-ownership-1787497561 -- 📋 Prism audit done | root cause: alg2_seq is per-GPU but backend queue is per-model | a drain by any GPU orphans another GPU's seq | explains both stalls | no fix applied
 [2026-08-23T16:35:43Z] SENT stop-b3b38f6c34f425bd0d81 -- 🔴 Prism STOPPED | d3-B1 | 8422/8423 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
+[2026-08-23T16:38:21Z] SENT stop-2a37fdb7748d4fff9687 -- 🔴 Prism STOPPED | d3-B1 | 8422/8423 | known unattributed stall class, not the orphan-seq class (INVALID_CLIENT_FD_EXHAUSTION) | autopsy ready

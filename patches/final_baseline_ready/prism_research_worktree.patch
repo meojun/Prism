@@ -1,8 +1,16 @@
 diff --git a/benchmark/multi-model/benchmark.py b/benchmark/multi-model/benchmark.py
-index d429d5b..2438f2e 100644
+index d429d5b..30660a7 100644
 --- a/benchmark/multi-model/benchmark.py
 +++ b/benchmark/multi-model/benchmark.py
-@@ -41,6 +41,8 @@ class RequestFuncOutput:
+@@ -6,6 +6,7 @@ import os
+ import random
+ import resource
+ import sys
++import threading
+ import time
+ import traceback
+ import warnings
+@@ -41,6 +42,8 @@ class RequestFuncOutput:
      prefill_finish_time: float = 0.0
      finish_time: float = 0.0
      decode_timestamps: List[float] = field(default_factory=list)
@@ -11,7 +19,47 @@ index d429d5b..2438f2e 100644
  
      prompt_len: int = 0
      error: str = ""
-@@ -124,6 +126,12 @@ async def send_generate_request(
+@@ -52,6 +55,39 @@ class RequestFuncOutput:
+     slo_tpot: float = 0.0
+ 
+ 
++_PRISM_OBS = os.environ.get("PRISM_OBS") == "1"
++_RECEIPT_PATH = os.environ.get("PRISM_CLIENT_RECEIPTS")
++_receipt_lock = threading.Lock()
++
++
++def _client_receipt(req, output):
++    """One line per request, the moment the client stops waiting on it.
++
++    The last boundary in the chain: whether the client actually received a
++    final response. Without it a stalled run leaves no client-side record at
++    all, and requests that were served but never collected look identical to
++    requests that never reached the server.
++    """
++    if not (_PRISM_OBS and _RECEIPT_PATH):
++        return
++    try:
++        rec = {
++            "rid": getattr(req, "req_id", None),
++            "model": getattr(req, "model", None),
++            "time": time.time(),
++            "success": bool(getattr(output, "success", False)),
++            "output_len": getattr(output, "output_len", None),
++            "ttft": getattr(output, "ttft", None),
++            "latency": getattr(output, "latency", None),
++            "error": (getattr(output, "error", "") or "")[:160],
++        }
++        with _receipt_lock:
++            with open(_RECEIPT_PATH, "a") as fh:
++                fh.write(json.dumps(rec, sort_keys=True) + "\n")
++    except Exception:
++        pass
++
++
+ async def send_generate_request(
+     server: str,
+     req: Request,
+@@ -124,6 +160,12 @@ async def send_generate_request(
                                  success = False
                                  reason = "Exceed SLO"
                              arrival_time = data["meta_info"]["arrival_timestamp"]
@@ -24,7 +72,7 @@ index d429d5b..2438f2e 100644
                              out_queue_time = data["meta_info"]["out_queue_timestamp"]
                              prefill_finish_time = data["meta_info"][
                                  "prefill_finish_timestamp"
-@@ -132,6 +140,8 @@ async def send_generate_request(
+@@ -132,6 +174,8 @@ async def send_generate_request(
                              finish_time = data["meta_info"]["finish_timestamp"]
  
                              output.arrival_time = arrival_time
@@ -33,7 +81,20 @@ index d429d5b..2438f2e 100644
                              output.out_queue_time = out_queue_time
                              output.prefill_finish_time = prefill_finish_time
                              output.finish_time = finish_time
-@@ -822,9 +832,23 @@ async def run_tp_mode(
+@@ -171,6 +215,12 @@ async def send_generate_request(
+                 output.error = "".join(traceback.format_exception(*exc_info))
+             print(f"Error in sending generate request {req.req_id} model {req.model}, error: {output.error}")
+ 
++    # OBSERVATION ONLY -- client-side final receipt, appended as each request
++    # settles so it survives a killed run. The end-of-run results file is
++    # written only on a clean finish, which is exactly the case a stall denies
++    # us. Gated off unless PRISM_OBS=1; writes and returns, never raises.
++    _client_receipt(req, output)
++
+     if pbar:
+         pbar.update(1)
+     return output
+@@ -822,9 +872,23 @@ async def run_tp_mode(
              output_data.append({
                  "success": output.success,
                  "latency": output.latency,
