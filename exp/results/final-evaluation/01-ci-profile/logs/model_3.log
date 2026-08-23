@@ -1,0 +1,957 @@
+[2026-08-22 18:23:56.579] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:23:56.600] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:23:56.602] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:23:56.603] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:23:56.607] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:23:56.608] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:23:56.935] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:23:56.936] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:24:14.682 model_3 GPU=0 TP0] Scheduler: Worker None bound to gpu_scheduler_0_to_worker_None
+[2026-08-22 18:24:15.460 model_3 GPU=0 TP0] [PAPER-TP] engine rank: tp_rank=0 gpu_id=0 tp_size=1 model_service=False
+[2026-08-22 18:24:15.460 model_3 GPU=0 TP0] Init torch distributed begin.
+[2026-08-22 18:24:15.687 model_3 GPU=0 TP0] Using mem_fraction_static: 0.88 and min_per_gpu_memory: 78.84 GB
+[2026-08-22 18:24:16.120 model_3 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:24:16.139 model_3 GPU=0 TP0] Ignore import error when loading sglang.srt.models.llava. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:24:16.142 model_3 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:24:16.143 model_3 GPU=0 TP0] Ignore import error when loading sglang.srt.models.llavavid. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:24:16.147 model_3 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:24:16.148 model_3 GPU=0 TP0] Ignore import error when loading sglang.srt.models.mllama. Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:24:16.396 model_3 GPU=0 TP0] Skipping import of cpp extensions due to incompatible torch version. Please upgrade to torch >= 2.11.0 (found 2.4.0+cu121).
+[2026-08-22 18:24:16.398 model_3 GPU=0 TP0] Ignore import error when loading sglang.srt.models.yivl. Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback):
+module 'torch' has no attribute 'int1'
+[2026-08-22 18:24:37.307 model_3 GPU=0 TP0] Load GPU model end. Time cost: 6.4771s. Current available memory: 72.10 GB, model GPU memory usage: 6.72 GB
+[2026-08-22 18:24:37.308 model_3 GPU=0 TP0] Init memory pool size: 39.00 GB, max_total_num_tokens: 355761, max_num_reqs: 2048, cell_size: 114688.00 bytes, 0.11 MB, kv_cache_dtype: torch.bfloat16
+[2026-08-22 18:24:37.318 model_3 GPU=0 TP0] Initialize req_to_token pool end. Takes 0.0087s. Wait time: 0.0010s. Init time: 0.0087s
+[2026-08-22 18:24:41.125 model_3 GPU=0 TP0] Elastic memory: kv_cache_manager_v0 initialized
+[2026-08-22 18:24:41.182 model_3 GPU=0 TP0] Create memory pool end. Time cost: 3.8740s. total memory pool memory=1.00 GB, req_to_token_pool memory=1.00 GB, token_to_kv_pool memory=0.00 GB
+[2026-08-22 18:24:41.242 model_3 GPU=0 TP0] Init attention backend end. Time cost: 0.0173s
+[2026-08-22 18:24:41.664 model_3 GPU=0 TP0] max_total_num_tokens=355761, max_prefill_tokens=16384, max_running_requests=2049, 
+[2026-08-22 18:24:42.090] Model model_3 instance 0 loaded in process 617566
+[2026-08-22 18:24:42.091] All 1 engines prepared in 35.31 seconds.
+[2026-08-22 18:24:42.121] Waiting for the server to be ready for model model_3...
+[2026-08-22 18:24:43.129] Sending single request for model_3
+[2026-08-22 18:24:43.133 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:43.134 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 7, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:44.301] The server for model_3 is fired up and ready to roll!
+[2026-08-22 18:24:48.522] Sending single request for model_3
+[2026-08-22 18:24:48.524 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:48.525 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 94, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:49.388 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5680, token usage: 0.02, gen throughput (token/s): 5.18, #queue-req: 0
+[2026-08-22 18:24:49.873 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5720, token usage: 0.02, gen throughput (token/s): 82.57, #queue-req: 0
+[2026-08-22 18:24:50.530 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5760, token usage: 0.02, gen throughput (token/s): 60.83, #queue-req: 0
+[2026-08-22 18:24:50.704] Sending single request for model_3
+[2026-08-22 18:24:50.705 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:50.707 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 68, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:50.988 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5647, token usage: 0.02, gen throughput (token/s): 87.42, #queue-req: 0
+[2026-08-22 18:24:51.666 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5687, token usage: 0.02, gen throughput (token/s): 58.93, #queue-req: 0
+[2026-08-22 18:24:52.095 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5727, token usage: 0.02, gen throughput (token/s): 93.43, #queue-req: 0
+[2026-08-22 18:24:52.559] Sending single request for model_3
+[2026-08-22 18:24:52.560 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:52.561 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 81, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:52.780 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5653, token usage: 0.02, gen throughput (token/s): 58.32, #queue-req: 0
+[2026-08-22 18:24:53.455 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5693, token usage: 0.02, gen throughput (token/s): 59.32, #queue-req: 0
+[2026-08-22 18:24:53.889 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5733, token usage: 0.02, gen throughput (token/s): 92.13, #queue-req: 0
+[2026-08-22 18:24:54.192] Sending single request for model_3
+[2026-08-22 18:24:54.194 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:54.195 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 104, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:54.568 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5669, token usage: 0.02, gen throughput (token/s): 58.88, #queue-req: 0
+[2026-08-22 18:24:55.010 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5709, token usage: 0.02, gen throughput (token/s): 90.68, #queue-req: 0
+[2026-08-22 18:24:55.700 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5749, token usage: 0.02, gen throughput (token/s): 57.94, #queue-req: 0
+[2026-08-22 18:24:56.100] Sending single request for model_3
+[2026-08-22 18:24:56.101 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:56.102 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 59, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:56.166 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5617, token usage: 0.02, gen throughput (token/s): 85.85, #queue-req: 0
+[2026-08-22 18:24:56.825 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5657, token usage: 0.02, gen throughput (token/s): 60.64, #queue-req: 0
+[2026-08-22 18:24:57.254 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5697, token usage: 0.02, gen throughput (token/s): 93.33, #queue-req: 0
+[2026-08-22 18:24:58.137 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5737, token usage: 0.02, gen throughput (token/s): 45.31, #queue-req: 0
+[2026-08-22 18:24:58.163] Sending single request for model_3
+[2026-08-22 18:24:58.165 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:24:58.166 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 119, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:24:58.578 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5710, token usage: 0.02, gen throughput (token/s): 90.60, #queue-req: 0
+[2026-08-22 18:24:59.233 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5750, token usage: 0.02, gen throughput (token/s): 61.07, #queue-req: 0
+[2026-08-22 18:24:59.669 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5790, token usage: 0.02, gen throughput (token/s): 91.81, #queue-req: 0
+[2026-08-22 18:25:00.005] Sending single request for model_3
+[2026-08-22 18:25:00.007 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:00.008 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 120, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:00.353 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5704, token usage: 0.02, gen throughput (token/s): 58.50, #queue-req: 0
+[2026-08-22 18:25:01.012 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5744, token usage: 0.02, gen throughput (token/s): 60.73, #queue-req: 0
+[2026-08-22 18:25:01.439 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5784, token usage: 0.02, gen throughput (token/s): 93.60, #queue-req: 0
+[2026-08-22 18:25:01.613] Sending single request for model_3
+[2026-08-22 18:25:01.614 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:01.615 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 79, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:02.117 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5656, token usage: 0.02, gen throughput (token/s): 59.03, #queue-req: 0
+[2026-08-22 18:25:02.554 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5696, token usage: 0.02, gen throughput (token/s): 91.52, #queue-req: 0
+[2026-08-22 18:25:03.390 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5736, token usage: 0.02, gen throughput (token/s): 47.83, #queue-req: 0
+[2026-08-22 18:25:03.647] Sending single request for model_3
+[2026-08-22 18:25:03.648 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:03.650 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 82, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:03.844 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5652, token usage: 0.02, gen throughput (token/s): 88.14, #queue-req: 0
+[2026-08-22 18:25:04.522 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5692, token usage: 0.02, gen throughput (token/s): 59.00, #queue-req: 0
+[2026-08-22 18:25:05.175 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5732, token usage: 0.02, gen throughput (token/s): 61.25, #queue-req: 0
+[2026-08-22 18:25:05.502] Sending single request for model_3
+[2026-08-22 18:25:05.503 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:05.504 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 35, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:05.627 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5598, token usage: 0.02, gen throughput (token/s): 88.33, #queue-req: 0
+[2026-08-22 18:25:06.290 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5638, token usage: 0.02, gen throughput (token/s): 60.38, #queue-req: 0
+[2026-08-22 18:25:06.729 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5678, token usage: 0.02, gen throughput (token/s): 91.18, #queue-req: 0
+[2026-08-22 18:25:07.362] Sending single request for model_3
+[2026-08-22 18:25:07.364 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:07.365 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 81, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:07.409 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5637, token usage: 0.02, gen throughput (token/s): 58.79, #queue-req: 0
+[2026-08-22 18:25:07.832 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5677, token usage: 0.02, gen throughput (token/s): 94.54, #queue-req: 0
+[2026-08-22 18:25:08.489 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5717, token usage: 0.02, gen throughput (token/s): 60.93, #queue-req: 0
+[2026-08-22 18:25:08.910 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5757, token usage: 0.02, gen throughput (token/s): 94.85, #queue-req: 0
+[2026-08-22 18:25:08.957] Sending single request for model_3
+[2026-08-22 18:25:08.958 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:08.959 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 39, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:09.587 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5628, token usage: 0.02, gen throughput (token/s): 59.13, #queue-req: 0
+[2026-08-22 18:25:09.998 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5668, token usage: 0.02, gen throughput (token/s): 97.19, #queue-req: 0
+[2026-08-22 18:25:10.673 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5708, token usage: 0.02, gen throughput (token/s): 59.31, #queue-req: 0
+[2026-08-22 18:25:10.801] Sending single request for model_3
+[2026-08-22 18:25:10.802 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:10.803 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 127, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:11.119 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5709, token usage: 0.02, gen throughput (token/s): 89.73, #queue-req: 0
+[2026-08-22 18:25:11.785 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5749, token usage: 0.02, gen throughput (token/s): 59.98, #queue-req: 0
+[2026-08-22 18:25:12.205 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5789, token usage: 0.02, gen throughput (token/s): 95.28, #queue-req: 0
+[2026-08-22 18:25:12.636] Sending single request for model_3
+[2026-08-22 18:25:12.637 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:12.639 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 47, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:12.890 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5622, token usage: 0.02, gen throughput (token/s): 58.41, #queue-req: 0
+[2026-08-22 18:25:13.314 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5662, token usage: 0.02, gen throughput (token/s): 94.37, #queue-req: 0
+[2026-08-22 18:25:14.016 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5702, token usage: 0.02, gen throughput (token/s): 56.95, #queue-req: 0
+[2026-08-22 18:25:14.297] Sending single request for model_3
+[2026-08-22 18:25:14.299 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:14.300 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 64, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:14.475 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5632, token usage: 0.02, gen throughput (token/s): 87.18, #queue-req: 0
+[2026-08-22 18:25:15.188 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5672, token usage: 0.02, gen throughput (token/s): 56.15, #queue-req: 0
+[2026-08-22 18:25:15.634 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5712, token usage: 0.02, gen throughput (token/s): 89.68, #queue-req: 0
+[2026-08-22 18:25:16.230] Sending single request for model_3
+[2026-08-22 18:25:16.230 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:16.232 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 93, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:16.328 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5654, token usage: 0.02, gen throughput (token/s): 57.56, #queue-req: 0
+[2026-08-22 18:25:16.990 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5694, token usage: 0.02, gen throughput (token/s): 60.46, #queue-req: 0
+[2026-08-22 18:25:17.412 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5734, token usage: 0.02, gen throughput (token/s): 94.89, #queue-req: 0
+[2026-08-22 18:25:18.053] Sending single request for model_3
+[2026-08-22 18:25:18.054 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:18.055 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 38, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:18.076 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5592, token usage: 0.02, gen throughput (token/s): 60.20, #queue-req: 0
+[2026-08-22 18:25:18.490 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5632, token usage: 0.02, gen throughput (token/s): 96.60, #queue-req: 0
+[2026-08-22 18:25:19.148 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5672, token usage: 0.02, gen throughput (token/s): 60.78, #queue-req: 0
+[2026-08-22 18:25:19.567 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5712, token usage: 0.02, gen throughput (token/s): 95.60, #queue-req: 0
+[2026-08-22 18:25:19.635] Sending single request for model_3
+[2026-08-22 18:25:19.636 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:19.637 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 53, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:20.243 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5640, token usage: 0.02, gen throughput (token/s): 59.20, #queue-req: 0
+[2026-08-22 18:25:20.670 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5680, token usage: 0.02, gen throughput (token/s): 93.54, #queue-req: 0
+[2026-08-22 18:25:21.335 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5720, token usage: 0.02, gen throughput (token/s): 60.15, #queue-req: 0
+[2026-08-22 18:25:21.479] Sending single request for model_3
+[2026-08-22 18:25:21.480 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:21.481 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 40, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:21.783 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5620, token usage: 0.02, gen throughput (token/s): 89.30, #queue-req: 0
+[2026-08-22 18:25:22.445 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5660, token usage: 0.02, gen throughput (token/s): 60.42, #queue-req: 0
+[2026-08-22 18:25:22.870 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5700, token usage: 0.02, gen throughput (token/s): 94.09, #queue-req: 0
+[2026-08-22 18:25:23.340] Sending single request for model_3
+[2026-08-22 18:25:23.341 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:23.343 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 90, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:23.572 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5663, token usage: 0.02, gen throughput (token/s): 57.02, #queue-req: 0
+[2026-08-22 18:25:23.988 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5703, token usage: 0.02, gen throughput (token/s): 96.06, #queue-req: 0
+[2026-08-22 18:25:24.683 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5743, token usage: 0.02, gen throughput (token/s): 57.56, #queue-req: 0
+[2026-08-22 18:25:24.974] Sending single request for model_3
+[2026-08-22 18:25:24.975 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:24.977 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 82, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:25.134 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5648, token usage: 0.02, gen throughput (token/s): 88.65, #queue-req: 0
+[2026-08-22 18:25:25.801 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5688, token usage: 0.02, gen throughput (token/s): 59.98, #queue-req: 0
+[2026-08-22 18:25:26.487 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5728, token usage: 0.02, gen throughput (token/s): 58.30, #queue-req: 0
+[2026-08-22 18:25:26.881] Sending single request for model_3
+[2026-08-22 18:25:26.882 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:26.884 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 75, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:26.966 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5634, token usage: 0.02, gen throughput (token/s): 83.56, #queue-req: 0
+[2026-08-22 18:25:27.657 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5674, token usage: 0.02, gen throughput (token/s): 57.85, #queue-req: 0
+[2026-08-22 18:25:28.094 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5714, token usage: 0.02, gen throughput (token/s): 91.55, #queue-req: 0
+[2026-08-22 18:25:28.767 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5754, token usage: 0.02, gen throughput (token/s): 59.45, #queue-req: 0
+[2026-08-22 18:25:28.782] Sending single request for model_3
+[2026-08-22 18:25:28.783 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:28.784 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 57, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:29.214 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5649, token usage: 0.02, gen throughput (token/s): 89.53, #queue-req: 0
+[2026-08-22 18:25:29.880 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5689, token usage: 0.02, gen throughput (token/s): 60.03, #queue-req: 0
+[2026-08-22 18:25:30.328 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5729, token usage: 0.02, gen throughput (token/s): 89.27, #queue-req: 0
+[2026-08-22 18:25:30.423] Sending single request for model_3
+[2026-08-22 18:25:30.424 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:30.426 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 39, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:31.057 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5624, token usage: 0.02, gen throughput (token/s): 54.87, #queue-req: 0
+[2026-08-22 18:25:31.501 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5664, token usage: 0.02, gen throughput (token/s): 90.09, #queue-req: 0
+[2026-08-22 18:25:32.176 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5704, token usage: 0.02, gen throughput (token/s): 59.28, #queue-req: 0
+[2026-08-22 18:25:32.355] Sending single request for model_3
+[2026-08-22 18:25:32.356 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:32.358 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 96, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:32.639 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5674, token usage: 0.02, gen throughput (token/s): 86.49, #queue-req: 0
+[2026-08-22 18:25:33.351 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5714, token usage: 0.02, gen throughput (token/s): 56.14, #queue-req: 0
+[2026-08-22 18:25:34.038 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5754, token usage: 0.02, gen throughput (token/s): 58.25, #queue-req: 0
+[2026-08-22 18:25:34.290] Sending single request for model_3
+[2026-08-22 18:25:34.291 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:34.293 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 103, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:34.498 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5674, token usage: 0.02, gen throughput (token/s): 86.97, #queue-req: 0
+[2026-08-22 18:25:35.162 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5714, token usage: 0.02, gen throughput (token/s): 60.18, #queue-req: 0
+[2026-08-22 18:25:35.597 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5754, token usage: 0.02, gen throughput (token/s): 92.13, #queue-req: 0
+[2026-08-22 18:25:36.171] Sending single request for model_3
+[2026-08-22 18:25:36.171 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:36.173 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 35, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:36.304 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5599, token usage: 0.02, gen throughput (token/s): 56.55, #queue-req: 0
+[2026-08-22 18:25:36.735 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5639, token usage: 0.02, gen throughput (token/s): 92.84, #queue-req: 0
+[2026-08-22 18:25:37.421 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5679, token usage: 0.02, gen throughput (token/s): 58.31, #queue-req: 0
+[2026-08-22 18:25:37.822] Sending single request for model_3
+[2026-08-22 18:25:37.824 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:37.825 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 73, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:37.880 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5630, token usage: 0.02, gen throughput (token/s): 87.14, #queue-req: 0
+[2026-08-22 18:25:38.559 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5670, token usage: 0.02, gen throughput (token/s): 58.89, #queue-req: 0
+[2026-08-22 18:25:38.984 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5710, token usage: 0.02, gen throughput (token/s): 94.14, #queue-req: 0
+[2026-08-22 18:25:39.655 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5750, token usage: 0.02, gen throughput (token/s): 59.57, #queue-req: 0
+[2026-08-22 18:25:39.691] Sending single request for model_3
+[2026-08-22 18:25:39.692 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:39.693 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 34, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:40.095 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5624, token usage: 0.02, gen throughput (token/s): 90.94, #queue-req: 0
+[2026-08-22 18:25:40.766 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5664, token usage: 0.02, gen throughput (token/s): 59.61, #queue-req: 0
+[2026-08-22 18:25:41.207 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5704, token usage: 0.02, gen throughput (token/s): 90.89, #queue-req: 0
+[2026-08-22 18:25:41.555] Sending single request for model_3
+[2026-08-22 18:25:41.556 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:41.558 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 85, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:41.904 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5668, token usage: 0.02, gen throughput (token/s): 57.33, #queue-req: 0
+[2026-08-22 18:25:42.576 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5708, token usage: 0.02, gen throughput (token/s): 59.59, #queue-req: 0
+[2026-08-22 18:25:43.021 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5748, token usage: 0.02, gen throughput (token/s): 89.81, #queue-req: 0
+[2026-08-22 18:25:43.206] Sending single request for model_3
+[2026-08-22 18:25:43.208 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:43.210 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 61, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:43.999 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5637, token usage: 0.02, gen throughput (token/s): 40.89, #queue-req: 0
+[2026-08-22 18:25:44.424 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5677, token usage: 0.02, gen throughput (token/s): 94.03, #queue-req: 0
+[2026-08-22 18:25:45.097 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5717, token usage: 0.02, gen throughput (token/s): 59.50, #queue-req: 0
+[2026-08-22 18:25:45.355] Sending single request for model_3
+[2026-08-22 18:25:45.357 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:45.358 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 40, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:45.536 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5609, token usage: 0.02, gen throughput (token/s): 90.93, #queue-req: 0
+[2026-08-22 18:25:46.259 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5649, token usage: 0.02, gen throughput (token/s): 55.34, #queue-req: 0
+[2026-08-22 18:25:46.922 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5689, token usage: 0.02, gen throughput (token/s): 60.34, #queue-req: 0
+[2026-08-22 18:25:47.279] Sending single request for model_3
+[2026-08-22 18:25:47.279 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:47.281 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 38, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:47.391 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5600, token usage: 0.02, gen throughput (token/s): 85.32, #queue-req: 0
+[2026-08-22 18:25:48.053 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5640, token usage: 0.02, gen throughput (token/s): 60.43, #queue-req: 0
+[2026-08-22 18:25:48.481 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5680, token usage: 0.02, gen throughput (token/s): 93.43, #queue-req: 0
+[2026-08-22 18:25:49.122] Sending single request for model_3
+[2026-08-22 18:25:49.123 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:49.125 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 43, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:49.156 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5598, token usage: 0.02, gen throughput (token/s): 59.23, #queue-req: 0
+[2026-08-22 18:25:49.572 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5638, token usage: 0.02, gen throughput (token/s): 96.32, #queue-req: 0
+[2026-08-22 18:25:50.454 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5678, token usage: 0.02, gen throughput (token/s): 45.32, #queue-req: 0
+[2026-08-22 18:25:50.882 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5718, token usage: 0.02, gen throughput (token/s): 93.52, #queue-req: 0
+[2026-08-22 18:25:51.179] Sending single request for model_3
+[2026-08-22 18:25:51.181 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:51.182 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 79, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:51.570 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5667, token usage: 0.02, gen throughput (token/s): 58.18, #queue-req: 0
+[2026-08-22 18:25:51.981 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5707, token usage: 0.02, gen throughput (token/s): 97.28, #queue-req: 0
+[2026-08-22 18:25:52.630 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5747, token usage: 0.02, gen throughput (token/s): 61.61, #queue-req: 0
+[2026-08-22 18:25:52.758] Sending single request for model_3
+[2026-08-22 18:25:52.759 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:52.760 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 63, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:53.300 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5644, token usage: 0.02, gen throughput (token/s): 59.66, #queue-req: 0
+[2026-08-22 18:25:53.718 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5684, token usage: 0.02, gen throughput (token/s): 95.81, #queue-req: 0
+[2026-08-22 18:25:54.428 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5724, token usage: 0.02, gen throughput (token/s): 56.31, #queue-req: 0
+[2026-08-22 18:25:54.645] Sending single request for model_3
+[2026-08-22 18:25:54.646 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:54.647 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 37, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:54.891 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5611, token usage: 0.02, gen throughput (token/s): 86.39, #queue-req: 0
+[2026-08-22 18:25:55.552 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5651, token usage: 0.02, gen throughput (token/s): 60.57, #queue-req: 0
+[2026-08-22 18:25:55.983 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5691, token usage: 0.02, gen throughput (token/s): 92.81, #queue-req: 0
+[2026-08-22 18:25:56.524] Sending single request for model_3
+[2026-08-22 18:25:56.525 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:56.526 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 36, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:56.691 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5603, token usage: 0.02, gen throughput (token/s): 56.47, #queue-req: 0
+[2026-08-22 18:25:57.130 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5643, token usage: 0.02, gen throughput (token/s): 91.13, #queue-req: 0
+[2026-08-22 18:25:57.799 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5683, token usage: 0.02, gen throughput (token/s): 59.78, #queue-req: 0
+[2026-08-22 18:25:58.152] Sending single request for model_3
+[2026-08-22 18:25:58.152 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:58.154 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 35, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:25:58.236 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5595, token usage: 0.02, gen throughput (token/s): 91.53, #queue-req: 0
+[2026-08-22 18:25:58.894 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5635, token usage: 0.02, gen throughput (token/s): 60.85, #queue-req: 0
+[2026-08-22 18:25:59.306 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5675, token usage: 0.02, gen throughput (token/s): 96.91, #queue-req: 0
+[2026-08-22 18:25:59.974 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6577, token usage: 0.02, gen throughput (token/s): 59.91, #queue-req: 0
+[2026-08-22 18:25:59.977] Sending single request for model_3
+[2026-08-22 18:25:59.978 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:25:59.980 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 117, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:00.406 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5710, token usage: 0.02, gen throughput (token/s): 92.56, #queue-req: 0
+[2026-08-22 18:26:01.075 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5750, token usage: 0.02, gen throughput (token/s): 59.76, #queue-req: 0
+[2026-08-22 18:26:01.511 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5790, token usage: 0.02, gen throughput (token/s): 91.81, #queue-req: 0
+[2026-08-22 18:26:01.589] Sending single request for model_3
+[2026-08-22 18:26:01.591 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:01.597 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 461, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 1, #queue-req: 0
+[2026-08-22 18:26:02.474 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6047, token usage: 0.02, gen throughput (token/s): 41.54, #queue-req: 0
+[2026-08-22 18:26:03.158 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6087, token usage: 0.02, gen throughput (token/s): 58.49, #queue-req: 0
+[2026-08-22 18:26:03.591 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6127, token usage: 0.02, gen throughput (token/s): 92.45, #queue-req: 0
+[2026-08-22 18:26:03.756] Sending single request for model_3
+[2026-08-22 18:26:03.759 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:03.771 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 334, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 1, #queue-req: 0
+[2026-08-22 18:26:04.633 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5913, token usage: 0.02, gen throughput (token/s): 38.37, #queue-req: 0
+[2026-08-22 18:26:05.670 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5953, token usage: 0.02, gen throughput (token/s): 38.57, #queue-req: 0
+[2026-08-22 18:26:06.392 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5993, token usage: 0.02, gen throughput (token/s): 55.42, #queue-req: 0
+[2026-08-22 18:26:06.638] Sending single request for model_3
+[2026-08-22 18:26:06.640 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:06.645 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 431, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:06.874 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6003, token usage: 0.02, gen throughput (token/s): 82.98, #queue-req: 0
+[2026-08-22 18:26:07.562 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6043, token usage: 0.02, gen throughput (token/s): 58.14, #queue-req: 0
+[2026-08-22 18:26:07.999 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6083, token usage: 0.02, gen throughput (token/s): 91.61, #queue-req: 0
+[2026-08-22 18:26:08.548] Sending single request for model_3
+[2026-08-22 18:26:08.549 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:08.553 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 336, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:08.715 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5901, token usage: 0.02, gen throughput (token/s): 55.85, #queue-req: 0
+[2026-08-22 18:26:09.157 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5941, token usage: 0.02, gen throughput (token/s): 90.38, #queue-req: 0
+[2026-08-22 18:26:09.850 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5981, token usage: 0.02, gen throughput (token/s): 57.75, #queue-req: 0
+[2026-08-22 18:26:10.241] Sending single request for model_3
+[2026-08-22 18:26:10.243 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:10.248 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 558, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:10.583 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6116, token usage: 0.02, gen throughput (token/s): 54.59, #queue-req: 0
+[2026-08-22 18:26:11.019 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6156, token usage: 0.02, gen throughput (token/s): 91.68, #queue-req: 0
+[2026-08-22 18:26:11.694 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6196, token usage: 0.02, gen throughput (token/s): 59.28, #queue-req: 0
+[2026-08-22 18:26:12.129 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6236, token usage: 0.02, gen throughput (token/s): 91.97, #queue-req: 0
+[2026-08-22 18:26:12.156] Sending single request for model_3
+[2026-08-22 18:26:12.158 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:12.163 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 380, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:12.834 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5971, token usage: 0.02, gen throughput (token/s): 56.70, #queue-req: 0
+[2026-08-22 18:26:13.294 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6011, token usage: 0.02, gen throughput (token/s): 86.98, #queue-req: 0
+[2026-08-22 18:26:13.951 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6051, token usage: 0.02, gen throughput (token/s): 60.93, #queue-req: 0
+[2026-08-22 18:26:14.063] Sending single request for model_3
+[2026-08-22 18:26:14.065 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:14.069 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 409, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:14.479 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5993, token usage: 0.02, gen throughput (token/s): 75.77, #queue-req: 0
+[2026-08-22 18:26:15.163 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6033, token usage: 0.02, gen throughput (token/s): 58.44, #queue-req: 0
+[2026-08-22 18:26:15.603 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6073, token usage: 0.02, gen throughput (token/s): 90.83, #queue-req: 0
+[2026-08-22 18:26:16.023] Sending single request for model_3
+[2026-08-22 18:26:16.024 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:16.027 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 366, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:16.298 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5943, token usage: 0.02, gen throughput (token/s): 57.56, #queue-req: 0
+[2026-08-22 18:26:16.735 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5983, token usage: 0.02, gen throughput (token/s): 91.62, #queue-req: 0
+[2026-08-22 18:26:17.413 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6023, token usage: 0.02, gen throughput (token/s): 58.99, #queue-req: 0
+[2026-08-22 18:26:17.660] Sending single request for model_3
+[2026-08-22 18:26:17.661 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:17.664 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 369, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:18.102 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5939, token usage: 0.02, gen throughput (token/s): 58.02, #queue-req: 0
+[2026-08-22 18:26:18.529 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5979, token usage: 0.02, gen throughput (token/s): 93.81, #queue-req: 0
+[2026-08-22 18:26:19.208 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6019, token usage: 0.02, gen throughput (token/s): 58.91, #queue-req: 0
+[2026-08-22 18:26:19.532] Sending single request for model_3
+[2026-08-22 18:26:19.532 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:19.535 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 305, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:19.657 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5868, token usage: 0.02, gen throughput (token/s): 89.06, #queue-req: 0
+[2026-08-22 18:26:20.314 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5908, token usage: 0.02, gen throughput (token/s): 60.89, #queue-req: 0
+[2026-08-22 18:26:20.733 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5948, token usage: 0.02, gen throughput (token/s): 95.38, #queue-req: 0
+[2026-08-22 18:26:21.377] Sending single request for model_3
+[2026-08-22 18:26:21.377 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:21.380 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 448, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:21.438 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6004, token usage: 0.02, gen throughput (token/s): 56.75, #queue-req: 0
+[2026-08-22 18:26:21.880 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6044, token usage: 0.02, gen throughput (token/s): 90.58, #queue-req: 0
+[2026-08-22 18:26:22.556 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6084, token usage: 0.02, gen throughput (token/s): 59.18, #queue-req: 0
+[2026-08-22 18:26:23.005 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6124, token usage: 0.02, gen throughput (token/s): 89.07, #queue-req: 0
+[2026-08-22 18:26:23.055] Sending single request for model_3
+[2026-08-22 18:26:23.057 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:23.060 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 330, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:23.702 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5919, token usage: 0.02, gen throughput (token/s): 57.34, #queue-req: 0
+[2026-08-22 18:26:24.122 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5959, token usage: 0.02, gen throughput (token/s): 95.20, #queue-req: 0
+[2026-08-22 18:26:25.014 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5999, token usage: 0.02, gen throughput (token/s): 44.86, #queue-req: 0
+[2026-08-22 18:26:25.137] Sending single request for model_3
+[2026-08-22 18:26:25.138 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:25.141 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 346, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:25.701 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5928, token usage: 0.02, gen throughput (token/s): 58.26, #queue-req: 0
+[2026-08-22 18:26:26.114 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5968, token usage: 0.02, gen throughput (token/s): 96.62, #queue-req: 0
+[2026-08-22 18:26:26.787 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6008, token usage: 0.02, gen throughput (token/s): 59.47, #queue-req: 0
+[2026-08-22 18:26:26.979] Sending single request for model_3
+[2026-08-22 18:26:26.981 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:26.984 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 438, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:27.232 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6013, token usage: 0.02, gen throughput (token/s): 89.89, #queue-req: 0
+[2026-08-22 18:26:27.914 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6053, token usage: 0.02, gen throughput (token/s): 58.65, #queue-req: 0
+[2026-08-22 18:26:28.342 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6093, token usage: 0.02, gen throughput (token/s): 93.59, #queue-req: 0
+[2026-08-22 18:26:28.847] Sending single request for model_3
+[2026-08-22 18:26:28.848 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:28.851 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 500, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:29.030 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6068, token usage: 0.02, gen throughput (token/s): 58.13, #queue-req: 0
+[2026-08-22 18:26:29.442 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6108, token usage: 0.02, gen throughput (token/s): 96.96, #queue-req: 0
+[2026-08-22 18:26:30.102 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6148, token usage: 0.02, gen throughput (token/s): 60.66, #queue-req: 0
+[2026-08-22 18:26:30.462] Sending single request for model_3
+[2026-08-22 18:26:30.463 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:30.466 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 487, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:30.570 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6048, token usage: 0.02, gen throughput (token/s): 85.33, #queue-req: 0
+[2026-08-22 18:26:31.270 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6088, token usage: 0.02, gen throughput (token/s): 57.21, #queue-req: 0
+[2026-08-22 18:26:31.945 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6128, token usage: 0.02, gen throughput (token/s): 59.20, #queue-req: 0
+[2026-08-22 18:26:32.380] Sending single request for model_3
+[2026-08-22 18:26:32.382 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:32.386 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 626, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:32.418 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6180, token usage: 0.02, gen throughput (token/s): 84.52, #queue-req: 0
+[2026-08-22 18:26:33.082 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6220, token usage: 0.02, gen throughput (token/s): 60.27, #queue-req: 0
+[2026-08-22 18:26:33.518 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6260, token usage: 0.02, gen throughput (token/s): 91.72, #queue-req: 0
+[2026-08-22 18:26:34.182 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6300, token usage: 0.02, gen throughput (token/s): 60.25, #queue-req: 0
+[2026-08-22 18:26:34.253] Sending single request for model_3
+[2026-08-22 18:26:34.255 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:34.259 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 611, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:34.638 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6198, token usage: 0.02, gen throughput (token/s): 87.69, #queue-req: 0
+[2026-08-22 18:26:35.562 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6238, token usage: 0.02, gen throughput (token/s): 43.30, #queue-req: 0
+[2026-08-22 18:26:36.221 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6278, token usage: 0.02, gen throughput (token/s): 60.74, #queue-req: 0
+[2026-08-22 18:26:36.364] Sending single request for model_3
+[2026-08-22 18:26:36.365 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:36.368 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 453, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:36.688 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6033, token usage: 0.02, gen throughput (token/s): 85.57, #queue-req: 0
+[2026-08-22 18:26:37.349 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6073, token usage: 0.02, gen throughput (token/s): 60.56, #queue-req: 0
+[2026-08-22 18:26:37.767 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6113, token usage: 0.02, gen throughput (token/s): 95.57, #queue-req: 0
+[2026-08-22 18:26:37.981] Sending single request for model_3
+[2026-08-22 18:26:37.983 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:37.985 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 452, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:38.463 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6025, token usage: 0.02, gen throughput (token/s): 57.46, #queue-req: 0
+[2026-08-22 18:26:38.897 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6065, token usage: 0.02, gen throughput (token/s): 92.17, #queue-req: 0
+[2026-08-22 18:26:39.568 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6105, token usage: 0.02, gen throughput (token/s): 59.66, #queue-req: 0
+[2026-08-22 18:26:39.859] Sending single request for model_3
+[2026-08-22 18:26:39.861 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:39.864 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 592, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:40.022 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6158, token usage: 0.02, gen throughput (token/s): 87.99, #queue-req: 0
+[2026-08-22 18:26:40.692 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6198, token usage: 0.02, gen throughput (token/s): 59.72, #queue-req: 0
+[2026-08-22 18:26:41.116 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6238, token usage: 0.02, gen throughput (token/s): 94.36, #queue-req: 0
+[2026-08-22 18:26:41.735] Sending single request for model_3
+[2026-08-22 18:26:41.736 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:41.738 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 257, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:41.819 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5816, token usage: 0.02, gen throughput (token/s): 56.87, #queue-req: 0
+[2026-08-22 18:26:42.239 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5856, token usage: 0.02, gen throughput (token/s): 95.35, #queue-req: 0
+[2026-08-22 18:26:42.893 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5896, token usage: 0.02, gen throughput (token/s): 61.18, #queue-req: 0
+[2026-08-22 18:26:43.305 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5936, token usage: 0.02, gen throughput (token/s): 96.98, #queue-req: 0
+[2026-08-22 18:26:43.322] Sending single request for model_3
+[2026-08-22 18:26:43.323 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:43.325 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 341, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:44.047 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5933, token usage: 0.02, gen throughput (token/s): 53.90, #queue-req: 0
+[2026-08-22 18:26:44.461 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5973, token usage: 0.02, gen throughput (token/s): 96.68, #queue-req: 0
+[2026-08-22 18:26:45.389 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6013, token usage: 0.02, gen throughput (token/s): 43.11, #queue-req: 0
+[2026-08-22 18:26:45.481] Sending single request for model_3
+[2026-08-22 18:26:45.482 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:45.486 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 491, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:46.307 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6076, token usage: 0.02, gen throughput (token/s): 43.55, #queue-req: 0
+[2026-08-22 18:26:46.747 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6116, token usage: 0.02, gen throughput (token/s): 91.01, #queue-req: 0
+[2026-08-22 18:26:48.492 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6156, token usage: 0.02, gen throughput (token/s): 22.92, #queue-req: 0
+[2026-08-22 18:26:48.666] Sending single request for model_3
+[2026-08-22 18:26:48.668 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:48.673 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 329, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:48.998 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5907, token usage: 0.02, gen throughput (token/s): 79.09, #queue-req: 0
+[2026-08-22 18:26:49.855 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5947, token usage: 0.02, gen throughput (token/s): 46.67, #queue-req: 0
+[2026-08-22 18:26:50.755 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5987, token usage: 0.02, gen throughput (token/s): 44.45, #queue-req: 0
+[2026-08-22 18:26:51.006] Sending single request for model_3
+[2026-08-22 18:26:51.007 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:51.013 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 684, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:51.492 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6255, token usage: 0.02, gen throughput (token/s): 54.25, #queue-req: 0
+[2026-08-22 18:26:51.941 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6295, token usage: 0.02, gen throughput (token/s): 89.05, #queue-req: 0
+[2026-08-22 18:26:52.613 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6335, token usage: 0.02, gen throughput (token/s): 59.52, #queue-req: 0
+[2026-08-22 18:26:53.030] Sending single request for model_3
+[2026-08-22 18:26:53.031 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:53.035 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 308, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:53.172 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5872, token usage: 0.02, gen throughput (token/s): 71.58, #queue-req: 0
+[2026-08-22 18:26:53.936 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5912, token usage: 0.02, gen throughput (token/s): 52.37, #queue-req: 0
+[2026-08-22 18:26:54.408 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5952, token usage: 0.02, gen throughput (token/s): 84.67, #queue-req: 0
+[2026-08-22 18:26:55.055] Sending single request for model_3
+[2026-08-22 18:26:55.057 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:55.060 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 280, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:55.118 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5837, token usage: 0.02, gen throughput (token/s): 56.31, #queue-req: 0
+[2026-08-22 18:26:55.847 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5877, token usage: 0.02, gen throughput (token/s): 54.88, #queue-req: 0
+[2026-08-22 18:26:56.287 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5917, token usage: 0.02, gen throughput (token/s): 91.03, #queue-req: 0
+[2026-08-22 18:26:56.979 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5957, token usage: 0.02, gen throughput (token/s): 57.73, #queue-req: 0
+[2026-08-22 18:26:57.019] Sending single request for model_3
+[2026-08-22 18:26:57.020 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:57.024 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 452, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:26:57.457 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6042, token usage: 0.02, gen throughput (token/s): 83.74, #queue-req: 0
+[2026-08-22 18:26:58.131 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6082, token usage: 0.02, gen throughput (token/s): 59.38, #queue-req: 0
+[2026-08-22 18:26:58.574 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6122, token usage: 0.02, gen throughput (token/s): 90.35, #queue-req: 0
+[2026-08-22 18:26:58.721] Sending single request for model_3
+[2026-08-22 18:26:58.930 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:26:58.934 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 386, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 1, #queue-req: 0
+[2026-08-22 18:26:59.315 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5969, token usage: 0.02, gen throughput (token/s): 53.92, #queue-req: 0
+[2026-08-22 18:26:59.995 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6009, token usage: 0.02, gen throughput (token/s): 58.85, #queue-req: 0
+[2026-08-22 18:27:00.445 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6049, token usage: 0.02, gen throughput (token/s): 88.82, #queue-req: 0
+[2026-08-22 18:27:00.639] Sending single request for model_3
+[2026-08-22 18:27:00.641 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:00.644 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 314, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:01.154 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5890, token usage: 0.02, gen throughput (token/s): 56.46, #queue-req: 0
+[2026-08-22 18:27:01.599 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5930, token usage: 0.02, gen throughput (token/s): 89.79, #queue-req: 0
+[2026-08-22 18:27:02.269 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5970, token usage: 0.02, gen throughput (token/s): 59.73, #queue-req: 0
+[2026-08-22 18:27:02.546] Sending single request for model_3
+[2026-08-22 18:27:02.547 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:02.551 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 391, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:02.745 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5960, token usage: 0.02, gen throughput (token/s): 84.07, #queue-req: 0
+[2026-08-22 18:27:03.418 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6000, token usage: 0.02, gen throughput (token/s): 59.44, #queue-req: 0
+[2026-08-22 18:27:03.852 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6040, token usage: 0.02, gen throughput (token/s): 92.18, #queue-req: 0
+[2026-08-22 18:27:04.437] Sending single request for model_3
+[2026-08-22 18:27:04.439 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:04.443 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 395, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:04.564 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5957, token usage: 0.02, gen throughput (token/s): 56.14, #queue-req: 0
+[2026-08-22 18:27:05.007 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5997, token usage: 0.02, gen throughput (token/s): 90.39, #queue-req: 0
+[2026-08-22 18:27:05.938 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6037, token usage: 0.02, gen throughput (token/s): 42.94, #queue-req: 0
+[2026-08-22 18:27:06.600] Sending single request for model_3
+[2026-08-22 18:27:06.601 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:06.606 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 643, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:06.668 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6198, token usage: 0.02, gen throughput (token/s): 54.78, #queue-req: 0
+[2026-08-22 18:27:07.120 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6238, token usage: 0.02, gen throughput (token/s): 88.48, #queue-req: 0
+[2026-08-22 18:27:07.799 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6278, token usage: 0.02, gen throughput (token/s): 58.99, #queue-req: 0
+[2026-08-22 18:27:08.237 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6318, token usage: 0.02, gen throughput (token/s): 91.33, #queue-req: 0
+[2026-08-22 18:27:08.297] Sending single request for model_3
+[2026-08-22 18:27:08.298 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:08.301 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 317, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:08.969 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5905, token usage: 0.02, gen throughput (token/s): 54.60, #queue-req: 0
+[2026-08-22 18:27:09.401 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5945, token usage: 0.02, gen throughput (token/s): 92.69, #queue-req: 0
+[2026-08-22 18:27:10.097 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5985, token usage: 0.02, gen throughput (token/s): 57.48, #queue-req: 0
+[2026-08-22 18:27:10.233] Sending single request for model_3
+[2026-08-22 18:27:10.234 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:10.237 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 298, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:10.796 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5879, token usage: 0.02, gen throughput (token/s): 57.22, #queue-req: 0
+[2026-08-22 18:27:11.234 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5919, token usage: 0.02, gen throughput (token/s): 91.16, #queue-req: 0
+[2026-08-22 18:27:11.895 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5959, token usage: 0.02, gen throughput (token/s): 60.58, #queue-req: 0
+[2026-08-22 18:27:12.110] Sending single request for model_3
+[2026-08-22 18:27:12.111 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:12.117 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 553, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:12.371 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6127, token usage: 0.02, gen throughput (token/s): 83.98, #queue-req: 0
+[2026-08-22 18:27:13.058 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6167, token usage: 0.02, gen throughput (token/s): 58.26, #queue-req: 0
+[2026-08-22 18:27:13.502 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6207, token usage: 0.02, gen throughput (token/s): 89.91, #queue-req: 0
+[2026-08-22 18:27:14.023] Sending single request for model_3
+[2026-08-22 18:27:14.025 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:14.028 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 268, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:14.202 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5835, token usage: 0.02, gen throughput (token/s): 57.19, #queue-req: 0
+[2026-08-22 18:27:14.644 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5875, token usage: 0.02, gen throughput (token/s): 90.42, #queue-req: 0
+[2026-08-22 18:27:15.323 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5915, token usage: 0.02, gen throughput (token/s): 58.96, #queue-req: 0
+[2026-08-22 18:27:15.698] Sending single request for model_3
+[2026-08-22 18:27:15.700 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:15.703 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 301, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:15.795 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5861, token usage: 0.02, gen throughput (token/s): 84.73, #queue-req: 0
+[2026-08-22 18:27:16.460 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5901, token usage: 0.02, gen throughput (token/s): 60.16, #queue-req: 0
+[2026-08-22 18:27:16.913 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5941, token usage: 0.02, gen throughput (token/s): 88.20, #queue-req: 0
+[2026-08-22 18:27:17.589 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6577, token usage: 0.02, gen throughput (token/s): 59.19, #queue-req: 0
+[2026-08-22 18:27:17.594] Sending single request for model_3
+[2026-08-22 18:27:17.595 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:17.600 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 302, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:18.319 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5895, token usage: 0.02, gen throughput (token/s): 54.82, #queue-req: 0
+[2026-08-22 18:27:18.755 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5935, token usage: 0.02, gen throughput (token/s): 91.67, #queue-req: 0
+[2026-08-22 18:27:19.446 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 5975, token usage: 0.02, gen throughput (token/s): 57.84, #queue-req: 0
+[2026-08-22 18:27:19.543] Sending single request for model_3
+[2026-08-22 18:27:19.544 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:19.554 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1371, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:19.978 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6957, token usage: 0.02, gen throughput (token/s): 75.26, #queue-req: 0
+[2026-08-22 18:27:20.664 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6997, token usage: 0.02, gen throughput (token/s): 58.29, #queue-req: 0
+[2026-08-22 18:27:21.113 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7037, token usage: 0.02, gen throughput (token/s): 89.15, #queue-req: 0
+[2026-08-22 18:27:21.808] Sending single request for model_3
+[2026-08-22 18:27:21.810 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:21.820 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1335, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:22.400 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6914, token usage: 0.02, gen throughput (token/s): 31.09, #queue-req: 0
+[2026-08-22 18:27:23.375 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6954, token usage: 0.02, gen throughput (token/s): 41.01, #queue-req: 0
+[2026-08-22 18:27:24.258 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6994, token usage: 0.02, gen throughput (token/s): 45.27, #queue-req: 0
+[2026-08-22 18:27:24.498] Sending single request for model_3
+[2026-08-22 18:27:24.499 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:24.509 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1370, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:24.994 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6942, token usage: 0.02, gen throughput (token/s): 54.39, #queue-req: 0
+[2026-08-22 18:27:25.432 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6982, token usage: 0.02, gen throughput (token/s): 91.22, #queue-req: 0
+[2026-08-22 18:27:26.117 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7022, token usage: 0.02, gen throughput (token/s): 58.42, #queue-req: 0
+[2026-08-22 18:27:26.433] Sending single request for model_3
+[2026-08-22 18:27:26.434 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:26.448 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1750, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:26.637 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7315, token usage: 0.02, gen throughput (token/s): 76.87, #queue-req: 0
+[2026-08-22 18:27:27.352 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7355, token usage: 0.02, gen throughput (token/s): 56.00, #queue-req: 0
+[2026-08-22 18:27:27.796 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7395, token usage: 0.02, gen throughput (token/s): 89.93, #queue-req: 0
+[2026-08-22 18:27:28.429] Sending single request for model_3
+[2026-08-22 18:27:28.431 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:28.436 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1451, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:28.539 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7009, token usage: 0.02, gen throughput (token/s): 53.83, #queue-req: 0
+[2026-08-22 18:27:29.216 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7049, token usage: 0.02, gen throughput (token/s): 59.09, #queue-req: 0
+[2026-08-22 18:27:29.672 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7089, token usage: 0.02, gen throughput (token/s): 87.82, #queue-req: 0
+[2026-08-22 18:27:30.349 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7129, token usage: 0.02, gen throughput (token/s): 59.09, #queue-req: 0
+[2026-08-22 18:27:30.378] Sending single request for model_3
+[2026-08-22 18:27:30.379 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:30.390 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1052, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:30.956 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6643, token usage: 0.02, gen throughput (token/s): 65.94, #queue-req: 0
+[2026-08-22 18:27:31.631 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6683, token usage: 0.02, gen throughput (token/s): 59.23, #queue-req: 0
+[2026-08-22 18:27:32.073 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6723, token usage: 0.02, gen throughput (token/s): 90.49, #queue-req: 0
+[2026-08-22 18:27:32.181] Sending single request for model_3
+[2026-08-22 18:27:32.185 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:32.198 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1521, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 1, #queue-req: 0
+[2026-08-22 18:27:33.023 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7105, token usage: 0.02, gen throughput (token/s): 42.09, #queue-req: 0
+[2026-08-22 18:27:33.703 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7145, token usage: 0.02, gen throughput (token/s): 58.88, #queue-req: 0
+[2026-08-22 18:27:34.146 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7185, token usage: 0.02, gen throughput (token/s): 90.21, #queue-req: 0
+[2026-08-22 18:27:34.348] Sending single request for model_3
+[2026-08-22 18:27:34.567 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:34.573 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1236, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:34.879 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6813, token usage: 0.02, gen throughput (token/s): 54.53, #queue-req: 0
+[2026-08-22 18:27:35.321 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6853, token usage: 0.02, gen throughput (token/s): 90.57, #queue-req: 0
+[2026-08-22 18:27:36.118 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6893, token usage: 0.02, gen throughput (token/s): 50.22, #queue-req: 0
+[2026-08-22 18:27:36.376] Sending single request for model_3
+[2026-08-22 18:27:36.376 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:36.386 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1800, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:36.858 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7370, token usage: 0.02, gen throughput (token/s): 54.05, #queue-req: 0
+[2026-08-22 18:27:37.299 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7410, token usage: 0.02, gen throughput (token/s): 90.61, #queue-req: 0
+[2026-08-22 18:27:37.980 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7450, token usage: 0.02, gen throughput (token/s): 58.76, #queue-req: 0
+[2026-08-22 18:27:38.329] Sending single request for model_3
+[2026-08-22 18:27:38.330 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:38.338 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1105, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:38.480 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6668, token usage: 0.02, gen throughput (token/s): 79.89, #queue-req: 0
+[2026-08-22 18:27:39.185 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6708, token usage: 0.02, gen throughput (token/s): 56.81, #queue-req: 0
+[2026-08-22 18:27:39.628 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6748, token usage: 0.02, gen throughput (token/s): 90.21, #queue-req: 0
+[2026-08-22 18:27:40.284] Sending single request for model_3
+[2026-08-22 18:27:40.285 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:40.291 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1193, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:40.363 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6749, token usage: 0.02, gen throughput (token/s): 54.39, #queue-req: 0
+[2026-08-22 18:27:41.037 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6789, token usage: 0.02, gen throughput (token/s): 59.38, #queue-req: 0
+[2026-08-22 18:27:41.474 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6829, token usage: 0.02, gen throughput (token/s): 91.49, #queue-req: 0
+[2026-08-22 18:27:42.167 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6869, token usage: 0.02, gen throughput (token/s): 57.78, #queue-req: 0
+[2026-08-22 18:27:42.218] Sending single request for model_3
+[2026-08-22 18:27:42.219 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:42.224 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1332, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:42.658 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6921, token usage: 0.02, gen throughput (token/s): 81.45, #queue-req: 0
+[2026-08-22 18:27:43.327 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6961, token usage: 0.02, gen throughput (token/s): 59.81, #queue-req: 0
+[2026-08-22 18:27:43.769 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7001, token usage: 0.02, gen throughput (token/s): 90.33, #queue-req: 0
+[2026-08-22 18:27:43.895] Sending single request for model_3
+[2026-08-22 18:27:43.896 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:43.903 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1438, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:44.516 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7020, token usage: 0.02, gen throughput (token/s): 53.59, #queue-req: 0
+[2026-08-22 18:27:44.952 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7060, token usage: 0.02, gen throughput (token/s): 91.71, #queue-req: 0
+[2026-08-22 18:27:45.666 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7100, token usage: 0.02, gen throughput (token/s): 56.05, #queue-req: 0
+[2026-08-22 18:27:45.867] Sending single request for model_3
+[2026-08-22 18:27:45.868 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:45.874 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1191, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:46.407 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6766, token usage: 0.02, gen throughput (token/s): 53.92, #queue-req: 0
+[2026-08-22 18:27:46.855 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6806, token usage: 0.02, gen throughput (token/s): 89.28, #queue-req: 0
+[2026-08-22 18:27:47.540 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6846, token usage: 0.02, gen throughput (token/s): 58.41, #queue-req: 0
+[2026-08-22 18:27:47.825] Sending single request for model_3
+[2026-08-22 18:27:47.826 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:47.834 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1105, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:48.051 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6673, token usage: 0.02, gen throughput (token/s): 78.31, #queue-req: 0
+[2026-08-22 18:27:48.766 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6713, token usage: 0.02, gen throughput (token/s): 55.96, #queue-req: 0
+[2026-08-22 18:27:49.203 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6753, token usage: 0.02, gen throughput (token/s): 91.53, #queue-req: 0
+[2026-08-22 18:27:49.811] Sending single request for model_3
+[2026-08-22 18:27:49.813 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:49.817 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1061, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:49.938 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6622, token usage: 0.02, gen throughput (token/s): 54.43, #queue-req: 0
+[2026-08-22 18:27:50.629 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6662, token usage: 0.02, gen throughput (token/s): 57.85, #queue-req: 0
+[2026-08-22 18:27:51.082 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6702, token usage: 0.02, gen throughput (token/s): 88.40, #queue-req: 0
+[2026-08-22 18:27:51.744] Sending single request for model_3
+[2026-08-22 18:27:51.744 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:51.751 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1305, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:51.806 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6859, token usage: 0.02, gen throughput (token/s): 55.19, #queue-req: 0
+[2026-08-22 18:27:52.246 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6899, token usage: 0.02, gen throughput (token/s): 91.07, #queue-req: 0
+[2026-08-22 18:27:52.916 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6939, token usage: 0.02, gen throughput (token/s): 59.67, #queue-req: 0
+[2026-08-22 18:27:53.358 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6979, token usage: 0.02, gen throughput (token/s): 90.42, #queue-req: 0
+[2026-08-22 18:27:53.432] Sending single request for model_3
+[2026-08-22 18:27:53.433 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:53.437 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1656, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:54.140 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7243, token usage: 0.02, gen throughput (token/s): 51.17, #queue-req: 0
+[2026-08-22 18:27:54.588 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7283, token usage: 0.02, gen throughput (token/s): 89.36, #queue-req: 0
+[2026-08-22 18:27:55.245 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7323, token usage: 0.02, gen throughput (token/s): 60.85, #queue-req: 0
+[2026-08-22 18:27:55.396] Sending single request for model_3
+[2026-08-22 18:27:55.397 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:55.401 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1042, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:55.970 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6622, token usage: 0.02, gen throughput (token/s): 55.17, #queue-req: 0
+[2026-08-22 18:27:56.538 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6662, token usage: 0.02, gen throughput (token/s): 70.39, #queue-req: 0
+[2026-08-22 18:27:57.235 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6702, token usage: 0.02, gen throughput (token/s): 57.41, #queue-req: 0
+[2026-08-22 18:27:57.476] Sending single request for model_3
+[2026-08-22 18:27:57.477 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:57.488 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1341, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:57.994 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6914, token usage: 0.02, gen throughput (token/s): 52.73, #queue-req: 0
+[2026-08-22 18:27:58.456 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6954, token usage: 0.02, gen throughput (token/s): 86.50, #queue-req: 0
+[2026-08-22 18:27:59.131 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6994, token usage: 0.02, gen throughput (token/s): 59.31, #queue-req: 0
+[2026-08-22 18:27:59.444] Sending single request for model_3
+[2026-08-22 18:27:59.446 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:27:59.453 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1363, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:27:59.642 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6929, token usage: 0.02, gen throughput (token/s): 78.20, #queue-req: 0
+[2026-08-22 18:28:00.315 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 6969, token usage: 0.02, gen throughput (token/s): 59.47, #queue-req: 0
+[2026-08-22 18:28:00.764 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7009, token usage: 0.02, gen throughput (token/s): 88.97, #queue-req: 0
+[2026-08-22 18:28:01.386] Sending single request for model_3
+[2026-08-22 18:28:01.390 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:01.401 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1943, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:01.527 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7502, token usage: 0.02, gen throughput (token/s): 52.42, #queue-req: 0
+[2026-08-22 18:28:01.973 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7542, token usage: 0.02, gen throughput (token/s): 89.77, #queue-req: 0
+[2026-08-22 18:28:02.631 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7582, token usage: 0.02, gen throughput (token/s): 60.77, #queue-req: 0
+[2026-08-22 18:28:03.333 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7622, token usage: 0.02, gen throughput (token/s): 57.03, #queue-req: 0
+[2026-08-22 18:28:03.352] Sending single request for model_3
+[2026-08-22 18:28:03.354 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:03.361 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1149, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:03.852 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7765, token usage: 0.02, gen throughput (token/s): 77.02, #queue-req: 0
+[2026-08-22 18:28:04.770 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7805, token usage: 0.02, gen throughput (token/s): 43.59, #queue-req: 0
+[2026-08-22 18:28:05.460 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7845, token usage: 0.02, gen throughput (token/s): 57.94, #queue-req: 0
+[2026-08-22 18:28:05.553] Sending single request for model_3
+[2026-08-22 18:28:05.554 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:05.558 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1063, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:06.127 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7672, token usage: 0.02, gen throughput (token/s): 59.94, #queue-req: 0
+[2026-08-22 18:28:07.344 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7712, token usage: 0.02, gen throughput (token/s): 32.88, #queue-req: 0
+[2026-08-22 18:28:08.289 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7752, token usage: 0.02, gen throughput (token/s): 42.31, #queue-req: 0
+[2026-08-22 18:28:08.456] Sending single request for model_3
+[2026-08-22 18:28:08.457 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:08.463 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1188, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:09.040 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7790, token usage: 0.02, gen throughput (token/s): 53.31, #queue-req: 0
+[2026-08-22 18:28:09.492 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7830, token usage: 0.02, gen throughput (token/s): 88.41, #queue-req: 0
+[2026-08-22 18:28:10.171 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7870, token usage: 0.02, gen throughput (token/s): 58.94, #queue-req: 0
+[2026-08-22 18:28:10.420] Sending single request for model_3
+[2026-08-22 18:28:10.422 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:10.429 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1059, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:10.682 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7654, token usage: 0.02, gen throughput (token/s): 78.15, #queue-req: 0
+[2026-08-22 18:28:11.537 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7694, token usage: 0.02, gen throughput (token/s): 46.80, #queue-req: 0
+[2026-08-22 18:28:12.211 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7734, token usage: 0.02, gen throughput (token/s): 59.36, #queue-req: 0
+[2026-08-22 18:28:12.546] Sending single request for model_3
+[2026-08-22 18:28:12.548 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:12.553 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1093, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:12.720 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7681, token usage: 0.02, gen throughput (token/s): 78.64, #queue-req: 0
+[2026-08-22 18:28:13.403 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7721, token usage: 0.02, gen throughput (token/s): 58.54, #queue-req: 0
+[2026-08-22 18:28:13.842 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7761, token usage: 0.02, gen throughput (token/s): 91.14, #queue-req: 0
+[2026-08-22 18:28:14.503] Sending single request for model_3
+[2026-08-22 18:28:14.505 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:14.509 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1041, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:14.587 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7622, token usage: 0.02, gen throughput (token/s): 53.70, #queue-req: 0
+[2026-08-22 18:28:15.269 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7662, token usage: 0.02, gen throughput (token/s): 58.60, #queue-req: 0
+[2026-08-22 18:28:15.707 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7702, token usage: 0.02, gen throughput (token/s): 91.34, #queue-req: 0
+[2026-08-22 18:28:16.627 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7742, token usage: 0.02, gen throughput (token/s): 43.50, #queue-req: 0
+[2026-08-22 18:28:16.666] Sending single request for model_3
+[2026-08-22 18:28:16.668 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:16.673 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1265, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:17.129 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7879, token usage: 0.02, gen throughput (token/s): 79.64, #queue-req: 0
+[2026-08-22 18:28:17.813 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7919, token usage: 0.02, gen throughput (token/s): 58.45, #queue-req: 0
+[2026-08-22 18:28:18.496 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7959, token usage: 0.02, gen throughput (token/s): 58.62, #queue-req: 0
+[2026-08-22 18:28:18.625] Sending single request for model_3
+[2026-08-22 18:28:18.626 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:18.630 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1035, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:18.993 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7642, token usage: 0.02, gen throughput (token/s): 80.44, #queue-req: 0
+[2026-08-22 18:28:19.664 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7682, token usage: 0.02, gen throughput (token/s): 59.64, #queue-req: 0
+[2026-08-22 18:28:20.111 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7722, token usage: 0.02, gen throughput (token/s): 89.31, #queue-req: 0
+[2026-08-22 18:28:20.304] Sending single request for model_3
+[2026-08-22 18:28:20.305 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:20.310 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1066, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:20.846 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7666, token usage: 0.02, gen throughput (token/s): 54.44, #queue-req: 0
+[2026-08-22 18:28:21.284 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7706, token usage: 0.02, gen throughput (token/s): 91.45, #queue-req: 0
+[2026-08-22 18:28:21.946 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7746, token usage: 0.02, gen throughput (token/s): 60.40, #queue-req: 0
+[2026-08-22 18:28:22.213] Sending single request for model_3
+[2026-08-22 18:28:22.214 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:22.219 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1408, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:22.443 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8001, token usage: 0.02, gen throughput (token/s): 80.43, #queue-req: 0
+[2026-08-22 18:28:23.417 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8041, token usage: 0.02, gen throughput (token/s): 41.09, #queue-req: 0
+[2026-08-22 18:28:24.117 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8081, token usage: 0.02, gen throughput (token/s): 57.12, #queue-req: 0
+[2026-08-22 18:28:24.463] Sending single request for model_3
+[2026-08-22 18:28:24.465 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:24.469 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1235, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:24.606 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7821, token usage: 0.02, gen throughput (token/s): 81.73, #queue-req: 0
+[2026-08-22 18:28:25.283 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7861, token usage: 0.02, gen throughput (token/s): 59.11, #queue-req: 0
+[2026-08-22 18:28:25.716 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7901, token usage: 0.02, gen throughput (token/s): 92.32, #queue-req: 0
+[2026-08-22 18:28:26.371] Sending single request for model_3
+[2026-08-22 18:28:26.373 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:26.379 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1403, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:26.447 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7982, token usage: 0.02, gen throughput (token/s): 54.74, #queue-req: 0
+[2026-08-22 18:28:27.139 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8022, token usage: 0.02, gen throughput (token/s): 57.84, #queue-req: 0
+[2026-08-22 18:28:27.582 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8062, token usage: 0.02, gen throughput (token/s): 90.26, #queue-req: 0
+[2026-08-22 18:28:28.257 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8102, token usage: 0.02, gen throughput (token/s): 59.21, #queue-req: 0
+[2026-08-22 18:28:28.319] Sending single request for model_3
+[2026-08-22 18:28:28.320 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:28.326 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1540, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:28.756 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8152, token usage: 0.02, gen throughput (token/s): 80.26, #queue-req: 0
+[2026-08-22 18:28:29.445 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8192, token usage: 0.02, gen throughput (token/s): 58.00, #queue-req: 0
+[2026-08-22 18:28:29.880 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8232, token usage: 0.02, gen throughput (token/s): 91.97, #queue-req: 0
+[2026-08-22 18:28:30.017] Sending single request for model_3
+[2026-08-22 18:28:30.019 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:30.026 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1287, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:30.655 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7892, token usage: 0.02, gen throughput (token/s): 51.66, #queue-req: 0
+[2026-08-22 18:28:31.101 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7932, token usage: 0.02, gen throughput (token/s): 89.63, #queue-req: 0
+[2026-08-22 18:28:31.775 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7972, token usage: 0.02, gen throughput (token/s): 59.30, #queue-req: 0
+[2026-08-22 18:28:31.992] Sending single request for model_3
+[2026-08-22 18:28:31.994 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:32.003 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1584, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:32.565 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8182, token usage: 0.02, gen throughput (token/s): 50.65, #queue-req: 0
+[2026-08-22 18:28:33.014 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8222, token usage: 0.02, gen throughput (token/s): 89.13, #queue-req: 0
+[2026-08-22 18:28:33.715 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8262, token usage: 0.02, gen throughput (token/s): 57.02, #queue-req: 0
+[2026-08-22 18:28:34.008] Sending single request for model_3
+[2026-08-22 18:28:34.010 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:34.018 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1535, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:34.219 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8126, token usage: 0.02, gen throughput (token/s): 79.37, #queue-req: 0
+[2026-08-22 18:28:34.884 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8166, token usage: 0.02, gen throughput (token/s): 60.20, #queue-req: 0
+[2026-08-22 18:28:35.325 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8206, token usage: 0.02, gen throughput (token/s): 90.64, #queue-req: 0
+[2026-08-22 18:28:35.948] Sending single request for model_3
+[2026-08-22 18:28:35.949 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:35.963 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1329, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:36.100 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7913, token usage: 0.02, gen throughput (token/s): 51.64, #queue-req: 0
+[2026-08-22 18:28:36.569 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7953, token usage: 0.02, gen throughput (token/s): 85.20, #queue-req: 0
+[2026-08-22 18:28:37.494 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 7993, token usage: 0.02, gen throughput (token/s): 43.28, #queue-req: 0
+[2026-08-22 18:28:38.185 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8625, token usage: 0.02, gen throughput (token/s): 57.88, #queue-req: 0
+[2026-08-22 18:28:38.188] Sending single request for model_3
+[2026-08-22 18:28:38.190 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:38.198 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 1792, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:38.695 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8409, token usage: 0.02, gen throughput (token/s): 78.41, #queue-req: 0
+[2026-08-22 18:28:39.665 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8449, token usage: 0.02, gen throughput (token/s): 41.24, #queue-req: 0
+[2026-08-22 18:28:40.669 model_3 GPU=0 TP0] Decode batch. #running-req: 1, #token: 8489, token usage: 0.02, gen throughput (token/s): 39.82, #queue-req: 0
+[2026-08-22 18:28:40.780] Sending single request for model_3
+[2026-08-22 18:28:40.782] Sending single request for model_3
+[2026-08-22 18:28:40.783] Sending single request for model_3
+[2026-08-22 18:28:40.783] Sending single request for model_3
+[2026-08-22 18:28:40.784] Sending single request for model_3
+[2026-08-22 18:28:40.784] Sending single request for model_3
+[2026-08-22 18:28:40.785] Sending single request for model_3
+[2026-08-22 18:28:40.785] Sending single request for model_3
+[2026-08-22 18:28:40.786] Sending single request for model_3
+[2026-08-22 18:28:40.786] Sending single request for model_3
+[2026-08-22 18:28:40.787] Sending single request for model_3
+[2026-08-22 18:28:40.787] Sending single request for model_3
+[2026-08-22 18:28:40.787] Sending single request for model_3
+[2026-08-22 18:28:40.788] Sending single request for model_3
+[2026-08-22 18:28:40.788] Sending single request for model_3
+[2026-08-22 18:28:40.789] Sending single request for model_3
+[2026-08-22 18:28:40.789] Sending single request for model_3
+[2026-08-22 18:28:40.790] Sending single request for model_3
+[2026-08-22 18:28:40.790] Sending single request for model_3
+[2026-08-22 18:28:40.790] Sending single request for model_3
+[2026-08-22 18:28:40.791] Sending single request for model_3
+[2026-08-22 18:28:40.791] Sending single request for model_3
+[2026-08-22 18:28:40.792] Sending single request for model_3
+[2026-08-22 18:28:40.792] Sending single request for model_3
+[2026-08-22 18:28:40.793 model_3 GPU=0 TP0] Received 1 generation requests
+[2026-08-22 18:28:40.795 model_3 GPU=0 TP0] Prefill batch. #new-seq: 1, #new-token: 94, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:40.808 model_3 GPU=0 TP0] Received 14 generation requests
+[2026-08-22 18:28:40.813 model_3 GPU=0 TP0] Prefill batch. #new-seq: 14, #new-token: 1042, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 1, #queue-req: 0
+[2026-08-22 18:28:40.847 model_3 GPU=0 TP0] Received 9 generation requests
+[2026-08-22 18:28:40.850 model_3 GPU=0 TP0] Prefill batch. #new-seq: 9, #new-token: 630, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 15, #queue-req: 0
+[2026-08-22 18:28:40.904] Sending single request for model_3
+[2026-08-22 18:28:40.905] Sending single request for model_3
+[2026-08-22 18:28:40.906] Sending single request for model_3
+[2026-08-22 18:28:40.906] Sending single request for model_3
+[2026-08-22 18:28:40.906] Sending single request for model_3
+[2026-08-22 18:28:40.906] Sending single request for model_3
+[2026-08-22 18:28:40.907] Sending single request for model_3
+[2026-08-22 18:28:40.907] Sending single request for model_3
+[2026-08-22 18:28:40.908] Sending single request for model_3
+[2026-08-22 18:28:40.908] Sending single request for model_3
+[2026-08-22 18:28:40.908] Sending single request for model_3
+[2026-08-22 18:28:40.908] Sending single request for model_3
+[2026-08-22 18:28:40.909] Sending single request for model_3
+[2026-08-22 18:28:40.909] Sending single request for model_3
+[2026-08-22 18:28:40.909] Sending single request for model_3
+[2026-08-22 18:28:40.909] Sending single request for model_3
+[2026-08-22 18:28:40.910] Sending single request for model_3
+[2026-08-22 18:28:40.910] Sending single request for model_3
+[2026-08-22 18:28:40.910] Sending single request for model_3
+[2026-08-22 18:28:40.911] Sending single request for model_3
+[2026-08-22 18:28:40.911] Sending single request for model_3
+[2026-08-22 18:28:40.911] Sending single request for model_3
+[2026-08-22 18:28:40.911] Sending single request for model_3
+[2026-08-22 18:28:40.912] Sending single request for model_3
+[2026-08-22 18:28:40.926 model_3 GPU=0 TP0] Received 17 generation requests
+[2026-08-22 18:28:40.938 model_3 GPU=0 TP0] Prefill batch. #new-seq: 17, #new-token: 3174, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:41.514 model_3 GPU=0 TP0] Received 7 generation requests
+[2026-08-22 18:28:41.517 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 1076, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.02, #running-req: 17, #queue-req: 0
+[2026-08-22 18:28:41.599] Sending single request for model_3
+[2026-08-22 18:28:41.600] Sending single request for model_3
+[2026-08-22 18:28:41.600] Sending single request for model_3
+[2026-08-22 18:28:41.601] Sending single request for model_3
+[2026-08-22 18:28:41.601] Sending single request for model_3
+[2026-08-22 18:28:41.601] Sending single request for model_3
+[2026-08-22 18:28:41.601] Sending single request for model_3
+[2026-08-22 18:28:41.602] Sending single request for model_3
+[2026-08-22 18:28:41.602] Sending single request for model_3
+[2026-08-22 18:28:41.602] Sending single request for model_3
+[2026-08-22 18:28:41.602] Sending single request for model_3
+[2026-08-22 18:28:41.603] Sending single request for model_3
+[2026-08-22 18:28:41.603] Sending single request for model_3
+[2026-08-22 18:28:41.603] Sending single request for model_3
+[2026-08-22 18:28:41.603] Sending single request for model_3
+[2026-08-22 18:28:41.604] Sending single request for model_3
+[2026-08-22 18:28:41.604] Sending single request for model_3
+[2026-08-22 18:28:41.604] Sending single request for model_3
+[2026-08-22 18:28:41.604] Sending single request for model_3
+[2026-08-22 18:28:41.605] Sending single request for model_3
+[2026-08-22 18:28:41.605] Sending single request for model_3
+[2026-08-22 18:28:41.605] Sending single request for model_3
+[2026-08-22 18:28:41.605] Sending single request for model_3
+[2026-08-22 18:28:41.606] Sending single request for model_3
+[2026-08-22 18:28:41.608 model_3 GPU=0 TP0] Received 17 generation requests
+[2026-08-22 18:28:41.624 model_3 GPU=0 TP0] Prefill batch. #new-seq: 17, #new-token: 7275, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.03, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:41.854 model_3 GPU=0 TP0] Received 7 generation requests
+[2026-08-22 18:28:41.861 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 2915, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.04, #running-req: 17, #queue-req: 0
+[2026-08-22 18:28:42.664] Sending single request for model_3
+[2026-08-22 18:28:42.665] Sending single request for model_3
+[2026-08-22 18:28:42.665] Sending single request for model_3
+[2026-08-22 18:28:42.665] Sending single request for model_3
+[2026-08-22 18:28:42.666] Sending single request for model_3
+[2026-08-22 18:28:42.666] Sending single request for model_3
+[2026-08-22 18:28:42.666] Sending single request for model_3
+[2026-08-22 18:28:42.666] Sending single request for model_3
+[2026-08-22 18:28:42.667] Sending single request for model_3
+[2026-08-22 18:28:42.667] Sending single request for model_3
+[2026-08-22 18:28:42.667] Sending single request for model_3
+[2026-08-22 18:28:42.667] Sending single request for model_3
+[2026-08-22 18:28:42.668] Sending single request for model_3
+[2026-08-22 18:28:42.668] Sending single request for model_3
+[2026-08-22 18:28:42.668] Sending single request for model_3
+[2026-08-22 18:28:42.668] Sending single request for model_3
+[2026-08-22 18:28:42.669] Sending single request for model_3
+[2026-08-22 18:28:42.669] Sending single request for model_3
+[2026-08-22 18:28:42.669] Sending single request for model_3
+[2026-08-22 18:28:42.669] Sending single request for model_3
+[2026-08-22 18:28:42.670] Sending single request for model_3
+[2026-08-22 18:28:42.670] Sending single request for model_3
+[2026-08-22 18:28:42.670] Sending single request for model_3
+[2026-08-22 18:28:42.670] Sending single request for model_3
+[2026-08-22 18:28:42.672 model_3 GPU=0 TP0] Received 18 generation requests
+[2026-08-22 18:28:42.718 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 8192, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.03, #running-req: 0, #queue-req: 11
+[2026-08-22 18:28:42.983 model_3 GPU=0 TP0] Received 6 generation requests
+[2026-08-22 18:28:42.999 model_3 GPU=0 TP0] Prefill batch. #new-seq: 13, #new-token: 8192, #cached-token: 929, cache hit rate: 0.00%, token usage: 0.04, #running-req: 6, #queue-req: 6
+[2026-08-22 18:28:43.550 model_3 GPU=0 TP0] Prefill batch. #new-seq: 6, #new-token: 8004, #cached-token: 475, cache hit rate: 0.00%, token usage: 0.06, #running-req: 18, #queue-req: 1
+[2026-08-22 18:28:44.970] Sending single request for model_3
+[2026-08-22 18:28:44.971] Sending single request for model_3
+[2026-08-22 18:28:44.971] Sending single request for model_3
+[2026-08-22 18:28:44.971] Sending single request for model_3
+[2026-08-22 18:28:44.972] Sending single request for model_3
+[2026-08-22 18:28:44.972] Sending single request for model_3
+[2026-08-22 18:28:44.972] Sending single request for model_3
+[2026-08-22 18:28:44.973] Sending single request for model_3
+[2026-08-22 18:28:44.973] Sending single request for model_3
+[2026-08-22 18:28:44.973] Sending single request for model_3
+[2026-08-22 18:28:44.973] Sending single request for model_3
+[2026-08-22 18:28:44.974] Sending single request for model_3
+[2026-08-22 18:28:44.974] Sending single request for model_3
+[2026-08-22 18:28:44.974] Sending single request for model_3
+[2026-08-22 18:28:44.975] Sending single request for model_3
+[2026-08-22 18:28:44.975] Sending single request for model_3
+[2026-08-22 18:28:44.975] Sending single request for model_3
+[2026-08-22 18:28:44.976] Sending single request for model_3
+[2026-08-22 18:28:44.976] Sending single request for model_3
+[2026-08-22 18:28:44.976] Sending single request for model_3
+[2026-08-22 18:28:44.977] Sending single request for model_3
+[2026-08-22 18:28:44.977] Sending single request for model_3
+[2026-08-22 18:28:44.978] Sending single request for model_3
+[2026-08-22 18:28:44.978] Sending single request for model_3
+[2026-08-22 18:28:44.980 model_3 GPU=0 TP0] Received 11 generation requests
+[2026-08-22 18:28:45.032 model_3 GPU=0 TP0] Prefill batch. #new-seq: 6, #new-token: 8192, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.03, #running-req: 0, #queue-req: 5
+[2026-08-22 18:28:45.293 model_3 GPU=0 TP0] Received 10 generation requests
+[2026-08-22 18:28:45.320 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 8192, #cached-token: 1073, cache hit rate: 0.00%, token usage: 0.04, #running-req: 5, #queue-req: 10
+[2026-08-22 18:28:45.884 model_3 GPU=0 TP0] Received 3 generation requests
+[2026-08-22 18:28:45.907 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 8192, #cached-token: 310, cache hit rate: 0.00%, token usage: 0.06, #running-req: 11, #queue-req: 7
+[2026-08-22 18:28:46.456 model_3 GPU=0 TP0] Prefill batch. #new-seq: 7, #new-token: 7146, #cached-token: 601, cache hit rate: 0.00%, token usage: 0.08, #running-req: 17, #queue-req: 1
+[2026-08-22 18:28:47.738] Sending single request for model_3
+[2026-08-22 18:28:47.739] Sending single request for model_3
+[2026-08-22 18:28:47.739] Sending single request for model_3
+[2026-08-22 18:28:47.739] Sending single request for model_3
+[2026-08-22 18:28:47.740] Sending single request for model_3
+[2026-08-22 18:28:47.740] Sending single request for model_3
+[2026-08-22 18:28:47.740] Sending single request for model_3
+[2026-08-22 18:28:47.741] Sending single request for model_3
+[2026-08-22 18:28:47.741] Sending single request for model_3
+[2026-08-22 18:28:47.741] Sending single request for model_3
+[2026-08-22 18:28:47.741] Sending single request for model_3
+[2026-08-22 18:28:47.742] Sending single request for model_3
+[2026-08-22 18:28:47.743] Sending single request for model_3
+[2026-08-22 18:28:47.744] Sending single request for model_3
+[2026-08-22 18:28:47.744] Sending single request for model_3
+[2026-08-22 18:28:47.744] Sending single request for model_3
+[2026-08-22 18:28:47.745] Sending single request for model_3
+[2026-08-22 18:28:47.745] Sending single request for model_3
+[2026-08-22 18:28:47.745] Sending single request for model_3
+[2026-08-22 18:28:47.745] Sending single request for model_3
+[2026-08-22 18:28:47.746] Sending single request for model_3
+[2026-08-22 18:28:47.746] Sending single request for model_3
+[2026-08-22 18:28:47.746] Sending single request for model_3
+[2026-08-22 18:28:47.747] Sending single request for model_3
+[2026-08-22 18:28:47.749 model_3 GPU=0 TP0] Received 14 generation requests
+[2026-08-22 18:28:47.755 model_3 GPU=0 TP0] Prefill batch. #new-seq: 14, #new-token: 994, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.03, #running-req: 0, #queue-req: 0
+[2026-08-22 18:28:47.788 model_3 GPU=0 TP0] Received 10 generation requests
+[2026-08-22 18:28:47.792 model_3 GPU=0 TP0] Prefill batch. #new-seq: 10, #new-token: 772, #cached-token: 0, cache hit rate: 0.00%, token usage: 0.03, #running-req: 14, #queue-req: 0

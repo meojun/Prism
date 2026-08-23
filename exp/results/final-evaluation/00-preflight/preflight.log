@@ -1,0 +1,35 @@
+{
+  "freeze": {
+    "git_sha": "0593fafe0f08ab9b8154e717616942d28d839497",
+    "git_sha_short": "0593faf",
+    "git_clean": true,
+    "git_dirty_files": [],
+    "clean_check_excludes": [
+      "exp/results/final-evaluation",
+      "exp/workloads/final-evaluation"
+    ],
+    "source_repo_sha": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
+    "source_repo_dirty_files": 36,
+    "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
+    "source_patch_sha256": "d2d5ade644411a0165f0d4352e401ad5003ef72eb37f442eb0f3f18b5f4d785c"
+  },
+  "gpus": [
+    "0, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0",
+    "1, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0"
+  ],
+  "versions": {
+    "python": "3.10.20",
+    "torch": "2.4.0+cu121",
+    "cuda_runtime": "12.1",
+    "cudnn": 90100,
+    "sglang": "0.3.4.post2",
+    "device_count": 2,
+    "flashinfer": "0.1.6+cu121torch2.4",
+    "kvcached": "unknown",
+    "vllm": "0.6.3.post1",
+    "transformers": "4.45.2"
+  },
+  "flashinfer_workspace_bytes": 1073741824
+}
+
+wrote /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/FINAL_ENVIRONMENT.json

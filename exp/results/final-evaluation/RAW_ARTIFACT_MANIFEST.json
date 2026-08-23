@@ -1,0 +1,7 @@
+{
+  "generated_utc": "2026-08-22T18:30:04.402449+00:00",
+  "note": "Raw server logs, request dumps and traces are kept on this machine and are gitignored; the reports, freezes and hashes are in Git. These paths say where the raw evidence is.",
+  "host_root": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation",
+  "runs": [],
+  "total_bytes": 0
+}

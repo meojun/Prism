@@ -1,0 +1,72 @@
+[2026-08-22T17:47:11Z] stage 00-preflight -> FAIL (preflight or workload provenance failed)
+[2026-08-22T17:47:11Z] CHAIN STOPPED at 00-preflight
+[2026-08-22T17:55:19Z] stage 00-preflight -> PASS 
+[2026-08-22T17:59:53Z] stage 01-ci-profile -> FAIL (c_i profiling did not produce all six models)
+[2026-08-22T17:59:53Z] CHAIN STOPPED at 01-ci-profile
+[2026-08-22T18:11:11Z] skip 00-preflight
+[2026-08-22T18:29:17Z] stage 01-ci-profile -> PASS 
+[2026-08-22T18:29:17Z] calibration tau=0.00035 seed=0
+[2026-08-22T18:38:51Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-22T18:38:51Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T01:16:42Z] [resume] preserved the failed attempt as seed_0.attempt1
+[2026-08-23T01:16:42Z] [resume] retrying cal-0p00035-s0 on the patched runtime
+[2026-08-23T01:45:21Z] [resume] the retry did not pass; the chain stays stopped (see FAILURE_AUTOPSY.json)
+[2026-08-23T02:00:42Z] [resume] preserved the failed attempt as seed_0.attempt2
+[2026-08-23T02:00:42Z] [resume] retrying cal-0p00035-s0 on the patched runtime
+[2026-08-23T02:14:48Z] [resume] the retry did not pass; the chain stays stopped (see FAILURE_AUTOPSY.json)
+[2026-08-23T05:07:46Z] [resume] preserved the failed attempt as seed_0.attempt3
+[2026-08-23T05:07:46Z] [resume] retrying cal-0p00035-s0 on the patched runtime
+[2026-08-23T05:20:25Z] [resume] the retry did not pass; the chain stays stopped (see FAILURE_AUTOPSY.json)
+[2026-08-23T06:13:45Z] skip 00-preflight
+[2026-08-23T06:13:45Z] skip 01-ci-profile
+[2026-08-23T06:13:45Z] calibration tau=0.00035 seed=0
+[2026-08-23T06:13:45Z] calibration tau=0.00035 seed=42
+[2026-08-23T06:30:20Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T06:30:20Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T07:06:50Z] skip 00-preflight
+[2026-08-23T07:06:50Z] skip 01-ci-profile
+[2026-08-23T07:06:50Z] calibration tau=0.00035 seed=0
+[2026-08-23T07:19:38Z] calibration tau=0.00035 seed=42
+[2026-08-23T07:32:54Z] calibration tau=0.07 seed=0
+[2026-08-23T07:51:21Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T07:51:21Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T08:21:41Z] skip 00-preflight
+[2026-08-23T08:21:41Z] skip 01-ci-profile
+[2026-08-23T08:21:41Z] calibration tau=0.00035 seed=0
+[2026-08-23T08:21:41Z] calibration tau=0.00035 seed=42
+[2026-08-23T08:21:41Z] calibration tau=0.07 seed=0
+[2026-08-23T08:24:33Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T08:24:33Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T08:27:45Z] skip 00-preflight
+[2026-08-23T08:27:45Z] skip 01-ci-profile
+[2026-08-23T08:27:45Z] calibration tau=0.00035 seed=0
+[2026-08-23T08:27:45Z] calibration tau=0.00035 seed=42
+[2026-08-23T08:27:45Z] calibration tau=0.07 seed=0
+[2026-08-23T08:44:46Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T08:44:46Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T10:01:07Z] skip 00-preflight
+[2026-08-23T10:01:07Z] skip 01-ci-profile
+[2026-08-23T10:01:07Z] calibration tau=0.00035 seed=0
+[2026-08-23T10:01:07Z] calibration tau=0.00035 seed=42
+[2026-08-23T10:01:07Z] calibration tau=0.07 seed=0
+[2026-08-23T10:18:58Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T10:18:58Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T13:40:06Z] skip 00-preflight
+[2026-08-23T13:40:06Z] skip 01-ci-profile
+[2026-08-23T13:40:06Z] calibration tau=0.00035 seed=0
+[2026-08-23T13:40:06Z] calibration tau=0.00035 seed=42
+[2026-08-23T13:40:06Z] calibration tau=0.07 seed=0
+[2026-08-23T13:53:42Z] calibration tau=0.07 seed=42
+[2026-08-23T14:03:51Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T14:03:52Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T14:30:58Z] skip 00-preflight
+[2026-08-23T14:30:58Z] skip 01-ci-profile
+[2026-08-23T14:30:58Z] calibration tau=0.00035 seed=0
+[2026-08-23T14:30:58Z] calibration tau=0.00035 seed=42
+[2026-08-23T14:30:58Z] calibration tau=0.07 seed=0
+[2026-08-23T14:30:58Z] calibration tau=0.07 seed=42
+[2026-08-23T15:00:00Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T15:00:01Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T17:49:18Z] stage 00-preflight -> PASS 
+[2026-08-23T17:49:18Z] skip 01-ci-profile
+[2026-08-23T17:49:18Z] calibration tau=0.00035 seed=0

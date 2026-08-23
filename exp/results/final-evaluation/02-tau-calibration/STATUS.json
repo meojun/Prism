@@ -1,0 +1,9 @@
+{
+  "stage": "02-tau-calibration",
+  "result": "RUNNING",
+  "git_sha": "444a216",
+  "started_at": "2026-08-23T17:49:18.063590+00:00",
+  "finished_at": null,
+  "reason": null,
+  "artifacts": []
+}

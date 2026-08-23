@@ -1,0 +1,350 @@
+{
+  "c_i": {
+    "model_1": 44810.32909113844,
+    "model_2": 24346.47999693055,
+    "model_3": 10527.08978973345,
+    "model_4": 16205.076392951552,
+    "model_5": 9843.616539166123,
+    "model_6": 11011.21695116448
+  },
+  "checks": [
+    {
+      "check": "c_i file written",
+      "detail": {
+        "path": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json"
+      },
+      "pass": true
+    },
+    {
+      "check": "all six models present",
+      "detail": {
+        "present": [
+          "model_1",
+          "model_2",
+          "model_3",
+          "model_4",
+          "model_5",
+          "model_6"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "model_1: c_i is finite and positive",
+      "detail": {
+        "c_i": 44810.32909113844
+      },
+      "pass": true
+    },
+    {
+      "check": "model_1: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 44810.32909113844,
+        "stored": 44810.32909113844
+      },
+      "pass": true
+    },
+    {
+      "check": "model_1: enough samples to fit",
+      "detail": {
+        "n_saturated": 288,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_1: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.6322877458001023
+      },
+      "pass": true
+    },
+    {
+      "check": "model_2: c_i is finite and positive",
+      "detail": {
+        "c_i": 24346.47999693055
+      },
+      "pass": true
+    },
+    {
+      "check": "model_2: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 24346.47999693055,
+        "stored": 24346.47999693055
+      },
+      "pass": true
+    },
+    {
+      "check": "model_2: enough samples to fit",
+      "detail": {
+        "n_saturated": 288,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_2: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.609228107753396
+      },
+      "pass": true
+    },
+    {
+      "check": "model_3: c_i is finite and positive",
+      "detail": {
+        "c_i": 10527.08978973345
+      },
+      "pass": true
+    },
+    {
+      "check": "model_3: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 10527.08978973345,
+        "stored": 10527.08978973345
+      },
+      "pass": true
+    },
+    {
+      "check": "model_3: enough samples to fit",
+      "detail": {
+        "n_saturated": 144,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_3: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.5448832897385831
+      },
+      "pass": true
+    },
+    {
+      "check": "model_4: c_i is finite and positive",
+      "detail": {
+        "c_i": 16205.076392951552
+      },
+      "pass": true
+    },
+    {
+      "check": "model_4: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 16205.076392951552,
+        "stored": 16205.076392951552
+      },
+      "pass": true
+    },
+    {
+      "check": "model_4: enough samples to fit",
+      "detail": {
+        "n_saturated": 144,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_4: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.572898075841123
+      },
+      "pass": true
+    },
+    {
+      "check": "model_5: c_i is finite and positive",
+      "detail": {
+        "c_i": 9843.616539166123
+      },
+      "pass": true
+    },
+    {
+      "check": "model_5: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 9843.616539166123,
+        "stored": 9843.616539166123
+      },
+      "pass": true
+    },
+    {
+      "check": "model_5: enough samples to fit",
+      "detail": {
+        "n_saturated": 48,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_5: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.406835376820839
+      },
+      "pass": true
+    },
+    {
+      "check": "model_6: c_i is finite and positive",
+      "detail": {
+        "c_i": 11011.21695116448
+      },
+      "pass": true
+    },
+    {
+      "check": "model_6: stored c_i equals the value its samples give",
+      "detail": {
+        "recomputed": 11011.21695116448,
+        "stored": 11011.21695116448
+      },
+      "pass": true
+    },
+    {
+      "check": "model_6: enough samples to fit",
+      "detail": {
+        "n_saturated": 48,
+        "n_sequential": 120
+      },
+      "pass": true
+    },
+    {
+      "check": "model_6: per-bucket throughput is not wildly unstable",
+      "detail": {
+        "buckets": 3,
+        "coefficient_of_variation": 0.41596226871002895
+      },
+      "pass": true
+    }
+  ],
+  "generated_utc": "2026-08-22T18:29:17.871258+00:00",
+  "note": "A difference from a previous profile is a measurement result and is reported, never corrected; no old value is substituted.",
+  "per_model": {
+    "model_1": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 42764.72066187757,
+        "E2_intercept_s": 0.00805789065293476,
+        "E2_r2": 0.7763312799742891,
+        "E2_regression_slope": 100042.21265667376,
+        "E3_prefill_saturated": 44810.32909113844,
+        "E3_prefill_solo": 54182.98589001913,
+        "sat_concurrency": 48
+      },
+      "n_saturated": 288,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.6322877458001023,
+      "per_bucket_n": 3,
+      "previous_c_i": 61151.609350651765,
+      "ratio_to_previous": 0.7327743221636217,
+      "raw_present": true,
+      "recomputed_c_i": 44810.32909113844,
+      "stored_c_i": 44810.32909113844
+    },
+    "model_2": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 24756.05785678871,
+        "E2_intercept_s": 0.016140462771888173,
+        "E2_r2": 0.05784254098063579,
+        "E2_regression_slope": 74557.66603724661,
+        "E3_prefill_saturated": 24346.47999693055,
+        "E3_prefill_solo": 36878.317996269834,
+        "sat_concurrency": 48
+      },
+      "n_saturated": 288,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.609228107753396,
+      "per_bucket_n": 3,
+      "previous_c_i": 48614.43849110621,
+      "ratio_to_previous": 0.5008075944636207,
+      "raw_present": true,
+      "recomputed_c_i": 24346.47999693055,
+      "stored_c_i": 24346.47999693055
+    },
+    "model_3": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 17637.027757508862,
+        "E2_intercept_s": 0.014568086255843077,
+        "E2_r2": 0.2967356369298306,
+        "E2_regression_slope": 30774.54181924354,
+        "E3_prefill_saturated": 10527.08978973345,
+        "E3_prefill_solo": 24140.06717350137,
+        "sat_concurrency": 24
+      },
+      "n_saturated": 144,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.5448832897385831,
+      "per_bucket_n": 3,
+      "previous_c_i": 29347.140690371387,
+      "ratio_to_previous": 0.3587092146659222,
+      "raw_present": true,
+      "recomputed_c_i": 10527.08978973345,
+      "stored_c_i": 10527.08978973345
+    },
+    "model_4": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 12963.621400702183,
+        "E2_intercept_s": 0.025073490547514805,
+        "E2_r2": 0.0739224132911177,
+        "E2_regression_slope": 28389.699320026448,
+        "E3_prefill_saturated": 16205.076392951552,
+        "E3_prefill_solo": 18290.84509408594,
+        "sat_concurrency": 24
+      },
+      "n_saturated": 144,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.572898075841123,
+      "per_bucket_n": 3,
+      "previous_c_i": 30078.01237922094,
+      "ratio_to_previous": 0.5387681934776597,
+      "raw_present": true,
+      "recomputed_c_i": 16205.076392951552,
+      "stored_c_i": 16205.076392951552
+    },
+    "model_5": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 9994.184498373988,
+        "E2_intercept_s": 0.0077060043471087955,
+        "E2_r2": 0.5291954451682028,
+        "E2_regression_slope": 11460.67984154867,
+        "E3_prefill_saturated": 9843.616539166123,
+        "E3_prefill_solo": 11228.405329301786,
+        "sat_concurrency": 8
+      },
+      "n_saturated": 48,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.406835376820839,
+      "per_bucket_n": 3,
+      "previous_c_i": 14249.064746251652,
+      "ratio_to_previous": 0.6908254481583135,
+      "raw_present": true,
+      "recomputed_c_i": 9843.616539166123,
+      "stored_c_i": 9843.616539166123
+    },
+    "model_6": {
+      "estimator_used": "E3_prefill_saturated",
+      "estimators": {
+        "E1_ratio_sum_p_over_sum_ttft": 10386.348950082735,
+        "E2_intercept_s": 0.02185978830807145,
+        "E2_r2": 0.32136651386217063,
+        "E2_regression_slope": 16739.87142768164,
+        "E3_prefill_saturated": 11011.21695116448,
+        "E3_prefill_solo": 12420.097539315668,
+        "sat_concurrency": 8
+      },
+      "n_saturated": 48,
+      "n_sequential": 120,
+      "per_bucket_cv": 0.41596226871002895,
+      "per_bucket_n": 3,
+      "previous_c_i": 15611.739433408104,
+      "ratio_to_previous": 0.7053164702199164,
+      "raw_present": true,
+      "recomputed_c_i": 11011.21695116448,
+      "stored_c_i": 11011.21695116448
+    }
+  },
+  "verdict": "PASS"
+}

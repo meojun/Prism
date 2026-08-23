@@ -1,0 +1,254 @@
+{
+ "recorded_utc": "2026-08-23T16:15:54.812956+00:00",
+ "previous_runtime_freeze": {
+  "commit": "0ff1133",
+  "patch_blob": "cc700f89a96764042784ed74b99538847af6f6be"
+ },
+ "change": "selectable backlog probe scope for the models_to_skip guard (A/B attribution)",
+ "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
+ "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
+ "explicitly_unchanged": [
+  "tau",
+  "frozen c_i",
+  "Moore-Hodgson select()",
+  "deadline and arrival semantics",
+  "migration policy",
+  "activation policy",
+  "KV allocator",
+  "workload",
+  "SLOs",
+  "admission ordering semantics"
+ ],
+ "c_i_reuse": {
+  "decision": "keep the frozen c_i; stage 01 is NOT re-run",
+  "why": "The c_i profiling arm runs a solo server with no --enable-gpu-scheduler, --enable-controller or --enable-moore-hodgson, so _alg2_runtime_gate is False and _alg2_pending_adoption is never populated; a solo profile performs no deactivation, so the verdict handler, the worker-slot deferral and the placeholder discard are all unreachable. The drain-order swap is in the GPU scheduler process, which that arm does not run.",
+  "audited_utc": "2026-08-23T05:07:17.742678+00:00"
+ },
+ "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
+ "patch_blob": "49ba35458684ccacd5b7af7cbca11a05e44f309b",
+ "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
+ "dispatch_seq_ownership": {
+  "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
+  "fix": "On a model departure the GPU scheduler retires the sequences it still owns for that model -- dispatched, not yet acknowledged -- through the existing _mh_retired_admit_seqs / _mh_retired_start_seqs and the existing contiguous-prefix drain. Already-acknowledged requests are untouched and remain the engine-side lifecycle's responsibility.",
+  "race_handling": "An acknowledgement, prefill start or completion still in flight when the sequence was retired names a tombstoned rid: it is recognised as already accounted exactly once, logged, and moves no frontier. It is not an ordering violation. A tombstone is cleared when the same rid is dispatched again on that GPU, so a returning request is always governed by its live record.",
+  "not_added": [
+   "timeout",
+   "seq skip",
+   "bypass",
+   "ordering relaxation",
+   "heuristic",
+   "magic constant"
+  ],
+  "all_departure_reasons_verified": [
+   "kv-stash",
+   "staged-never-admitted",
+   "evicted-to-frontend",
+   "backend-queue-drain"
+  ],
+  "call_site_audit": "Every MigratedAwayReq originates from the deactivate handler (scheduler.py:1993 and :2055 call _evict_all_waiting_requests; _drain_backend_queue is reached only from it; the kv-stash report is inside _v6_stash_captured). There is no path that reports a request as gone while its model stays resident, so the sweep can never retire a live sequence of a resident model."
+ },
+ "deactivation_rollback": {
+  "invariant": "A deactivation that rolls back leaves the source operational at every layer, and leaves ownership where it was.",
+  "classification": "all changes CORRECTNESS-PLUMBING; none PAPER, none NEW-POLICY",
+  "changes": [
+   "gpu_scheduler._recv_requests_loop drains the engine channel before the request handler. Every engine-channel message (ActivateReqOutput, DeactivateReqOutput, BatchRunReq, BackendAdmitReq, PrefillCompleteReq, MigratedAwayReq, AdoptResumedReq) reports on work the scheduler itself forwarded, so none can depend on a pending control message; the reverse dependency is real.",
+   "worker_pool.handle_deactivate_model no longer releases the slot; gpu_scheduler._handle_deactivate_result releases it on the success verdict.",
+   "The DeactivateReqInput branch no longer pops the queue or the backend queue; both move to the success verdict, so a rollback has nothing to undo.",
+   "On a failed verdict the model state returns to activated -- it was left at deactivating, which is excluded from frontend intake and from admission.",
+   "alg2_resumed placeholders are discarded on success instead of being returned to the frontend as if they were requests.",
+   "_alg2_release_pending_adoption delivers held payloads to the frontend itself and is called on P0/P1/P3/P4; the P2 rollback simply does not call it."
+  ],
+  "no_retry_trigger": "_alg2_request_adoption keeps its single caller. On P2 the placeholder is never popped, so the outstanding ask stays valid and the existing Prism scheduler resumes the adoption unaided.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "heuristic",
+   "duplicate guard",
+   "forced slot reclaim",
+   "double assignment"
+  ],
+  "unchanged": [
+   "tau",
+   "frozen c_i",
+   "Moore-Hodgson select()",
+   "Algorithm 1",
+   "Algorithm 2 ordering",
+   "deadline and arrival semantics",
+   "migration policy",
+   "activation policy",
+   "KV allocator",
+   "workload",
+   "SLOs",
+   "admission ordering"
+  ],
+  "path_table": {
+   "P0 already-deactivated": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P1 eviction requested": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P2 stash rollback": {
+    "owner": "source engine",
+    "frontend_deliveries": 0
+   },
+   "P3 V6 eviction": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P4 V6 off": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   }
+  }
+ },
+ "staged_request_return": {
+  "invariant": "Before the source gives up ownership, the request payload is returned to the frontend exactly once; only then is the source-local Algorithm 2 sequence retired.",
+  "root_cause": "_evict_all_waiting_requests released the staged list into the ledger only. _alg2_report_migrated_away tells the GPU scheduler to stop waiting for a sequence; it delivers the request nowhere. So model_2#58 had sequence 1014 retired and both frontiers drained over it while the request itself was discarded, and cal-0p07-s0 sat at 8,226 of 8,227 with both GPUs idle.",
+  "fix": "Each staged request is returned through the existing frontend conversion path before the list is cleared, then the existing staged-never-admitted report retires the sequence -- the same order the waiting-queue and backend-drain paths already use.",
+  "scope": "the staged cleanup inside _evict_all_waiting_requests only",
+  "not_added": [
+   "retry",
+   "timeout",
+   "duplicate guard",
+   "scheduling policy",
+   "ordering change"
+  ],
+  "failure_handling": "A request that cannot be serialised back is logged as staged_return_failed and still reported, matching the waiting-queue path: withholding the retirement would block the frontier on a request that has left this GPU either way."
+ },
+ "alg2_observation": {
+  "purpose": "Separate two hypotheses for the GPU0 3113-3115 stall: the engine loop running with a shared token that never matched (b1), against the loop not running at all (b2). The artifacts could not tell them apart -- staging is not logged and an activated idle engine is as silent as a dead one.",
+  "added": [
+   "_alg2_obs_fetch: every request taken off backend:<model>, with rid, alg2_seq, the shared token read at that moment, and waiting/running/staged/_activated",
+   "_alg2_obs_no_promote: staged work exists and none matched the token -- staged head rid/seq, the staged sequences, expected and shared token, counts. Rate-limited to 5 s.",
+   "_alg2_obs_heartbeat: emitted from the event loop every 5 s whether or not the engine is activated and whether or not it has work"
+  ],
+  "log_marker": "[PAPER-ALG2-OBS]",
+  "log_location": "<run>/server-logs/server.log",
+  "behaviour_change": "none. The observers only read state and log; they take no locks, write nothing, and every one is wrapped so it cannot raise. One assignment was added -- fetched_reqs is initialised to [] before the max_fetch_count branch -- so the observer can be called on a path where it was previously unbound; the branch itself is unchanged.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "heuristic",
+   "recovery",
+   "admission or ordering change"
+  ],
+  "verdict_rule": {
+   "b1": "heartbeats continue and staged_not_promoted records the mismatch",
+   "b2": "heartbeats stop and no fetch is recorded"
+  }
+ },
+ "response_path_observation": {
+  "purpose": "Locate where a completed request's response stops reaching the client. 1,204 requests in cal-0p07-s0 had no response while every engine was alive and empty, the Algorithm 2 ledger was clean, only ~340 had ever been returned to the frontend, and the client logged zero descriptor failures. No record spans engine output to HTTP yield.",
+  "log_marker": "[PAPER-RESP-OBS]",
+  "log_location": "<run>/server-logs/server.log and stdout.log",
+  "boundaries": {
+   "1 engine_output": "scheduler.py stream_output -- the engine produced a final output",
+   "2 stream_output_send": "scheduler.py -- handed to the detokenizer",
+   "3 detokenizer_send": "detokenizer_manager.py -- passed to the request handler",
+   "4 handler_recv": "request_handler_worker_pool.py -- received and queued for the generator",
+   "5 http_final_yield": "request_handler_worker_pool.py -- final chunk about to reach the client",
+   "6 stream_abandoned": "request_handler_worker_pool.py -- given up on client disconnect"
+  },
+  "fields": [
+   "timestamp",
+   "rid",
+   "model",
+   "final",
+   "n (output length/token count)",
+   "exc"
+  ],
+  "diagnostic_rule": "the last boundary a rid reaches names the boundary that lost it",
+  "behaviour_change": "none. Every observer logs and returns, is wrapped so it cannot raise, and adds no state. Tested against a bare Scheduler and unserialisable arguments; a test asserts the engine observer adds or changes no attribute.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "recovery",
+   "queue semantics change"
+  ]
+ },
+ "gpu_scoped_backend_queue": {
+  "invariant": "A seq issued by GPU g may only exist in a backend queue owned by GPU g, until an explicit ownership transfer occurs.",
+  "root_cause": "alg2_seq is per GPU; the backend queue was {prefix}:{model}, shared by every GPU. Any drain of that key removed entries another GPU had just dispatched and was still accounting for, and neither drain path could retire a sequence on the issuing GPU's ledger. This orphaned seq 2060 on GPU 0 (GPU 1's deactivation verdict popped backend:model_1 twelve milliseconds after GPU 0 dispatched into it) and seqs 1159/1160 on GPU 0 (its own deactivation drained the key one millisecond after dispatch).",
+  "key_change": "{prefix}:{model_name} -> {prefix}:{gpu_id}:{model_name}",
+  "sites": [
+   "gpu_scheduler.py queue-length probe",
+   "gpu_scheduler.py _handle_deactivate_result pop_all",
+   "gpu_scheduler.py _send_to_backend_queue",
+   "scheduler.py recv_generation_requests fetch",
+   "scheduler.py _drain_backend_queue"
+  ],
+  "not_added": [
+   "new message",
+   "retry",
+   "timeout",
+   "cross-GPU notification",
+   "policy change"
+  ],
+  "explicit_ownership_transfer": "None added, and none needed. A migrating request is re-issued a fresh target-local alg2_seq through the ordinary dispatch path, so the transfer boundary is the request and never the queue entry.",
+  "declared_behaviour_change": {
+   "what": "models_to_skip backlog is now GPU-local rather than global",
+   "where": "request_queue.py:186 and request_queue_mh.py:106, threshold _skip_model_threshold = 10",
+   "classification": "NOT a paper mechanism. It is a pre-existing backpressure guard, and this is a scope correction: the probe now reads this GPU's backlog for the model instead of the cluster's. The two coincide except during migration overlap, where the global reading could make one GPU skip a model because the other had a backlog -- which the paper does not ask for."
+  },
+  "paper_untouched": [
+   "Algorithm 1 (KVPR, tau line-8)",
+   "Algorithm 2 (Moore-Hodgson select, e_i=p_i/c_i)",
+   "deadline and arrival semantics",
+   "per-GPU admission ordering and the sequence frontier",
+   "c_i",
+   "tau",
+   "migration and activation policy",
+   "KV allocator",
+   "workload",
+   "SLOs"
+  ]
+ },
+ "observation_gate": {
+  "why": "D3 run 9 passed every correctness check but measured 11.64 req/s against run 8's 18.49, with p99 TTFT 308 s against 85 s. Two candidates: the diagnostic per-request logging (42,151 PAPER-RESP-OBS + 10,046 PAPER-ALG2-OBS events, 14 MB of server.log against run 8's 2.7 MB) and the GPU-scoped queue itself. This gate separates them.",
+  "flag": "PRISM_OBS=1 enables; unset disables",
+  "evaluated": "once at import; when off each observer returns on a single boolean",
+  "gated": [
+   "scheduler.py _resp_obs, _alg2_obs_fetch, _alg2_obs_no_promote, _alg2_obs_heartbeat, and the two per-request loops in stream_output",
+   "detokenizer_manager.py boundary-3 loop",
+   "request_handler_worker_pool.py _resp_obs"
+  ],
+  "not_gated": "gpu_scheduler.py's PAPER-ALG2-RUNTIME log -- that is paper evidence for the admission order, not diagnostics, and every correctness gate reads it",
+  "unchanged": [
+   "GPU-scoped backend queue",
+   "models_to_skip scope",
+   "runtime policy",
+   "queue topology",
+   "tau",
+   "c_i",
+   "workload",
+   "SLOs"
+  ]
+ },
+ "backlog_probe_scope": {
+  "why": "D3: run8 (old queue) 18.49 req/s, run10 (GPU-scoped, observers off) 13.75. Disabling the diagnostics recovered 11.64 -> 13.75 but not to 18.49, so the remaining gap is attributed to either the queue split or the models_to_skip observation change it caused. This makes that a configuration choice so the two can be measured apart.",
+  "flag": "PRISM_BACKLOG_SCOPE=global | local (default local, the current build)",
+  "global_definition": "sum of get_queue_length({prefix}:{gpu}:{model}) over range(num_gpus) -- exactly what the pre-split shared backend:{model} key held, since every request goes to exactly one per-GPU key",
+  "unchanged": [
+   "request transport stays {prefix}:{gpu_id}:{model}",
+   "no GPU consumes another GPU's entry in either mode",
+   "Algorithm 1",
+   "Algorithm 2",
+   "tau",
+   "c_i",
+   "migration",
+   "KV allocator",
+   "workload",
+   "SLOs",
+   "the _skip_model_threshold value (10)"
+  ],
+  "not_added": [
+   "retry",
+   "timeout",
+   "new heuristic",
+   "new scheduling policy"
+  ]
+ }
+}

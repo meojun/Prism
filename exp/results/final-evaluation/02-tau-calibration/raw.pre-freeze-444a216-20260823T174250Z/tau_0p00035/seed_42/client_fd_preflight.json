@@ -1,0 +1,15 @@
+{
+  "login_shell": {
+    "hard": "524288",
+    "soft": "1024"
+  },
+  "pass": true,
+  "required": 65535,
+  "tmux_child": {
+    "hard": "524288",
+    "soft": "1024"
+  },
+  "tmux_child_after_raise": {
+    "soft": "65535"
+  }
+}

@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/root/Prism-final-regression-diagnosis/exp/scripts/monitor_baseline_stage.py", line 219, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/Prism-final-regression-diagnosis/exp/scripts/monitor_baseline_stage.py", line 188, in main
+    write(status)
+  File "/root/Prism-final-regression-diagnosis/exp/scripts/monitor_baseline_stage.py", line 61, in write
+    tmp.write_text(json.dumps(status, indent=2, sort_keys=True) + "\n")
+  File "/usr/lib/python3.12/pathlib.py", line 1049, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_42/monitor/status.json.tmp'
