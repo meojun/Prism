@@ -21,14 +21,15 @@ rc_file="$STAGE_DIR/pipeline.rc"
 status="$STAGE_DIR/monitor/status.json"
 # A run that wrote rc=0 and its result file is finished, whatever the monitor
 # managed to record before the stage killed it.
+ALREADY_COMPLETE=0
 if [ -f "$rc_file" ] && [ "$(cat "$rc_file")" = "0" ] \
    && ls "$STAGE_DIR"/*_e2e_*rep.json >/dev/null 2>&1; then
-  echo "[final_stage] SKIP $LABEL: already COMPLETE"
-  exit 0
+  ALREADY_COMPLETE=1
 fi
 
 ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 . "$SCRIPT_DIR/proc_ownership.sh"
+
 
 # A run that finished and passed every gate reports itself as a success, in the
 # same shape as the failure path reports a stop. The key includes the run's own
@@ -68,6 +69,7 @@ PY2
 EVAL="$ROOT/exp/results/final-evaluation"
 PY=/workspace/prism-exp/prism-venv/bin/python
 
+
 # A gate that failed earlier must not be walked past on the next run.
 if [ -f "$EVAL/STOP" ]; then
   echo "[final_stage] STOP in force: $(cat "$EVAL/STOP")" >&2
@@ -81,6 +83,29 @@ if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
   echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
   bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "-" "frozen source hash mismatch" || true
   echo "[final_stage] STOP: frozen source hash mismatch" >&2
+  exit 1
+fi
+
+# A run that already finished is never repeated -- but it is still checked. A
+# resume that walks past an unverified run would let a stage report 24 of 24 on
+# runs nobody looked at.
+if [ "$ALREADY_COMPLETE" = "1" ]; then
+  case "$LABEL" in protofresh-*|proto-*) arm=prototype ;; *) arm=prism ;; esac
+  if [ ! -f "$STAGE_DIR/ALG2_INTERACTION.json" ] \
+     || ! grep -q '"verdict": "PASS"' "$STAGE_DIR/ALG2_INTERACTION.json" 2>/dev/null; then
+    $PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" --arm "$arm" \
+      --out "$STAGE_DIR/ALG2_INTERACTION.json" \
+      > "$STAGE_DIR/alg2_interaction.log" 2>&1 || true
+  fi
+  if $PY "$SCRIPT_DIR/final_run_verify.py" --run "$STAGE_DIR" --label "$LABEL" \
+       --out "$STAGE_DIR/VERIFICATION.json" >> "$STAGE_DIR/verification.log" 2>&1; then
+    echo "[final_stage] SKIP $LABEL: already COMPLETE and verified"
+    exit 0
+  fi
+  why=$($PY -c "import json;r=json.load(open('$STAGE_DIR/VERIFICATION.json'));print(','.join(r['failed_gates']+r['gates_without_evidence']) or 'unknown')" 2>/dev/null || echo "verification unreadable")
+  echo "an already-complete run does not verify: $LABEL ($why)" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "$STAGE_DIR" "resume verification: $why" || true
+  echo "[final_stage] STOP: $LABEL is complete but does not verify -- $why" >&2
   exit 1
 fi
 
@@ -216,7 +241,8 @@ grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log
 # Algorithm 2's runtime invariants -- stale dispatched sequences, ordering and
 # ownership identity -- are checked from the run's own logs before its numbers
 # are allowed to count.
-$PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" \
+case "$LABEL" in protofresh-*|proto-*) arm=prototype ;; *) arm=prism ;; esac
+$PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" --arm "$arm" \
   --out "$STAGE_DIR/ALG2_INTERACTION.json" > "$STAGE_DIR/alg2_interaction.log" 2>&1 || true
 if [ -z "$blocker" ] && ! grep -q '"verdict": "PASS"' "$STAGE_DIR/ALG2_INTERACTION.json" 2>/dev/null; then
   failed=$($PY - "$STAGE_DIR/ALG2_INTERACTION.json" <<'PY2'

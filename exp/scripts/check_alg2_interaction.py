@@ -54,6 +54,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--arm", choices=("prism", "prototype"), default="prism",
+                    help="the released prototype does not implement Algorithm 2, "
+                         "so its absence is recorded there rather than required")
     args = ap.parse_args()
 
     run = args.run
@@ -69,13 +72,20 @@ def main():
         checks.append({"check": name, "pass": bool(ok), "detail": detail})
 
     # ---- 1. Algorithm 2 actually ran -------------------------------------
+    # Required of the paper-faithful arm, where a silent Algorithm 2 would mean
+    # the run measured something other than Prism. The released prototype does
+    # not implement Algorithm 2 at all, so there the count is evidence, not a
+    # gate -- requiring it failed a prototype run that served 858 of 858
+    # requests with no aborts and no deadlock.
     events = marked(scheduler_text, "[PAPER-ALG2-RUNTIME] ")
     alg2_lines = scheduler_text.count("[PAPER-ALG2]")
-    record(
-        "algorithm2_ran",
-        bool(events) or alg2_lines > 0,
-        {"runtime_events": len(events), "alg2_log_lines": alg2_lines},
-    )
+    detail = {"runtime_events": len(events), "alg2_log_lines": alg2_lines,
+              "arm": args.arm}
+    if args.arm == "prototype":
+        record("algorithm2_absent_as_expected", not events and alg2_lines == 0,
+               detail)
+    else:
+        record("algorithm2_ran", bool(events) or alg2_lines > 0, detail)
 
     # ---- 2. every ordering decision was in order -------------------------
     violations = [e for e in events if not e.get("order_ok")]
