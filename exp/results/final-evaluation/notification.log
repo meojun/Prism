@@ -11,3 +11,4 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T08:38:59Z] SENT resub-confirm-1787474338 -- ✅ Prism alerts live | 08:38:58Z | correct topic, subscription confirmed
 [2026-08-23T08:44:33Z] SENT stop-69bba8864b922ee3 -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=0 | 8001/8227 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
 [2026-08-23T08:44:46Z] SENT stop-dc7197404680458a -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
+[2026-08-23T08:49:27Z] SENT autopsy-0p07-commit-stall -- 📋 Prism autopsy ready | cal-0p07-s0 | activation declared ready before the engine was | GPU0 frontier pinned on 3113-3115 | no fix applied, awaiting decision
