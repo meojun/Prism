@@ -20,3 +20,4 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T14:03:52Z] SENT stop-319297444233c9617916 -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
 [2026-08-23T14:18:20Z] SENT seed42-kill-1787494700 -- 📋 Prism | τ=0.07 seed_0 PASSED 8227/8227 abort 0 | seed_42 server SIGKILLed externally (2nd time, no OOM) | new class -- patch approach paused, awaiting direction
 [2026-08-23T15:00:01Z] SENT stop-54a541913c859a550a2b -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
+[2026-08-23T15:06:01Z] SENT audit-ownership-1787497561 -- 📋 Prism audit done | root cause: alg2_seq is per-GPU but backend queue is per-model | a drain by any GPU orphans another GPU's seq | explains both stalls | no fix applied
