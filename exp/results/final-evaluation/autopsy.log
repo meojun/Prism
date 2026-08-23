@@ -12,3 +12,5 @@
   },
   "causal_chain": "model_2#176 reached backend_admit on GPU1 as sequence 2373 under model model_2 while the ledger held it under model_2; the gate failed closed and that GPU's frontier stopped there"
 }
+To https://github.com/meojun/Prism.git
+   de4dfb7..61b0900  exp/final-baseline-ready -> exp/final-baseline-ready
