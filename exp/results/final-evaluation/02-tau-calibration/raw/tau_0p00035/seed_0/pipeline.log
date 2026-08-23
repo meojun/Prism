@@ -1,45 +1,21 @@
-[2026-08-23T01:16:42Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0/STAGE_CMD.sh
-### paper-faithful-v6_bursty_rate20_seed0  port=42100 trace=bursty_r20_s0.pkl workers=4 models=6
-waiting for server................................................................................................. -> ready
-benchmark failed rc=124
-Waiting for task req_model_6#1945_model_6
-Waiting for task req_model_6#1903_model_6
-Waiting for task req_model_6#1679_model_6
-Waiting for task req_model_4#1522_model_4
-Waiting for task req_model_4#1778_model_4
-Waiting for task req_model_4#1464_model_4
-Waiting for task req_model_4#1563_model_4
-Waiting for task req_model_6#1919_model_6
-Waiting for task req_model_6#1780_model_6
-Waiting for task req_model_6#1680_model_6
-Waiting for task req_model_1#701_model_1
-Waiting for task req_model_4#1902_model_4
-Waiting for task req_model_6#1711_model_6
-Waiting for task req_model_6#1705_model_6
-Waiting for task req_model_1#518_model_1
-Waiting for task req_model_4#1537_model_4
-Waiting for task req_model_1#640_model_1
-Waiting for task req_model_6#1822_model_6
-Waiting for task req_model_6#1759_model_6
-Waiting for task req_model_4#1088_model_4
-Waiting for task req_model_6#1684_model_6
-Waiting for task req_model_4#1777_model_4
-Waiting for task req_model_4#1734_model_4
-Waiting for task req_model_6#1886_model_6
-Waiting for task req_model_1#693_model_1
-Waiting for task req_model_4#1603_model_4
-Waiting for task req_model_4#1622_model_4
-Waiting for task req_model_4#1485_model_4
-Waiting for task req_model_6#1724_model_6
-Waiting for task req_model_6#1777_model_6
-Waiting for task req_model_1#404_model_1
-Waiting for task req_model_6#1761_model_6
-Waiting for task req_model_6#1685_model_6
-Waiting for task req_model_4#1776_model_4
-Waiting for task req_model_6#1739_model_6
-Waiting for task req_model_4#1336_model_4
-Waiting for task req_model_4#1732_model_4
-Waiting for task req_model_4#1291_model_4
-Waiting for task req_model_1#372_model_1
-Waiting for task req_model_4#1825_model_4
-[2026-08-23T01:45:09Z] stage complete rc=124
+[2026-08-23T02:00:42Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0/STAGE_CMD.sh
+### paper-faithful-v6_bursty_rate20_seed0  port=41150 trace=bursty_r20_s0.pkl workers=4 models=6
+waiting for server............................................................................................... -> ready
+system=paper-faithful-v6 workload=bursty rate=20 seed=0
+max_mem_usage=67.28
+model_config_file=/root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json
+flashinfer_workspace_size=1073741824
+alg1_log_lines=56
+alg1_migrations=9
+v4_weight_transfers=18
+v4_p2p_transfers=18
+v6_kv_transfers=7
+v6_p2p_transfers=7
+v6_resumed_requests=0
+alg2_log_lines=5
+alg2_underadmission_warnings=0
+proto_migrations=0
+activations=3
+deactivations=13
+idle_evictions=4
+### paper-faithful-v6_bursty_rate20_seed0 done
