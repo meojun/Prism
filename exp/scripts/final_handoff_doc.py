@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+"""Generate FINAL_BASELINE_HANDOFF.md -- what the next server needs, only that.
+
+Written for somebody who has never seen this work and cannot ask anyone about
+it. Facts come from the manifest and the pipeline state, so the document says
+what actually happened rather than what was intended.
+"""
+import argparse
+import json
+import sys
+from pathlib import Path
+
+
+def load(p, default=None):
+    try:
+        return json.loads(Path(p).read_text())
+    except Exception:                                   # noqa: BLE001
+        return default
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--root", type=Path, required=True)
+    ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--handoff-sha", default="(stamped at push)")
+    args = ap.parse_args()
+    root = args.root.resolve()
+    ev = root / "exp/results/final-evaluation"
+
+    m = load(root / "exp/final_baseline_manifest.json", {})
+    st = load(ev / "PIPELINE_STATE.json", {})
+    arch = load(ev / "ARCHIVE_MANIFEST.json", {})
+    status = st.get("PIPELINE_STATUS", "UNKNOWN")
+    runtime_sha = st.get("FINAL_RUNTIME_SHA") or m.get("final_runtime_sha")
+    tau = st.get("selected_tau")
+    versions = m.get("versions") or {}
+
+    L = []
+    A = L.append
+    A("# Prism paper-faithful baseline -- handoff")
+    A("")
+    A(f"    PIPELINE_STATUS   = {status}")
+    A(f"    FINAL_RUNTIME_SHA = {runtime_sha}")
+    A(f"    HANDOFF_SHA       = {args.handoff_sha}")
+    A(f"    selected tau      = {tau if tau is not None else 'not frozen'}")
+    A("")
+    A("`FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`")
+    A("is the commit that also carries these documents and manifests; its")
+    A("runtime code is identical to `FINAL_RUNTIME_SHA` -- packaging changed no")
+    A("runtime behaviour.")
+    A("")
+
+    if status != "SUCCESS":
+        A("## This baseline is not complete")
+        A("")
+        A(f"The chain ended in **{status}**. Do not cite these numbers as a")
+        A("finished comparison. What exists, and where to pick it up, is in")
+        A("[Resume](#resume) below and in")
+        A("`exp/results/final-evaluation/PIPELINE_STATE.json`.")
+        A("")
+        if st.get("stop_reason"):
+            A(f"Stop reason: `{st['stop_reason']}`")
+            A("")
+        if st.get("failed_stages"):
+            A(f"Failed stages: {', '.join(st['failed_stages'])}")
+            for s in st["failed_stages"]:
+                why = (st.get("stages", {}).get(s) or {}).get("reason")
+                if why:
+                    A(f"  - `{s}`: {why}")
+            A("")
+
+    A("## What this is")
+    A("")
+    A("Prism -- KVPR global placement (Algorithm 1) and Moore-Hodgson local")
+    A("arbitration (Algorithm 2) -- implemented faithfully on SGLang's")
+    A("multi-model worker pool, compared against the released Prism prototype")
+    A("on identical ShareGPT workloads. Six models across two GPUs, with weight")
+    A("and KV migration between them.")
+    A("")
+    A("## Hardware")
+    A("")
+    hw = m.get("hardware_requirement") or {}
+    A(f"- {hw.get('gpus_required', 2)} x {hw.get('gpu_model', 'NVIDIA A100-SXM4-80GB')}, NVLink between them")
+    A("- the placement config and memory pool sizes assume 80 GB per GPU")
+    A(f"- driver on the reference machine: {(load(root / 'exp/HANDOFF_ENVIRONMENT.json', {}) or {}).get('driver', 'see manifest')}")
+    A("- Blackwell (compute capability 10.0+) will not work: the stack is")
+    A("  pinned to torch 2.4.0+cu121, which has no kernels for it")
+    A("")
+    A("## Setup")
+    A("")
+    A("```bash")
+    A("git clone <this repo> prism-exp && cd prism-exp")
+    A(f"git checkout {args.handoff_sha}")
+    A("./bootstrap.sh              # pinned; see setup/pins.env + setup/requirements.lock.txt")
+    A("cp .env.example /workspace/.env && chmod 600 /workspace/.env")
+    A("$EDITOR /workspace/.env     # HF_TOKEN is required; the Llama models are gated")
+    A("```")
+    A("")
+    A("`bootstrap.sh` builds the virtualenv, downloads the six models and")
+    A("prepares the ShareGPT data. It is idempotent and safe to re-run.")
+    A("")
+    A("Environment comes from `exp/scripts/env.sh`, which every run sources.")
+    A("One value there matters more than it looks:")
+    A("`FLASHINFER_WORKSPACE_SIZE=1073741824`. At FlashInfer's own 384 MiB")
+    A("default, model_6 asks for more during prefill and the server kills")
+    A("itself mid-run. It is set in the repository, after `/workspace/.env` is")
+    A("sourced, so a stale copy of that file cannot lower it.")
+    A("")
+    A("Secrets are never in the repository. `.env.example` names them:")
+    A("`HF_TOKEN` (required) and `PRISM_NTFY_TOPIC` (optional push")
+    A("notifications).")
+    A("")
+    A("## Models and workloads")
+    A("")
+    models = m.get("models") or {}
+    if models:
+        A("| model | HF id | revision |")
+        A("| --- | --- | --- |")
+        for name in sorted(models):
+            info = models[name]
+            snap = str(info.get("hf_snapshot", "")).rsplit("/", 1)[-1]
+            A(f"| {name} | `{info.get('model_path')}` | `{snap[:12]}` |")
+        A("")
+    wl = m.get("workloads") or {}
+    A(f"Workloads: {wl.get('conditions', '24 evaluation conditions')}.")
+    A("The `.pkl` traces are in `exp/workloads/final-evaluation/` and are")
+    A("version-controlled; their SHA256 are frozen in")
+    A("`exp/results/final-evaluation/CANONICAL_WORKLOAD_SHA256.json` and")
+    A("re-checked before either arm runs. If a hash does not match, the chain")
+    A("stops rather than compare arms that may not have seen the same work.")
+    A("They can be regenerated with `exp/scripts/build_paired_workload.py`,")
+    A("but a regenerated file is only interchangeable if its hash matches.")
+    A("")
+    A("`c_i` (per-model prefill speed) is a measured property of the hardware,")
+    A("frozen in `exp/results/final-evaluation/01-ci-profile/`. On different")
+    A("GPUs it must be re-measured; on the same GPUs, reuse it -- re-measuring")
+    A("changes `c_i` and therefore changes what tau means.")
+    A("")
+    A("## Preflight")
+    A("")
+    A("```bash")
+    A("source exp/scripts/env.sh")
+    A("python exp/scripts/handoff_preflight.py")
+    A("```")
+    A("")
+    A("It checks GPU count and memory, CUDA through torch, the six model")
+    A("revisions, all 24 workload hashes, the FlashInfer workspace, HF_TOKEN,")
+    A("redis, the descriptor limit, stale `/dev/shm` segments from a crashed")
+    A("server, a server already running, the port, and write access. It exits")
+    A("non-zero on any failure and no benchmark should start until it passes.")
+    A("")
+    A("## Running it")
+    A("")
+    A("```bash")
+    A("bash exp/scripts/final_overnight.sh")
+    A("```")
+    A("")
+    A("That starts the whole chain under tmux with a watchdog, survives an SSH")
+    A("disconnect, and runs: preflight, c_i, 12 calibration runs, tau")
+    A("selection, the fairness gate, 24 prototype runs, 24 final runs,")
+    A("aggregation, and the handoff packaging. Progress is in")
+    A("`exp/results/final-evaluation/pipeline.log`; each stage writes")
+    A("`STATUS.json` and each run writes `VERIFICATION.json`.")
+    A("")
+    A("Individual pieces, if you need them:")
+    A("")
+    A("```bash")
+    A("# one calibration point")
+    A("bash exp/scripts/final_stage.sh <outdir> cal-<taulabel>-s<seed> \\")
+    A("     v4-paper-faithful-v6-bursty-r20-s<seed> -- env KVPR_TAU=<tau> ... \\")
+    A("     bash exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 <seed> \\")
+    A("       exp/workloads/final-evaluation/bursty_r20_s<seed>.pkl <outdir>")
+    A("")
+    A("# tau selection over the held-out seeds")
+    A("python exp/scripts/final_select_tau.py --calibration <raw> --out <FROZEN_TAU.json> \\")
+    A("       --summary <csv> --git-sha <sha> --ci-file <c_i.json> --expect-runs 12")
+    A("")
+    A("# aggregation")
+    A("python exp/scripts/final_aggregate.py --out-dir exp/results/final-evaluation")
+    A("```")
+    A("")
+    A("## Resume")
+    A("")
+    r = st.get("resume") or {}
+    A(f"- next stage: **{r.get('stage') or 'none -- the chain finished'}**")
+    if r.get("run"):
+        A(f"- next run: **{r['run']}**")
+    A(f"- calibration: {st.get('calibration', {}).get('complete', 0)}/12 valid")
+    A(f"- prototype arm: {st.get('prototype_arm', {}).get('complete', 0)}/24 valid")
+    A(f"- final arm: {st.get('final_arm', {}).get('complete', 0)}/24 valid")
+    A("")
+    A("```bash")
+    A("git clone <this repo> prism-exp && cd prism-exp")
+    A(f"git checkout {args.handoff_sha}")
+    A("./bootstrap.sh")
+    A("cp .env.example /workspace/.env && $EDITOR /workspace/.env")
+    A("source exp/scripts/env.sh")
+    A("python exp/scripts/handoff_preflight.py")
+    if status != "SUCCESS":
+        A("cat exp/results/final-evaluation/STOP        # read why it stopped, first")
+        A("rm exp/results/final-evaluation/STOP         # only once you have")
+    A(f"{r.get('command') or 'bash exp/scripts/final_overnight.sh'}")
+    A("```")
+    A("")
+    A("A stage that passed under this runtime freeze is skipped. A run with")
+    A("rc=0 and a passing `VERIFICATION.json` is not repeated. A stage that")
+    A("passed under a *different* freeze is re-run, because its numbers came")
+    A("from different code -- `c_i` is the one exception, being a property of")
+    A("the hardware.")
+    A("")
+    inv = st.get("invalidated") or {}
+    if inv:
+        A(f"Invalidated: {inv.get('what')}. Why: {inv.get('why')}")
+        A("")
+    A("## What makes a run valid")
+    A("")
+    A("Each run must satisfy all of these, recorded in its own")
+    A("`VERIFICATION.json`; any failure stops the chain rather than being")
+    A("retried or averaged away:")
+    A("")
+    for g in (m.get("correctness_gates") or {}).get("per_run", []):
+        A(f"- {g}")
+    A("- no staged payload failed to be returned to the frontend")
+    A("")
+    A("## One correctness fix worth knowing about")
+    A("")
+    A("**The backend queue is scoped per GPU.** `alg2_seq`, the Algorithm 2")
+    A("admission token, is per-GPU, but the backend queue was keyed by model")
+    A("alone (`backend:<model>`) and therefore shared by every GPU hosting that")
+    A("model. Two GPUs drew from one queue against two independent token")
+    A("sequences, so a request admitted under one GPU's token could be fetched")
+    A("by the other -- orphaned sequences, stalled frontiers, requests served")
+    A("under the wrong model. The key is now `backend:<gpu_id>:<model>`.")
+    A("Do not merge these queues back together: the admission token has no")
+    A("meaning across GPUs, and a shared queue silently breaks the ordering")
+    A("Algorithm 2 exists to enforce.")
+    A("")
+    A("Related, and for the same reason: a staged-but-never-admitted request is")
+    A("returned to the frontend in the backend form it arrived in, not through")
+    A("the admitted-`Req` converter. It was never converted into a `Req`, and")
+    A("running it through that converter raised on its dict `sampling_params`,")
+    A("losing the request while its sequence retired cleanly.")
+    A("")
+    A("## Results and evidence")
+    A("")
+    A("- `FINAL_RESULTS_INDEX.md` -- every table and where the raw runs live")
+    A("- `exp/final_baseline_manifest.json` -- what the evaluation used")
+    A("- `exp/HANDOFF_LOCAL_DEPENDENCIES.md` -- what this baseline needs that")
+    A("  git does not carry")
+    A("- `exp/results/final-evaluation/PIPELINE_STATE.json` -- exactly what ran")
+    A("")
+    A("Raw per-request dumps and server logs are ~105 MB per run and are not in")
+    A("git. They are archived:")
+    A("")
+    if arch.get("archives"):
+        A("| archive | sha256 | size |")
+        A("| --- | --- | --- |")
+        for a in arch["archives"]:
+            A(f"| `{a['archive']}` | `{a['sha256'][:16]}...` | "
+              f"{a['size_bytes'] / 1e9:.2f} GB |")
+    else:
+        A("_no archive recorded_")
+    A("")
+    A("## Known limitations")
+    A("")
+    A("- `c_i` and the SLO base are measured on 2x A100-80GB. On other")
+    A("  hardware both must be re-derived before the numbers mean anything.")
+    A("- tau is selected on held-out seeds 0 and 42 only. Seeds 1-3 are the")
+    A("  evaluation seeds and are never read during selection.")
+    A("- The prototype arm is re-run fresh rather than reusing published")
+    A("  numbers: the released prototype's own traces are gone, so its workload")
+    A("  provenance cannot be established without guessing.")
+    A("- `exp/tests/test_client_fd_gate.py` asserts against specific historical")
+    A("  run directories; those assertions fail until the corresponding runs")
+    A("  exist on this machine. Its unit checks are unaffected.")
+    A("")
+    A("## Environment")
+    A("")
+    for k in ("python", "torch", "cuda_runtime", "sglang", "flashinfer",
+              "vllm", "transformers"):
+        if versions.get(k):
+            A(f"- {k}: `{versions[k]}`")
+    A("")
+    A("Rebuild from `setup/pins.env` and `setup/requirements.lock.txt`. Do not")
+    A("re-resolve the dependency set; the pins exist because re-resolving")
+    A("breaks this stack.")
+    A("")
+
+    args.out.write_text("\n".join(L) + "\n")
+    print(f"wrote {args.out} (PIPELINE_STATUS={status})")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -37,11 +37,15 @@ if pgrep -f "sglang.launch_multi_model_server" >/dev/null 2>&1; then
   exit 1
 fi
 
-# The evaluation must actually have succeeded. Handoff is packaging, not rescue.
-if ! grep -q '"result": "PASS"' "$EVAL/06-aggregate/STATUS.json" 2>/dev/null; then
-  log "FATAL: 06-aggregate did not pass; there is nothing to hand off"
-  exit 1
-fi
+# Handoff runs however the chain ended. A server is being released in the
+# morning, so a stopped pipeline still has to be picked up somewhere else --
+# and a failure is handed off AS a failure, never dressed up as a baseline.
+log "-> pipeline state"
+$PY "$SCRIPT_DIR/final_handoff_state.py" --eval-dir "$EVAL" \
+  --out "$EVAL/PIPELINE_STATE.json" --runtime-freeze "$FREEZE" \
+  | tee -a "$EVAL/handoff.log"
+PIPELINE_STATUS=$($PY -c "import json;print(json.load(open('$EVAL/PIPELINE_STATE.json'))['PIPELINE_STATUS'])" 2>/dev/null || echo UNKNOWN)
+log "PIPELINE_STATUS = $PIPELINE_STATUS"
 
 # 1. the runtime must be the one that was evaluated, byte for byte
 frozen=$(git rev-parse "$FREEZE:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
@@ -93,13 +97,14 @@ else
 fi
 
 # 9. the document a person reads first
-if [ ! -f "$ROOT/FINAL_BASELINE_HANDOFF.md" ]; then
-  log "FATAL: FINAL_BASELINE_HANDOFF.md is missing"
-  fails="$fails handoff-document"
-fi
+step handoff-document $PY "$SCRIPT_DIR/final_handoff_doc.py" \
+  --root "$ROOT" --out "$ROOT/FINAL_BASELINE_HANDOFF.md" \
+  --handoff-sha "$(git rev-parse --short HEAD)"
 
-# 10. commit and push; the push is only real once the remote says so
-if [ -z "$fails" ]; then
+# 10. commit and push; the push is only real once the remote says so.
+# This happens whatever failed above: the whole point is that the work leaves
+# this machine. What failed is recorded, not hidden.
+if true; then
   git add -A >/dev/null 2>&1
   if git diff --cached --quiet; then
     log "nothing new to commit; the tree already matches"
@@ -131,58 +136,92 @@ else
 fi
 
 # 11. does it still assemble without this machine's untracked files?
-if [ -z "$fails" ]; then
-  step clean-clone bash "$SCRIPT_DIR/final_clean_clone_validate.sh"
+step clean-clone bash "$SCRIPT_DIR/final_clean_clone_validate.sh"
+
+# The document names the commit it ships in, which is only known after the
+# commit above. Regenerate and amend it in, so the checkout instructions in
+# the pushed file point at the pushed file.
+$PY "$SCRIPT_DIR/final_handoff_doc.py" --root "$ROOT" \
+  --out "$ROOT/FINAL_BASELINE_HANDOFF.md" \
+  --handoff-sha "$(git rev-parse --short HEAD)" >> "$HANDOFF/handoff-document.log" 2>&1 || true
+if ! git diff --quiet -- FINAL_BASELINE_HANDOFF.md; then
+  git add FINAL_BASELINE_HANDOFF.md
+  git -c user.name="Prism Baseline Agent" -c user.email="causslab@gmail.com" \
+    commit -q -m "Point the handoff document at the commit it ships in" \
+    >> "$HANDOFF/commit.log" 2>&1 || true
+  if git push origin "$BRANCH" >> "$HANDOFF/push.log" 2>&1; then
+    HANDOFF_SHA=$(git rev-parse HEAD)
+    remote=$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')
+    [ "$remote" = "$HANDOFF_SHA" ] || fails="$fails push-verification"
+  else
+    fails="$fails push"
+  fi
 fi
 
-# 12. the release verdict
-$PY - "$EVAL" "$FREEZE" "${HANDOFF_SHA:-unknown}" "$BRANCH" "$fails" <<'PY'
+# 12. the release verdict -- handoff completeness, judged apart from whether
+# the pipeline itself succeeded. PIPELINE_STATUS=FAILED with
+# HANDOFF_COMPLETE=YES is a normal, correct ending: the work is safe elsewhere.
+$PY - "$EVAL" "$ROOT" "$FREEZE" "${HANDOFF_SHA:-unknown}" "$BRANCH" "$fails" <<'PY'
 import json, sys, datetime
 from pathlib import Path
-ev, freeze, handoff_sha, branch, fails = sys.argv[1:6]
-ev = Path(ev)
+ev, root, freeze, handoff_sha, branch, fails = sys.argv[1:7]
+ev, root = Path(ev), Path(root)
 failed = [f for f in fails.split() if f]
-def ok(p, key="verdict", want="PASS"):
+
+def jload(p):
     try:
-        return json.loads((ev / p).read_text()).get(key) == want
+        return json.loads(Path(p).read_text())
     except Exception:
-        return False
+        return {}
+
+state = jload(ev / "PIPELINE_STATE.json")
+status = state.get("PIPELINE_STATUS", "UNKNOWN")
+clone = jload(ev / "CLEAN_CLONE_VALIDATION.json")
+
 conditions = {
-    "pipeline_success": ok("06-aggregate/STATUS.json", "result"),
-    "aggregation_complete": (lambda m: bool(m) and m.get("final_complete")
-                             and m.get("prototype_complete"))(
-        json.loads((ev / "06-aggregate/AGGREGATION_MANIFEST.json").read_text())
-        if (ev / "06-aggregate/AGGREGATION_MANIFEST.json").is_file() else {}),
-    "artifacts_archived": (ev / "ARCHIVE_MANIFEST.json").is_file(),
-    "manifest_generated": (ev.parents[2] / "exp/final_baseline_manifest.json").is_file(),
-    "handoff_document": (ev.parents[2] / "FINAL_BASELINE_HANDOFF.md").is_file(),
-    "clean_clone_validation": ok("CLEAN_CLONE_VALIDATION.json"),
-    "github_push_verified": "push" not in failed and "push-verification" not in failed,
+    "runtime_and_harness_pushed": ("push" not in failed
+                                   and "push-verification" not in failed),
+    "raw_evidence_archived": (ev / "ARCHIVE_MANIFEST.json").is_file(),
+    "pipeline_state_recorded": bool(state),
+    "resume_point_recorded": bool((state.get("resume") or {}).get("stage") is not None
+                                  or status == "SUCCESS"),
+    "provenance_recorded": (root / "exp/final_baseline_manifest.json").is_file(),
+    "handoff_document": (root / "FINAL_BASELINE_HANDOFF.md").is_file(),
+    "clean_clone_validation": clone.get("verdict") == "PASS",
     "no_secrets_in_git": "secret-scan" not in failed,
+    "runtime_unchanged_by_packaging": "runtime-unchanged" not in failed,
 }
-safe = all(conditions.values()) and not failed
-doc = {"decided_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-       "FINAL_RUNTIME_SHA": freeze,
-       "HANDOFF_SHA": handoff_sha,
-       "branch": branch,
-       "runtime_identical_to_final": "runtime-unchanged" not in failed,
-       "conditions": conditions,
-       "failed_steps": failed,
-       "SAFE_TO_RELEASE_SERVER": "YES" if safe else "NO",
-       "reason": ("all handoff conditions hold" if safe else
-                  "unmet: " + ", ".join(
-                      [k for k, v in conditions.items() if not v] + failed))}
+complete = all(conditions.values())
+doc = {
+    "decided_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "PIPELINE_STATUS": status,
+    "HANDOFF_COMPLETE": "YES" if complete else "NO",
+    "SAFE_TO_RELEASE_SERVER": "YES" if complete else "NO",
+    "FINAL_RUNTIME_SHA": freeze,
+    "HANDOFF_SHA": handoff_sha,
+    "branch": branch,
+    "conditions": conditions,
+    "failed_steps": failed,
+    "resume": state.get("resume"),
+    "reason": ("every handoff condition holds; the server may be released "
+               "whatever the pipeline result"
+               if complete else
+               "unmet: " + ", ".join([k for k, v in conditions.items() if not v]
+                                     + failed)),
+}
 (ev / "SAFE_TO_RELEASE.json").write_text(json.dumps(doc, indent=2) + "\n")
 print(json.dumps(doc, indent=2))
-sys.exit(0 if safe else 1)
+sys.exit(0 if complete else 1)
 PY
-safe_rc=$?
+handoff_rc=$?
 
 # 13. tell the phone, in the shape the verdict rules require
 stamp=$(date +%s)
-if [ "$safe_rc" = "0" ]; then
-  tau=$($PY -c "import json;print(json.load(open('$EVAL/02-tau-calibration/FROZEN_TAU.json'))['tau'])" 2>/dev/null || echo "?")
-  head=$($PY - "$ROOT" <<'PY' 2>/dev/null || echo "aggregation summary unavailable"
+tau=$($PY -c "import json;print(json.load(open('$EVAL/02-tau-calibration/FROZEN_TAU.json'))['tau'])" 2>/dev/null || echo "not frozen")
+resume=$($PY -c "import json;r=json.load(open('$EVAL/PIPELINE_STATE.json')).get('resume') or {};print(f\"{r.get('stage')} / {r.get('run')}\")" 2>/dev/null || echo "unknown")
+reason=$($PY -c "import json;s=json.load(open('$EVAL/PIPELINE_STATE.json'));print(s.get('stop_reason') or ', '.join(s.get('failed_stages') or []) or 'none')" 2>/dev/null || echo "unknown")
+backup=$($PY -c "import json;a=json.load(open('$EVAL/ARCHIVE_MANIFEST.json'));print(f\"{len(a['archives'])} archive(s), {a['size_bytes']/1e9:.1f} GB\")" 2>/dev/null || echo "no archive")
+overall=$($PY - "$ROOT" <<'PY' 2>/dev/null || echo "no aggregation"
 import csv, sys
 from pathlib import Path
 p = Path(sys.argv[1]) / "exp/results/final-evaluation/06-aggregate/group_improvement.csv"
@@ -194,24 +233,35 @@ for r in rows:
               f"{float(r['final_goodput_req_s']):.3g} req/s ({rel:+.1f}%)")
         break
 else:
-    print("overall row not found")
+    print("no aggregation")
 PY
 )
-  bash "$SCRIPT_DIR/notify.sh" "handoff-complete-$stamp" "$(printf '%s\n%s\n%s\n%s\n%s\n%s\n%s' \
-    "✅ SUCCESS | Prism Baseline COMPLETE | GitHub PUSHED | SAFE TO RELEASE SERVER" \
-    "selected τ = $tau" \
-    "$head" \
-    "FINAL_RUNTIME_SHA = $FREEZE" \
-    "HANDOFF_SHA = ${HANDOFF_SHA:0:12}" \
-    "GitHub push verified against the remote ref" \
-    "artifacts archived and hashed; SAFE TO RELEASE SERVER = YES")" || true
-  log "HANDOFF COMPLETE -- SAFE TO RELEASE SERVER = YES"
+
+if [ "$handoff_rc" = "0" ] && [ "$PIPELINE_STATUS" = "SUCCESS" ]; then
+  bash "$SCRIPT_DIR/notify.sh" "handoff-success-$stamp" "$(printf '%s\n%s\n%s\n%s\n%s\n%s\n%s' \
+    "✅ SUCCESS | Prism Baseline COMPLETE | HANDOFF READY | SERVER MAY BE RELEASED" \
+    "selected τ = $tau" "$overall" \
+    "FINAL_RUNTIME_SHA = $FREEZE" "HANDOFF_SHA = ${HANDOFF_SHA:0:12}" \
+    "backup: $backup" "HANDOFF_COMPLETE = YES")" || true
+  log "HANDOFF COMPLETE -- PIPELINE_STATUS=SUCCESS, SERVER MAY BE RELEASED"
   exit 0
 fi
 
-bash "$SCRIPT_DIR/notify.sh" "handoff-failed-$stamp" "$(printf '%s\n%s\n%s' \
-  "❌ FAILED | Final Handoff | SERVER NOT SAFE TO RELEASE" \
-  "failed: ${fails:-see SAFE_TO_RELEASE.json}" \
-  "the evaluation itself is unaffected; its results stand")" || true
-log "HANDOFF INCOMPLETE -- SAFE TO RELEASE SERVER = NO (${fails:-see SAFE_TO_RELEASE.json})"
+if [ "$handoff_rc" = "0" ]; then
+  bash "$SCRIPT_DIR/notify.sh" "handoff-pipefail-$stamp" "$(printf '%s\n%s\n%s\n%s\n%s\n%s\n%s' \
+    "❌ FAILED | Prism Pipeline | HANDOFF READY | SERVER MAY BE RELEASED" \
+    "pipeline: $PIPELINE_STATUS -- $reason" \
+    "resume at: $resume" \
+    "FINAL_RUNTIME_SHA = $FREEZE" "HANDOFF_SHA = ${HANDOFF_SHA:0:12}" \
+    "backup: $backup" "HANDOFF_COMPLETE = YES")" || true
+  log "HANDOFF COMPLETE -- PIPELINE_STATUS=$PIPELINE_STATUS, SERVER MAY BE RELEASED"
+  exit 0
+fi
+
+bash "$SCRIPT_DIR/notify.sh" "handoff-failed-$stamp" "$(printf '%s\n%s\n%s\n%s' \
+  "❌ FAILED | Prism Handoff | DO NOT RELEASE SERVER YET" \
+  "pipeline: $PIPELINE_STATUS" \
+  "handoff failed: ${fails:-see SAFE_TO_RELEASE.json}" \
+  "HANDOFF_COMPLETE = NO")" || true
+log "HANDOFF INCOMPLETE -- HANDOFF_COMPLETE=NO (${fails:-see SAFE_TO_RELEASE.json})"
 exit 1
