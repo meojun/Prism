@@ -28,3 +28,5 @@
 [2026-08-23T07:06:50Z] calibration tau=0.00035 seed=0
 [2026-08-23T07:19:38Z] calibration tau=0.00035 seed=42
 [2026-08-23T07:32:54Z] calibration tau=0.07 seed=0
+[2026-08-23T07:51:21Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T07:51:21Z] CHAIN STOPPED at 02-tau-calibration
