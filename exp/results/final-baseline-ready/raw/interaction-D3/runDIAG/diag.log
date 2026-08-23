@@ -1,0 +1,2 @@
+[final_stage] RUN d3-diag -> /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runDIAG
+[final_stage] d3-diag rc=0 state=COMPLETE

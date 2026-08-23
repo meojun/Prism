@@ -1,0 +1,58 @@
+{
+  "classification": {
+    "client_completed": 1621
+  },
+  "examples": {
+    "client_completed": [
+      "model_1#413",
+      "model_1#415",
+      "model_1#419",
+      "model_1#420",
+      "model_1#421"
+    ]
+  },
+  "last_boundary_histogram": {
+    "client_receipt": 1621
+  },
+  "rids_client_waited_on": 1621,
+  "rids_observed_anywhere": 8429,
+  "run": "exp/results/final-baseline-ready/raw/interaction-D3/runDIAG",
+  "sample_traces": {
+    "model_1#413": {
+      "backend_admit": 1787504197.7530472,
+      "client_receipt": 1787504215.0047312,
+      "detokenizer_send": 1787504215.0028152,
+      "dispatch": 1787504197.6952143,
+      "engine_output": 1787504215.0006313,
+      "handler_recv": 1787504215.003194,
+      "http_final_yield": 1787504215.0033693,
+      "prefill_complete": 1787504197.781531,
+      "prefill_start": 1787504197.7576005,
+      "stream_output_send": 1787504215.0007854
+    },
+    "model_1#415": {
+      "backend_admit": 1787504197.639374,
+      "client_receipt": 1787504218.3135326,
+      "detokenizer_send": 1787504218.2990701,
+      "dispatch": 1787504197.5773606,
+      "engine_output": 1787504218.2771528,
+      "handler_recv": 1787504218.3005087,
+      "http_final_yield": 1787504218.301244,
+      "prefill_complete": 1787504197.6813147,
+      "prefill_start": 1787504197.649282,
+      "stream_output_send": 1787504218.2782183
+    },
+    "model_1#419": {
+      "backend_admit": 1787504197.866765,
+      "client_receipt": 1787504218.313835,
+      "detokenizer_send": 1787504218.2992952,
+      "dispatch": 1787504197.8380172,
+      "engine_output": 1787504218.2773356,
+      "handler_recv": 1787504218.3006966,
+      "http_final_yield": 1787504218.3024874,
+      "prefill_complete": 1787504197.8951137,
+      "prefill_start": 1787504197.871056,
+      "stream_output_send": 1787504218.2783275
+    }
+  }
+}

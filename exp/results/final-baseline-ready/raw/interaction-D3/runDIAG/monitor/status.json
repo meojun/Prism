@@ -1,0 +1,30 @@
+{
+  "current_phase": "complete",
+  "gpu": [
+    "0, 11756 MiB, 0 %",
+    "1, 4 MiB, 0 %"
+  ],
+  "gpu_processes": [
+    "3126500, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 7420 MiB"
+  ],
+  "heartbeat_iso_utc": "2026-08-23T16:59:01.274120+00:00",
+  "heartbeat_timestamp": 1787504341.2741199,
+  "last_actual_progress_event": "pipeline rc=0",
+  "last_log_timestamp": 1787504335.6296024,
+  "last_progress_iso_utc": "2026-08-23T16:59:01.274120+00:00",
+  "last_progress_timestamp": 1787504341.2741199,
+  "no_progress_timeout_s": 240.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [
+    "1204697 bash -c cd /root/Prism-final-regression-diagnosis && PRISM_OBS=1 STAGE_HARD_LIMIT=2400 bash exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runDIAG d3-diag v4-paper-faithful-v6-bursty-r20-s1 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp KVPR_TAU=0.07 BENCHMARK_TIMEOUT=1500 PRISM_OBS=1 bash exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 1 /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runDIAG > exp/results/final-baseline-ready/raw/interaction-D3/runDIAG/diag.log 2>&1",
+    "1204700 bash exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runDIAG d3-diag v4-paper-faithful-v6-bursty-r20-s1 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp KVPR_TAU=0.07 BENCHMARK_TIMEOUT=1500 PRISM_OBS=1 bash exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 1 /root/Prism-final-regression-diagnosis/exp/results/baseline-readiness/raw/migration-D2/workload/bursty_r20_s1.pkl /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/runDIAG"
+  ],
+  "progress_count": 2,
+  "progress_signal": [
+    2,
+    23,
+    2
+  ],
+  "state": "COMPLETE"
+}
