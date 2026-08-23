@@ -18,6 +18,24 @@ PY=/workspace/prism-exp/prism-venv/bin/python
 log() { echo "[$(date -u +%FT%TZ)] [watchdog] $*" >> "$EVAL/pipeline_watchdog.log"; }
 log "watching session $SESSION"
 
+# The launcher starts this before the chain, deliberately, so that nothing ever
+# runs unobserved. That means the session does not exist yet on the first tick,
+# and judging it then reports a vanish that never happened -- which is exactly
+# what happened at 18:26 and 18:28, both times killing a chain that was about
+# to start. So wait for the session to appear before watching it.
+appeared=0
+for _ in $(seq 1 60); do
+  if tmux has-session -t "=$SESSION" 2>/dev/null; then appeared=1; break; fi
+  $PY -c "import time;time.sleep(2)"
+done
+if [ "$appeared" != "1" ]; then
+  log "the pipeline session never appeared; reporting"
+  bash "$SCRIPT_DIR/notify.sh" "watchdog-nostart-$(date +%s)" \
+    "⛔ STOPPED | Prism Baseline Pipeline | stage=startup | reason=pipeline session never started" || true
+  exit 1
+fi
+log "session $SESSION is up; watching"
+
 last_stage() {
   local newest="" f
   for f in "$EVAL"/*/STATUS.json; do
@@ -45,6 +63,13 @@ while true; do
     fi
     if [ -f "$EVAL/STOP" ]; then
       log "session gone with a STOP already recorded at $stage; it reported itself"
+      exit 0
+    fi
+    # A stage that ends in FAIL exits the chain deliberately and has already
+    # sent its own FAILED and STOPPED lines. That is a reported ending, not a
+    # vanish, whether or not a STOP file was written.
+    if grep -lq '"result": "FAIL"' "$EVAL"/*/STATUS.json 2>/dev/null; then
+      log "session gone after $stage reported FAIL; it reported itself"
       exit 0
     fi
     log "session gone at $stage with no terminal state; reporting"
