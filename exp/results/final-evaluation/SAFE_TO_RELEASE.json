@@ -1,10 +1,10 @@
 {
-  "decided_utc": "2026-08-23T22:45:54.477335+00:00",
+  "decided_utc": "2026-08-23T22:46:16.624266+00:00",
   "HANDOFF_COMPLETE": "YES",
   "SERVER_MAY_BE_RELEASED": "YES",
   "PIPELINE_STATUS": "INCOMPLETE",
   "FINAL_RUNTIME_SHA": "6618671",
-  "HANDOFF_SHA": "f9264c9a9df248a3cf61c28510e0b366d03d7c63",
+  "HANDOFF_SHA": "e9bc17060c2f2cd12e078ef2e5e060191968b097",
   "handoff_tag": "final-baseline-handoff",
   "branch": "exp/final-baseline-ready",
   "SELECTED_TAU": 0.00035,
