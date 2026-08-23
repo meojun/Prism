@@ -1,4 +1,0 @@
-[2026-08-23T08:21:45Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0/STAGE_CMD.sh
-### paper-faithful-v6_bursty_rate20_seed0  port=41050 trace=bursty_r20_s0.pkl workers=4 models=6
-waiting for server.......................................................................... -> DIED, see /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0/server-logs/stdout.log
-[2026-08-23T08:24:21Z] stage complete rc=1

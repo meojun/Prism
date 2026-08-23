@@ -112,3 +112,14 @@ kvcached/
 prism-venv/
 exp/results/final-evaluation/.notified/
 .env.local
+
+# The final evaluation's bulky per-run output. Each run produces ~72 MB of
+# per-request dumps and ~33 MB of server logs; across 60 runs that is ~6 GB,
+# which is not what a git remote is for and which makes every stage push a
+# risk to an unattended overnight chain. Everything the correctness and
+# performance claims actually rest on stays tracked: the e2e summary, the
+# VERIFICATION / ALG2_INTERACTION / CLIENT_FD_VALIDATION records, the migration
+# traces, and the monitor heartbeats. The excluded files are preserved on the
+# machine and archived with their hashes -- see FINAL_RESULTS_INDEX.md.
+/exp/results/final-evaluation/**/requests/
+/exp/results/final-evaluation/**/server-logs/
