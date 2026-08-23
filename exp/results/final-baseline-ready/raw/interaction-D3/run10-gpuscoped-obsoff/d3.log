@@ -1,0 +1,2 @@
+[final_stage] RUN d3-obsoff -> /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/run10-gpuscoped-obsoff
+[final_stage] d3-obsoff rc=0 state=COMPLETE

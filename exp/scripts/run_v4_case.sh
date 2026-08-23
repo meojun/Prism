@@ -260,6 +260,11 @@ V4ENV="export PRISM_V4_LOAD_TRACE='$PRISM_V4_LOAD_TRACE'"
 # Diagnostic only: per-request KV ownership reconciliation. Read by nothing
 # but the log, and off unless explicitly set.
 [ -n "${PRISM_KV_OWN_TRACE:-}" ] && V4ENV="$V4ENV PRISM_KV_OWN_TRACE=$PRISM_KV_OWN_TRACE"
+# Diagnostic per-request observation, off unless asked for.
+[ -n "${PRISM_OBS:-}" ] && V4ENV="$V4ENV PRISM_OBS=$PRISM_OBS"
+# Backlog probe scope for models_to_skip: local (default) or global. Selects
+# what the backpressure guard reads; request transport is GPU-local either way.
+[ -n "${PRISM_BACKLOG_SCOPE:-}" ] && V4ENV="$V4ENV PRISM_BACKLOG_SCOPE=$PRISM_BACKLOG_SCOPE"
 tmux new-session -d -s "$SESSION" \
   "ulimit -n 65535 && export PRISM_ROOT='$PRISM_ROOT' PRISM_REPO='$PRISM_REPO' \
    PRISM_EXP='$PRISM_EXP' PYTHONPATH='$PRISM_REPO/python' && \

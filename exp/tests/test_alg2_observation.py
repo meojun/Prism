@@ -28,6 +28,11 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+# These observers are gated off by default; the suite turns them on for
+# itself so it tests what it claims to.
+import os
+os.environ["PRISM_OBS"] = "1"
+
 REPO = Path(__file__).resolve().parents[2] / "prism-research"
 sys.path.insert(0, str(REPO / "python"))
 

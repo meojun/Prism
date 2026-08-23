@@ -2101,7 +2101,7 @@ index 9f0dc7c..bca06bb 100644
          logger.info(
              f"Executed {len(actions)} actions in {toc - tic:.2f} seconds. Actions: {actions}"
 diff --git a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
-index 681fc35..da710e9 100644
+index 681fc35..c00b303 100644
 --- a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 +++ b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 @@ -1,10 +1,12 @@
@@ -2140,7 +2140,7 @@ index 681fc35..da710e9 100644
  )
  from sglang.srt.redis_utils import RedisClient
  from sglang.srt.utils import configure_logger, kill_parent_process
-@@ -58,8 +68,58 @@ class GPUScheduler:
+@@ -58,8 +68,62 @@ class GPUScheduler:
          self._init_model_name_to_paths(model_names_to_model_paths)
          model_name_to_cell_size = self._get_model_name_to_cell_size()
          self.queue = RequestQueue(model_name_to_cell_size)
@@ -2174,6 +2174,10 @@ index 681fc35..da710e9 100644
 +        # Sequences of requests that left this GPU before they were admitted or
 +        # started. The expected-sequence frontiers step over these, and only
 +        # over these, so a retired sequence can never hide a live one behind it.
++        # Backlog probe scope for `models_to_skip`: "local" (this GPU) or
++        # "global" (the sum across GPUs, the pre-split quantity). Observation
++        # only -- it selects what the guard reads, never where requests go.
++        self._backlog_scope = os.environ.get("PRISM_BACKLOG_SCOPE", "local")
 +        self._mh_retired_admit_seqs = set()
 +        self._mh_retired_start_seqs = set()
 +        # Ownership tombstones. A dispatched sequence belongs to this scheduler
@@ -2199,7 +2203,7 @@ index 681fc35..da710e9 100644
  
          # Create ZMQ context
          num_io_threads = (
-@@ -88,6 +148,8 @@ class GPUScheduler:
+@@ -88,6 +152,8 @@ class GPUScheduler:
              multi_model_server_args.enable_worker_pool,
              model_names_to_model_paths,
              num_workers=multi_model_server_args.workers_per_gpu,
@@ -2208,7 +2212,7 @@ index 681fc35..da710e9 100644
          )
          self._shutdown_event = Event()
          self._receiver_thread = None
-@@ -96,14 +158,16 @@ class GPUScheduler:
+@@ -96,14 +162,16 @@ class GPUScheduler:
  
      def _init_models(self, init_model_names: List[str]):
          """Initialize specified models."""
@@ -2232,7 +2236,7 @@ index 681fc35..da710e9 100644
  
          while True:
              self._recv_from_engine()
-@@ -119,8 +183,17 @@ class GPUScheduler:
+@@ -119,8 +187,17 @@ class GPUScheduler:
      def _maybe_init_worker_pool(self):
          """Initialize worker pool if enabled."""
          if self.server_args.enable_worker_pool:
@@ -2251,7 +2255,7 @@ index 681fc35..da710e9 100644
              )
          else:
              self.worker_pool = None
-@@ -136,32 +209,127 @@ class GPUScheduler:
+@@ -136,32 +213,131 @@ class GPUScheduler:
          self._receiver_thread = Thread(target=self._recv_requests_loop, daemon=True)
          self._receiver_thread.start()
  
@@ -2272,17 +2276,23 @@ index 681fc35..da710e9 100644
  
                  # Get backend queue lengths for each active model
                  active_models = self._get_active_or_activating_model_names()
-+                # GPU-scoped: this GPU's own backlog for the model, not the
-+                # cluster's. It feeds `models_to_skip`, a backpressure guard
-+                # with a fixed threshold that is not a paper mechanism; reading
-+                # it globally let one GPU throttle a model because the other
-+                # had a backlog. Scope correction, declared in the manifest.
++                # Backlog observed for `models_to_skip`, a backpressure guard
++                # with a fixed threshold that is not a paper mechanism.
++                #
++                # Splitting the queue per GPU changed what this reads: it used
++                # to be the cluster-wide depth of backend:<model>, and became
++                # this GPU's depth alone. That is an observation change, not a
++                # transport one -- requests stay in {prefix}:{gpu}:{model} and
++                # no GPU ever consumes another's entry either way.
++                #
++                # "global" restores the old quantity exactly, by summing the
++                # per-GPU queues that together hold what the shared key used to
++                # hold. No new policy, no new threshold, no new heuristic.
                  model_backend_queue_lens = {
-                     model_name: self.redis_client.get_queue_length(
+-                    model_name: self.redis_client.get_queue_length(
 -                        f"{self.server_args.backend_generate_request_key_prefix}:{model_name}"
-+                        f"{self.server_args.backend_generate_request_key_prefix}:"
-+                        f"{self.gpu_id}:{model_name}"
-                     )
+-                    )
++                    model_name: self._backend_backlog(model_name)
                      for model_name in active_models
                  }
 +                _t2 = time.perf_counter()
@@ -2389,7 +2399,7 @@ index 681fc35..da710e9 100644
  
                  time.sleep(0.01)
          except Exception as e:
-@@ -182,8 +350,16 @@ class GPUScheduler:
+@@ -182,8 +358,16 @@ class GPUScheduler:
              try:
                  reqs = self._recv_from_frontend_queue()
                  self.queue.add_requests(reqs)
@@ -2407,7 +2417,7 @@ index 681fc35..da710e9 100644
              except Exception as e:
                  if self._shutdown_event.is_set():
                      break
-@@ -203,6 +379,9 @@ class GPUScheduler:
+@@ -203,6 +387,9 @@ class GPUScheduler:
              reqs = self.redis_client.pop_all(
                  key=f"{self.server_args.frontend_generate_request_key_prefix}:{model_name}",
              )
@@ -2417,7 +2427,7 @@ index 681fc35..da710e9 100644
              recv_reqs.extend(reqs)
          return recv_reqs
  
-@@ -222,25 +401,299 @@ class GPUScheduler:
+@@ -222,25 +409,299 @@ class GPUScheduler:
                      f"{'succeeded' if success else 'failed'} on GPU {self.gpu_id}"
                  )
                  if success:
@@ -2728,7 +2738,7 @@ index 681fc35..da710e9 100644
      def _recv_from_request_handler(self):
          """Receive activate/deactivate requests from request handler."""
          try:
-@@ -264,29 +717,27 @@ class GPUScheduler:
+@@ -264,29 +725,27 @@ class GPUScheduler:
                      )
                      if self.server_args.enable_worker_pool:
                          self.worker_pool.handle_deactivate_model(message)
@@ -2775,7 +2785,7 @@ index 681fc35..da710e9 100644
                      logger.info(
                          f"Received activate request for {message.model_name}, "
                          f"model_states: {self._model_states}"
-@@ -303,12 +754,83 @@ class GPUScheduler:
+@@ -303,12 +762,83 @@ class GPUScheduler:
              )
              return []
  
@@ -2860,11 +2870,30 @@ index 681fc35..da710e9 100644
          old_need = old_state in states_need_resource
          new_need = new_state in states_need_resource
  
-@@ -338,14 +860,36 @@ class GPUScheduler:
+@@ -338,14 +868,55 @@ class GPUScheduler:
                  f"Error sending preempted requests: {get_exception_traceback()}"
              )
  
 -    def _send_to_backend_queue(self, reqs: Dict[str, List[GenerateReqInput]]):
++    def _backend_backlog(self, model_name):
++        """Queue depth for `models_to_skip`. Observation only.
++
++        `local` (default) reads this GPU's queue. `global` sums every GPU's
++        queue for the model, which is exactly what the old shared
++        backend:<model> key held, so the guard sees the quantity it saw before
++        the split. Request transport is untouched in both cases: entries live
++        in {prefix}:{gpu}:{model} and are consumed only by their own GPU.
++        """
++        prefix = self.server_args.backend_generate_request_key_prefix
++        if self._backlog_scope != "global":
++            return self.redis_client.get_queue_length(
++                f"{prefix}:{self.gpu_id}:{model_name}")
++        total = 0
++        for gpu in range(int(getattr(self.server_args, "num_gpus", 1) or 1)):
++            total += self.redis_client.get_queue_length(
++                f"{prefix}:{gpu}:{model_name}")
++        return total
++
 +    def _send_to_backend_queue(self, reqs):
          """Send requests to backend queue."""
 -        for model_name, reqs in reqs.items():

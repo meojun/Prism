@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T15:51:41.545588+00:00",
+ "recorded_utc": "2026-08-23T16:15:54.812956+00:00",
  "previous_runtime_freeze": {
-  "commit": "dd9e25b",
-  "patch_blob": "c8ff5e2d2f2430315601c80492e429c09f875d83"
+  "commit": "0ff1133",
+  "patch_blob": "cc700f89a96764042784ed74b99538847af6f6be"
  },
- "change": "diagnostic observation logging gated off by default (PRISM_OBS)",
+ "change": "selectable backlog probe scope for the models_to_skip guard (A/B attribution)",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "cc700f89a96764042784ed74b99538847af6f6be",
+ "patch_blob": "49ba35458684ccacd5b7af7cbca11a05e44f309b",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -225,6 +225,30 @@
    "c_i",
    "workload",
    "SLOs"
+  ]
+ },
+ "backlog_probe_scope": {
+  "why": "D3: run8 (old queue) 18.49 req/s, run10 (GPU-scoped, observers off) 13.75. Disabling the diagnostics recovered 11.64 -> 13.75 but not to 18.49, so the remaining gap is attributed to either the queue split or the models_to_skip observation change it caused. This makes that a configuration choice so the two can be measured apart.",
+  "flag": "PRISM_BACKLOG_SCOPE=global | local (default local, the current build)",
+  "global_definition": "sum of get_queue_length({prefix}:{gpu}:{model}) over range(num_gpus) -- exactly what the pre-split shared backend:{model} key held, since every request goes to exactly one per-GPU key",
+  "unchanged": [
+   "request transport stays {prefix}:{gpu_id}:{model}",
+   "no GPU consumes another GPU's entry in either mode",
+   "Algorithm 1",
+   "Algorithm 2",
+   "tau",
+   "c_i",
+   "migration",
+   "KV allocator",
+   "workload",
+   "SLOs",
+   "the _skip_model_threshold value (10)"
+  ],
+  "not_added": [
+   "retry",
+   "timeout",
+   "new heuristic",
+   "new scheduling policy"
   ]
  }
 }
