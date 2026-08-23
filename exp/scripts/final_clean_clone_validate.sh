@@ -140,6 +140,27 @@ fi
 # in the pinned stack and adding it to make a validation pass would change the
 # environment to suit the check. A focused set is enough here: this validates
 # the handoff, not the runtime.
+# The tests import the runtime, and the runtime is not in the clone -- it is
+# distributed as a patch against a pinned upstream commit, which is what a new
+# server materialises during bootstrap. So materialise it here the same way,
+# and run the tests against that. Without this the tests silently import
+# whatever sglang happens to be installed, which is a different codebase.
+RUNTIME_OK=0
+BASE=$(sed -nE 's/^([0-9a-f]{40})$/\1/p' "$WORK/patches/final_baseline_ready/README.md" | head -1)
+if [ -n "$BASE" ] && [ -d "$ROOT/prism-research/.git" ]; then
+  if git -C "$ROOT/prism-research" worktree add --quiet --detach \
+       "$WORK/prism-research" "$BASE" 2>/dev/null \
+     && git -C "$WORK/prism-research" apply \
+          "$WORK/patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null; then
+    RUNTIME_OK=1
+    record "runtime materialised in the clone from the patch" PASS "base ${BASE:0:12}"
+  else
+    record "runtime materialised in the clone from the patch" FAIL "worktree or apply failed"
+  fi
+else
+  record "runtime materialised in the clone from the patch" FAIL "no base commit or upstream checkout"
+fi
+
 FOCUSED="test_staged_return_dict_sampling_params test_staged_request_return \
          test_alg2_dispatch_seq_ownership test_gpu_scoped_backend_queue \
          test_deactivation_rollback_ownership test_alg2_migration_handoff"
@@ -148,7 +169,8 @@ for t in $FOCUSED; do
   f="$WORK/exp/tests/$t.py"
   [ -f "$f" ] || { bad="$bad $t(absent)"; continue; }
   ran=$((ran + 1))
-  if ! ( cd "$WORK" && timeout 300 $PY "exp/tests/$t.py" ) \
+  if ! ( cd "$WORK" && PYTHONPATH="$WORK/prism-research/python" \
+         timeout 300 $PY "exp/tests/$t.py" ) \
        > "$EVAL/clean_clone_tests_$t.log" 2>&1; then
     bad="$bad $t"
   fi
@@ -166,6 +188,8 @@ if echo "$dry" | grep -q "next = $want_next"; then
 else
   record "resume dry-run names the right next run" FAIL "$(echo "$dry" | tail -3 | tr '\n' ' ')"
 fi
+
+git -C "$ROOT/prism-research" worktree remove --force "$WORK/prism-research" 2>/dev/null || true
 
 $PY - "$OUT" "$SHA" "$BRANCH" "$WORK" "${results[@]}" <<'PY'
 import json, sys, datetime

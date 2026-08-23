@@ -95,19 +95,32 @@ else
 fi
 
 echo
-if [ "$fail" != "0" ]; then
-  echo "REFUSING TO RESUME: the checks above must pass first."
-  exit 1
-fi
-
+# The plan comes from the manifest and is the same wherever it is read. Whether
+# this machine can carry it out is a separate question, answered above -- so a
+# dry run reports both, and a machine that is not provisioned yet still gets a
+# straight answer about what would run.
 if [ "$DRY" = "1" ]; then
+  agg=$($PY -c "import json;print(json.load(open('$HANDOFF/resume_manifest.json'))['aggregation']['status'])")
   echo "DRY RUN -- nothing started."
   echo "next = $NEXT_STAGE / $NEXT_RUN"
   echo "prototype remaining = $PROTO_PEND"
   echo "final remaining = $FINAL_PEND"
-  agg=$($PY -c "import json;print(json.load(open('$HANDOFF/resume_manifest.json'))['aggregation']['status'])")
   echo "aggregation = $agg"
+  echo
+  if [ "$fail" = "0" ]; then
+    echo "this machine is ready: bash exp/scripts/resume_baseline.sh"
+  else
+    echo "this machine is NOT ready yet -- see the FAIL lines above."
+    echo "on a fresh server that normally means:"
+    echo "  ./bootstrap.sh"
+    echo "  bash exp/scripts/restore_workloads.sh"
+  fi
   exit 0
+fi
+
+if [ "$fail" != "0" ]; then
+  echo "REFUSING TO RESUME: the checks above must pass first."
+  exit 1
 fi
 
 echo "starting the chain; it skips every run that already passed"
