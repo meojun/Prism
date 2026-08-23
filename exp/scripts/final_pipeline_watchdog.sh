@@ -29,7 +29,7 @@ last_stage() {
 
 while true; do
   date -u +%FT%TZ > "$BEAT"
-  if ! tmux has-session -t "$SESSION" 2>/dev/null; then
+  if ! tmux has-session -t "=$SESSION" 2>/dev/null; then
     stage=$(last_stage)
     if grep -q '"result": "PASS"' "$EVAL/07-handoff/STATUS.json" 2>/dev/null; then
       log "session gone and 07-handoff passed; the chain completed"

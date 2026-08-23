@@ -11,7 +11,7 @@ WATCH="${SESSION}-watchdog"
 cd "$ROOT"
 log() { echo "[$(date -u +%FT%TZ)] [overnight] $*" | tee -a "$EVAL/pipeline.log"; }
 
-if tmux has-session -t "$SESSION" 2>/dev/null; then
+if tmux has-session -t "=$SESSION" 2>/dev/null; then
   log "FATAL: $SESSION is already running; refusing to start a second chain"
   exit 1
 fi
@@ -27,7 +27,7 @@ tmux new-session -d -s "$WATCH" \
   "PRISM_PIPELINE_SESSION=$SESSION bash '$SCRIPT_DIR/final_pipeline_watchdog.sh'"
 ok=0
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  if tmux has-session -t "$WATCH" 2>/dev/null \
+  if tmux has-session -t "=$WATCH" 2>/dev/null \
      && pgrep -f "final_pipeline_watchdog.sh" >/dev/null 2>&1; then ok=1; break; fi
   python3 -c "import time;time.sleep(1)"
 done
@@ -44,7 +44,7 @@ tmux new-session -d -s "$SESSION" \
   "bash '$SCRIPT_DIR/final_pipeline.sh' >> '$EVAL/pipeline_console.log' 2>&1"
 ok=0
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  if tmux has-session -t "$SESSION" 2>/dev/null; then ok=1; break; fi
+  if tmux has-session -t "=$SESSION" 2>/dev/null; then ok=1; break; fi
   python3 -c "import time;time.sleep(1)"
 done
 if [ "$ok" != "1" ]; then
