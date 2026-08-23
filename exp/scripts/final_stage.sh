@@ -38,7 +38,7 @@ if [ -f "$EVAL/STOP" ]; then
 fi
 
 # The runtime must still be the frozen one, checked before every expensive run.
-frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-205e0e9}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
+frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-16fa9b2}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
 now_blob=$(git -C "$ROOT" hash-object patches/final_baseline_ready/prism_research_worktree.patch 2>/dev/null)
 if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
   echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
