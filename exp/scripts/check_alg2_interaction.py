@@ -260,11 +260,21 @@ def main():
     except json.JSONDecodeError:
         pass
     record("pipeline_rc_zero", rc == "0", {"pipeline_rc": rc or None})
+    # A finished run is one that wrote rc=0 and its result file. The watchdog
+    # state is corroborating evidence, not the verdict: the stage kills the
+    # monitor the moment pipeline.rc appears, so a run that finishes inside the
+    # monitor's 5 s poll window leaves status.json reading RUNNING for ever.
+    # Attempt 4 of cal-0p00035-s0 did exactly that -- last heartbeat 05:20:04,
+    # pipeline.rc written 05:20:08 -- and was called a deadlock while every
+    # ordering, ownership and accounting check passed.
+    finished = bool(rc == "0" and sorted(run.glob("*_e2e_*rep.json")))
     record(
         "no_deadlock",
-        status.get("state") == "COMPLETE",
+        finished or status.get("state") == "COMPLETE",
         {"watchdog_state": status.get("state"),
-         "failure_reason": status.get("failure_reason")},
+         "failure_reason": status.get("failure_reason"),
+         "pipeline_rc": rc or None,
+         "result_file_written": bool(sorted(run.glob("*_e2e_*rep.json")))},
     )
 
     results = sorted(run.glob("*_e2e_*rep.json"))

@@ -19,8 +19,10 @@ STAGE_DIR=$(readlink -f "$STAGE_DIR")
 
 rc_file="$STAGE_DIR/pipeline.rc"
 status="$STAGE_DIR/monitor/status.json"
+# A run that wrote rc=0 and its result file is finished, whatever the monitor
+# managed to record before the stage killed it.
 if [ -f "$rc_file" ] && [ "$(cat "$rc_file")" = "0" ] \
-   && [ -f "$status" ] && grep -q '"state": "COMPLETE"' "$status"; then
+   && ls "$STAGE_DIR"/*_e2e_*rep.json >/dev/null 2>&1; then
   echo "[final_stage] SKIP $LABEL: already COMPLETE"
   exit 0
 fi
@@ -94,6 +96,13 @@ deadline=$(( $(date +%s) + ${STAGE_HARD_LIMIT:-3600} ))
 while true; do
   if [ -f "$rc_file" ]; then
     rc=$(cat "$rc_file")
+    # Let the monitor observe the rc before it is killed. It polls every 5 s,
+    # so killing it the instant the file appears froze status.json at RUNNING
+    # on a run that had in fact finished.
+    for _ in 1 2 3; do
+      grep -q '"state": "\(COMPLETE\|FAIL\)"' "$status" 2>/dev/null && break
+      sleep 3
+    done
     break
   fi
   if [ -f "$STAGE_DIR/monitor/FAIL" ]; then
