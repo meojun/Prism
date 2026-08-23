@@ -13,3 +13,4 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T08:44:46Z] SENT stop-dc7197404680458a -- 🔴 Prism STOPPED | 02-tau-calibration | a calibration run failed or tau selection failed
 [2026-08-23T08:49:27Z] SENT autopsy-0p07-commit-stall -- 📋 Prism autopsy ready | cal-0p07-s0 | activation declared ready before the engine was | GPU0 frontier pinned on 3113-3115 | no fix applied, awaiting decision
 [2026-08-23T08:57:07Z] SENT trace-token-0p07 -- 📋 Prism trace done | seqs 3113-3115 reached Redis, model_1 engine never consumed them | backend-consumer/engine path | no fix applied
+[2026-08-23T10:18:45Z] DUP  stop-69bba8864b922ee3 (already sent) -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=0 | 8225/8227 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
