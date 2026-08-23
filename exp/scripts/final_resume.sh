@@ -11,11 +11,13 @@ PY=/workspace/prism-exp/prism-venv/bin/python
 cd "$ROOT"
 log() { echo "[$(date -u +%FT%TZ)] [resume] $*" | tee -a "$EVAL/pipeline.log"; }
 
-# The failed attempt is evidence; keep it and retry beside it.
+# Every failed attempt is evidence; keep them all and retry beside them.
 FAILED="$EVAL/02-tau-calibration/raw/tau_0p00035/seed_0"
-if [ -d "$FAILED" ] && [ ! -d "$FAILED.attempt1" ]; then
-  mv "$FAILED" "$FAILED.attempt1"
-  log "preserved the failed attempt as $(basename "$FAILED").attempt1"
+if [ -d "$FAILED" ]; then
+  n=1
+  while [ -d "$FAILED.attempt$n" ]; do n=$((n+1)); done
+  mv "$FAILED" "$FAILED.attempt$n"
+  log "preserved the failed attempt as $(basename "$FAILED").attempt$n"
 fi
 
 rm -f "$EVAL/STOP"

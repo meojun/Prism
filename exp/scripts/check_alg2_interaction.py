@@ -124,6 +124,13 @@ def main():
             if entry.get("seq") is not None:
                 seen["admit"].add(entry["seq"])
                 seen["start"].add(entry["seq"])
+        # Sequences the GPU scheduler retired itself, for requests of a
+        # departing model that the engine never fetched. It owned them: they
+        # were dispatched and never acknowledged.
+        for entry in rec.get("scheduler_retired_unacked", []) or []:
+            if entry.get("seq") is not None:
+                seen["admit"].add(entry["seq"])
+                seen["start"].add(entry["seq"])
         seen["admit"].update(rec.get("drained_admit_seqs", []) or [])
         seen["start"].update(rec.get("drained_start_seqs", []) or [])
 
@@ -160,6 +167,46 @@ def main():
          "retirements_seen": {g: {k: len(v) for k, v in d.items()}
                               for g, d in retired_seqs.items()}},
     )
+
+    # Every sequence this GPU issued must end up accounted for: acknowledged
+    # by the backend, or retired by whoever owned it. One that is neither is a
+    # stale dispatched sequence, and it pins the frontier forever -- exactly
+    # what seqs 1159/1160 did to GPU 0 on the tau=0.00035 seed-0 retry.
+    dispatched_by_gpu, admitted_by_gpu = {}, {}
+    for event in events:
+        gpu, name, seq = (event.get("gpu_id"), event.get("event"),
+                          event.get("alg2_seq"))
+        if seq is None:
+            continue
+        if name == "dispatch":
+            dispatched_by_gpu.setdefault(gpu, set()).add(seq)
+        elif name == "backend_admit":
+            admitted_by_gpu.setdefault(gpu, set()).add(seq)
+    stale_dispatched = {}
+    for gpu, issued in dispatched_by_gpu.items():
+        explained = retired_seqs.get(gpu, {"admit": set()})["admit"]
+        left = sorted(issued - admitted_by_gpu.get(gpu, set()) - explained)
+        if left:
+            stale_dispatched[gpu] = left[:20]
+    record(
+        "no_stale_dispatched_sequences",
+        not stale_dispatched,
+        {"stale_by_gpu": stale_dispatched,
+         "dispatched": {g: len(v) for g, v in dispatched_by_gpu.items()},
+         "admitted": {g: len(v) for g, v in admitted_by_gpu.items()}},
+    )
+
+    # The model a request was scheduled under must be the model it is admitted
+    # under -- never the name of whatever now occupies the worker slot.
+    mismatches = [
+        {"seq": e.get("alg2_seq"), "expected": e.get("expected_model"),
+         "actual": e.get("actual_model"), "rids": e.get("actual_rids")}
+        for e in events
+        if e.get("expected_model") and e.get("actual_model")
+        and e["expected_model"] != e["actual_model"]
+    ]
+    record("no_identity_mismatch", not mismatches,
+           {"count": len(mismatches), "examples": mismatches[:5]})
 
     # ---- 4. admission stayed ordered across every migration --------------
     controller = read(logs / "server.log.global_controller.log")

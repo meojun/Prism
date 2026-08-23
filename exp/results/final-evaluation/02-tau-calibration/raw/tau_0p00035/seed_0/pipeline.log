@@ -1,3 +1,45 @@
 [2026-08-23T01:16:42Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0/STAGE_CMD.sh
 ### paper-faithful-v6_bursty_rate20_seed0  port=42100 trace=bursty_r20_s0.pkl workers=4 models=6
 waiting for server................................................................................................. -> ready
+benchmark failed rc=124
+Waiting for task req_model_6#1945_model_6
+Waiting for task req_model_6#1903_model_6
+Waiting for task req_model_6#1679_model_6
+Waiting for task req_model_4#1522_model_4
+Waiting for task req_model_4#1778_model_4
+Waiting for task req_model_4#1464_model_4
+Waiting for task req_model_4#1563_model_4
+Waiting for task req_model_6#1919_model_6
+Waiting for task req_model_6#1780_model_6
+Waiting for task req_model_6#1680_model_6
+Waiting for task req_model_1#701_model_1
+Waiting for task req_model_4#1902_model_4
+Waiting for task req_model_6#1711_model_6
+Waiting for task req_model_6#1705_model_6
+Waiting for task req_model_1#518_model_1
+Waiting for task req_model_4#1537_model_4
+Waiting for task req_model_1#640_model_1
+Waiting for task req_model_6#1822_model_6
+Waiting for task req_model_6#1759_model_6
+Waiting for task req_model_4#1088_model_4
+Waiting for task req_model_6#1684_model_6
+Waiting for task req_model_4#1777_model_4
+Waiting for task req_model_4#1734_model_4
+Waiting for task req_model_6#1886_model_6
+Waiting for task req_model_1#693_model_1
+Waiting for task req_model_4#1603_model_4
+Waiting for task req_model_4#1622_model_4
+Waiting for task req_model_4#1485_model_4
+Waiting for task req_model_6#1724_model_6
+Waiting for task req_model_6#1777_model_6
+Waiting for task req_model_1#404_model_1
+Waiting for task req_model_6#1761_model_6
+Waiting for task req_model_6#1685_model_6
+Waiting for task req_model_4#1776_model_4
+Waiting for task req_model_6#1739_model_6
+Waiting for task req_model_4#1336_model_4
+Waiting for task req_model_4#1732_model_4
+Waiting for task req_model_4#1291_model_4
+Waiting for task req_model_1#372_model_1
+Waiting for task req_model_4#1825_model_4
+[2026-08-23T01:45:09Z] stage complete rc=124
