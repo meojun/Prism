@@ -15,9 +15,9 @@ from pathlib import Path
 KNOWN = [
     ("residency lifecycle (fixed 7053904)",
      r"src=None.*held=\d", "a migration read from host memory while the model was GPU-resident"),
-    ("stale staged request (fixed e3aa0ad / B)",
+    ("stale staged request (fixed 47564b8 / B)",
      r'"reason": "staged-never-admitted"', "a staged request survived a deactivation"),
-    ("slot-renamed admission (fixed e3aa0ad / A)",
+    ("slot-renamed admission (fixed 47564b8 / A)",
      r"backend_admit.*order_ok.*false", "an admission carried the wrong model"),
     ("activation memory wait (fixed 70ad7b8, 56636e1)",
      r"Waiting for enough memory to load the model", "an activation blocked its event loop"),
