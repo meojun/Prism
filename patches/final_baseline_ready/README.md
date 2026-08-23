@@ -1,4 +1,4 @@
-# dispatch seq ownership
+# source snapshot
 
 `prism-research/` is intentionally gitignored by the experiment repository and
 is recreated by `bootstrap.sh`. The complete source working-tree delta is
@@ -17,4 +17,4 @@ git apply /path/to/Prism/patches/final_baseline_ready/prism_research_worktree.pa
 ```
 
 Files in the patch: 35
-Snapshot taken: 2026-08-23T01:57:55Z
+Snapshot taken: 2026-08-23T05:07:17Z

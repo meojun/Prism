@@ -2060,7 +2060,7 @@ index 9f0dc7c..bca06bb 100644
          logger.info(
              f"Executed {len(actions)} actions in {toc - tic:.2f} seconds. Actions: {actions}"
 diff --git a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
-index 681fc35..7004426 100644
+index 681fc35..12424ee 100644
 --- a/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 +++ b/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py
 @@ -1,10 +1,12 @@
@@ -2340,7 +2340,25 @@ index 681fc35..7004426 100644
  
                  time.sleep(0.01)
          except Exception as e:
-@@ -203,6 +365,9 @@ class GPUScheduler:
+@@ -182,8 +344,16 @@ class GPUScheduler:
+             try:
+                 reqs = self._recv_from_frontend_queue()
+                 self.queue.add_requests(reqs)
+-                self._recv_from_request_handler()
++                # Completions before new commands. Every message on the engine
++                # channel reports on work this scheduler already handed the
++                # engine -- it forwards activate and deactivate itself -- so no
++                # engine message can depend on a control message still pending
++                # here, while the reverse is not true: a deactivation verdict
++                # that arrives before the next activation must be applied
++                # before it, or the activation asks for a worker slot whose
++                # release is still queued behind it.
+                 self._recv_from_engine()
++                self._recv_from_request_handler()
+             except Exception as e:
+                 if self._shutdown_event.is_set():
+                     break
+@@ -203,6 +373,9 @@ class GPUScheduler:
              reqs = self.redis_client.pop_all(
                  key=f"{self.server_args.frontend_generate_request_key_prefix}:{model_name}",
              )
@@ -2350,7 +2368,7 @@ index 681fc35..7004426 100644
              recv_reqs.extend(reqs)
          return recv_reqs
  
-@@ -222,7 +387,11 @@ class GPUScheduler:
+@@ -222,25 +395,299 @@ class GPUScheduler:
                      f"{'succeeded' if success else 'failed'} on GPU {self.gpu_id}"
                  )
                  if success:
@@ -2363,10 +2381,17 @@ index 681fc35..7004426 100644
                  # Can record additional activation completion status here, such as updating model state dictionaries
  
              elif isinstance(message, DeactivateReqOutput):
-@@ -236,11 +405,290 @@ class GPUScheduler:
-                 if success:
-                     self._set_model_state(model_name, "deactivated")
-                 # Can record additional deactivation completion status here, such as cleaning up resources
+-                model_name = message.model_name
+-                instance_idx = message.instance_idx
+-                success = message.success
+-                logger.info(
+-                    f"Model {model_name} (instance {instance_idx}) deactivation "
+-                    f"{'succeeded' if success else 'failed'} on GPU {self.gpu_id}"
+-                )
+-                if success:
+-                    self._set_model_state(model_name, "deactivated")
+-                # Can record additional deactivation completion status here, such as cleaning up resources
++                self._handle_deactivate_result(message)
 +            elif isinstance(message, BatchRunReq) and self._mh_runtime_gate:
 +                self._handle_mh_prefill_start(message)
 +            elif isinstance(message, BackendAdmitReq) and self._mh_runtime_gate:
@@ -2654,7 +2679,38 @@ index 681fc35..7004426 100644
      def _recv_from_request_handler(self):
          """Receive activate/deactivate requests from request handler."""
          try:
-@@ -285,8 +733,13 @@ class GPUScheduler:
+@@ -264,29 +711,27 @@ class GPUScheduler:
+                     )
+                     if self.server_args.enable_worker_pool:
+                         self.worker_pool.handle_deactivate_model(message)
+-                    # Get all waiting requests in the queue for this model and send them back to controller
+-                    waiting_reqs = self.queue.pop_model_requests(model_name)
+-                    if waiting_reqs:
+-                        self._send_waiting_reqs_to_frontend_queue(
+-                            model_name, waiting_reqs
+-                        )
+-                    # Pop all backend queue to frontend queue
+-                    backend_reqs = self.redis_client.pop_all(
+-                        key=f"{self.server_args.backend_generate_request_key_prefix}:{model_name}"
+-                    )
+-                    if backend_reqs:
+-                        for req in backend_reqs:
+-                            self.redis_client.send_pyobj(
+-                                key=f"{self.server_args.frontend_generate_request_key_prefix}:{model_name}",
+-                                obj=req,
+-                            )
+-                    
++                    # Nothing else happens here. A deactivation can roll back --
++                    # the engine keeps the model when a stash is not
++                    # acknowledged -- and everything this branch used to do was
++                    # irreversible: the queue was emptied to the frontend and
++                    # the worker slot handed to the free pool, both before the
++                    # engine had ruled. The queue, the backend queue and the
++                    # slot are now released on the success verdict, in
++                    # `_handle_deactivate_result`, so a rollback has nothing to
++                    # undo.
++
+                 elif isinstance(message, ActivateReqInput):
                      logger.info(
                          f"Received activate request for model {message.model_name}"
                      )
@@ -2670,7 +2726,76 @@ index 681fc35..7004426 100644
                      logger.info(
                          f"Received activate request for {message.model_name}, "
                          f"model_states: {self._model_states}"
-@@ -308,7 +761,10 @@ class GPUScheduler:
+@@ -303,12 +748,79 @@ class GPUScheduler:
+             )
+             return []
+ 
++    def _handle_deactivate_result(self, message):
++        """Apply a deactivation verdict -- the only place this GPU lets go.
++
++        Success releases what the model held: its queued work goes back to the
++        frontend, its undelivered dispatches with it, and its worker slot
++        returns to the pool. Failure releases nothing, because the engine kept
++        the model: the state goes back to "activated" and everything else was
++        never touched, so the source is operational again exactly as it was.
++        Without that restoration a rolled-back model sits in "deactivating",
++        which is excluded from frontend intake and from admission, while its
++        engine believes it is serving.
++        """
++        model_name = message.model_name
++        success = message.success
++        logger.info(
++            f"Model {model_name} (instance {message.instance_idx}) deactivation "
++            f"{'succeeded' if success else 'failed'} on GPU {self.gpu_id}"
++        )
++        if not success:
++            self._set_model_state(model_name, "activated")
++            logger.warning("[PAPER-ALG2-HANDOFF] " + json.dumps({
++                "event": "deactivation_rolled_back", "gpu_id": self.gpu_id,
++                "model": model_name}, sort_keys=True))
++            return
++
++        # An adoption placeholder is a proxy for a request the engine holds,
++        # not a request: it carries no payload. Returning it to the frontend
++        # manufactured a second copy of a request the engine returns itself,
++        # which is how model_2#176 came to hold sequences 2372 and 2373 on one
++        # GPU, 23 ms apart. It is dropped; the engine delivers what it stands
++        # for, exactly once.
++        queued = self.queue.pop_model_requests(model_name)
++        placeholders = [r for r in queued if getattr(r, "alg2_resumed", False)]
++        waiting_reqs = [r for r in queued
++                        if not getattr(r, "alg2_resumed", False)]
++        if placeholders:
++            logger.info("[PAPER-ALG2-HANDOFF] " + json.dumps({
++                "event": "adoption_placeholders_discarded",
++                "gpu_id": self.gpu_id, "model": model_name,
++                "rids": [getattr(r, "rid", None) for r in placeholders]},
++                sort_keys=True))
++        if waiting_reqs:
++            self._send_waiting_reqs_to_frontend_queue(model_name, waiting_reqs)
++        backend_reqs = self.redis_client.pop_all(
++            key=(f"{self.server_args.backend_generate_request_key_prefix}:"
++                 f"{model_name}"))
++        for req in backend_reqs:
++            self.redis_client.send_pyobj(
++                key=(f"{self.server_args.frontend_generate_request_key_prefix}:"
++                     f"{model_name}"),
++                obj=req,
++            )
++        if self.server_args.enable_worker_pool:
++            try:
++                released = self.worker_pool.release_worker(model_name)
++                logger.info(
++                    f"Release worker {released} from model {model_name}. "
++                    f"Current model_to_worker: "
++                    f"{self.worker_pool._model_to_worker}")
++            except (AssertionError, KeyError) as e:
++                logger.error(
++                    f"Could not release the worker for {model_name}: {e}")
++        self._set_model_state(model_name, "deactivated")
++
+     def _set_model_state(self, model_name: str, new_state: str):
+         """Set model state and update resource manager."""
          old_state = self._model_states.get(model_name, "deactivated")
          self._model_states[model_name] = new_state
  
@@ -2682,7 +2807,7 @@ index 681fc35..7004426 100644
          old_need = old_state in states_need_resource
          new_need = new_state in states_need_resource
  
-@@ -338,14 +794,34 @@ class GPUScheduler:
+@@ -338,14 +850,34 @@ class GPUScheduler:
                  f"Error sending preempted requests: {get_exception_traceback()}"
              )
  
@@ -3248,7 +3373,7 @@ index 3b15fa7..5114b6a 100644
              }
 \ No newline at end of file
 diff --git a/python/sglang/multi_model/scheduling/gpu/worker_pool.py b/python/sglang/multi_model/scheduling/gpu/worker_pool.py
-index 77bccbe..bab009a 100644
+index 77bccbe..0e9711d 100644
 --- a/python/sglang/multi_model/scheduling/gpu/worker_pool.py
 +++ b/python/sglang/multi_model/scheduling/gpu/worker_pool.py
 @@ -11,6 +11,7 @@ from sglang.srt.managers.io_struct import (
@@ -3397,6 +3522,25 @@ index 77bccbe..bab009a 100644
              
          self.assign_worker(worker_id, model_name)
          logger.info(
+@@ -154,9 +228,16 @@ class WorkerPool:
+             logger.error(f"Model {model_name} is not served by any workers")
+             return False
+             
+-        worker_id = self.release_worker(model_name)
++        # The slot is NOT released here. A deactivation can roll back, and a
++        # slot already in the free pool may by then belong to another model.
++        # It holds this model's loaded engine process, so no other slot is a
++        # substitute and taking one back is not an option. Releasing only on
++        # the success verdict -- in gpu_scheduler's `_handle_deactivate_result`
++        # -- means the slot is never free while the model may still own it.
++        worker_id = self._model_to_worker[model_name]
+         logger.info(
+-            f"Release worker {worker_id} from model {model_name}. "
++            f"Deactivating model {model_name} on worker {worker_id}; the slot "
++            f"is held until the engine confirms. "
+             f"Current model_to_worker: {self._model_to_worker}"
+         )
+         self._worker_to_ipc_name[worker_id].send_pyobj(req)
 diff --git a/python/sglang/multi_model/scheduling/overlap_migration.py b/python/sglang/multi_model/scheduling/overlap_migration.py
 new file mode 100644
 index 0000000..e86aa42
@@ -5315,7 +5459,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..68cde16 100644
+index 3cf0db7..10f9a54 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5716,7 +5860,8 @@ index 3cf0db7..68cde16 100644
 +            else:
 +                logger.error("[PAPER-OVERLAP-V6] commit without matching prepare "
 +                             f"model={recv_req.model_name}")
-+            if self.tp_rank == 0:
+             if self.tp_rank == 0:
+-                logger.warning("Scheduler is already activated")
 +                activate_req_output = ActivateReqOutput(
 +                    rid=recv_req.rid, gpu_id=gpu_id,
 +                    model_name=recv_req.model_name,
@@ -5729,8 +5874,7 @@ index 3cf0db7..68cde16 100644
 +            return
 +
 +        if self._activated or self._v6_prepared_model is not None:
-             if self.tp_rank == 0:
--                logger.warning("Scheduler is already activated")
++            if self.tp_rank == 0:
 +                logger.warning("Scheduler is already activated or prepared")
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
@@ -5807,7 +5951,7 @@ index 3cf0db7..68cde16 100644
              )
              self.send_to_detokenizer.send_pyobj(activate_req_output)
  
-@@ -1690,8 +1951,15 @@ class Scheduler:
+@@ -1690,10 +1951,20 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -5823,8 +5967,13 @@ index 3cf0db7..68cde16 100644
 +                "time": quiesce, "was_serving": was_serving}))
              logger.info(f"Scheduler receives the deactivate requests with rid: {recv_req.rid}")
          else:
++            # P0. This engine is not serving, so it cannot own a held payload;
++            # release it rather than returning with it stranded.
++            self._alg2_release_pending_adoption("already-deactivated")
              if self.tp_rank == 0:
-@@ -1715,6 +1983,7 @@ class Scheduler:
+                 logger.warning("Scheduler is already deactivated")
+                 deactivate_req_output = DeactivateReqOutput(
+@@ -1715,6 +1986,7 @@ class Scheduler:
              return
  
          start_time = time.perf_counter()
@@ -5832,7 +5981,7 @@ index 3cf0db7..68cde16 100644
          logger.info(
              f"In handle deactivate request, waiting queue size: {len(self.waiting_queue)}. Running batch size: {0 if self.running_batch is None else len(self.running_batch.reqs)}, last batch size: {0 if self.last_batch is None else len(self.last_batch.reqs)}"
          )
-@@ -1748,12 +2017,49 @@ class Scheduler:
+@@ -1748,12 +2020,58 @@ class Scheduler:
                      f"Preempt mode {preempt_mode} is not supported"
                  )
          t1 = time.perf_counter()
@@ -5872,6 +6021,15 @@ index 3cf0db7..68cde16 100644
 +            # Captured requests were removed after a successful stash;
 +            # any leftovers failed capture/stash and must recompute.
 +            self._evict_all_waiting_requests()
++        # The model is about to be released for real. Whatever eviction policy
++        # this deactivation used, a held payload has no owner once the runner
++        # is gone -- and with V6 KV off neither eviction above runs, while
++        # decode retraction can still have filled the map. No-op if empty.
++        #
++        # Deliberately after the stash verdict: the rollback above returns
++        # first and releases nothing, so on that path the payloads stay here,
++        # their placeholders stay queued, and this GPU remains their owner.
++        self._alg2_release_pending_adoption("deactivate-release")
          self.tp_worker.deactivate_model_runner()
 +        logger.info("[PAPER-MIGRATION-TIMELINE] " + json.dumps({
 +            "event": "source_release",
@@ -5882,7 +6040,7 @@ index 3cf0db7..68cde16 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1816,6 +2122,8 @@ class Scheduler:
+@@ -1816,6 +2134,8 @@ class Scheduler:
              lora_path=req.lora_path,
              arrival_time=req.arrival_time,
              slo=req.slo,
@@ -5891,7 +6049,7 @@ index 3cf0db7..68cde16 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2131,105 @@ class Scheduler:
+@@ -1823,8 +2143,143 @@ class Scheduler:
          )
          return generate_req
  
@@ -5956,12 +6114,26 @@ index 3cf0db7..68cde16 100644
 +            "adoption_placeholders": placeholders,
 +        }, sort_keys=True))
 +
-     def _evict_all_waiting_requests(self):
-+        # A request rebuilt from migrated KV but not yet adopted is held out of
-+        # the waiting queue, so it would otherwise be dropped silently here --
-+        # a lost request. Return it to the frontend like any other undispatched
-+        # work, and give its injected KV slots back to the pool.
-+        for rid, req in list(self._alg2_pending_adoption.items()):
++    def _alg2_release_pending_adoption(self, reason):
++        """Hand every held re-entrant request back, exactly once.
++
++        This engine is the only holder of these payloads -- the GPU scheduler
++        has nothing but a proxy placeholder -- so it is the only component that
++        may deliver them anywhere, and it delivers them here rather than by way
++        of the waiting queue: the already-deactivated path returns before any
++        eviction, and with V6 KV off no eviction runs at all, so a payload
++        parked in the waiting queue on those paths would never be sent.
++
++        Called on every deactivation that actually releases the model, and on
++        none that rolls back. Idempotent: a second call finds nothing.
++        """
++        released = list(self._alg2_pending_adoption.items())
++        self._alg2_pending_adoption = {}
++        self._alg2_adoption_requested.clear()
++        if not released:
++            return []
++        delivered = []
++        for rid, req in released:
 +            slots = getattr(req, "prefix_indices", None)
 +            if slots is not None and len(slots):
 +                try:
@@ -5971,9 +6143,33 @@ index 3cf0db7..68cde16 100644
 +                        f"[PAPER-ALG2-HANDOFF] could not free slots for {rid}: {e}")
 +            req.prefix_indices = []
 +            req.extend_input_len = 0
-+            self.waiting_queue.append(req)
-+        self._alg2_pending_adoption = {}
-+        self._alg2_adoption_requested.clear()
++            try:
++                self.redis_client.send_pyobj(
++                    key=(f"{self.server_args.frontend_generate_request_key_prefix}:"
++                         f"{self.model_name}"),
++                    obj=self._convert_req_to_frontend_reqs(req),
++                )
++                delivered.append(rid)
++            except Exception as e:
++                logger.error(
++                    f"[PAPER-ALG2-HANDOFF] could not return {rid} to the "
++                    f"frontend: {e}")
++        if delivered:
++            # Whatever sequence these held on this GPU is retired with them.
++            self._alg2_report_migrated_away(delivered, reason)
++        logger.info("[PAPER-ALG2-HANDOFF] " + json.dumps({
++            "event": "pending_adoption_released", "gpu_id": self.gpu_id,
++            "model": self.model_name, "reason": reason,
++            "rids": [rid for rid, _ in released],
++            "delivered_to_frontend": delivered}, sort_keys=True))
++        return delivered
++
+     def _evict_all_waiting_requests(self):
++        # A request rebuilt from migrated KV but not yet adopted is held out of
++        # the waiting queue, so it would otherwise be dropped silently here --
++        # a lost request. Return it to the frontend, and give its injected KV
++        # slots back to the pool.
++        self._alg2_release_pending_adoption("evict-all-waiting")
 +
 +        # Staged requests are released first, before anything can return early.
 +        # An empty waiting queue used to skip this, and the tau=0.00035 seed-0
@@ -5997,7 +6193,7 @@ index 3cf0db7..68cde16 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2242,413 @@ class Scheduler:
+@@ -1837,7 +2292,413 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -6411,7 +6607,7 @@ index 3cf0db7..68cde16 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1855,6 +2666,7 @@ class Scheduler:
+@@ -1855,6 +2716,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6419,7 +6615,7 @@ index 3cf0db7..68cde16 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1881,6 +2693,7 @@ class Scheduler:
+@@ -1881,6 +2743,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6427,7 +6623,7 @@ index 3cf0db7..68cde16 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1898,6 +2711,101 @@ class Scheduler:
+@@ -1898,6 +2761,101 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6529,7 +6725,7 @@ index 3cf0db7..68cde16 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2834,7 @@ class Scheduler:
+@@ -1926,6 +2884,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
@@ -6537,7 +6733,7 @@ index 3cf0db7..68cde16 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
-@@ -1936,6 +2845,7 @@ class Scheduler:
+@@ -1936,6 +2895,7 @@ class Scheduler:
                  self.waiting_queue.append(req)
                  if self.use_kvcached_v0:
                      try:
@@ -6545,7 +6741,7 @@ index 3cf0db7..68cde16 100644
                          self.tree_cache.cache_finished_req(req)
                      except Exception as e:
                          logger.error(f"Error in cache_finished_req: {e}")
-@@ -1974,6 +2884,9 @@ class Scheduler:
+@@ -1974,6 +2934,9 @@ class Scheduler:
              if_success = False
          return if_success
  
@@ -6555,7 +6751,7 @@ index 3cf0db7..68cde16 100644
      def abort_request(self, recv_req: AbortReq):
          # Delete requests in the waiting queue
          to_del = None
-@@ -1990,15 +2903,20 @@ class Scheduler:
+@@ -1990,15 +2953,20 @@ class Scheduler:
              for req in self.running_batch.reqs:
                  if req.rid == recv_req.rid and not req.finished():
                      req.finished_reason = FINISH_ABORT()

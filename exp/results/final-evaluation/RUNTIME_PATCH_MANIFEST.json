@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T01:57:55.026208+00:00",
+ "recorded_utc": "2026-08-23T05:07:17.742661+00:00",
  "previous_runtime_freeze": {
-  "commit": "6ec7357",
-  "patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd"
+  "commit": "e3aa0ad",
+  "patch_blob": "843815cf073d25fa94d15e4f6081a5fef5854a11"
  },
- "change": "Algorithm 2 dispatch-side sequence ownership, on top of the A+B request lifecycle / accounting identity patch",
+ "change": "deactivation rollback correctness + pending-adoption ownership",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -21,11 +21,11 @@
  ],
  "c_i_reuse": {
   "decision": "keep the frozen c_i; stage 01 is NOT re-run",
-  "why": "The c_i profiling arm launches a solo server with no --enable-gpu-scheduler, --enable-controller or --enable-moore-hodgson, so _alg2_runtime_gate is False and the dispatch ledger is never populated. _handle_mh_migrated_away, _mh_scheduler_retired_rids, scheduler_retired_unacked and backend_admit_after_retire appear zero times in final_profile_ci.sh and profile_v2.py, and a solo profile performs no deactivation. The watchdog patch touches monitor_baseline_stage.py, which the c_i stage does not invoke (0 references). Stage 01 STATUS remains PASS from 2026-08-22T18:29:17Z and its artifacts are untouched.",
-  "audited_utc": "2026-08-23T01:57:55.026221+00:00"
+  "why": "The c_i profiling arm runs a solo server with no --enable-gpu-scheduler, --enable-controller or --enable-moore-hodgson, so _alg2_runtime_gate is False and _alg2_pending_adoption is never populated; a solo profile performs no deactivation, so the verdict handler, the worker-slot deferral and the placeholder discard are all unreachable. The drain-order swap is in the GPU scheduler process, which that arm does not run.",
+  "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "843815cf073d25fa94d15e4f6081a5fef5854a11",
+ "patch_blob": "8916cac57348b7d1388d5bf14ea5a59bc974816d",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -46,5 +46,62 @@
    "backend-queue-drain"
   ],
   "call_site_audit": "Every MigratedAwayReq originates from the deactivate handler (scheduler.py:1993 and :2055 call _evict_all_waiting_requests; _drain_backend_queue is reached only from it; the kv-stash report is inside _v6_stash_captured). There is no path that reports a request as gone while its model stays resident, so the sweep can never retire a live sequence of a resident model."
+ },
+ "deactivation_rollback": {
+  "invariant": "A deactivation that rolls back leaves the source operational at every layer, and leaves ownership where it was.",
+  "classification": "all changes CORRECTNESS-PLUMBING; none PAPER, none NEW-POLICY",
+  "changes": [
+   "gpu_scheduler._recv_requests_loop drains the engine channel before the request handler. Every engine-channel message (ActivateReqOutput, DeactivateReqOutput, BatchRunReq, BackendAdmitReq, PrefillCompleteReq, MigratedAwayReq, AdoptResumedReq) reports on work the scheduler itself forwarded, so none can depend on a pending control message; the reverse dependency is real.",
+   "worker_pool.handle_deactivate_model no longer releases the slot; gpu_scheduler._handle_deactivate_result releases it on the success verdict.",
+   "The DeactivateReqInput branch no longer pops the queue or the backend queue; both move to the success verdict, so a rollback has nothing to undo.",
+   "On a failed verdict the model state returns to activated -- it was left at deactivating, which is excluded from frontend intake and from admission.",
+   "alg2_resumed placeholders are discarded on success instead of being returned to the frontend as if they were requests.",
+   "_alg2_release_pending_adoption delivers held payloads to the frontend itself and is called on P0/P1/P3/P4; the P2 rollback simply does not call it."
+  ],
+  "no_retry_trigger": "_alg2_request_adoption keeps its single caller. On P2 the placeholder is never popped, so the outstanding ask stays valid and the existing Prism scheduler resumes the adoption unaided.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "heuristic",
+   "duplicate guard",
+   "forced slot reclaim",
+   "double assignment"
+  ],
+  "unchanged": [
+   "tau",
+   "frozen c_i",
+   "Moore-Hodgson select()",
+   "Algorithm 1",
+   "Algorithm 2 ordering",
+   "deadline and arrival semantics",
+   "migration policy",
+   "activation policy",
+   "KV allocator",
+   "workload",
+   "SLOs",
+   "admission ordering"
+  ],
+  "path_table": {
+   "P0 already-deactivated": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P1 eviction requested": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P2 stash rollback": {
+    "owner": "source engine",
+    "frontend_deliveries": 0
+   },
+   "P3 V6 eviction": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   },
+   "P4 V6 off": {
+    "owner": "frontend",
+    "frontend_deliveries": 1
+   }
+  }
  }
 }
