@@ -1,0 +1,14 @@
+{
+  "required_nofile": 65535,
+  "shell_soft_nofile": "65535",
+  "shell_hard_nofile": "524288",
+  "shell_soft_before_raise": "1024",
+  "recorded_before_benchmark_start": true,
+  "benchmark_pid": 897222,
+  "proc_limits_line": "Max open files 65535 524288 files ",
+  "proc_soft_nofile": 65535,
+  "proc_hard_nofile": 524288,
+  "smoke_run": "paper-faithful-v6 bursty rate2 seed1, scratch outdir",
+  "result": "the benchmark process itself received soft=65535 hard=524288; the shell it started in had soft=1024 before the raise, which is the fault that produced 1,971 Errno 24 failures in cal-0p00035-s42",
+  "fd_errors_in_smoke": 0
+}

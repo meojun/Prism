@@ -31,7 +31,14 @@ set -euo pipefail
 # Raise it here, where the client actually starts, and refuse to run if it
 # cannot be raised: a run under a low limit measures the client, not tau.
 PRISM_CLIENT_NOFILE=${PRISM_CLIENT_NOFILE:-65535}
-ulimit -n "$PRISM_CLIENT_NOFILE" 2>/dev/null || true
+# Raise only. `ulimit -n` sets rather than raises, so an unconditional call
+# would *lower* a shell that already had more than the requirement.
+_soft0=$(ulimit -Sn)
+if [ "$_soft0" != "unlimited" ] && [ "$_soft0" -lt "$PRISM_CLIENT_NOFILE" ]; then
+  # -S: raise the soft limit only. Bare `ulimit -n` sets the hard limit too,
+  # which would cap it at the requirement and make later raises impossible.
+  ulimit -S -n "$PRISM_CLIENT_NOFILE" 2>/dev/null || true
+fi
 _soft=$(ulimit -Sn); _hard=$(ulimit -Hn)
 if [ "$_soft" != "unlimited" ] && [ "$_soft" -lt "$PRISM_CLIENT_NOFILE" ]; then
   echo "FATAL: benchmark client nofile soft limit is $_soft, need $PRISM_CLIENT_NOFILE (hard=$_hard)" >&2
@@ -285,11 +292,12 @@ SAMPLER=$!
 
 cd "$PRISM_REPO/benchmark/multi-model"
 # Evidence, per run, that the client started with enough descriptors.
-python3 - "$OUTDIR" "$(ulimit -Sn)" "$(ulimit -Hn)" "$PRISM_CLIENT_NOFILE" <<'PYFD'
+PRISM_SOFT_BEFORE="$_soft0" python3 - "$OUTDIR" "$(ulimit -Sn)" "$(ulimit -Hn)" "$PRISM_CLIENT_NOFILE" <<'PYFD'
 import json, os, sys
 out, soft, hard, need = sys.argv[1:5]
 json.dump({"required_nofile": int(need),
            "shell_soft_nofile": soft, "shell_hard_nofile": hard,
+           "shell_soft_before_raise": os.environ.get("PRISM_SOFT_BEFORE", ""),
            "recorded_before_benchmark_start": True},
           open(os.path.join(out, "client_fd_limits.json"), "w"), indent=2)
 PYFD
