@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T08:21:04.718202+00:00",
+ "recorded_utc": "2026-08-23T09:59:59.942950+00:00",
  "previous_runtime_freeze": {
-  "commit": "47564b8",
-  "patch_blob": "8916cac57348b7d1388d5bf14ea5a59bc974816d"
+  "commit": "88f54f9",
+  "patch_blob": "c939cd311f6057b28ba21a76d9ac010e83dc152a"
  },
- "change": "staged request return, on top of the deactivation rollback repair",
+ "change": "observation-only Algorithm 2 logging, to separate b1 from b2",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "c939cd311f6057b28ba21a76d9ac010e83dc152a",
+ "patch_blob": "caef46638c450dbd64fc9f3f63b19235dfe839d2",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -117,5 +117,27 @@
    "ordering change"
   ],
   "failure_handling": "A request that cannot be serialised back is logged as staged_return_failed and still reported, matching the waiting-queue path: withholding the retirement would block the frontier on a request that has left this GPU either way."
+ },
+ "alg2_observation": {
+  "purpose": "Separate two hypotheses for the GPU0 3113-3115 stall: the engine loop running with a shared token that never matched (b1), against the loop not running at all (b2). The artifacts could not tell them apart -- staging is not logged and an activated idle engine is as silent as a dead one.",
+  "added": [
+   "_alg2_obs_fetch: every request taken off backend:<model>, with rid, alg2_seq, the shared token read at that moment, and waiting/running/staged/_activated",
+   "_alg2_obs_no_promote: staged work exists and none matched the token -- staged head rid/seq, the staged sequences, expected and shared token, counts. Rate-limited to 5 s.",
+   "_alg2_obs_heartbeat: emitted from the event loop every 5 s whether or not the engine is activated and whether or not it has work"
+  ],
+  "log_marker": "[PAPER-ALG2-OBS]",
+  "log_location": "<run>/server-logs/server.log",
+  "behaviour_change": "none. The observers only read state and log; they take no locks, write nothing, and every one is wrapped so it cannot raise. One assignment was added -- fetched_reqs is initialised to [] before the max_fetch_count branch -- so the observer can be called on a path where it was previously unbound; the branch itself is unchanged.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "heuristic",
+   "recovery",
+   "admission or ordering change"
+  ],
+  "verdict_rule": {
+   "b1": "heartbeats continue and staged_not_promoted records the mismatch",
+   "b2": "heartbeats stop and no fetch is recorded"
+  }
  }
 }
