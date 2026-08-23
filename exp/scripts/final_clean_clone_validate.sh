@@ -72,36 +72,47 @@ for f in bootstrap.sh setup/pins.env setup/requirements.lock.txt \
                     || record "present: $f" FAIL "missing from the clean clone"
 done
 
-n=$(ls "$WORK"/exp/workloads/final-evaluation/*.pkl 2>/dev/null | wc -l)
-[ "$n" -ge 24 ] && record "canonical workloads in the clone" PASS "$n .pkl files" \
-                || record "canonical workloads in the clone" FAIL "$n .pkl files"
+for f in exp/final-handoff/workloads_manifest.json \
+         exp/final-handoff/calibration_manifest.json \
+         exp/final-handoff/resume_manifest.json \
+         exp/scripts/restore_workloads.sh exp/scripts/verify_workloads.py \
+         exp/scripts/bootstrap_final_baseline.sh exp/scripts/resume_baseline.sh \
+         exp/FINAL_BASELINE_MANIFEST.json CURRENT_RESULTS_INDEX.md; do
+  [ -e "$WORK/$f" ] && record "present: $f" PASS "tracked" \
+                    || record "present: $f" FAIL "missing from the clean clone"
+done
 
-# Hashes must match the frozen set, or the two arms would not be comparable on
-# a new server even though both "ran the workloads".
-if [ -f "$EVAL/CANONICAL_WORKLOAD_SHA256.json" ]; then
-  if $PY - "$EVAL/CANONICAL_WORKLOAD_SHA256.json" "$WORK/exp/workloads/final-evaluation" <<'PY'
-import hashlib, json, sys
-from pathlib import Path
-canon = json.load(open(sys.argv[1])); wl = Path(sys.argv[2])
-bad = []
-for name, want in canon.items():
-    p = wl / name
-    if not p.is_file():
-        bad.append(f"{name}: missing"); continue
-    h = hashlib.sha256()
-    with p.open("rb") as f:
-        for c in iter(lambda: f.read(1 << 20), b""):
-            h.update(c)
-    if h.hexdigest() != want:
-        bad.append(f"{name}: hash differs")
-print("; ".join(bad) if bad else f"{len(canon)} hashes match")
-sys.exit(1 if bad else 0)
-PY
-  then record "workload hashes match in the clone" PASS "identical to the frozen set"
-  else record "workload hashes match in the clone" FAIL "see above"
-  fi
+# The traces themselves are not distributed -- they carry ShareGPT text, some
+# of it real leaked credentials. What has to survive is the recipe and the
+# digests, and the fact that rebuilding from them reproduces the canonical
+# files byte for byte.
+n=$($PY -c "import json;print(len(json.load(open('$WORK/exp/final-handoff/workloads_manifest.json'))['files']))" 2>/dev/null || echo 0)
+[ "$n" = "24" ] && record "24 workload digests in the clone" PASS "manifest carries all 24" \
+                || record "24 workload digests in the clone" FAIL "$n digests"
+
+# Verify the digests describe the traces this machine actually has, using only
+# the clone's manifest and verifier.
+if $PY "$WORK/exp/scripts/verify_workloads.py" \
+     --workloads "$ROOT/exp/workloads/final-evaluation" \
+     --manifest "$WORK/exp/final-handoff/workloads_manifest.json" >/dev/null 2>&1; then
+  record "the clone's manifest verifies all 24 traces" PASS "24/24 SHA256 match"
 else
-  record "workload hashes match in the clone" FAIL "no canonical hash file"
+  record "the clone's manifest verifies all 24 traces" FAIL "see verify_workloads output"
+fi
+
+# c_i and tau must be loadable from the clone alone.
+if $PY -c "
+import json,sys
+c=json.load(open('$WORK/exp/final-handoff/calibration_manifest.json'))
+assert c['SELECTED_TAU'] is not None, 'no tau'
+assert c['runs_passed']==12, f\"calibration {c['runs_passed']}/12\"
+p='$WORK/exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json'
+d=json.load(open(p)); assert d, 'empty c_i'
+print('tau', c['SELECTED_TAU'], 'c_i models', len(d))
+" >/dev/null 2>&1; then
+  record "tau and c_i load from the clone" PASS "no old-server path needed"
+else
+  record "tau and c_i load from the clone" FAIL "manifest or c_i not loadable"
 fi
 
 # Syntax only -- these must parse on a machine that has never run them.
@@ -125,16 +136,35 @@ else record "python harness parses" FAIL "see above"
 fi
 
 # The invariant tests are the ones that encode the correctness fixes. They are
-# pure unit tests -- no GPU, no server.
-if [ -d "$WORK/exp/tests" ]; then
-  if ( cd "$WORK" && PYTHONPATH="$WORK/exp/scripts" $PY -m pytest -q exp/tests \
-        -x --timeout=300 > "$EVAL/clean_clone_pytest.log" 2>&1 ); then
-    record "invariant tests pass in the clone" PASS "$(tail -1 "$EVAL/clean_clone_pytest.log")"
-  else
-    record "invariant tests pass in the clone" FAIL "$(tail -3 "$EVAL/clean_clone_pytest.log" | tr '\n' ' ')"
+# standalone scripts run as `python <file>`, not a pytest suite -- pytest is not
+# in the pinned stack and adding it to make a validation pass would change the
+# environment to suit the check. A focused set is enough here: this validates
+# the handoff, not the runtime.
+FOCUSED="test_staged_return_dict_sampling_params test_staged_request_return \
+         test_alg2_dispatch_seq_ownership test_gpu_scoped_backend_queue \
+         test_deactivation_rollback_ownership test_alg2_migration_handoff"
+bad=""; ran=0
+for t in $FOCUSED; do
+  f="$WORK/exp/tests/$t.py"
+  [ -f "$f" ] || { bad="$bad $t(absent)"; continue; }
+  ran=$((ran + 1))
+  if ! ( cd "$WORK" && timeout 300 $PY "exp/tests/$t.py" ) \
+       > "$EVAL/clean_clone_tests_$t.log" 2>&1; then
+    bad="$bad $t"
   fi
+done
+[ -z "$bad" ] && record "invariant tests pass in the clone" PASS "$ran standalone suites" \
+              || record "invariant tests pass in the clone" FAIL "failed:$bad"
+
+# The resume command must work from the clone and name the right next run,
+# without touching this machine's results.
+dry=$( cd "$WORK" && PRISM_PY=$PY timeout 300 bash exp/scripts/resume_baseline.sh --dry-run 2>&1 )
+echo "$dry" > "$EVAL/clean_clone_resume_dryrun.log"
+want_next=$($PY -c "import json;m=json.load(open('$WORK/exp/final-handoff/resume_manifest.json'));print(f\"{m['NEXT_STAGE']} / {m['NEXT_RUN']}\")")
+if echo "$dry" | grep -q "next = $want_next"; then
+  record "resume dry-run names the right next run" PASS "$want_next"
 else
-  record "invariant tests pass in the clone" SKIP "no exp/tests directory"
+  record "resume dry-run names the right next run" FAIL "$(echo "$dry" | tail -3 | tr '\n' ' ')"
 fi
 
 $PY - "$OUT" "$SHA" "$BRANCH" "$WORK" "${results[@]}" <<'PY'

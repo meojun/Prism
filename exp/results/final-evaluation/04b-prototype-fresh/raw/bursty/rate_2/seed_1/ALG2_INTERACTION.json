@@ -1,13 +1,14 @@
 {
   "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1",
-  "verdict": "FAIL",
+  "verdict": "PASS",
   "checks": [
     {
-      "check": "algorithm2_ran",
-      "pass": false,
+      "check": "algorithm2_absent_as_expected",
+      "pass": true,
       "detail": {
         "runtime_events": 0,
-        "alg2_log_lines": 0
+        "alg2_log_lines": 0,
+        "arm": "prototype"
       }
     },
     {

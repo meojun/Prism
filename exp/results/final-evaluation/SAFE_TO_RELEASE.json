@@ -1,0 +1,31 @@
+{
+  "decided_utc": "2026-08-23T21:34:35.636139+00:00",
+  "PIPELINE_STATUS": "STOPPED",
+  "HANDOFF_COMPLETE": "NO",
+  "SAFE_TO_RELEASE_SERVER": "NO",
+  "FINAL_RUNTIME_SHA": "6618671",
+  "HANDOFF_SHA": "2ea0275f25dd74a4a1ce12fa2daf02aa89a12cbd",
+  "branch": "exp/final-baseline-ready",
+  "conditions": {
+    "runtime_and_harness_pushed": true,
+    "raw_evidence_archived": true,
+    "pipeline_state_recorded": true,
+    "resume_point_recorded": true,
+    "provenance_recorded": true,
+    "handoff_document": true,
+    "clean_clone_validation": false,
+    "no_secrets_in_git": true,
+    "runtime_unchanged_by_packaging": true
+  },
+  "failed_steps": [
+    "dependency-audit",
+    "clean-clone"
+  ],
+  "resume": {
+    "stage": "04-prototype-fresh",
+    "run": "bursty r2 s2",
+    "command": "bash exp/scripts/final_overnight.sh",
+    "note": "the chain is resumable: a stage that passed under this runtime freeze is skipped, and a run with rc=0 and a passing VERIFICATION.json is not repeated. Clear exp/results/final-evaluation/STOP first, deliberately, after reading why it is there."
+  },
+  "reason": "unmet: clean_clone_validation, dependency-audit, clean-clone"
+}

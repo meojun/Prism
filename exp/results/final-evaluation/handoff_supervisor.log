@@ -1,2 +1,5 @@
 [2026-08-23T18:40:14Z] [handoff-sup] waiting for the chain to end (session prism-overnight)
 [2026-08-23T21:33:59Z] [handoff-sup] chain ended without a handoff; running it
+[2026-08-23T21:34:36Z] [handoff-sup] handoff finished rc=1
+[2026-08-23T22:23:35Z] [handoff-sup] waiting for the chain to end (session prism-overnight)
+[2026-08-23T22:26:05Z] [handoff-sup] a release verdict already exists; the chain ran its own handoff

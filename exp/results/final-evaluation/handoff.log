@@ -20,3 +20,7 @@ PIPELINE_STATUS = STOPPED
 [2026-08-23T21:34:21Z] [handoff]    large-file audit PASS: nothing staged over 50 MB
 [2026-08-23T21:34:21Z] [handoff] -> handoff-document
 [2026-08-23T21:34:21Z] [handoff]    handoff-document PASS
+[2026-08-23T21:34:23Z] [handoff] push verified: remote exp/final-baseline-ready is 23a6089b6b0dd66ac95937dfe66adbc7494375c7
+[2026-08-23T21:34:23Z] [handoff] -> clean-clone
+[2026-08-23T21:34:33Z] [handoff]    clean-clone FAIL (see /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/07-handoff/clean-clone.log)
+[2026-08-23T21:34:36Z] [handoff] HANDOFF INCOMPLETE -- HANDOFF_COMPLETE=NO ( dependency-audit clean-clone)

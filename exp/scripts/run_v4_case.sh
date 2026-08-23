@@ -268,6 +268,11 @@ V4ENV="export PRISM_V4_LOAD_TRACE='$PRISM_V4_LOAD_TRACE'"
 # Client-side per-rid final receipts, written as each request settles so a
 # killed run still has them. Only meaningful with PRISM_OBS=1.
 [ -n "${PRISM_OBS:-}" ] && export PRISM_CLIENT_RECEIPTS="$OUTDIR/client_receipts.jsonl"
+# The flags a run actually used are provenance. Reconstructing them later from
+# this script is guesswork, so the resolved command is written beside the run.
+printf '%s\n' "python3 -m sglang.launch_multi_model_server ${ARGS[*]}" \
+  > "$OUTDIR/SERVER_COMMAND.txt" 2>/dev/null || true
+
 tmux new-session -d -s "$SESSION" \
   "ulimit -n 65535 && export PRISM_ROOT='$PRISM_ROOT' PRISM_REPO='$PRISM_REPO' \
    PRISM_EXP='$PRISM_EXP' PYTHONPATH='$PRISM_REPO/python' && \

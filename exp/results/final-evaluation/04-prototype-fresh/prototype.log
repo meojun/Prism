@@ -1,3 +1,5 @@
 [final_stage] RUN protofresh-bursty-r2-s1 -> /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1
 [final_stage] protofresh-bursty-r2-s1 rc=0 state=COMPLETE
 [final_stage] STOP: Algorithm 2 interaction gate FAIL: algorithm2_ran -- diagnosing before standing down
+[final_stage] SKIP protofresh-bursty-r2-s1: already COMPLETE and verified
+[final_stage] RUN protofresh-bursty-r2-s2 -> /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2

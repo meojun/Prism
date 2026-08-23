@@ -1,0 +1,523 @@
+{
+  "what_this_is": "exactly what has run and what has not, so the next server repeats nothing and skips nothing",
+  "runtime_freeze": "6618671",
+  "selected_tau": 0.00035,
+  "calibration": {
+    "status": "COMPLETE",
+    "passed": 12,
+    "expected": 12
+  },
+  "prototype_arm": {
+    "stage": "04-prototype-fresh",
+    "counts": {
+      "PASS": 1,
+      "PENDING": 23,
+      "INVALID": 0
+    },
+    "conditions": [
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 1,
+        "id": "bursty_r2_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1",
+        "status": "PASS",
+        "note": null
+      },
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 2,
+        "id": "bursty_r2_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 3,
+        "id": "bursty_r2_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 1,
+        "id": "bursty_r4_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_4/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 2,
+        "id": "bursty_r4_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_4/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 3,
+        "id": "bursty_r4_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_4/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 1,
+        "id": "bursty_r8_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_8/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 2,
+        "id": "bursty_r8_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_8/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 3,
+        "id": "bursty_r8_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_8/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 1,
+        "id": "bursty_r14_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_14/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 2,
+        "id": "bursty_r14_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_14/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 3,
+        "id": "bursty_r14_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_14/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 1,
+        "id": "bursty_r20_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_20/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 2,
+        "id": "bursty_r20_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_20/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 3,
+        "id": "bursty_r20_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_20/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 1,
+        "id": "steady_r4_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_4/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 2,
+        "id": "steady_r4_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_4/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 3,
+        "id": "steady_r4_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_4/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 1,
+        "id": "steady_r8_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_8/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 2,
+        "id": "steady_r8_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_8/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 3,
+        "id": "steady_r8_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_8/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 1,
+        "id": "steady_r20_s1",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_20/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 2,
+        "id": "steady_r20_s2",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_20/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 3,
+        "id": "steady_r20_s3",
+        "stage": "04-prototype-fresh",
+        "run_dir": "exp/results/final-evaluation/04b-prototype-fresh/raw/steady/rate_20/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      }
+    ]
+  },
+  "final_arm": {
+    "stage": "05-final-c",
+    "counts": {
+      "PASS": 0,
+      "PENDING": 24,
+      "INVALID": 0
+    },
+    "conditions": [
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 1,
+        "id": "bursty_r2_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_2/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 2,
+        "id": "bursty_r2_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_2/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 2,
+        "seed": 3,
+        "id": "bursty_r2_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_2/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 1,
+        "id": "bursty_r4_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_4/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 2,
+        "id": "bursty_r4_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_4/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 4,
+        "seed": 3,
+        "id": "bursty_r4_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_4/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 1,
+        "id": "bursty_r8_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_8/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 2,
+        "id": "bursty_r8_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_8/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 8,
+        "seed": 3,
+        "id": "bursty_r8_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_8/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 1,
+        "id": "bursty_r14_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_14/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 2,
+        "id": "bursty_r14_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_14/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 14,
+        "seed": 3,
+        "id": "bursty_r14_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_14/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 1,
+        "id": "bursty_r20_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_20/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 2,
+        "id": "bursty_r20_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_20/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "bursty",
+        "rate": 20,
+        "seed": 3,
+        "id": "bursty_r20_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/bursty/rate_20/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 1,
+        "id": "steady_r4_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_4/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 2,
+        "id": "steady_r4_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_4/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 4,
+        "seed": 3,
+        "id": "steady_r4_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_4/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 1,
+        "id": "steady_r8_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_8/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 2,
+        "id": "steady_r8_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_8/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 8,
+        "seed": 3,
+        "id": "steady_r8_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_8/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 1,
+        "id": "steady_r20_s1",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_20/seed_1",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 2,
+        "id": "steady_r20_s2",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_20/seed_2",
+        "status": "PENDING",
+        "note": "never run"
+      },
+      {
+        "condition": "steady",
+        "rate": 20,
+        "seed": 3,
+        "id": "steady_r20_s3",
+        "stage": "05-final-c",
+        "run_dir": "exp/results/final-evaluation/05-final-c/raw/steady/rate_20/seed_3",
+        "status": "PENDING",
+        "note": "never run"
+      }
+    ]
+  },
+  "aggregation": {
+    "status": "PENDING"
+  },
+  "NEXT_STAGE": "04-prototype-fresh",
+  "NEXT_RUN": "bursty_r2_s2",
+  "NEXT_RUN_DIR": "exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2",
+  "resume_command": "bash exp/scripts/resume_baseline.sh",
+  "dry_run_command": "bash exp/scripts/resume_baseline.sh --dry-run",
+  "semantics": {
+    "skip": "a run with rc=0 and a passing VERIFICATION.json is never repeated; it is re-verified on the way past",
+    "rerun": "a stage that passed under a different runtime freeze is re-run, because its numbers came from different code; c_i is exempt, being a property of the hardware",
+    "stop": "exp/results/final-evaluation/STOP halts everything; it is cleared by a person after reading why it is there, never automatically"
+  }
+}

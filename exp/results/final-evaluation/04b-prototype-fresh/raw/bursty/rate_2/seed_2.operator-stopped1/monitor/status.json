@@ -1,0 +1,51 @@
+{
+  "current_phase": "model_load",
+  "gpu": [
+    "0, 3063 MiB, 1 %",
+    "1, 3048 MiB, 2 %"
+  ],
+  "gpu_processes": [
+    "4151357, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4151768, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4152170, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4152717, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4153262, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4154382, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 434 MiB",
+    "4157103, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 416 MiB",
+    "4157232, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 12 MiB",
+    "4151357, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4151768, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4152170, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4152717, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4153262, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4154382, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 434 MiB",
+    "4157104, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 416 MiB"
+  ],
+  "heartbeat_iso_utc": "2026-08-23T22:25:29.412597+00:00",
+  "heartbeat_timestamp": 1787523929.4125974,
+  "last_actual_progress_event": "Model service worker 5 started",
+  "last_log_timestamp": 1787523925.10937,
+  "last_progress_iso_utc": "2026-08-23T22:25:29.412597+00:00",
+  "last_progress_timestamp": 1787523929.4125974,
+  "no_progress_timeout_s": 240.0,
+  "phase_elapsed_s": 93.592,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [
+    "1441476 bash /root/Prism-final-regression-diagnosis/exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2 protofresh-bursty-r2-s2 v4-released-prototype-bursty-r2-s2 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp BENCHMARK_TIMEOUT=1500 bash /root/Prism-final-regression-diagnosis/exp/scripts/run_v4_case.sh released-prototype bursty 2 2 /root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation/bursty_r2_s2.pkl /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2",
+    "1441560 bash exp/scripts/run_baseline_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2 bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/STAGE_CMD.sh",
+    "1441571 bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/STAGE_CMD.sh",
+    "1441572 tee -a /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/pipeline.log",
+    "1441573 bash /root/Prism-final-regression-diagnosis/exp/scripts/run_v4_case.sh released-prototype bursty 2 2 /root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation/bursty_r2_s2.pkl /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2",
+    "1441605 bash -c ulimit -n 65535 && export PRISM_ROOT='/workspace/prism-exp' PRISM_REPO='/root/Prism-final-regression-diagnosis/prism-research'    PRISM_EXP='/root/Prism-final-regression-diagnosis/exp' PYTHONPATH='/root/Prism-final-regression-diagnosis/prism-research/python' &&    export CUDA_VISIBLE_DEVICES=0,1 && cd /root/Prism-final-regression-diagnosis/prism-research/benchmark/multi-model &&    source /root/Prism-final-regression-diagnosis/exp/scripts/env.sh && export CUDA_VISIBLE_DEVICES=0,1 && export PRISM_V4_LOAD_TRACE='/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/weight_transfers.jsonl' &&    { python3 /root/Prism-final-regression-diagnosis/exp/scripts/verify_sglang_source.py '/root/Prism-final-regression-diagnosis/prism-research' &&      python3 -m sglang.launch_multi_model_server --model-config-file /root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json --host 127.0.0.1 --port 42150 --disable-cuda-graph --disable-radix-cache --log-file /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/server.log --enable-elastic-memory --use-kvcached-v0 --enable-cpu-share-memory --max-mem-usage 67.28 --enable-gpu-scheduler --enable-controller --policy simple-global --enable-model-service --enable-worker-pool --workers-per-gpu 4 --num-model-service-workers 6 --num-gpus 2; }    2>&1 | tee /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/stdout.log",
+    "1441611 bash -c ulimit -n 65535 && export PRISM_ROOT='/workspace/prism-exp' PRISM_REPO='/root/Prism-final-regression-diagnosis/prism-research'    PRISM_EXP='/root/Prism-final-regression-diagnosis/exp' PYTHONPATH='/root/Prism-final-regression-diagnosis/prism-research/python' &&    export CUDA_VISIBLE_DEVICES=0,1 && cd /root/Prism-final-regression-diagnosis/prism-research/benchmark/multi-model &&    source /root/Prism-final-regression-diagnosis/exp/scripts/env.sh && export CUDA_VISIBLE_DEVICES=0,1 && export PRISM_V4_LOAD_TRACE='/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/weight_transfers.jsonl' &&    { python3 /root/Prism-final-regression-diagnosis/exp/scripts/verify_sglang_source.py '/root/Prism-final-regression-diagnosis/prism-research' &&      python3 -m sglang.launch_multi_model_server --model-config-file /root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json --host 127.0.0.1 --port 42150 --disable-cuda-graph --disable-radix-cache --log-file /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/server.log --enable-elastic-memory --use-kvcached-v0 --enable-cpu-share-memory --max-mem-usage 67.28 --enable-gpu-scheduler --enable-controller --policy simple-global --enable-model-service --enable-worker-pool --workers-per-gpu 4 --num-model-service-workers 6 --num-gpus 2; }    2>&1 | tee /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/stdout.log",
+    "1441612 tee /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/stdout.log",
+    "1441685 python3 -m sglang.launch_multi_model_server --model-config-file /root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json --host 127.0.0.1 --port 42150 --disable-cuda-graph --disable-radix-cache --log-file /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_2/server-logs/server.log --enable-elastic-memory --use-kvcached-v0 --enable-cpu-share-memory --max-mem-usage 67.28 --enable-gpu-scheduler --enable-controller --policy simple-global --enable-model-service --enable-worker-pool --workers-per-gpu 4 --num-model-service-workers 6 --num-gpus 2"
+  ],
+  "progress_count": 18,
+  "progress_signal": [
+    18,
+    2,
+    0
+  ],
+  "state": "RUNNING"
+}

@@ -1,0 +1,28 @@
+cloning exp/final-baseline-ready@23a6089 into /workspace/prism-handoff-validate
+  [PASS] clone from the pushed branch -- /workspace/prism-handoff-validate
+  [PASS] checkout the handoff commit -- 23a6089b6b0d
+  [PASS] runtime patch applies to its base commit -- 595ec1f170e7
+  [PASS] present: bootstrap.sh -- tracked
+  [PASS] present: setup/pins.env -- tracked
+  [PASS] present: setup/requirements.lock.txt -- tracked
+  [PASS] present: .env.example -- tracked
+  [PASS] present: FINAL_BASELINE_HANDOFF.md -- tracked
+  [PASS] present: exp/final_baseline_manifest.json -- tracked
+  [PASS] present: exp/scripts/env.sh -- tracked
+  [PASS] present: exp/scripts/handoff_preflight.py -- tracked
+  [PASS] present: exp/scripts/final_pipeline.sh -- tracked
+  [PASS] present: exp/scripts/run_v4_case.sh -- tracked
+  [PASS] present: exp/configs/v2/6model_2gpu.json -- tracked
+  [PASS] present: exp/configs/v2/slo_base.json -- tracked
+  [FAIL] canonical workloads in the clone -- 0 .pkl files
+bursty_r14_s1.pkl: missing; bursty_r14_s2.pkl: missing; bursty_r14_s3.pkl: missing; bursty_r20_s1.pkl: missing; bursty_r20_s2.pkl: missing; bursty_r20_s3.pkl: missing; bursty_r2_s1.pkl: missing; bursty_r2_s2.pkl: missing; bursty_r2_s3.pkl: missing; bursty_r4_s1.pkl: missing; bursty_r4_s2.pkl: missing; bursty_r4_s3.pkl: missing; bursty_r8_s1.pkl: missing; bursty_r8_s2.pkl: missing; bursty_r8_s3.pkl: missing; steady_r20_s1.pkl: missing; steady_r20_s2.pkl: missing; steady_r20_s3.pkl: missing; steady_r4_s1.pkl: missing; steady_r4_s2.pkl: missing; steady_r4_s3.pkl: missing; steady_r8_s1.pkl: missing; steady_r8_s2.pkl: missing; steady_r8_s3.pkl: missing
+  [FAIL] workload hashes match in the clone -- see above
+  [PASS] shell harness parses -- all scripts
+all modules parse
+  [PASS] python harness parses -- all modules
+  [FAIL] invariant tests pass in the clone -- /workspace/prism-exp/prism-venv/bin/python: No module named pytest 
+
+VERDICT: FAIL  (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/CLEAN_CLONE_VALIDATION.json)
+  failed: canonical workloads in the clone
+  failed: workload hashes match in the clone
+  failed: invariant tests pass in the clone

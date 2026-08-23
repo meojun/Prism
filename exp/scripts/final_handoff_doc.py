@@ -37,12 +37,26 @@ def main():
 
     L = []
     A = L.append
+    res = load(root / "exp/final-handoff/resume_manifest.json", {})
+    cal = load(root / "exp/final-handoff/calibration_manifest.json", {})
+    pc = (res.get("prototype_arm") or {}).get("counts", {})
+    fc = (res.get("final_arm") or {}).get("counts", {})
+    tau = cal.get("SELECTED_TAU", tau)
+
     A("# Prism paper-faithful baseline -- handoff")
     A("")
-    A(f"    PIPELINE_STATUS   = {status}")
-    A(f"    FINAL_RUNTIME_SHA = {runtime_sha}")
-    A(f"    HANDOFF_SHA       = {args.handoff_sha}")
-    A(f"    selected tau      = {tau if tau is not None else 'not frozen'}")
+    A("```")
+    A(f"PIPELINE_STATUS   = {status}")
+    A(f"CALIBRATION       = {'COMPLETE' if cal.get('runs_passed') == 12 else 'INCOMPLETE'} "
+      f"{cal.get('runs_passed', 0)}/12")
+    A(f"SELECTED_TAU      = {tau if tau is not None else 'not frozen'}")
+    A(f"PROTOTYPE         = {pc.get('PASS', 0)}/24")
+    A(f"FINAL             = {fc.get('PASS', 0)}/24")
+    A(f"NEXT_STAGE        = {res.get('NEXT_STAGE')}")
+    A(f"NEXT_RUN          = {res.get('NEXT_RUN')}")
+    A(f"FINAL_RUNTIME_SHA = {runtime_sha}")
+    A(f"HANDOFF_SHA       = {args.handoff_sha}")
+    A("```")
     A("")
     A("`FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`")
     A("is the commit that also carries these documents and manifests; its")
@@ -86,15 +100,33 @@ def main():
     A("- Blackwell (compute capability 10.0+) will not work: the stack is")
     A("  pinned to torch 2.4.0+cu121, which has no kernels for it")
     A("")
-    A("## Setup")
+    A("## Start here")
     A("")
     A("```bash")
-    A("git clone <this repo> prism-exp && cd prism-exp")
+    A("git clone https://github.com/meojun/Prism.git prism-exp && cd prism-exp")
     A(f"git checkout {args.handoff_sha}")
-    A("./bootstrap.sh              # pinned; see setup/pins.env + setup/requirements.lock.txt")
+    A("")
+    A("./bootstrap.sh                              # pinned venv + the six models")
     A("cp .env.example /workspace/.env && chmod 600 /workspace/.env")
-    A("$EDITOR /workspace/.env     # HF_TOKEN is required; the Llama models are gated")
+    A("$EDITOR /workspace/.env                     # HF_TOKEN is required")
+    A("")
+    A("bash exp/scripts/bootstrap_final_baseline.sh   # says what is still missing")
+    A("bash exp/scripts/restore_workloads.sh          # rebuild + verify 24 SHA256")
+    A("source exp/scripts/env.sh")
+    A("python exp/scripts/handoff_preflight.py        # must PASS before any run")
+    A("bash exp/scripts/resume_baseline.sh --dry-run  # confirms the next run")
+    A("bash exp/scripts/resume_baseline.sh            # continues the evaluation")
     A("```")
+    A("")
+    A("`bootstrap.sh` is pinned to `setup/pins.env` and "
+      "`setup/requirements.lock.txt`. Do not re-resolve the dependency set -- "
+      "the pins exist because re-resolving breaks this stack. "
+      "`bootstrap_final_baseline.sh` does not install anything system-wide; it "
+      "checks and reports.")
+    A("")
+    A("Secrets never live in the repository. `.env.example` names them: "
+      "`HF_TOKEN` (required -- the Llama models are gated) and "
+      "`PRISM_NTFY_TOPIC` (optional phone notifications).")
     A("")
     A("`bootstrap.sh` builds the virtualenv, downloads the six models and")
     A("prepares the ShareGPT data. It is idempotent and safe to re-run.")
@@ -149,11 +181,21 @@ def main():
     A("server, a server already running, the port, and write access. It exits")
     A("non-zero on any failure and no benchmark should start until it passes.")
     A("")
-    A("## Running it")
+    A("## Resuming, precisely")
     A("")
-    A("```bash")
-    A("bash exp/scripts/final_overnight.sh")
-    A("```")
+    A(f"The evaluation stopped partway. The next run is "
+      f"**`{res.get('NEXT_STAGE')}` / `{res.get('NEXT_RUN')}`**, and "
+      "`resume_baseline.sh` reads that from "
+      "`exp/final-handoff/resume_manifest.json` rather than from anyone's "
+      "memory. It refuses to start if the runtime freeze, the workload "
+      "digests, `c_i` or tau do not match what that manifest records.")
+    A("")
+    A("**Calibration is never repeated.** It is complete, and tau is read from "
+      "`exp/final-handoff/calibration_manifest.json`.")
+    A("")
+    A("Order of work once resumed: the remaining prototype conditions, then "
+      "the 24 final Prism conditions, then aggregation, then the handoff "
+      "packaging again.")
     A("")
     A("That starts the whole chain under tmux with a watchdog, survives an SSH")
     A("disconnect, and runs: preflight, c_i, 12 calibration runs, tau")

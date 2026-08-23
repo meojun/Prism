@@ -6,3 +6,5 @@
 [2026-08-23T18:31:27Z] [watchdog] watching session prism-overnight
 [2026-08-23T18:31:29Z] [watchdog] session prism-overnight is up; watching
 [2026-08-23T21:33:43Z] [watchdog] session gone with a STOP already recorded at 04-prototype-fresh; it reported itself
+[2026-08-23T22:23:35Z] [watchdog] watching session prism-overnight
+[2026-08-23T22:23:37Z] [watchdog] session prism-overnight is up; watching

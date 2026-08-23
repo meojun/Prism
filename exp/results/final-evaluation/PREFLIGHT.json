@@ -1,0 +1,184 @@
+{
+  "verdict": "PASS",
+  "root": "/root/Prism-final-regression-diagnosis",
+  "checks": [
+    {
+      "check": "baseline manifest present",
+      "pass": true,
+      "required": true,
+      "detail": "exp/FINAL_BASELINE_MANIFEST.json"
+    },
+    {
+      "check": "2 GPUs visible",
+      "pass": true,
+      "required": true,
+      "detail": [
+        "0, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0",
+        "1, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0"
+      ]
+    },
+    {
+      "check": "each GPU has at least 80 GB",
+      "pass": true,
+      "required": true,
+      "detail": "[81920, 81920] MiB"
+    },
+    {
+      "check": "compute capability is supported by the pinned stack",
+      "pass": true,
+      "required": true,
+      "detail": "compute_cap ['8.0']; the pinned torch 2.4.0+cu121 has no Blackwell kernels"
+    },
+    {
+      "check": "torch sees CUDA",
+      "pass": true,
+      "required": true,
+      "detail": {
+        "cuda": true,
+        "n": 2,
+        "torch": "2.4.0+cu121"
+      }
+    },
+    {
+      "check": "all six models present in the cache",
+      "pass": true,
+      "required": true,
+      "detail": "6 models under /workspace/.hf_home"
+    },
+    {
+      "check": "model revisions match the ones evaluated",
+      "pass": true,
+      "required": true,
+      "detail": "revisions match"
+    },
+    {
+      "check": "all 24 canonical workloads present",
+      "pass": true,
+      "required": true,
+      "detail": "24 files"
+    },
+    {
+      "check": "canonical workload hashes match",
+      "pass": true,
+      "required": true,
+      "detail": "all match"
+    },
+    {
+      "check": "env.sh present",
+      "pass": true,
+      "required": true,
+      "detail": "/root/Prism-final-regression-diagnosis/exp/scripts/env.sh"
+    },
+    {
+      "check": "FlashInfer workspace is at least 1 GiB",
+      "pass": true,
+      "required": true,
+      "detail": "FLASHINFER_WORKSPACE_SIZE=1073741824; below 1 GiB the server dies mid-run on model_6 prefill"
+    },
+    {
+      "check": "HF_HOME resolves to a real cache",
+      "pass": true,
+      "required": true,
+      "detail": "/workspace/.hf_home"
+    },
+    {
+      "check": "PRISM_ROOT resolves",
+      "pass": true,
+      "required": true,
+      "detail": "/workspace/prism-exp"
+    },
+    {
+      "check": "ShareGPT dataset directory present",
+      "pass": true,
+      "required": false,
+      "detail": "/workspace/datasets"
+    },
+    {
+      "check": "HF_TOKEN available for the gated Llama models",
+      "pass": true,
+      "required": true,
+      "detail": "set it in the .env file outside the repository; see .env.example"
+    },
+    {
+      "check": "redis-server installed",
+      "pass": true,
+      "required": true,
+      "detail": "/usr/bin/redis-server"
+    },
+    {
+      "check": "redis answers PING",
+      "pass": true,
+      "required": true,
+      "detail": "the GPU scheduler's backend queues live in redis"
+    },
+    {
+      "check": "descriptor limit is high enough for the client",
+      "pass": true,
+      "required": true,
+      "detail": "soft=524288 hard=524288; the benchmark client raises the soft limit to 65535 and a lower hard limit caps it, which measures the client instead of the system"
+    },
+    {
+      "check": "no stale kvcached shared-memory segments",
+      "pass": true,
+      "required": true,
+      "detail": "/dev/shm is clean"
+    },
+    {
+      "check": "no server already running",
+      "pass": true,
+      "required": true,
+      "detail": "none"
+    },
+    {
+      "check": "required ports are free",
+      "pass": true,
+      "required": true,
+      "detail": [
+        41800
+      ]
+    },
+    {
+      "check": "handoff manifests present",
+      "pass": true,
+      "required": true,
+      "detail": "/root/Prism-final-regression-diagnosis/exp/final-handoff"
+    },
+    {
+      "check": "tau is recorded, not remembered",
+      "pass": true,
+      "required": true,
+      "detail": "selected tau = 0.00035"
+    },
+    {
+      "check": "runtime source matches the freeze",
+      "pass": true,
+      "required": true,
+      "detail": "freeze 6618671: 072389ce9991 vs 072389ce9991"
+    },
+    {
+      "check": "c_i profile matches the one tau was chosen against",
+      "pass": true,
+      "required": true,
+      "detail": "prefill_speed_final_a100.json: 918b7b4aca29 vs 918b7b4aca29"
+    },
+    {
+      "check": "resume manifest is complete and consistent",
+      "pass": true,
+      "required": true,
+      "detail": "next = 04-prototype-fresh / bursty_r2_s2; prototype {'PASS': 1, 'PENDING': 23, 'INVALID': 0}; final {'PASS': 0, 'PENDING': 24, 'INVALID': 0}"
+    },
+    {
+      "check": "no stop marker in force",
+      "pass": true,
+      "required": true,
+      "detail": "none"
+    },
+    {
+      "check": "results directory is writable",
+      "pass": true,
+      "required": true,
+      "detail": "/root/Prism-final-regression-diagnosis/exp/results"
+    }
+  ],
+  "failed": []
+}

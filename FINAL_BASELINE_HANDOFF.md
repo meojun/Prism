@@ -1,9 +1,16 @@
 # Prism paper-faithful baseline -- handoff
 
-    PIPELINE_STATUS   = STOPPED
-    FINAL_RUNTIME_SHA = 6618671
-    HANDOFF_SHA       = 23a6089
-    selected tau      = 0.00035
+```
+PIPELINE_STATUS   = INCOMPLETE
+CALIBRATION       = COMPLETE 12/12
+SELECTED_TAU      = 0.00035
+PROTOTYPE         = 1/24
+FINAL             = 0/24
+NEXT_STAGE        = 04-prototype-fresh
+NEXT_RUN          = bursty_r2_s2
+FINAL_RUNTIME_SHA = 6618671
+HANDOFF_SHA       = pending
+```
 
 `FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`
 is the commit that also carries these documents and manifests; its
@@ -12,15 +19,10 @@ runtime behaviour.
 
 ## This baseline is not complete
 
-The chain ended in **STOPPED**. Do not cite these numbers as a
+The chain ended in **INCOMPLETE**. Do not cite these numbers as a
 finished comparison. What exists, and where to pick it up, is in
 [Resume](#resume) below and in
 `exp/results/final-evaluation/PIPELINE_STATE.json`.
-
-Stop reason: `Algorithm 2 interaction gate FAIL: algorithm2_ran in protofresh-bursty-r2-s1 (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1)`
-
-Failed stages: 04-prototype-fresh
-  - `04-prototype-fresh`: a prototype run failed
 
 ## What this is
 
@@ -38,15 +40,27 @@ and KV migration between them.
 - Blackwell (compute capability 10.0+) will not work: the stack is
   pinned to torch 2.4.0+cu121, which has no kernels for it
 
-## Setup
+## Start here
 
 ```bash
-git clone <this repo> prism-exp && cd prism-exp
-git checkout 23a6089
-./bootstrap.sh              # pinned; see setup/pins.env + setup/requirements.lock.txt
+git clone https://github.com/meojun/Prism.git prism-exp && cd prism-exp
+git checkout pending
+
+./bootstrap.sh                              # pinned venv + the six models
 cp .env.example /workspace/.env && chmod 600 /workspace/.env
-$EDITOR /workspace/.env     # HF_TOKEN is required; the Llama models are gated
+$EDITOR /workspace/.env                     # HF_TOKEN is required
+
+bash exp/scripts/bootstrap_final_baseline.sh   # says what is still missing
+bash exp/scripts/restore_workloads.sh          # rebuild + verify 24 SHA256
+source exp/scripts/env.sh
+python exp/scripts/handoff_preflight.py        # must PASS before any run
+bash exp/scripts/resume_baseline.sh --dry-run  # confirms the next run
+bash exp/scripts/resume_baseline.sh            # continues the evaluation
 ```
+
+`bootstrap.sh` is pinned to `setup/pins.env` and `setup/requirements.lock.txt`. Do not re-resolve the dependency set -- the pins exist because re-resolving breaks this stack. `bootstrap_final_baseline.sh` does not install anything system-wide; it checks and reports.
+
+Secrets never live in the repository. `.env.example` names them: `HF_TOKEN` (required -- the Llama models are gated) and `PRISM_NTFY_TOPIC` (optional phone notifications).
 
 `bootstrap.sh` builds the virtualenv, downloads the six models and
 prepares the ShareGPT data. It is idempotent and safe to re-run.
@@ -100,11 +114,13 @@ redis, the descriptor limit, stale `/dev/shm` segments from a crashed
 server, a server already running, the port, and write access. It exits
 non-zero on any failure and no benchmark should start until it passes.
 
-## Running it
+## Resuming, precisely
 
-```bash
-bash exp/scripts/final_overnight.sh
-```
+The evaluation stopped partway. The next run is **`04-prototype-fresh` / `bursty_r2_s2`**, and `resume_baseline.sh` reads that from `exp/final-handoff/resume_manifest.json` rather than from anyone's memory. It refuses to start if the runtime freeze, the workload digests, `c_i` or tau do not match what that manifest records.
+
+**Calibration is never repeated.** It is complete, and tau is read from `exp/final-handoff/calibration_manifest.json`.
+
+Order of work once resumed: the remaining prototype conditions, then the 24 final Prism conditions, then aggregation, then the handoff packaging again.
 
 That starts the whole chain under tmux with a watchdog, survives an SSH
 disconnect, and runs: preflight, c_i, 12 calibration runs, tau
@@ -140,7 +156,7 @@ python exp/scripts/final_aggregate.py --out-dir exp/results/final-evaluation
 
 ```bash
 git clone <this repo> prism-exp && cd prism-exp
-git checkout 23a6089
+git checkout pending
 ./bootstrap.sh
 cp .env.example /workspace/.env && $EDITOR /workspace/.env
 source exp/scripts/env.sh

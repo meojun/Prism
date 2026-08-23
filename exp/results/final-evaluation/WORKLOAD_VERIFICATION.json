@@ -1,0 +1,178 @@
+{
+  "verdict": "PASS",
+  "workload_dir": "exp/workloads/final-evaluation",
+  "checked": 24,
+  "expected": 24,
+  "missing": [],
+  "mismatched": [],
+  "files": [
+    {
+      "file": "bursty_r14_s1.pkl",
+      "verdict": "OK",
+      "expected": "fb4376ed6b5b1241ed4ddacc316e929fbf50e611a79713da42b02b53c9f963ce",
+      "got": "fb4376ed6b5b1241ed4ddacc316e929fbf50e611a79713da42b02b53c9f963ce",
+      "size_bytes": 8811517
+    },
+    {
+      "file": "bursty_r14_s2.pkl",
+      "verdict": "OK",
+      "expected": "6989352de58affcb970f3aeb51e795bc6a50249fbdb0bfb4c122f39f320e668e",
+      "got": "6989352de58affcb970f3aeb51e795bc6a50249fbdb0bfb4c122f39f320e668e",
+      "size_bytes": 8635128
+    },
+    {
+      "file": "bursty_r14_s3.pkl",
+      "verdict": "OK",
+      "expected": "f17af2feae7a196d01b6f15376274625c87813f62123213cad8c20b7f1847da5",
+      "got": "f17af2feae7a196d01b6f15376274625c87813f62123213cad8c20b7f1847da5",
+      "size_bytes": 8705816
+    },
+    {
+      "file": "bursty_r20_s1.pkl",
+      "verdict": "OK",
+      "expected": "666c453234519310d868fde79e02616522aa26077a2f48889790bc317174f27a",
+      "got": "666c453234519310d868fde79e02616522aa26077a2f48889790bc317174f27a",
+      "size_bytes": 12290256
+    },
+    {
+      "file": "bursty_r20_s2.pkl",
+      "verdict": "OK",
+      "expected": "7ebc010c195a52a29986e1a11f495422144aaaf7a0efc5c3abcb222be944d006",
+      "got": "7ebc010c195a52a29986e1a11f495422144aaaf7a0efc5c3abcb222be944d006",
+      "size_bytes": 11991650
+    },
+    {
+      "file": "bursty_r20_s3.pkl",
+      "verdict": "OK",
+      "expected": "27c406708df961836fd2dc7c7eb4fa093d8627dfd2d1a0a16fc082a7ed35dbe6",
+      "got": "27c406708df961836fd2dc7c7eb4fa093d8627dfd2d1a0a16fc082a7ed35dbe6",
+      "size_bytes": 12315464
+    },
+    {
+      "file": "bursty_r2_s1.pkl",
+      "verdict": "OK",
+      "expected": "ff64af31096ae24b3d5ec05ece40d940d0687bcf9921ab55e0e5c5a56f18d1e2",
+      "got": "ff64af31096ae24b3d5ec05ece40d940d0687bcf9921ab55e0e5c5a56f18d1e2",
+      "size_bytes": 1187316
+    },
+    {
+      "file": "bursty_r2_s2.pkl",
+      "verdict": "OK",
+      "expected": "ad546d52aaff40f16658ce866cc5fc1c484fd8508dd16c9dba410009c8201e37",
+      "got": "ad546d52aaff40f16658ce866cc5fc1c484fd8508dd16c9dba410009c8201e37",
+      "size_bytes": 1179555
+    },
+    {
+      "file": "bursty_r2_s3.pkl",
+      "verdict": "OK",
+      "expected": "b88034f0dded1790016a8afdafdb585a9c488d9cb54b6d1cc49c0faf6e28ae26",
+      "got": "b88034f0dded1790016a8afdafdb585a9c488d9cb54b6d1cc49c0faf6e28ae26",
+      "size_bytes": 1153860
+    },
+    {
+      "file": "bursty_r4_s1.pkl",
+      "verdict": "OK",
+      "expected": "012eff9296cc1e12b567f2c226d9ab561756656aca32e1bd36839c4b35fa12e6",
+      "got": "012eff9296cc1e12b567f2c226d9ab561756656aca32e1bd36839c4b35fa12e6",
+      "size_bytes": 2477069
+    },
+    {
+      "file": "bursty_r4_s2.pkl",
+      "verdict": "OK",
+      "expected": "4e3b09d3ff45239fd7e15cb6d33cf020462624737cd08274aa251b361a685fc1",
+      "got": "4e3b09d3ff45239fd7e15cb6d33cf020462624737cd08274aa251b361a685fc1",
+      "size_bytes": 2449476
+    },
+    {
+      "file": "bursty_r4_s3.pkl",
+      "verdict": "OK",
+      "expected": "618727b2c030891e81ba6e93b1a493947287ebab51b140ab5ad2b863b37b7410",
+      "got": "618727b2c030891e81ba6e93b1a493947287ebab51b140ab5ad2b863b37b7410",
+      "size_bytes": 2426364
+    },
+    {
+      "file": "bursty_r8_s1.pkl",
+      "verdict": "OK",
+      "expected": "78c2e3d6416ea7ddb9e7a8bd27905a8920769089a2e8ce7c5235e0274b075a9c",
+      "got": "78c2e3d6416ea7ddb9e7a8bd27905a8920769089a2e8ce7c5235e0274b075a9c",
+      "size_bytes": 4908044
+    },
+    {
+      "file": "bursty_r8_s2.pkl",
+      "verdict": "OK",
+      "expected": "129b0d00a44d709f4de8d61506632ccc8af07664f1bed4439b350764c738a37e",
+      "got": "129b0d00a44d709f4de8d61506632ccc8af07664f1bed4439b350764c738a37e",
+      "size_bytes": 5030325
+    },
+    {
+      "file": "bursty_r8_s3.pkl",
+      "verdict": "OK",
+      "expected": "34e6ece2600a791de74dfb2fa948efbad4be6b5829c694a005f08f2a90089094",
+      "got": "34e6ece2600a791de74dfb2fa948efbad4be6b5829c694a005f08f2a90089094",
+      "size_bytes": 4975535
+    },
+    {
+      "file": "steady_r20_s1.pkl",
+      "verdict": "OK",
+      "expected": "1d0be30b3dff4417119db65b1ac24ba2da26742e360d6017991dbe51cd8c33bb",
+      "got": "1d0be30b3dff4417119db65b1ac24ba2da26742e360d6017991dbe51cd8c33bb",
+      "size_bytes": 12285501
+    },
+    {
+      "file": "steady_r20_s2.pkl",
+      "verdict": "OK",
+      "expected": "f8ea56b89fb430174fde9074273dfa3202f355156698c02f47ef1a9d09fe33bd",
+      "got": "f8ea56b89fb430174fde9074273dfa3202f355156698c02f47ef1a9d09fe33bd",
+      "size_bytes": 11978687
+    },
+    {
+      "file": "steady_r20_s3.pkl",
+      "verdict": "OK",
+      "expected": "81fc1645951eedf04138c38723aafe1b36a6543dd9928a49a24a91cf11753744",
+      "got": "81fc1645951eedf04138c38723aafe1b36a6543dd9928a49a24a91cf11753744",
+      "size_bytes": 12311471
+    },
+    {
+      "file": "steady_r4_s1.pkl",
+      "verdict": "OK",
+      "expected": "bcb1e3e005245c9bd1a7e2c34cf78bb18fb73755ba04e1a53c5b0b82dac1cb5d",
+      "got": "bcb1e3e005245c9bd1a7e2c34cf78bb18fb73755ba04e1a53c5b0b82dac1cb5d",
+      "size_bytes": 2476157
+    },
+    {
+      "file": "steady_r4_s2.pkl",
+      "verdict": "OK",
+      "expected": "22554af80c0cb150d68635651e16e13789fb32d318cf67aa83432816be1f62d9",
+      "got": "22554af80c0cb150d68635651e16e13789fb32d318cf67aa83432816be1f62d9",
+      "size_bytes": 2446791
+    },
+    {
+      "file": "steady_r4_s3.pkl",
+      "verdict": "OK",
+      "expected": "4d22e263a5b8307a1e50f1c1610801990b915f60cfb000e4b3445def8496a005",
+      "got": "4d22e263a5b8307a1e50f1c1610801990b915f60cfb000e4b3445def8496a005",
+      "size_bytes": 2424459
+    },
+    {
+      "file": "steady_r8_s1.pkl",
+      "verdict": "OK",
+      "expected": "fa127fbc60d1e0c9ac9d33b3f53ddc65fa913a893b579cafc2d36e16ffcb486c",
+      "got": "fa127fbc60d1e0c9ac9d33b3f53ddc65fa913a893b579cafc2d36e16ffcb486c",
+      "size_bytes": 4906208
+    },
+    {
+      "file": "steady_r8_s2.pkl",
+      "verdict": "OK",
+      "expected": "89783f4999e9fb8d21a0eb62bbe7954a778aacf03e8c0db774196c0c62dd78a8",
+      "got": "89783f4999e9fb8d21a0eb62bbe7954a778aacf03e8c0db774196c0c62dd78a8",
+      "size_bytes": 5025054
+    },
+    {
+      "file": "steady_r8_s3.pkl",
+      "verdict": "OK",
+      "expected": "5cbdbbb93335e9dc4e6fdcdad2d12cea4ffde51acaa5c4207d64091f5f0fcb63",
+      "got": "5cbdbbb93335e9dc4e6fdcdad2d12cea4ffde51acaa5c4207d64091f5f0fcb63",
+      "size_bytes": 4973933
+    }
+  ]
+}

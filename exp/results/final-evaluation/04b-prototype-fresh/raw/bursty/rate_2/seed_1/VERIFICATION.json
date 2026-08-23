@@ -1,0 +1,38 @@
+{
+  "label": "protofresh-bursty-r2-s1",
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1",
+  "rc": "0",
+  "verdict": "PASS",
+  "failed_gates": [],
+  "gates_without_evidence": [],
+  "gates": {
+    "rc_zero": true,
+    "no_staged_return_failure": true,
+    "all_requests_accounted": true,
+    "no_stale_dispatched_sequences": true,
+    "no_alg2_order_violation": true,
+    "no_ownership_identity_mismatch": true,
+    "no_client_fd_failure": true,
+    "no_unexpected_connection_failure": true
+  },
+  "numbers": {
+    "offered_requests": 858,
+    "completed": 858,
+    "aborted": 0,
+    "client_errors": 0,
+    "throughput_req_s": 1.9882165933859104,
+    "ttft_mean_s": 0.255539628731343,
+    "ttft_p99_s": 3.9156205725669793,
+    "tpot_mean_s": 0.036133000130402944,
+    "tpot_p99_s": 0.07968294445011337,
+    "e2e_mean_s": 6.361463203751602,
+    "e2e_p99_s": 21.559738126310982,
+    "joint_slo_attainment": 0.3706293706293706,
+    "joint_slo_goodput_req_s": 0.7368914646814912,
+    "migrations_executed": 0,
+    "migrated_weight_bytes": 0,
+    "migrated_kv_bytes": 0,
+    "alg2_order_violations": 0,
+    "staged_return_failures": 0
+  }
+}

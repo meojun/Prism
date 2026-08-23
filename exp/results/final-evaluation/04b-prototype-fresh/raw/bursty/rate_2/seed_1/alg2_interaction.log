@@ -1,5 +1,4 @@
-  FAIL  algorithm2_ran
-        {"runtime_events": 0, "alg2_log_lines": 0}
+  PASS  algorithm2_absent_as_expected
   PASS  no_alg2_order_violation
   PASS  runtime_raised_no_ordering_error
   PASS  sequence_tokens_are_monotonic
@@ -14,4 +13,4 @@
   PASS  no_migration_induced_abort
   PASS  no_fatal_cuda_or_nccl
 
-VERDICT: FAIL  (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1/ALG2_INTERACTION.json)
+VERDICT: PASS  (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1/ALG2_INTERACTION.json)

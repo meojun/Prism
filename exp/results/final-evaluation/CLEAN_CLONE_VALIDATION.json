@@ -1,0 +1,114 @@
+{
+  "validated_utc": "2026-08-23T21:34:33.488970+00:00",
+  "commit": "23a6089b6b0dd66ac95937dfe66adbc7494375c7",
+  "branch": "exp/final-baseline-ready",
+  "clone_dir": "/workspace/prism-handoff-validate",
+  "verdict": "FAIL",
+  "failed": [
+    "canonical workloads in the clone",
+    "workload hashes match in the clone",
+    "invariant tests pass in the clone"
+  ],
+  "checks": [
+    {
+      "check": "clone from the pushed branch",
+      "verdict": "PASS",
+      "detail": "/workspace/prism-handoff-validate"
+    },
+    {
+      "check": "checkout the handoff commit",
+      "verdict": "PASS",
+      "detail": "23a6089b6b0d"
+    },
+    {
+      "check": "runtime patch applies to its base commit",
+      "verdict": "PASS",
+      "detail": "595ec1f170e7"
+    },
+    {
+      "check": "present: bootstrap.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: setup/pins.env",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: setup/requirements.lock.txt",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: .env.example",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: FINAL_BASELINE_HANDOFF.md",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/final_baseline_manifest.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/env.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/handoff_preflight.py",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/final_pipeline.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/run_v4_case.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/configs/v2/6model_2gpu.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/configs/v2/slo_base.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "canonical workloads in the clone",
+      "verdict": "FAIL",
+      "detail": "0 .pkl files"
+    },
+    {
+      "check": "workload hashes match in the clone",
+      "verdict": "FAIL",
+      "detail": "see above"
+    },
+    {
+      "check": "shell harness parses",
+      "verdict": "PASS",
+      "detail": "all scripts"
+    },
+    {
+      "check": "python harness parses",
+      "verdict": "PASS",
+      "detail": "all modules"
+    },
+    {
+      "check": "invariant tests pass in the clone",
+      "verdict": "FAIL",
+      "detail": "/workspace/prism-exp/prism-venv/bin/python: No module named pytest "
+    }
+  ]
+}

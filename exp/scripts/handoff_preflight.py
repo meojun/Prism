@@ -124,7 +124,13 @@ def main():
         c.add("model config present", False, str(cfg_path))
 
     # --- workloads --------------------------------------------------------
-    canon = (manifest.get("workloads") or {}).get("canonical_sha256") or {}
+    wlm = root / "exp/final-handoff/workloads_manifest.json"
+    canon = {}
+    if wlm.is_file():
+        canon = {n: f["sha256"]
+                 for n, f in json.loads(wlm.read_text())["files"].items()}
+    if not canon:
+        canon = (manifest.get("workloads") or {}).get("canonical_sha256") or {}
     wl = root / "exp/workloads/final-evaluation"
     bad, absent = [], []
     for name, want in canon.items():
@@ -177,9 +183,12 @@ def main():
         if Path("/dev/shm").is_dir() else []
     c.add("no stale kvcached shared-memory segments", not shm,
           shm or "/dev/shm is clean")
-    r = sh("pgrep -af 'sglang.launch_multi_model_server' | head -5")
-    c.add("no server already running", not r.stdout.strip(),
-          r.stdout.strip().splitlines() or "none")
+    # pgrep -f matches on the whole command line, so the probe finds itself.
+    # Match the module path without writing it as one literal string.
+    r = sh("pgrep -af 'sglang[.]launch_multi_model_server' "
+           "| grep -v 'pgrep' | head -5")
+    running = [l for l in r.stdout.strip().splitlines() if l.strip()]
+    c.add("no server already running", not running, running or "none")
     busy = []
     for port in args.ports:
         s = socket.socket()
@@ -188,6 +197,44 @@ def main():
             busy.append(port)
         s.close()
     c.add("required ports are free", not busy, busy or list(args.ports))
+
+    # --- handoff provenance ----------------------------------------------
+    hd = root / "exp/final-handoff"
+    cal = json.loads((hd / "calibration_manifest.json").read_text()) \
+        if (hd / "calibration_manifest.json").is_file() else {}
+    res = json.loads((hd / "resume_manifest.json").read_text()) \
+        if (hd / "resume_manifest.json").is_file() else {}
+    c.add("handoff manifests present", bool(cal) and bool(res), str(hd))
+    c.add("tau is recorded, not remembered", cal.get("SELECTED_TAU") is not None,
+          f"selected tau = {cal.get('SELECTED_TAU')}")
+
+    freeze = (manifest.get("final_runtime_sha")
+              or res.get("runtime_freeze"))
+    patch = "patches/final_baseline_ready/prism_research_worktree.patch"
+    frozen = sh(f"git -C '{root}' rev-parse '{freeze}:{patch}' 2>/dev/null").stdout.strip()
+    now = sh(f"git -C '{root}' hash-object '{root}/{patch}' 2>/dev/null").stdout.strip()
+    c.add("runtime source matches the freeze",
+          bool(frozen) and frozen == now,
+          f"freeze {freeze}: {frozen[:12] or 'unknown'} vs {now[:12] or 'unknown'}")
+
+    ci = root / "exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json"
+    c.add("c_i profile matches the one tau was chosen against",
+          ci.is_file() and sha256_file(ci) == cal.get("c_i_sha256"),
+          f"{ci.name}: {(sha256_file(ci) or '')[:12]} vs "
+          f"{(cal.get('c_i_sha256') or '')[:12]}")
+
+    nxt = res.get("NEXT_RUN")
+    counts = ((res.get("prototype_arm") or {}).get("counts") or {})
+    fcounts = ((res.get("final_arm") or {}).get("counts") or {})
+    total = sum(counts.values()) + sum(fcounts.values())
+    c.add("resume manifest is complete and consistent",
+          total == 48 and (nxt is not None or res.get("NEXT_STAGE") is None),
+          f"next = {res.get('NEXT_STAGE')} / {nxt}; prototype {counts}; final {fcounts}")
+
+    c.add("no stop marker in force",
+          not (root / "exp/results/final-evaluation/STOP").is_file(),
+          (root / "exp/results/final-evaluation/STOP").read_text().strip()
+          if (root / "exp/results/final-evaluation/STOP").is_file() else "none")
 
     # --- output -----------------------------------------------------------
     outdir = root / "exp/results"

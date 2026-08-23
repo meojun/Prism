@@ -1,10 +1,8 @@
 {
-  "PIPELINE_STATUS": "STOPPED",
+  "PIPELINE_STATUS": "INCOMPLETE",
   "FINAL_RUNTIME_SHA": "6618671",
-  "stop_reason": "Algorithm 2 interaction gate FAIL: algorithm2_ran in protofresh-bursty-r2-s1 (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1)",
-  "failed_stages": [
-    "04-prototype-fresh"
-  ],
+  "stop_reason": null,
+  "failed_stages": [],
   "stages": {
     "00-preflight": {
       "result": "PASS",
@@ -37,10 +35,10 @@
       "finished_at": "2026-08-23T21:22:39.279553+00:00"
     },
     "04-prototype-fresh": {
-      "result": "FAIL",
+      "result": "RUNNING",
       "git_sha": "6618671",
-      "reason": "a prototype run failed",
-      "finished_at": "2026-08-23T21:33:15.266783+00:00"
+      "reason": null,
+      "finished_at": null
     },
     "05-final-c": {
       "result": null,

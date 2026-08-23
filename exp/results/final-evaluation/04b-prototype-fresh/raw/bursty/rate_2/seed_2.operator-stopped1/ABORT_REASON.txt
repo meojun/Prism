@@ -1,0 +1,2 @@
+stopped-before-release
+the server was being released; this run was stopped mid-flight by the operator, not by a gate

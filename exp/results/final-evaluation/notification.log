@@ -68,3 +68,7 @@ handoff runs whatever the outcome; the phone gets the verdict
 [2026-08-23T21:33:08Z] SENT stop-711c9ee5d384b833f543-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=prototype | reason=Algorithm 2 interaction gate FAIL: algorithm2_ran
 [2026-08-23T21:33:15Z] SENT stop-403064f150ee9f308620 -- ❌ FAILED | 04-prototype-fresh | a prototype run failed
 [2026-08-23T21:33:15Z] SENT stop-403064f150ee9f308620-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=04-prototype-fresh | reason=a prototype run failed
+[2026-08-23T21:34:36Z] SENT handoff-failed-1787520875 -- ❌ FAILED | Prism Handoff | DO NOT RELEASE SERVER YET
+pipeline: STOPPED
+handoff failed:  dependency-audit clean-clone
+HANDOFF_COMPLETE = NO

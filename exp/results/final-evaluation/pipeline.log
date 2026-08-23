@@ -109,3 +109,13 @@
 [2026-08-23T21:22:39Z] prototype bursty r2 s1
 [2026-08-23T21:33:15Z] stage 04-prototype-fresh -> FAIL (a prototype run failed)
 [2026-08-23T21:33:15Z] CHAIN STOPPED at 04-prototype-fresh
+[2026-08-23T22:23:35Z] [overnight] watchdog up in tmux session prism-overnight-watchdog
+[2026-08-23T22:23:35Z] [overnight] pipeline up in tmux session prism-overnight
+[2026-08-23T22:23:35Z] skip 00-preflight
+[2026-08-23T22:23:35Z] skip 01-ci-profile
+[2026-08-23T22:23:35Z] skip 02-tau-calibration
+[2026-08-23T22:23:35Z] frozen tau = 0.00035
+[2026-08-23T22:23:35Z] skip 03-readiness
+[2026-08-23T22:23:35Z] skip 03b-fairness
+[2026-08-23T22:23:35Z] prototype bursty r2 s1
+[2026-08-23T22:23:36Z] prototype bursty r2 s2

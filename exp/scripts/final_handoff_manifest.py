@@ -49,18 +49,27 @@ def git(root, *args):
 
 
 def newest_final_run(eval_dir):
-    """A real Final Prism run, whose command line is the authoritative record."""
-    runs = sorted((eval_dir / "05-final-c/raw").glob("*/rate_*/seed_*"))
-    for r in runs:
-        if (r / "STAGE_CMD.sh").is_file():
-            return r
+    """A real Prism run, whose command line is the authoritative record.
+
+    A Final Prism run first. If the final arm has not run yet, a calibration
+    run serves: it launches the same paper-faithful server with the same flags,
+    differing only in tau and workload, both of which are recorded elsewhere.
+    """
+    for pattern in ("05-final-c/raw/*/rate_*/seed_*",
+                    "02-tau-calibration/raw/tau_*/seed_*"):
+        for r in sorted(eval_dir.glob(pattern)):
+            if "." in r.name:            # preserved failed attempt
+                continue
+            if (r / "STAGE_CMD.sh").is_file() and (r / "pipeline.rc").is_file() \
+               and (r / "pipeline.rc").read_text().strip() == "0":
+                return r
     return None
 
 
 def parse_server_invocation(run):
     """The launch flags and exported variables, straight off the run itself."""
     text = ""
-    for name in ("server-logs/stdout.log", "STAGE_CMD.sh"):
+    for name in ("SERVER_COMMAND.txt", "server-logs/stdout.log", "STAGE_CMD.sh"):
         p = run / name
         if p.is_file():
             text += p.read_text(errors="replace")[:400_000]
@@ -81,8 +90,18 @@ def parse_server_invocation(run):
     env = dict(re.findall(r"\b(PRISM_[A-Z0-9_]+|KVPR_TAU|FLASHINFER_WORKSPACE_SIZE|"
                           r"HF_HOME|CUDA_VISIBLE_DEVICES|TOKENIZERS_PARALLELISM)="
                           r"'?([^\s']*)'?", text))
+    if not flags:
+        # Runs made before the command was persisted do not carry it. The
+        # launcher that built it is version-controlled, so point at that
+        # rather than reconstruct flags that would only look authoritative.
+        flags = {"__source__": "exp/scripts/run_v4_case.sh (command not "
+                               "persisted by this run; later runs write "
+                               "SERVER_COMMAND.txt beside themselves)"}
     return {"launch_flags": flags, "observed_environment": env,
-            "source_run": str(run)}
+            "source_run": str(run),
+            "note": ("read off a real run's own command line; a calibration run "
+                     "is used when the final arm has not run yet -- same "
+                     "server, same flags, tau and workload recorded separately")}
 
 
 def main():
@@ -90,6 +109,7 @@ def main():
     ap.add_argument("--root", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--runtime-freeze", required=True)
+    ap.add_argument("--handoff-sha", default=None)
     args = ap.parse_args()
 
     root = args.root
@@ -123,7 +143,7 @@ def main():
             "workloads both arms ran, and the environment they ran in. Read "
             "FINAL_BASELINE_HANDOFF.md for how to run it on another server."),
         "final_runtime_sha": args.runtime_freeze,
-        "handoff_sha": None,       # stamped by the handoff driver after commit
+        "handoff_sha": args.handoff_sha,
         "runtime": {
             "experiment_repo_commit": git(root, "rev-parse", "HEAD"),
             "experiment_repo_branch": git(root, "rev-parse", "--abbrev-ref", "HEAD"),
@@ -216,9 +236,25 @@ def main():
             "checker": "exp/scripts/final_run_verify.py",
             "interaction_gate": "exp/scripts/check_alg2_interaction.py",
         },
+        "handoff": {
+            "workloads": "exp/final-handoff/workloads_manifest.json",
+            "workloads_sha256": sha256_file(root / "exp/final-handoff/workloads_manifest.json"),
+            "calibration": "exp/final-handoff/calibration_manifest.json",
+            "calibration_sha256": sha256_file(root / "exp/final-handoff/calibration_manifest.json"),
+            "resume": "exp/final-handoff/resume_manifest.json",
+            "resume_sha256": sha256_file(root / "exp/final-handoff/resume_manifest.json"),
+            "local_dependencies": "exp/final-handoff/local_dependencies.json",
+            "document": "FINAL_BASELINE_HANDOFF.md",
+            "results_index": "CURRENT_RESULTS_INDEX.md",
+            "bootstrap": "exp/scripts/bootstrap_final_baseline.sh",
+            "preflight": "exp/scripts/handoff_preflight.py",
+            "restore_workloads": "exp/scripts/restore_workloads.sh",
+            "resume_command": "bash exp/scripts/resume_baseline.sh",
+        },
+        "pipeline_state": load(ev / "PIPELINE_STATE.json"),
         "results": {
             "aggregation_manifest": aggregation,
-            "index": "FINAL_RESULTS_INDEX.md",
+            "index": "CURRENT_RESULTS_INDEX.md",
         },
         "notes": notes,
     }

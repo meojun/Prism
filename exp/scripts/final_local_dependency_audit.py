@@ -30,48 +30,138 @@ ABS_PATH = re.compile(r"(?<![\w/])(/(?:workspace|root|dev/shm|opt|venv)[\w./+-]*
 SECRET_NAMES = ("HF_TOKEN", "PRISM_NTFY_TOPIC", "GITHUB_TOKEN", "GH_TOKEN",
                 "HUGGING_FACE_HUB_TOKEN", "OPENAI_API_KEY")
 
-# What each machine-local path is for, and how the next server gets it. Written
-# from the setup surface that already exists, not invented here.
+# Every machine-local path this harness names, and what the next server does
+# about it. The categories are the handoff's own: a path that lands in none of
+# them is unclassified, and an unclassified path is a handoff failure, because
+# it is exactly the hidden state that makes a baseline run here and nowhere
+# else.
+#
+#   VERSION_CONTROLLED       git carries it; nothing to do
+#   REGENERATED_BY_BOOTSTRAP bootstrap.sh creates it
+#   RESTORED_FROM_ARCHIVE    rebuilt or restored by a documented script
+#   MODEL_CACHE_REDOWNLOAD   downloaded from Hugging Face on first use
+#   SECRET_USER_MUST_PROVIDE a credential; never in git, named in .env.example
+#   EPHEMERAL_NOT_REQUIRED   scratch from earlier work; the baseline does not
+#                            need it and its absence changes nothing
 KNOWN = {
+    "/workspace": (
+        "REGENERATED_BY_BOOTSTRAP",
+        "the install root; bootstrap.sh creates it, or set PRISM_ROOT to the "
+        "checkout",
+        "./bootstrap.sh",
+        "test -d $PRISM_ROOT"),
     "/workspace/prism-exp": (
-        "reproducible",
-        "the bootstrap install root; bootstrap.sh creates it, or set PRISM_ROOT "
-        "to wherever the repository is checked out"),
+        "REGENERATED_BY_BOOTSTRAP",
+        "the bootstrap install root that the harness scripts default to",
+        "./bootstrap.sh",
+        "test -d /workspace/prism-exp || export PRISM_ROOT=$(pwd)"),
     "/workspace/prism-exp/prism-venv": (
-        "reproducible", "the pinned virtualenv; bootstrap.sh builds it from "
-        "setup/pins.env and setup/requirements.lock.txt"),
+        "REGENERATED_BY_BOOTSTRAP",
+        "the pinned virtualenv, built from setup/pins.env and "
+        "setup/requirements.lock.txt -- never re-resolved",
+        "./bootstrap.sh",
+        "$PRISM_ROOT/prism-venv/bin/python -c 'import sglang, torch'"),
     "/workspace/.hf_home": (
-        "reproducible", "Hugging Face cache holding the six model snapshots; "
-        "bootstrap.sh downloads them, HF_HOME points here"),
+        "MODEL_CACHE_REDOWNLOAD",
+        "Hugging Face cache holding the six model snapshots; HF_HOME points "
+        "here and the exact revisions are pinned in the baseline manifest",
+        "./bootstrap.sh   # needs HF_TOKEN: the Llama models are gated",
+        "python exp/scripts/handoff_preflight.py   # checks all six revisions"),
     "/workspace/datasets": (
-        "reproducible", "ShareGPT source data; SETUP.md documents the download "
-        "and exp/scripts/build_sharegpt_trace.py rebuilds the derived pickles"),
+        "RESTORED_FROM_ARCHIVE",
+        "ShareGPT source data, from which the 24 canonical workloads are "
+        "rebuilt byte for byte",
+        "hf download anon8231489123/ShareGPT_Vicuna_unfiltered "
+        "ShareGPT_V3_unfiltered_cleaned_split.json --repo-type dataset "
+        "--local-dir $DATASETS/sharegpt",
+        "bash exp/scripts/restore_workloads.sh   # hashes the source, then "
+        "verifies all 24 digests"),
     "/workspace/.env": (
-        "secret", "HF_TOKEN and PRISM_NTFY_TOPIC live here, outside the "
-        "repository; see .env.example for the names"),
+        "SECRET_USER_MUST_PROVIDE",
+        "HF_TOKEN and the optional ntfy topic; outside the repository, never "
+        "committed",
+        "cp .env.example /workspace/.env && chmod 600 /workspace/.env && "
+        "$EDITOR /workspace/.env",
+        "source exp/scripts/env.sh && test -n \"$HF_TOKEN\""),
     "/root/.git-credentials": (
-        "secret", "the GitHub push credential; never in the repository"),
+        "SECRET_USER_MUST_PROVIDE",
+        "the GitHub push credential; needed only to push results back",
+        "git config --global credential.helper store   # then push once",
+        "git ls-remote origin >/dev/null"),
     "/dev/shm": (
-        "machine_local", "kvcached-v0 shares KV pages through POSIX shared "
-        "memory; a crashed server leaves ipc_*_root segments that the next "
-        "run must not inherit -- preflight checks for them"),
+        "EPHEMERAL_NOT_REQUIRED",
+        "kvcached-v0 shares KV pages through POSIX shared memory; a crashed "
+        "server leaves segments the next run must not inherit",
+        "rm -f /dev/shm/ipc_*   # only when no server is running",
+        "python exp/scripts/handoff_preflight.py   # fails on stale segments"),
     "/workspace/prism-backups": (
-        "machine_local", "off-repo artifact backup directory; set "
-        "PRISM_BACKUP_DIR to relocate it"),
+        "EPHEMERAL_NOT_REQUIRED",
+        "local artifact backup directory on this instance; set "
+        "PRISM_BACKUP_DIR to relocate it. NOT durable -- this instance has no "
+        "host volume, so anything here dies with the server",
+        "mkdir -p ${PRISM_BACKUP_DIR:-/workspace/prism-backups}",
+        "test -d ${PRISM_BACKUP_DIR:-/workspace/prism-backups}"),
+    "/workspace/logs": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "scratch logs from earlier pipelines on this instance; the final "
+        "baseline writes to exp/results/final-evaluation instead",
+        "none -- nothing recreates these and nothing needs them",
+        "none"),
+    "/workspace/prism-base": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "an earlier worktree used during development",
+        "none", "none"),
+    "/workspace/prism-merge": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "an earlier merge worktree used during development",
+        "none", "none"),
+    "/workspace/prism-handoff-validate": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "scratch directory the clean-clone validation creates and removes",
+        "created automatically by exp/scripts/final_clean_clone_validate.sh",
+        "none"),
+    "/workspace/run_pipeline.sh": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "referenced only by watchdog_v2.sh, a superseded harness; absent here "
+        "already and unused by the final pipeline",
+        "none", "none"),
+    "/workspace/shm_clean.sh": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "referenced by the superseded v6 sweep scripts; absent here already "
+        "and unused by the final pipeline",
+        "none", "none"),
+    "/opt": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "system tooling paths (nvm, instance tools) provided by the image",
+        "none", "command -v tmux redis-cli nvidia-smi"),
+    "/venv": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "the image's own default virtualenv; the baseline uses its pinned one",
+        "none", "none"),
+    "/root": (
+        "EPHEMERAL_NOT_REQUIRED",
+        "home directory paths; the baseline reads nothing required from here",
+        "none", "none"),
 }
 
 
 def classify(path, root):
+    """Longest-prefix match, so a specific path wins over its parent."""
     p = Path(path)
-    for known, (kind, note) in KNOWN.items():
-        if path == known or path.startswith(known + "/"):
-            return kind, note
     try:
         p.relative_to(root)
-        return "in_repo", "inside the repository"
+        return "VERSION_CONTROLLED", "inside the repository", "git clone", "git status"
     except ValueError:
         pass
-    return "machine_local", "not classified; check before relying on it"
+    best = None
+    for known in KNOWN:
+        if path == known or path.startswith(known + "/"):
+            if best is None or len(known) > len(best):
+                best = known
+    if best:
+        return KNOWN[best]
+    return ("UNCLASSIFIED", "not classified; check before relying on it",
+            "unknown", "unknown")
 
 
 def main():
@@ -98,9 +188,11 @@ def main():
 
     entries = []
     for path, users in sorted(found.items()):
-        kind, note = classify(path, root)
+        kind, note, howto, validate = classify(path, root)
         entries.append({
             "path": path, "kind": kind, "note": note,
+            "how_the_next_server_gets_it": howto,
+            "validation": validate,
             "exists_here": os.path.exists(path),
             "referenced_by": sorted(users)[:8],
             "reference_count": len(users),
@@ -135,8 +227,11 @@ def main():
     doc = {
         "scanned_harness_files": scanned,
         "absolute_path_dependencies": entries,
+        "categories": ["VERSION_CONTROLLED", "REGENERATED_BY_BOOTSTRAP",
+                       "RESTORED_FROM_ARCHIVE", "MODEL_CACHE_REDOWNLOAD",
+                       "SECRET_USER_MUST_PROVIDE", "EPHEMERAL_NOT_REQUIRED"],
         "counts": {k: sum(1 for e in entries if e["kind"] == k)
-                   for k in ("in_repo", "reproducible", "machine_local", "secret")},
+                   for k in sorted({e["kind"] for e in entries})},
         "environment_variables_referenced": env_needed,
         "secret_variable_names": list(SECRET_NAMES),
         "services": services,
@@ -146,7 +241,7 @@ def main():
         "fd_limit_hard": subprocess.run(["bash", "-lc", "ulimit -Hn"],
                                         capture_output=True, text=True).stdout.strip(),
         "unclassified": [e["path"] for e in entries
-                         if e["note"].startswith("not classified")],
+                         if e["kind"] == "UNCLASSIFIED"],
     }
     args.out.write_text(json.dumps(doc, indent=2) + "\n")
 
@@ -157,11 +252,19 @@ def main():
              "| path | kind | present | used by | note |",
              "| --- | --- | --- | --- | --- |"]
     for e in entries:
-        if e["kind"] == "in_repo":
+        if e["kind"] == "VERSION_CONTROLLED":
             continue
         lines.append(f"| `{e['path']}` | {e['kind']} | "
-                     f"{'yes' if e['exists_here'] else 'NO'} | "
-                     f"{e['reference_count']} file(s) | {e['note']} |")
+                     f"{'yes' if e['exists_here'] else 'no'} | "
+                     f"{e['reference_count']} | {e['note']} |")
+    lines += ["", "## How the next server gets each one", ""]
+    for e in entries:
+        if e["kind"] in ("VERSION_CONTROLLED", "EPHEMERAL_NOT_REQUIRED"):
+            continue
+        lines += [f"### `{e['path']}` -- {e['kind']}", "",
+                  f"{e['note']}", "",
+                  f"- obtain: `{e['how_the_next_server_gets_it']}`",
+                  f"- validate: `{e['validation']}`", ""]
     lines += ["", "## Services", ""]
     for k, v in services.items():
         lines.append(f"- {k}: {'yes' if v else 'no'}")
