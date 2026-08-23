@@ -5630,7 +5630,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..37c438c 100644
+index 3cf0db7..4176103 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -6308,7 +6308,7 @@ index 3cf0db7..37c438c 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2200,184 @@ class Scheduler:
+@@ -1823,8 +2200,200 @@ class Scheduler:
          )
          return generate_req
  
@@ -6463,11 +6463,27 @@ index 3cf0db7..37c438c 100644
 +            rid = getattr(req, "rid", None)
 +            if not rid:
 +                continue
++            # A staged request is the payload as it came off the backend queue.
++            # It was never admitted, so it was never turned into a Req, and its
++            # sampling_params is still the dict it was serialized as.
++            # _convert_req_to_frontend_reqs reads attributes off that field and
++            # raised 'dict' object has no attribute 'max_new_tokens' here, so
++            # the send never happened and model_3#192 was lost: the sequence was
++            # retired, both GPUs went idle, and the tau=0.00035 seed-0 run ended
++            # at 8,225 of 8,227.
++            #
++            # These payloads go back in the form they arrived in, exactly as
++            # _drain_backend_queue already returns the ones still in Redis --
++            # same origin, same shape, same destination. Only the sequence this
++            # GPU issued is cleared, because the request will take a new one
++            # from whichever GPU picks it up; the retirement of the old one is
++            # _alg2_report_migrated_away's job below.
++            req.alg2_seq = None
 +            try:
 +                self.redis_client.send_pyobj(
 +                    key=(f"{self.server_args.frontend_generate_request_key_prefix}:"
 +                         f"{self.model_name}"),
-+                    obj=self._convert_req_to_frontend_reqs(req),
++                    obj=req,
 +                )
 +            except Exception as e:
 +                undelivered.append(rid)
@@ -6493,7 +6509,7 @@ index 3cf0db7..37c438c 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2390,501 @@ class Scheduler:
+@@ -1837,7 +2406,501 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -6995,7 +7011,7 @@ index 3cf0db7..37c438c 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1855,6 +2902,7 @@ class Scheduler:
+@@ -1855,6 +2918,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -7003,7 +7019,7 @@ index 3cf0db7..37c438c 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1881,6 +2929,7 @@ class Scheduler:
+@@ -1881,6 +2945,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -7011,7 +7027,7 @@ index 3cf0db7..37c438c 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1898,6 +2947,101 @@ class Scheduler:
+@@ -1898,6 +2963,101 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -7113,7 +7129,7 @@ index 3cf0db7..37c438c 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +3070,7 @@ class Scheduler:
+@@ -1926,6 +3086,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
@@ -7121,7 +7137,7 @@ index 3cf0db7..37c438c 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
-@@ -1936,6 +3081,7 @@ class Scheduler:
+@@ -1936,6 +3097,7 @@ class Scheduler:
                  self.waiting_queue.append(req)
                  if self.use_kvcached_v0:
                      try:
@@ -7129,7 +7145,7 @@ index 3cf0db7..37c438c 100644
                          self.tree_cache.cache_finished_req(req)
                      except Exception as e:
                          logger.error(f"Error in cache_finished_req: {e}")
-@@ -1974,6 +3120,9 @@ class Scheduler:
+@@ -1974,6 +3136,9 @@ class Scheduler:
              if_success = False
          return if_success
  
@@ -7139,7 +7155,7 @@ index 3cf0db7..37c438c 100644
      def abort_request(self, recv_req: AbortReq):
          # Delete requests in the waiting queue
          to_del = None
-@@ -1990,15 +3139,20 @@ class Scheduler:
+@@ -1990,15 +3155,20 @@ class Scheduler:
              for req in self.running_batch.reqs:
                  if req.rid == recv_req.rid and not req.finished():
                      req.finished_reason = FINISH_ABORT()

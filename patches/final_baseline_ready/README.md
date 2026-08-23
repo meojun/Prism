@@ -1,4 +1,4 @@
-# source snapshot
+# staged-return-fix
 
 `prism-research/` is intentionally gitignored by the experiment repository and
 is recreated by `bootstrap.sh`. The complete source working-tree delta is
@@ -17,4 +17,4 @@ git apply /path/to/Prism/patches/final_baseline_ready/prism_research_worktree.pa
 ```
 
 Files in the patch: 36
-Snapshot taken: 2026-08-23T16:44:48Z
+Snapshot taken: 2026-08-23T18:22:00Z
