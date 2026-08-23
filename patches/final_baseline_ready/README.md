@@ -16,5 +16,5 @@ Apply from a clean checkout of that commit:
 git apply /path/to/Prism/patches/final_baseline_ready/prism_research_worktree.patch
 ```
 
-Files in the patch: 35
-Snapshot taken: 2026-08-23T09:59:59Z
+Files in the patch: 36
+Snapshot taken: 2026-08-23T13:39:38Z

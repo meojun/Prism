@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T09:59:59.942950+00:00",
+ "recorded_utc": "2026-08-23T13:39:38.558058+00:00",
  "previous_runtime_freeze": {
-  "commit": "88f54f9",
-  "patch_blob": "c939cd311f6057b28ba21a76d9ac010e83dc152a"
+  "commit": "205e0e9",
+  "patch_blob": "caef46638c450dbd64fc9f3f63b19235dfe839d2"
  },
- "change": "observation-only Algorithm 2 logging, to separate b1 from b2",
+ "change": "observation-only response-path logging, on top of the Algorithm 2 observers",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "caef46638c450dbd64fc9f3f63b19235dfe839d2",
+ "patch_blob": "245c5b44809802e2539ff2428444651f3274c3eb",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -139,5 +139,34 @@
    "b1": "heartbeats continue and staged_not_promoted records the mismatch",
    "b2": "heartbeats stop and no fetch is recorded"
   }
+ },
+ "response_path_observation": {
+  "purpose": "Locate where a completed request's response stops reaching the client. 1,204 requests in cal-0p07-s0 had no response while every engine was alive and empty, the Algorithm 2 ledger was clean, only ~340 had ever been returned to the frontend, and the client logged zero descriptor failures. No record spans engine output to HTTP yield.",
+  "log_marker": "[PAPER-RESP-OBS]",
+  "log_location": "<run>/server-logs/server.log and stdout.log",
+  "boundaries": {
+   "1 engine_output": "scheduler.py stream_output -- the engine produced a final output",
+   "2 stream_output_send": "scheduler.py -- handed to the detokenizer",
+   "3 detokenizer_send": "detokenizer_manager.py -- passed to the request handler",
+   "4 handler_recv": "request_handler_worker_pool.py -- received and queued for the generator",
+   "5 http_final_yield": "request_handler_worker_pool.py -- final chunk about to reach the client",
+   "6 stream_abandoned": "request_handler_worker_pool.py -- given up on client disconnect"
+  },
+  "fields": [
+   "timestamp",
+   "rid",
+   "model",
+   "final",
+   "n (output length/token count)",
+   "exc"
+  ],
+  "diagnostic_rule": "the last boundary a rid reaches names the boundary that lost it",
+  "behaviour_change": "none. Every observer logs and returns, is wrapped so it cannot raise, and adds no state. Tested against a bare Scheduler and unserialisable arguments; a test asserts the engine observer adds or changes no attribute.",
+  "not_added": [
+   "timeout",
+   "retry",
+   "recovery",
+   "queue semantics change"
+  ]
  }
 }
