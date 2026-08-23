@@ -23,10 +23,10 @@
     ],
     "git_clean": true,
     "git_dirty_files": [],
-    "git_sha": "88f54f92ae957d712294fc24d035e6dc6ea30e39",
-    "git_sha_short": "88f54f9",
+    "git_sha": "205e0e91078d1c3bf0c3e3e5d41dd360ee08e5b9",
+    "git_sha_short": "205e0e9",
     "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
-    "source_patch_sha256": "3441d61f0a9bc6eb881aeba43849dd3ed6ebed8f6d85af42c8eaa6d6c482638a",
+    "source_patch_sha256": "33dcca41b288c29f58d371f70e757a8a93d70ea6d16895b0fc6fb7812258321b",
     "source_repo_dirty_files": 35,
     "source_repo_sha": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8"
   },
@@ -87,13 +87,13 @@
     "\t Link 6: 25 GB/s"
   ],
   "python_interpreter": "/workspace/prism-exp/prism-venv/bin/python",
-  "recorded_utc": "2026-08-23T08:21:30.289583+00:00",
+  "recorded_utc": "2026-08-23T10:00:22.910447+00:00",
   "runtime_freeze": {
     "commit": "d849065",
     "patch": "patches/final_baseline_ready/prism_research_worktree.patch",
     "patch_blob_at_freeze": "c939cd311f6057b28ba21a76d9ac010e83dc152a",
-    "patch_blob_now": "c939cd311f6057b28ba21a76d9ac010e83dc152a",
-    "runtime_unchanged_since_freeze": true
+    "patch_blob_now": "caef46638c450dbd64fc9f3f63b19235dfe839d2",
+    "runtime_unchanged_since_freeze": false
   },
   "versions": {
     "cuda_runtime": "12.1",
