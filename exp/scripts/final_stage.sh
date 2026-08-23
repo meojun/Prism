@@ -36,7 +36,7 @@ if [ -f "$EVAL/STOP" ]; then
 fi
 
 # The runtime must still be the frozen one, checked before every expensive run.
-frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-8cb8e7a}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
+frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-6ec7357}:patches/final_baseline_ready/prism_research_worktree.patch" 2>/dev/null)
 now_blob=$(git -C "$ROOT" hash-object patches/final_baseline_ready/prism_research_worktree.patch 2>/dev/null)
 if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
   echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
@@ -141,7 +141,16 @@ grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log
   && blocker="no-progress / deadlock"
 if [ -n "$blocker" ]; then
   echo "$blocker in $LABEL ($STAGE_DIR)" > "$EVAL/STOP"
-  echo "[final_stage] STOP: $blocker" >&2
+  echo "[final_stage] STOP: $blocker -- diagnosing before standing down" >&2
+  $PY "$SCRIPT_DIR/final_failure_autopsy.py" --run "$STAGE_DIR" --label "$LABEL" \
+    --out "$STAGE_DIR/FAILURE_AUTOPSY.json" \
+    >> "$EVAL/autopsy.log" 2>&1 || true
+  pkill -f "sglang.launch_multi_model_server" 2>/dev/null || true
+  sleep 5
+  ( cd "$ROOT" && git add -A -- exp/results/final-evaluation >/dev/null 2>&1 \
+    && git -c user.name="Prism Baseline Agent" -c user.email="causslab@gmail.com" \
+       commit -q -m "STOP: $blocker in $LABEL (autopsy attached, no code changed)" \
+    && git push origin exp/final-baseline-ready ) >> "$EVAL/autopsy.log" 2>&1 || true
   exit 1
 fi
 
