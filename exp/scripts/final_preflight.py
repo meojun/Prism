@@ -100,7 +100,7 @@ def main():
     # thing to pin is the source patch -- not this repo's HEAD, which moves as
     # pipeline scripts are added. RUNTIME_FREEZE is the commit the runtime was
     # frozen at; the patch must still be byte-identical to the one it carried.
-    runtime_freeze = os.environ.get("PRISM_RUNTIME_FREEZE", "dd9e25b")
+    runtime_freeze = os.environ.get("PRISM_RUNTIME_FREEZE", "0ff1133")
     patch_rel = "patches/final_baseline_ready/prism_research_worktree.patch"
     # Compared as git blob identities: sh() strips trailing whitespace, which
     # would make a byte-identical patch look changed.
