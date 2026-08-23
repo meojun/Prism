@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-08-23T05:20:02.319123",
+  "timestamp": "2026-08-23T07:19:12.427592",
   "exp_name": "paper-faithful-v6_bursty_rate20_seed0",
   "num_gpus": 2,
-  "completed": 6622,
-  "aborted": 1605,
-  "request_throughput": 12.236369334982014,
-  "input_throughput": 4699.192674726174,
-  "output_throughput": 1975.1758162131728,
-  "mean_ttft_ms": 36123.32093355628,
-  "p99_ttft_ms": 219153.03004026413,
-  "mean_tpot_ms": 268.93821838770555,
-  "p99_tpot_ms": 2078.6546657979484
+  "completed": 8227,
+  "aborted": 0,
+  "request_throughput": 15.482447433088357,
+  "input_throughput": 4785.837721610661,
+  "output_throughput": 2496.7860031355517,
+  "mean_ttft_ms": 40642.6376196946,
+  "p99_ttft_ms": 195301.49564266196,
+  "mean_tpot_ms": 305.3745503758242,
+  "p99_tpot_ms": 2053.1320270436536
 }

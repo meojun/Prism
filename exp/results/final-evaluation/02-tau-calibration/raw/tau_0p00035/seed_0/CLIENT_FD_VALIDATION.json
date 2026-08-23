@@ -1,17 +1,27 @@
 {
-  "invalid": true,
-  "class": "INVALID_CLIENT_FD_EXHAUSTION",
-  "reason": "4815 client descriptor exhaustion failures; those requests never reached the server, so the run measured the client",
-  "fd_exhaustion": 4815,
-  "connection_failures": 3210,
   "client_failures": {
-    "too_many_open_files": 3210,
-    "errno_24": 1605,
-    "server_disconnected": 0,
+    "client_os_error": 0,
+    "connection_refused": 0,
     "connection_reset": 0,
-    "connection_refused": 1605,
-    "client_os_error": 1605
+    "errno_24": 0,
+    "server_disconnected": 0,
+    "too_many_open_files": 0
   },
-  "marked_utc": "2026-08-23T06:52:36.065981+00:00",
-  "artifacts": "preserved; excluded from calibration input"
+  "client_process_limit_ok": true,
+  "connection_failures": 0,
+  "fd_exhaustion": 0,
+  "recorded_limits": {
+    "benchmark_pid": 906282,
+    "proc_hard_nofile": 524288,
+    "proc_limits_line": "Max open files 65535 524288 files ",
+    "proc_soft_nofile": 65535,
+    "recorded_before_benchmark_start": true,
+    "required_nofile": 65535,
+    "shell_hard_nofile": "524288",
+    "shell_soft_before_raise": "1024",
+    "shell_soft_nofile": "65535"
+  },
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0",
+  "total": 0,
+  "valid": true
 }
