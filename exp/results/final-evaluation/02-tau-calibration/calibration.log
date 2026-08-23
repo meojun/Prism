@@ -8,3 +8,7 @@
 [final_stage] STOP: Algorithm 2 ordering violation -- diagnosing before standing down
 [final_stage] RUN cal-0p00035-s0 -> /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0
 [final_stage] cal-0p00035-s0 rc=0 state=RUNNING
+[final_stage] SKIP cal-0p00035-s0: already COMPLETE
+[final_stage] RUN cal-0p00035-s42 -> /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_42
+[final_stage] cal-0p00035-s42 rc=143 state=FAIL
+[final_stage] STOP: no-progress / deadlock -- diagnosing before standing down
