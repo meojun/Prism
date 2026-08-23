@@ -1,0 +1,9 @@
+{
+  "captured_iso": "2026-08-23T15:02:16Z",
+  "reason": "b1 token-mismatch stall confirmed; stopping to preserve evidence",
+  "redis_backend_queues": "",
+  "redis_alg2_tokens": "engine_to_gpu_scheduler_0723249ac5b94acda52234981b457fd0:alg2_next_admission:0 2060\nengine_to_gpu_scheduler_0723249ac5b94acda52234981b457fd0:alg2_next_admission:1 4306",
+  "redis_keys": "2",
+  "server_procs": "",
+  "gpu": "0, 0 MiB, 0 %\n1, 0 MiB, 0 %"
+}
