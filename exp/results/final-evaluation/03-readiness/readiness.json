@@ -1,0 +1,93 @@
+{
+  "verdict": "READY",
+  "checks": [
+    {
+      "check": "environment recorded",
+      "pass": true,
+      "detail": {
+        "file": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/FINAL_ENVIRONMENT.json"
+      }
+    },
+    {
+      "check": "runtime unchanged since the freeze",
+      "pass": true,
+      "detail": {
+        "commit": "6618671",
+        "patch": "patches/final_baseline_ready/prism_research_worktree.patch",
+        "patch_blob_at_freeze": "072389ce999105a635a000cd6293cb22ad2a7d20",
+        "patch_blob_now": "072389ce999105a635a000cd6293cb22ad2a7d20",
+        "runtime_unchanged_since_freeze": true
+      }
+    },
+    {
+      "check": "experiment repository clean at preflight",
+      "pass": true,
+      "detail": {
+        "dirty": []
+      }
+    },
+    {
+      "check": "c_i frozen for all six models",
+      "pass": true,
+      "detail": {
+        "model_1": 44810.32909113844,
+        "model_2": 24346.47999693055,
+        "model_3": 10527.08978973345,
+        "model_4": 16205.076392951552,
+        "model_5": 9843.616539166123,
+        "model_6": 11011.21695116448
+      }
+    },
+    {
+      "check": "tau frozen",
+      "pass": true,
+      "detail": {
+        "tau": 0.00035,
+        "tau_label": "0p00035",
+        "calibration_seeds": [
+          "0",
+          "42"
+        ]
+      }
+    },
+    {
+      "check": "tau calibrated on held-out seeds only",
+      "pass": true,
+      "detail": {
+        "calibration_seeds": [
+          "0",
+          "42"
+        ]
+      }
+    },
+    {
+      "check": "tau was selected against the frozen c_i",
+      "pass": true,
+      "detail": {
+        "same": true
+      }
+    },
+    {
+      "check": "D3 interaction gate PASS",
+      "pass": true,
+      "detail": {
+        "verdict": "PASS",
+        "run": "exp/results/final-baseline-ready/raw/interaction-D3/run8"
+      }
+    },
+    {
+      "check": "no failing D3 check",
+      "pass": true,
+      "detail": {
+        "failing": []
+      }
+    },
+    {
+      "check": "workload hashes recorded",
+      "pass": true,
+      "detail": {
+        "files": 69
+      }
+    }
+  ]
+}

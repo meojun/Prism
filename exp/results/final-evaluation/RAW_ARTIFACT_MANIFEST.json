@@ -1,7 +1,152 @@
 {
-  "generated_utc": "2026-08-22T18:30:04.402449+00:00",
+  "generated_utc": "2026-08-23T21:24:21.148132+00:00",
   "note": "Raw server logs, request dumps and traces are kept on this machine and are gitignored; the reports, freezes and hashes are in Git. These paths say where the raw evidence is.",
   "host_root": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation",
-  "runs": [],
-  "total_bytes": 0
+  "runs": [
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 100189253,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_0.staged-return-defect1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 100748481,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103937763,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 99977401,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 102901639,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p10/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 100056818,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p10/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103731558,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p13/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 100360084,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p13/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103135589,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p171086/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 99955822,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p171086/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103019325,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_inf/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 99588510,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_inf/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 102055974,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 99900970,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_0.attempt1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 44174442,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_0.attempt3",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 71221717,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_0.invalid1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 89034824,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_42",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103014640,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p00035/seed_42.invalid1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 90103841,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p07/seed_0",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 110803959,
+      "rc": "0"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p07/seed_0.invalid1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 101064409,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p07/seed_0.nostall1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 103756218,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p07/seed_0.stall1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed0_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 98168559,
+      "rc": "143"
+    },
+    {
+      "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw.pre-freeze-444a216-20260823T174250Z/tau_0p07/seed_42.killed1",
+      "result_json": "paper-faithful-v6_bursty_rate20_seed42_e2e_2gpu_1.0x_1rep.json",
+      "bytes_on_disk": 66412242,
+      "rc": "143"
+    }
+  ],
+  "total_bytes": 2297314038
 }

@@ -1,1 +1,7 @@
 [2026-08-23T17:49:01Z] [watchdog] watching session prism-overnight
+[2026-08-23T18:26:27Z] [watchdog] watching session prism-overnight
+[2026-08-23T18:26:27Z] [watchdog] session gone at 02-tau-calibration with no terminal state; reporting
+[2026-08-23T18:28:24Z] [watchdog] watching session prism-overnight
+[2026-08-23T18:28:24Z] [watchdog] session gone at 00-preflight with no terminal state; reporting
+[2026-08-23T18:31:27Z] [watchdog] watching session prism-overnight
+[2026-08-23T18:31:29Z] [watchdog] session prism-overnight is up; watching

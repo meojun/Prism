@@ -1,0 +1,38 @@
+{
+  "label": "cal-0p07-s0",
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0",
+  "rc": "0",
+  "verdict": "PASS",
+  "failed_gates": [],
+  "gates_without_evidence": [],
+  "gates": {
+    "rc_zero": true,
+    "no_staged_return_failure": true,
+    "all_requests_accounted": true,
+    "no_stale_dispatched_sequences": true,
+    "no_alg2_order_violation": true,
+    "no_ownership_identity_mismatch": true,
+    "no_client_fd_failure": true,
+    "no_unexpected_connection_failure": true
+  },
+  "numbers": {
+    "offered_requests": 8227,
+    "completed": 8227,
+    "aborted": 0,
+    "client_errors": 0,
+    "throughput_req_s": 14.502524827763612,
+    "ttft_mean_s": 52.34843092659083,
+    "ttft_p99_s": 203.01652069568632,
+    "tpot_mean_s": 0.37027345922552496,
+    "tpot_p99_s": 2.142037737369532,
+    "e2e_mean_s": 91.83714843325296,
+    "e2e_p99_s": 264.45088343592823,
+    "joint_slo_attainment": 0.005834447550747538,
+    "joint_slo_goodput_req_s": 0.08461422046100077,
+    "migrations_executed": 7,
+    "migrated_weight_bytes": 34185585664,
+    "migrated_kv_bytes": 3547938816,
+    "alg2_order_violations": 0,
+    "staged_return_failures": 0
+  }
+}

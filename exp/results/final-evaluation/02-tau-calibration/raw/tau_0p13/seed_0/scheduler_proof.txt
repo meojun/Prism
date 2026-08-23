@@ -1,0 +1,17 @@
+system=paper-faithful-v6 workload=bursty rate=20 seed=0
+max_mem_usage=67.28
+model_config_file=/root/Prism-final-regression-diagnosis/exp/configs/v2/6model_2gpu.json
+flashinfer_workspace_size=1073741824
+alg1_log_lines=113
+alg1_migrations=7
+v4_weight_transfers=17
+v4_p2p_transfers=17
+v6_kv_transfers=5
+v6_p2p_transfers=5
+v6_resumed_requests=0
+alg2_log_lines=7
+alg2_underadmission_warnings=0
+proto_migrations=0
+activations=4
+deactivations=17
+idle_evictions=10

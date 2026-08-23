@@ -1,0 +1,11 @@
+{
+  "stage": "03-readiness",
+  "result": "PASS",
+  "git_sha": "6618671",
+  "started_at": "2026-08-23T21:22:37.399696+00:00",
+  "finished_at": "2026-08-23T21:22:37.461140+00:00",
+  "reason": null,
+  "artifacts": [
+    "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/03-readiness/BASELINE_READINESS_REPORT.md"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "case": "B",
+  "decided_utc": "2026-08-23T21:22:39.233138+00:00",
+  "conditions": 24,
+  "verified": 24,
+  "canonical_workload_dir": "/root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation",
+  "action": "both arms -- Released Prototype and Final Prism -- are run fresh on this one canonical set, so they consume byte-identical workload files; the historical prototype results are preserved and excluded from the comparison",
+  "identity_basis": "same files, same SHA256, same arrival sequence, model assignment, prompt/output lengths and per-request SLO; same server, GPUs, model revisions and tokenizer within one pipeline run",
+  "problems": [],
+  "verdict": "PASS"
+}

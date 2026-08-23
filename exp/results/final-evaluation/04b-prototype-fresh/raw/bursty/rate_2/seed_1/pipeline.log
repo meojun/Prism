@@ -1,0 +1,3 @@
+[2026-08-23T21:22:43Z] stage command: bash /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/04b-prototype-fresh/raw/bursty/rate_2/seed_1/STAGE_CMD.sh
+### released-prototype_bursty_rate2_seed1  port=41150 trace=bursty_r2_s1.pkl workers=4 models=6
+waiting for server................................................

@@ -1,9 +1,11 @@
 {
   "stage": "02-tau-calibration",
-  "result": "FAIL",
-  "git_sha": "444a216",
-  "started_at": "2026-08-23T17:49:18.063590+00:00",
-  "finished_at": "2026-08-23T18:06:36.254770+00:00",
-  "reason": "a calibration run failed or tau selection failed",
-  "artifacts": []
+  "result": "PASS",
+  "git_sha": "6618671",
+  "started_at": "2026-08-23T18:31:43.059957+00:00",
+  "finished_at": "2026-08-23T21:22:36.747446+00:00",
+  "reason": null,
+  "artifacts": [
+    "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/FROZEN_TAU.json"
+  ]
 }

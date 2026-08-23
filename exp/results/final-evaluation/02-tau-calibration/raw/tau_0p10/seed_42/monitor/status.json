@@ -1,0 +1,39 @@
+{
+  "current_phase": "complete",
+  "gpu": [
+    "0, 63560 MiB, 0 %",
+    "1, 47752 MiB, 0 %"
+  ],
+  "gpu_processes": [
+    "3679855, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 4534 MiB",
+    "3679790, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 17804 MiB",
+    "3680167, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 414 MiB",
+    "3680299, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 7384 MiB",
+    "3680192, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 32982 MiB",
+    "3680300, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 414 MiB",
+    "3679912, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 21076 MiB",
+    "3679790, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 414 MiB",
+    "3679791, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 6924 MiB",
+    "3680167, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 3178 MiB",
+    "3680300, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 16136 MiB"
+  ],
+  "heartbeat_iso_utc": "2026-08-23T19:58:23.533514+00:00",
+  "heartbeat_timestamp": 1787515103.533514,
+  "last_actual_progress_event": "pipeline rc=0",
+  "last_log_timestamp": 1787515101.733518,
+  "last_progress_iso_utc": "2026-08-23T19:58:23.533514+00:00",
+  "last_progress_timestamp": 1787515103.533514,
+  "no_progress_timeout_s": 240.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [
+    "1327588 bash /root/Prism-final-regression-diagnosis/exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p10/seed_42 cal-0p10-s42 v4-paper-faithful-v6-bursty-r20-s42 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp KVPR_TAU=0.10 PREFILL_SPEED_FILE=/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json BENCHMARK_TIMEOUT=1500 bash /root/Prism-final-regression-diagnosis/exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 42 /root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation/bursty_r20_s42.pkl /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p10/seed_42"
+  ],
+  "progress_count": 2,
+  "progress_signal": [
+    2,
+    23,
+    2
+  ],
+  "state": "COMPLETE"
+}

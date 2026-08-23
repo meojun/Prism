@@ -1,0 +1,30 @@
+{
+  "current_phase": "complete",
+  "gpu": [
+    "0, 423 MiB, 0 %",
+    "1, 7691 MiB, 100 %"
+  ],
+  "gpu_processes": [
+    "3738769, GPU-435b8647-c13a-0cc8-d748-41679ddb08d1, 414 MiB",
+    "3738769, GPU-24a09821-2da2-18fe-7b33-87f43f38025f, 7682 MiB"
+  ],
+  "heartbeat_iso_utc": "2026-08-23T20:12:53.328758+00:00",
+  "heartbeat_timestamp": 1787515973.3287575,
+  "last_actual_progress_event": "pipeline rc=0",
+  "last_log_timestamp": 1787515966.8238504,
+  "last_progress_iso_utc": "2026-08-23T20:12:53.328758+00:00",
+  "last_progress_timestamp": 1787515973.3287575,
+  "no_progress_timeout_s": 240.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [
+    "1340964 bash /root/Prism-final-regression-diagnosis/exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p13/seed_0 cal-0p13-s0 v4-paper-faithful-v6-bursty-r20-s0 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp KVPR_TAU=0.13 PREFILL_SPEED_FILE=/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json BENCHMARK_TIMEOUT=1500 bash /root/Prism-final-regression-diagnosis/exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 0 /root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation/bursty_r20_s0.pkl /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p13/seed_0"
+  ],
+  "progress_count": 2,
+  "progress_signal": [
+    2,
+    23,
+    2
+  ],
+  "state": "COMPLETE"
+}

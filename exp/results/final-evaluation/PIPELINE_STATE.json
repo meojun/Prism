@@ -1,0 +1,149 @@
+{
+  "PIPELINE_STATUS": "INCOMPLETE",
+  "FINAL_RUNTIME_SHA": "6618671",
+  "stop_reason": null,
+  "failed_stages": [],
+  "stages": {
+    "00-preflight": {
+      "result": "PASS",
+      "git_sha": "6618671",
+      "reason": null,
+      "finished_at": "2026-08-23T18:31:43.020458+00:00"
+    },
+    "01-ci-profile": {
+      "result": "PASS",
+      "git_sha": "8cb8e7a",
+      "reason": null,
+      "finished_at": "2026-08-22T18:29:17.771374+00:00"
+    },
+    "02-tau-calibration": {
+      "result": "RUNNING",
+      "git_sha": "6618671",
+      "reason": null,
+      "finished_at": null
+    },
+    "03-readiness": {
+      "result": null,
+      "git_sha": null,
+      "reason": null,
+      "finished_at": null
+    },
+    "03b-fairness": {
+      "result": null,
+      "git_sha": null,
+      "reason": null,
+      "finished_at": null
+    },
+    "04-prototype-fresh": {
+      "result": null,
+      "git_sha": null,
+      "reason": null,
+      "finished_at": null
+    },
+    "05-final-c": {
+      "result": null,
+      "git_sha": null,
+      "reason": null,
+      "finished_at": null
+    },
+    "06-aggregate": {
+      "result": null,
+      "git_sha": null,
+      "reason": null,
+      "finished_at": null
+    }
+  },
+  "selected_tau": null,
+  "tau_frozen": false,
+  "calibration": {
+    "expected": 12,
+    "complete": 0,
+    "done": [],
+    "remaining": [
+      "tau=0p00035 seed=0",
+      "tau=0p00035 seed=42",
+      "tau=0p07 seed=0",
+      "tau=0p07 seed=42",
+      "tau=0p10 seed=0",
+      "tau=0p10 seed=42",
+      "tau=0p13 seed=0",
+      "tau=0p13 seed=42",
+      "tau=0p171086 seed=0",
+      "tau=0p171086 seed=42",
+      "tau=inf seed=0",
+      "tau=inf seed=42"
+    ]
+  },
+  "prototype_arm": {
+    "expected": 24,
+    "complete": 0,
+    "done": [],
+    "remaining": [
+      "bursty r2 s1",
+      "bursty r2 s2",
+      "bursty r2 s3",
+      "bursty r4 s1",
+      "bursty r4 s2",
+      "bursty r4 s3",
+      "bursty r8 s1",
+      "bursty r8 s2",
+      "bursty r8 s3",
+      "bursty r14 s1",
+      "bursty r14 s2",
+      "bursty r14 s3",
+      "bursty r20 s1",
+      "bursty r20 s2",
+      "bursty r20 s3",
+      "steady r4 s1",
+      "steady r4 s2",
+      "steady r4 s3",
+      "steady r8 s1",
+      "steady r8 s2",
+      "steady r8 s3",
+      "steady r20 s1",
+      "steady r20 s2",
+      "steady r20 s3"
+    ]
+  },
+  "final_arm": {
+    "expected": 24,
+    "complete": 0,
+    "done": [],
+    "remaining": [
+      "bursty r2 s1",
+      "bursty r2 s2",
+      "bursty r2 s3",
+      "bursty r4 s1",
+      "bursty r4 s2",
+      "bursty r4 s3",
+      "bursty r8 s1",
+      "bursty r8 s2",
+      "bursty r8 s3",
+      "bursty r14 s1",
+      "bursty r14 s2",
+      "bursty r14 s3",
+      "bursty r20 s1",
+      "bursty r20 s2",
+      "bursty r20 s3",
+      "steady r4 s1",
+      "steady r4 s2",
+      "steady r4 s3",
+      "steady r8 s1",
+      "steady r8 s2",
+      "steady r8 s3",
+      "steady r20 s1",
+      "steady r20 s2",
+      "steady r20 s3"
+    ]
+  },
+  "resume": {
+    "stage": "02-tau-calibration",
+    "run": "tau=0p00035 seed=0",
+    "command": "bash exp/scripts/final_overnight.sh",
+    "note": "the chain is resumable: a stage that passed under this runtime freeze is skipped, and a run with rc=0 and a passing VERIFICATION.json is not repeated. Clear exp/results/final-evaluation/STOP first, deliberately, after reading why it is there."
+  },
+  "invalidated": {
+    "what": "runs recorded under an earlier runtime freeze, and every directory whose name carries a suffix after the seed (seed_0.staged-return-defect1, seed_0.watchdog-abort1, raw.pre-freeze-*)",
+    "why": "the runtime changed, so their numbers are not comparable with runs on this freeze; they are kept as evidence and the tau selector refuses to read them"
+  }
+}

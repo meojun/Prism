@@ -1,0 +1,4 @@
+{"time":1787512626.623793441,"event":"server_recorded","caller":"prism_record_server:/root/Prism-final-regression-diagnosis/exp/scripts/proc_ownership.sh:39","payload":{"pid":1303090,"pgid":1303090,"port":41050}}
+{"time":1787513238.905851519,"event":"kill_sent","caller":"prism_kill_server:/root/Prism-final-regression-diagnosis/exp/scripts/proc_ownership.sh:56","payload":{"signal":"TERM","pgid":1303090,"reason":"run_v4_case cleanup"}}
+{"time":1787513247.247054406,"event":"kill_sent","caller":"prism_kill_server:/root/Prism-final-regression-diagnosis/exp/scripts/proc_ownership.sh:64","payload":{"signal":"KILL","pgid":1303090,"reason":"run_v4_case cleanup after TERM"}}
+{"time":1787513257.460787719,"event":"kill_skipped","caller":"prism_kill_server:/root/Prism-final-regression-diagnosis/exp/scripts/proc_ownership.sh:73","payload":{"reason":"already gone","pid":1303090,"pgid":1303090}}

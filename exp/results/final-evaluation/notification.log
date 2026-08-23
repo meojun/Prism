@@ -38,3 +38,29 @@ Verdict should appear as the title on your phone.
 [2026-08-23T18:06:27Z] SENT stop-c1c49d5678c163de9ac9-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=tau-calibration | reason=client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)
 [2026-08-23T18:06:36Z] SENT stop-0a920b41391c956c1399 -- ❌ FAILED | 02-tau-calibration | a calibration run failed or tau selection failed
 [2026-08-23T18:06:36Z] SENT stop-0a920b41391c956c1399-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=02-tau-calibration | reason=a calibration run failed or tau selection failed
+[2026-08-23T18:26:27Z] SENT watchdog-vanish-1787509587 -- ❌ FAILED | 02-tau-calibration | pipeline session vanished
+[2026-08-23T18:26:28Z] SENT watchdog-vanish-1787509587-p -- ⛔ STOPPED | Prism Baseline Pipeline | stage=02-tau-calibration | reason=pipeline session vanished
+[2026-08-23T18:26:43Z] SENT stop-eaecaf8bb23d87ec034a -- ❌ FAILED | 00-preflight | preflight or workload provenance failed
+[2026-08-23T18:26:43Z] SENT stop-eaecaf8bb23d87ec034a-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=00-preflight | reason=preflight or workload provenance failed
+[2026-08-23T18:28:24Z] SENT watchdog-vanish-1787509704 -- ❌ FAILED | 00-preflight | pipeline session vanished
+[2026-08-23T18:28:24Z] SENT watchdog-vanish-1787509704-p -- ⛔ STOPPED | Prism Baseline Pipeline | stage=00-preflight | reason=pipeline session vanished
+[2026-08-23T18:28:41Z] SENT stop-8fec16564598896e70c0 -- ❌ FAILED | 02-tau-calibration | a calibration run failed or tau selection failed
+[2026-08-23T18:28:41Z] SENT stop-8fec16564598896e70c0-pipeline -- ⛔ STOPPED | Prism Baseline Pipeline | stage=02-tau-calibration | reason=a calibration run failed or tau selection failed
+[2026-08-23T18:41:24Z] SENT sleep-ok-1787510484 -- ✅ SUCCESS | Overnight chain armed | you can sleep
+FINAL_RUNTIME_SHA = 6618671 (staged-return fix), pushed and verified
+running: calibration τ=0.00035 seed=0, then 11 more, then 24+24 and aggregation
+handoff runs whatever the outcome; the phone gets the verdict
+[2026-08-23T18:46:20Z] SENT ok-275ac899f86f70811889 -- ✅ SUCCESS | Calibration | τ=0.00035 seed=0 | 8225/8227
+[2026-08-23T19:00:11Z] SENT ok-5610b5653ae6d6c84205 -- ✅ SUCCESS | Calibration | τ=0.00035 seed=42 | 8488/8498
+[2026-08-23T19:13:39Z] SENT ok-5ce95bf23bc37baa731e -- ✅ SUCCESS | Calibration | τ=0.07 seed=0 | 8227/8227
+[2026-08-23T19:27:47Z] SENT ok-9192707a1542260b4213 -- ✅ SUCCESS | Calibration | τ=0.07 seed=42 | 8497/8498
+[2026-08-23T19:41:41Z] SENT ok-10d7a0be9c6ff6efbdb3 -- ✅ SUCCESS | Calibration | τ=0.10 seed=0 | 8226/8227
+[2026-08-23T19:58:42Z] SENT ok-2a46b02057135163c983 -- ✅ SUCCESS | Calibration | τ=0.10 seed=42 | 8498/8498
+[2026-08-23T20:13:06Z] SENT ok-47550da71cc317c20949 -- ✅ SUCCESS | Calibration | τ=0.13 seed=0 | 8227/8227
+[2026-08-23T20:27:44Z] SENT ok-c32c98ecb9dfa1c2f116 -- ✅ SUCCESS | Calibration | τ=0.13 seed=42 | 8498/8498
+[2026-08-23T20:41:55Z] SENT ok-236b480d1f93100a3833 -- ✅ SUCCESS | Calibration | τ=0.171086 seed=0 | 8227/8227
+[2026-08-23T20:56:23Z] SENT ok-bd170d5edb6f7d52b5a5 -- ✅ SUCCESS | Calibration | τ=0.171086 seed=42 | 8498/8498
+[2026-08-23T21:09:47Z] SENT ok-6b1eb7e02365a1a45fd6 -- ✅ SUCCESS | Calibration | τ=inf seed=0 | 8227/8227
+[2026-08-23T21:22:22Z] SENT ok-28da6144971f215413ba -- ✅ SUCCESS | Calibration | τ=inf seed=42 | 8498/8498
+[2026-08-23T21:22:37Z] SENT calibration-complete -- ✅ SUCCESS | Calibration Complete | selected τ=0.00035
+[2026-08-23T21:22:37Z] SENT tau-frozen -- ✅ SUCCESS | τ frozen | τ=0.00035

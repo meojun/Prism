@@ -1,0 +1,12 @@
+  PASS  environment recorded
+  PASS  runtime unchanged since the freeze
+  PASS  experiment repository clean at preflight
+  PASS  c_i frozen for all six models
+  PASS  tau frozen
+  PASS  tau calibrated on held-out seeds only
+  PASS  tau was selected against the frozen c_i
+  PASS  D3 interaction gate PASS
+  PASS  no failing D3 check
+  PASS  workload hashes recorded
+
+VERDICT: READY

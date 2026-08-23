@@ -72,3 +72,29 @@
 [2026-08-23T17:49:18Z] calibration tau=0.00035 seed=0
 [2026-08-23T18:06:36Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
 [2026-08-23T18:06:36Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T18:26:43Z] stage 00-preflight -> FAIL (preflight or workload provenance failed)
+[2026-08-23T18:26:43Z] CHAIN STOPPED at 00-preflight
+[2026-08-23T18:28:40Z] stage 00-preflight -> PASS 
+[2026-08-23T18:28:40Z] skip 01-ci-profile
+[2026-08-23T18:28:40Z] calibration tau=0.00035 seed=0
+[2026-08-23T18:28:40Z] stage 02-tau-calibration -> FAIL (a calibration run failed or tau selection failed)
+[2026-08-23T18:28:41Z] CHAIN STOPPED at 02-tau-calibration
+[2026-08-23T18:31:43Z] stage 00-preflight -> PASS 
+[2026-08-23T18:31:43Z] skip 01-ci-profile
+[2026-08-23T18:31:43Z] calibration tau=0.00035 seed=0
+[2026-08-23T18:46:20Z] calibration tau=0.00035 seed=42
+[2026-08-23T19:00:11Z] calibration tau=0.07 seed=0
+[2026-08-23T19:13:39Z] calibration tau=0.07 seed=42
+[2026-08-23T19:27:47Z] calibration tau=0.10 seed=0
+[2026-08-23T19:41:41Z] calibration tau=0.10 seed=42
+[2026-08-23T19:58:42Z] calibration tau=0.13 seed=0
+[2026-08-23T20:13:06Z] calibration tau=0.13 seed=42
+[2026-08-23T20:27:44Z] calibration tau=0.171086 seed=0
+[2026-08-23T20:41:55Z] calibration tau=0.171086 seed=42
+[2026-08-23T20:56:23Z] calibration tau=1000000000 seed=0
+[2026-08-23T21:09:47Z] calibration tau=1000000000 seed=42
+[2026-08-23T21:22:36Z] stage 02-tau-calibration -> PASS 
+[2026-08-23T21:22:37Z] frozen tau = 0.00035
+[2026-08-23T21:22:37Z] stage 03-readiness -> PASS 
+[2026-08-23T21:22:39Z] stage 03b-fairness -> PASS 
+[2026-08-23T21:22:39Z] prototype bursty r2 s1

@@ -1,0 +1,11 @@
+{
+  "stage": "03b-fairness",
+  "result": "PASS",
+  "git_sha": "6618671",
+  "started_at": "2026-08-23T21:22:37.495360+00:00",
+  "finished_at": "2026-08-23T21:22:39.279553+00:00",
+  "reason": null,
+  "artifacts": [
+    "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/CANONICAL_WORKLOAD_SHA256.json"
+  ]
+}

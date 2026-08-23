@@ -1,0 +1,27 @@
+{
+  "current_phase": "complete",
+  "gpu": [
+    "0, 0 MiB, 0 %",
+    "1, 0 MiB, 100 %"
+  ],
+  "gpu_processes": [],
+  "heartbeat_iso_utc": "2026-08-23T21:22:10.049253+00:00",
+  "heartbeat_timestamp": 1787520130.0492525,
+  "last_actual_progress_event": "pipeline rc=0",
+  "last_log_timestamp": 1787520123.3250678,
+  "last_progress_iso_utc": "2026-08-23T21:22:10.049253+00:00",
+  "last_progress_timestamp": 1787520130.0492525,
+  "no_progress_timeout_s": 240.0,
+  "phase_elapsed_s": 0.0,
+  "phase_hard_timeout_s": 1200.0,
+  "pids": [
+    "1402884 bash /root/Prism-final-regression-diagnosis/exp/scripts/final_stage.sh /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_inf/seed_42 cal-inf-s42 v4-paper-faithful-v6-bursty-r20-s42 -- env PRISM_ROOT=/workspace/prism-exp PRISM_REPO=/root/Prism-final-regression-diagnosis/prism-research PRISM_EXP=/root/Prism-final-regression-diagnosis/exp KVPR_TAU=1000000000 PREFILL_SPEED_FILE=/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/01-ci-profile/prefill_speed_final_a100.json BENCHMARK_TIMEOUT=1500 bash /root/Prism-final-regression-diagnosis/exp/scripts/run_v4_case.sh paper-faithful-v6 bursty 20 42 /root/Prism-final-regression-diagnosis/exp/workloads/final-evaluation/bursty_r20_s42.pkl /root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_inf/seed_42"
+  ],
+  "progress_count": 2,
+  "progress_signal": [
+    2,
+    24,
+    2
+  ],
+  "state": "COMPLETE"
+}

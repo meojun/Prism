@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-23T18:59:39.063564",
+  "exp_name": "paper-faithful-v6_bursty_rate20_seed42",
+  "num_gpus": 2,
+  "completed": 8488,
+  "aborted": 10,
+  "request_throughput": 14.360743803726775,
+  "input_throughput": 4584.596400051395,
+  "output_throughput": 2286.187101225148,
+  "mean_ttft_ms": 64312.103032335486,
+  "p99_ttft_ms": 252930.7708930969,
+  "mean_tpot_ms": 322.8319207278503,
+  "p99_tpot_ms": 2458.2969796657544
+}

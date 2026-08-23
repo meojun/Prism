@@ -1,0 +1,16 @@
+  PASS  algorithm2_ran
+  PASS  no_alg2_order_violation
+  PASS  runtime_raised_no_ordering_error
+  PASS  sequence_tokens_are_monotonic
+  PASS  sequence_tokens_have_no_gaps
+  PASS  no_stale_dispatched_sequences
+  PASS  no_identity_mismatch
+  PASS  admission_ordered_across_migrations
+  PASS  outstanding_work_retired
+  PASS  pipeline_rc_zero
+  PASS  no_deadlock
+  PASS  no_request_loss
+  PASS  no_migration_induced_abort
+  PASS  no_fatal_cuda_or_nccl
+
+VERDICT: PASS  (/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p00035/seed_42/ALG2_INTERACTION.json)

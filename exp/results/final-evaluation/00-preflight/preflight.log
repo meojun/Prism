@@ -1,7 +1,7 @@
 {
   "freeze": {
-    "git_sha": "0593fafe0f08ab9b8154e717616942d28d839497",
-    "git_sha_short": "0593faf",
+    "git_sha": "1bfc1f2a8b3370c23967e653e80f71450a722372",
+    "git_sha_short": "1bfc1f2",
     "git_clean": true,
     "git_dirty_files": [],
     "clean_check_excludes": [
@@ -11,7 +11,7 @@
     "source_repo_sha": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
     "source_repo_dirty_files": 36,
     "source_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
-    "source_patch_sha256": "d2d5ade644411a0165f0d4352e401ad5003ef72eb37f442eb0f3f18b5f4d785c"
+    "source_patch_sha256": "b073a12bb62d14259b36b9ef28c84adede63502f2a6f52a7a5007d1856dd62c0"
   },
   "gpus": [
     "0, NVIDIA A100-SXM4-80GB, 81920 MiB, 570.195.03, 8.0",
