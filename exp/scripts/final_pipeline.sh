@@ -15,7 +15,7 @@ ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 OUT="$ROOT/exp/results/final-evaluation"
 WL="$ROOT/exp/workloads/final-evaluation"
 PY=/workspace/prism-exp/prism-venv/bin/python
-RUNTIME_FREEZE=${PRISM_RUNTIME_FREEZE:-fcaaeff}
+RUNTIME_FREEZE=${PRISM_RUNTIME_FREEZE:-444a216}
 mkdir -p "$OUT"
 
 log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$OUT/pipeline.log"; }
