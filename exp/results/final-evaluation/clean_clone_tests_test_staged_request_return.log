@@ -1,0 +1,45 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+one staged request goes back to the frontend exactly once
+  PASS  delivered once
+  PASS  the staged list is empty
+  PASS  still reported as staged-never-admitted, so 1014 is retired
+the payload is returned before the sequence is retired
+  PASS  frontend delivery precedes the retire report
+arrival time, SLO, model and prompt survive the handover
+  PASS  arrival_time preserved
+  PASS  slo preserved -- the deadline is unchanged
+  PASS  model preserved
+  PASS  prompt preserved
+  PASS  it is not flagged as a resumed placeholder
+several staged requests are each returned exactly once
+  PASS  all four delivered
+  PASS  none delivered twice
+  PASS  all four retired in one report
+staged, waiting and backend together: each rid returned once
+  PASS  all three returned
+  PASS  no rid returned twice
+  PASS  each path reports under its own reason
+a rid present only in the staged list is not also evicted
+  PASS  exactly one delivery
+  PASS  the waiting-queue path did not also claim it
+regression: the waiting-queue path still returns and reports
+  PASS  both returned once
+  PASS  the waiting queue is cleared
+  PASS  reported as evicted-to-frontend
+regression: the backend drain still returns and reports
+  PASS  returned once
+  PASS  reported as backend-queue-drain
+regression: a deactivation holding nothing returns nothing
+  PASS  no frontend traffic
+  PASS  no reports
+regression: staged release happens even with an empty waiting queue
+  PASS  released despite the empty waiting queue
+  PASS  and its sequence retired
+the cal-0p07-s0 scenario: model_2#58 can be served after re-entry
+  PASS  the source returned it
+  PASS  the target admits it
+  PASS  it carries no stale source sequence
+  PASS  its deadline is the one it always had
+
+30 passed, 0 failed

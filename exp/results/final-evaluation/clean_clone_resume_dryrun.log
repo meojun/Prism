@@ -1,0 +1,26 @@
+Prism baseline resume
+  runtime freeze : 6618671
+  selected tau   : 0.00035
+  calibration    : COMPLETE (never re-run)
+  prototype      : 1 passed, 23 remaining
+  final          : 0 passed, 24 remaining
+  next stage     : 04-prototype-fresh
+  next run       : bursty_r2_s2
+
+checks
+  PASS   runtime matches freeze 6618671
+  FAIL   workloads missing or altered -- run: bash exp/scripts/restore_workloads.sh
+  PASS   c_i profile matches the one tau was chosen against
+  PASS   tau read from the manifest, not from a person
+  PASS   no STOP in force
+
+DRY RUN -- nothing started.
+next = 04-prototype-fresh / bursty_r2_s2
+prototype remaining = 23
+final remaining = 24
+aggregation = PENDING
+
+this machine is NOT ready yet -- see the FAIL lines above.
+on a fresh server that normally means:
+  ./bootstrap.sh
+  bash exp/scripts/restore_workloads.sh

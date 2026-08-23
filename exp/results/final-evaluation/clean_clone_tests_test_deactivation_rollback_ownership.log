@@ -1,0 +1,83 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+P0: already deactivated -- released, not stranded
+  PASS  P0: delivered to the frontend exactly once
+  PASS  P0: the engine no longer claims them
+  PASS  P0: exactly one owner each
+  PASS  P0: their sequences are retired here
+  PASS  P0: the frontend copy is not a resumed placeholder
+  PASS  P0: arrival time and SLO survive
+P1: eviction requested
+  PASS  P1: delivered to the frontend exactly once
+  PASS  P1: the engine no longer claims them
+  PASS  P1: exactly one owner each
+  PASS  P1: their sequences are retired here
+  PASS  P1: the frontend copy is not a resumed placeholder
+  PASS  P1: arrival time and SLO survive
+P3: V6 KV eviction
+  PASS  P3: delivered to the frontend exactly once
+  PASS  P3: the engine no longer claims them
+  PASS  P3: exactly one owner each
+  PASS  P3: their sequences are retired here
+  PASS  P3: the frontend copy is not a resumed placeholder
+  PASS  P3: arrival time and SLO survive
+P4: V6 KV off, held by decode retraction, no eviction runs
+  PASS  P4: delivered to the frontend exactly once
+  PASS  P4: the engine no longer claims them
+  PASS  P4: exactly one owner each
+  PASS  P4: their sequences are retired here
+  PASS  P4: the frontend copy is not a resumed placeholder
+  PASS  P4: arrival time and SLO survive
+  PASS  P4: a second release delivers nothing more
+no rid is ever delivered to the frontend twice
+  PASS  three releases, one delivery
+P2: the engine keeps the payload and asks for nothing
+  PASS  P2: frontend delivery count is 0
+  PASS  P2: the engine is still the owner
+  PASS  P2: _alg2_adoption_requested is untouched
+  PASS  P2: no new adoption retry is triggered
+  PASS  P2: exactly one owner
+  PASS  P2: its placeholder is still queued
+P2: the source is operational again at every layer
+[PAPER-ALG2-HANDOFF] {"event": "deactivation_rolled_back", "gpu_id": 0, "model": "model_2"}
+  PASS  scheduler model state is activated
+  PASS  the worker slot is still the model's
+  PASS  it never leaked into the free pool
+  PASS  the queue is untouched -- placeholder included
+  PASS  nothing went to the frontend
+  PASS  normal dispatch works again
+  PASS  the placeholder is dispatchable, so adoption resumes with no retry
+  PASS  its arrival time and SLO are unchanged
+SUCCESS: queue, backend queue and slot released, placeholder dropped
+  PASS  state is deactivated
+  PASS  the ordinary queued request went back exactly once
+  PASS  the undelivered dispatch went back exactly once
+  PASS  the placeholder did NOT go to the frontend
+  PASS  the queue is empty
+  PASS  the slot is released
+  PASS  and reusable
+SUCCESS: the freed slot is taken by the next model
+  PASS  a slot is offered
+  PASS  the next model takes it
+race: the slot is not free between the request and the verdict
+  PASS  no idle slot is offered mid-deactivation
+  PASS  and it cannot be assigned away
+  PASS  so a rollback finds its own slot intact
+race: a pending verdict is applied before the activation after it
+  PASS  the engine channel is drained before the request handler
+  PASS  the activation that follows finds its slot
+race: the engine channel carries completions, never commands
+  PASS  ActivateReqOutput is handled on the engine channel
+  PASS  DeactivateReqOutput is handled on the engine channel
+  PASS  BatchRunReq is handled on the engine channel
+  PASS  BackendAdmitReq is handled on the engine channel
+  PASS  PrefillCompleteReq is handled on the engine channel
+  PASS  MigratedAwayReq is handled on the engine channel
+  PASS  AdoptResumedReq is handled on the engine channel
+  PASS  no ActivateReqInput on the engine channel
+  PASS  no DeactivateReqInput on the engine channel
+end to end: model_2#176 cannot take two sequences again
+  PASS  exactly one frontend delivery for the rid
+  PASS  never two -- which is what gave it 2372 and 2373
+
+65 passed, 0 failed

@@ -1,0 +1,45 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+1. key isolation: each GPU enqueues into its own key
+  PASS  GPU0 key holds only its request
+  PASS  GPU1 key holds only its request
+  PASS  no shared per-model key was created
+1. key isolation: fetch
+  PASS  GPU0 fetched only its own
+  PASS  GPU1's entry is untouched
+1. key isolation: engine backend drain
+  PASS  GPU1's entry survives GPU0's drain
+  PASS  GPU0's own entry was drained
+  PASS  GPU0 never named GPU1's key
+1. key isolation: deactivation pop_all -- the seq 2060 path
+  PASS  GPU0's entry survives GPU1's deactivation
+  PASS  GPU1 drained only its own
+  PASS  GPU1 never named GPU0's key
+1. key isolation: the queue-length probe reads this GPU only
+  PASS  GPU0 sees an empty backlog
+  PASS  GPU1 sees its five
+2. Case A: GPU0 enqueue overlapped with GPU1 same-model pop_all
+  PASS  seq 2060 is still in GPU0's queue
+  PASS  it was not returned to the frontend by GPU1
+  PASS  GPU0's engine can still fetch it
+2. Case B: same-GPU dispatch overlapped with its own drain
+  PASS  GPU0's own drain took them
+  PASS  both went back to the frontend
+  PASS  the drain reported them for retirement
+  PASS  and reported to GPU0's ledger -- the issuing one
+2. actor GPU and issuing GPU can no longer differ
+  PASS  seq 500 survived every other GPU's cleanup
+  PASS  no foreign actor ever named GPU0's key
+3. invariant: every issued seq ends completed or retired
+  PASS  all three are still owned by GPU0
+  PASS  each issued seq has exactly one outcome
+  PASS  nothing is left orphaned in the queue
+4. migration: the target issues its own sequence, as before
+  PASS  the source entry stayed in the source's queue
+  PASS  the target entry is in the target's queue
+  PASS  the two sequences are independent, as the paper's per-GPU Algorithm 2 requires
+4. migration: adoption queues a placeholder, not a backend entry
+  PASS  no backend key was written
+  PASS  the placeholder is in the target's own queue
+
+30 passed, 0 failed

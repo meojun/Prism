@@ -1,0 +1,42 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+A staged payload goes back in the form it arrived in.
+
+model_3#192: a staged payload with dict sampling_params comes back
+  PASS  no exception reported returning the staged request
+  PASS  no staged_return_failed event
+  PASS  returned to the frontend exactly once
+  PASS  its sequence is retired exactly once
+  PASS  the staged list is empty
+
+the object returned is the payload that was fetched
+  PASS  the same object, not a converted copy
+  PASS  sampling_params is still the backend dict
+
+the returned payload does not carry this GPU's sequence onward
+  PASS  alg2_seq cleared, so the next GPU issues a fresh one
+  PASS  not marked backend-admitted
+  PASS  not a resumed placeholder
+
+arrival time, SLO, model and prompt survive the handover
+  PASS  arrival_time preserved
+  PASS  slo preserved -- the deadline is unchanged
+  PASS  model preserved
+  PASS  prompt preserved
+
+several dict-form staged payloads are each returned once
+  PASS  all returned
+  PASS  none returned twice
+  PASS  no failures
+  PASS  all retired in one report
+
+staged, waiting and backend together: each rid returned once
+  PASS  all three returned
+  PASS  no rid returned twice
+  PASS  no path failed
+  PASS  each path reports under its own reason
+
+the Req -> frontend converter still expects an admitted Req
+  PASS  a dict sampling_params is still rejected by the converter
+
+23 passed, 0 failed

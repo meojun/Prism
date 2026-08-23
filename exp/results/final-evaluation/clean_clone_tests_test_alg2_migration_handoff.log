@@ -1,0 +1,129 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+H1: the source retires before it lets go
+  PASS  the ledger entry is gone
+  PASS  the admit frontier steps over the retired sequence
+  PASS  so does the prefill-start frontier
+  PASS  and the shared admission token follows
+  PASS  a second report of the same request changes nothing
+H1: a retired sequence behind a live one waits its turn
+  PASS  the frontier does not jump past the live sequence in front of it
+  PASS  B's sequence is not consumed either
+  PASS  once A is admitted the retired sequence is crossed
+  PASS  and the start frontier reaches B as well
+  PASS  the source ledger ends empty
+H2: adoption queues the request, it does not hand out a sequence
+  PASS  no sequence was issued on receipt
+  PASS  and no ledger entry was created
+  PASS  the request is in the GPU's ordinary queue
+  PASS  marked as resumed so the engine promotes the request it holds
+  PASS  its original arrival time is preserved
+  PASS  its original SLO is preserved -- the deadline is unchanged
+  PASS  its prefill cost is the resume extend length, not the whole prompt
+H2: a target sequence is a target sequence
+  PASS  the placeholder carries no sequence of its own
+  PASS  it takes the next sequence of THIS GPU when dispatched
+H3: one gate for target-local and resumed alike
+  PASS  sequences are consecutive and target-local
+  PASS  admission followed the target's order
+  PASS  prefill start followed the target's order
+  PASS  the ledger is empty at the end
+H3: no bypass for resumed requests
+  PASS  admitting the resumed request ahead of A is rejected
+the whole handoff, end to end
+  PASS  R is outstanding on the source, and only there
+  PASS  in transit it is outstanding nowhere
+  PASS  it is outstanding on the target, and only there
+  PASS  with a target-local sequence, not the source's
+  PASS  both ledgers end empty
+a mixed schedule, ordered by the real selector
+  PASS  all three are queued together
+  PASS  Algorithm 2 ordered them by deadline: ['B', 'R', 'A']
+  PASS  the resumed request was ranked on its own deadline, in the middle
+  PASS  sequences follow the selector's order
+  PASS  admission and prefill start followed it to the end
+  PASS  nothing is left outstanding
+the resumed request's deadline is the one it always had
+  PASS  the older resumed request is scheduled before the new one
+engine side: held out of the queue, then admitted normally
+  PASS  a rebuilt request is not in the waiting queue yet
+  PASS  the engine asks the target's Algorithm 2 to schedule it
+  PASS  it reports the resume extend length as the prefill cost
+  PASS  and carries the original arrival time and SLO
+  PASS  the request that goes into the waiting queue is the rebuilt one
+  PASS  its KV slots are still attached
+  PASS  it carries the target's sequence
+  PASS  it is marked backend-admitted like any other request
+  PASS  and it announces its admission through the same message
+  PASS  nothing is left pending
+engine side: both exits are reported
+  PASS  the stash exit is reported once
+  PASS  it names the GPU letting go and why
+  PASS  an empty report is not sent at all
+a dispatch still sitting in Redis when the model deactivates
+  PASS  the Redis queue is emptied
+  PASS  the undelivered request goes back to the frontend
+  PASS  and drops this GPU's sequence on the way out
+  PASS  an adoption placeholder is not sent to the frontend as a request
+  PASS  both are reported so the GPU stops expecting their sequences
+the frontier advances once the undelivered dispatch is retired
+  PASS  the frontier is waiting on the undelivered dispatch
+  PASS  retiring it moves the frontier to the next live request
+  PASS  and the shared admission token follows
+  PASS  the GPU is serving again and its ledger is empty
+p_i for a re-entering request
+  PASS  a retracted request owes prompt + generated, not the prompt alone
+  PASS  a resumed request owes only the extend token
+  PASS  a recomputed request owes all of it
+  PASS  nothing owed is zero, not negative
+decode retraction as a re-entry
+  PASS  it is not runnable yet
+  PASS  it is held for scheduling
+  PASS  its completed sequence is dropped, not reused
+  PASS  and its admission state is cleared with it
+  PASS  Algorithm 2 is asked to schedule it
+  PASS  under its own reason
+  PASS  with the original arrival time and SLO
+  PASS  and the whole re-prefill as its cost
+the traced retraction, end to end
+  PASS  the first prefill retires cleanly
+  PASS  re-entry queues it rather than issuing a sequence
+  PASS  its second prefill gets a new sequence
+  PASS  and completes through the same gate, ledger clean
+a request retracted more than once
+  PASS  round 0: queued once, not 1 times
+  PASS  round 0: exactly one ledger entry
+  PASS  round 0: retired again
+  PASS  round 1: queued once, not 1 times
+  PASS  round 1: exactly one ledger entry
+  PASS  round 1: retired again
+  PASS  round 2: queued once, not 1 times
+  PASS  round 2: exactly one ledger entry
+  PASS  round 2: retired again
+  PASS  every round took a fresh sequence
+  PASS  a repeat re-entry while already outstanding adds no second entry
+holding several requests asks about each one once
+  PASS  four requests produce four asks, not ten
+  PASS  and no request is asked about twice
+  PASS  all four were asked about
+the scheduler side is idempotent too
+  PASS  a repeated ask does not queue it twice
+  PASS  nor once it is already outstanding
+  PASS  so it holds exactly one sequence
+a grant that belongs to a model this slot no longer serves
+[PAPER-ALG2-HANDOFF] ignoring an adoption grant for model_1#122: granted for model_1, this engine serves model_6
+  PASS  it is not put into this engine's waiting queue
+  PASS  and no admission is announced for it
+  PASS  the request is left held rather than silently dropped
+an admission names the model Algorithm 2 scheduled
+  PASS  the matching grant is admitted
+  PASS  under the model it was granted for
+  PASS  with the sequence it was granted
+
+97 passed, 0 failed
+ALL ALG2 MIGRATION HANDOFF TESTS PASSED
+Exception ignored in: <function Scheduler.__del__ at 0x7ff723a14430>
+Traceback (most recent call last):
+  File "/workspace/prism-handoff-validate/prism-research/python/sglang/srt/managers/scheduler.py", line 3255, in __del__
+  File "/workspace/prism-handoff-validate/prism-research/python/sglang/srt/managers/scheduler.py", line 3249, in cleanup
+AttributeError: 'NoneType' object has no attribute 'error'

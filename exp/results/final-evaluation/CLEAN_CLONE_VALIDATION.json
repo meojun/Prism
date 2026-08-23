@@ -1,14 +1,10 @@
 {
-  "validated_utc": "2026-08-23T21:34:33.488970+00:00",
-  "commit": "23a6089b6b0dd66ac95937dfe66adbc7494375c7",
+  "validated_utc": "2026-08-23T22:45:09.332065+00:00",
+  "commit": "0d3f5ebc921734dc854d13105865bc2b7de6efd1",
   "branch": "exp/final-baseline-ready",
   "clone_dir": "/workspace/prism-handoff-validate",
-  "verdict": "FAIL",
-  "failed": [
-    "canonical workloads in the clone",
-    "workload hashes match in the clone",
-    "invariant tests pass in the clone"
-  ],
+  "verdict": "PASS",
+  "failed": [],
   "checks": [
     {
       "check": "clone from the pushed branch",
@@ -18,7 +14,7 @@
     {
       "check": "checkout the handoff commit",
       "verdict": "PASS",
-      "detail": "23a6089b6b0d"
+      "detail": "0d3f5ebc9217"
     },
     {
       "check": "runtime patch applies to its base commit",
@@ -86,14 +82,64 @@
       "detail": "tracked"
     },
     {
-      "check": "canonical workloads in the clone",
-      "verdict": "FAIL",
-      "detail": "0 .pkl files"
+      "check": "present: exp/final-handoff/workloads_manifest.json",
+      "verdict": "PASS",
+      "detail": "tracked"
     },
     {
-      "check": "workload hashes match in the clone",
-      "verdict": "FAIL",
-      "detail": "see above"
+      "check": "present: exp/final-handoff/calibration_manifest.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/final-handoff/resume_manifest.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/restore_workloads.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/verify_workloads.py",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/bootstrap_final_baseline.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/scripts/resume_baseline.sh",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: exp/FINAL_BASELINE_MANIFEST.json",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "present: CURRENT_RESULTS_INDEX.md",
+      "verdict": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "check": "24 workload digests in the clone",
+      "verdict": "PASS",
+      "detail": "manifest carries all 24"
+    },
+    {
+      "check": "the clone's manifest verifies all 24 traces",
+      "verdict": "PASS",
+      "detail": "24/24 SHA256 match"
+    },
+    {
+      "check": "tau and c_i load from the clone",
+      "verdict": "PASS",
+      "detail": "no old-server path needed"
     },
     {
       "check": "shell harness parses",
@@ -106,9 +152,19 @@
       "detail": "all modules"
     },
     {
+      "check": "runtime materialised in the clone from the patch",
+      "verdict": "PASS",
+      "detail": "base 595ec1f170e7"
+    },
+    {
       "check": "invariant tests pass in the clone",
-      "verdict": "FAIL",
-      "detail": "/workspace/prism-exp/prism-venv/bin/python: No module named pytest "
+      "verdict": "PASS",
+      "detail": "6 standalone suites"
+    },
+    {
+      "check": "resume dry-run names the right next run",
+      "verdict": "PASS",
+      "detail": "04-prototype-fresh / bursty_r2_s2"
     }
   ]
 }

@@ -1,0 +1,65 @@
+/workspace/prism-exp/prism-venv/lib/python3.10/site-packages/pyairports/airports.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_string
+never fetched: dispatched, model leaves before the engine fetches
+  PASS  the scheduler owns it: dispatched, not acknowledged
+  PASS  the scheduler retired its own unacknowledged sequence
+  PASS  the admit frontier advanced past it
+  PASS  the prefill-start frontier advanced past it
+  PASS  the shared admission token followed
+  PASS  a tombstone records the retirement
+never fetched: source frontier recovers, target schedules normally
+  PASS  the target used its own sequence space, not the source's
+  PASS  the target served it to completion
+  PASS  the source admitted the live request that was stuck behind it
+  PASS  the source frontier is exactly one past it
+already staged: acknowledged work stays with the engine
+  PASS  the scheduler did not retire an acknowledged request
+  PASS  no tombstone was written for it
+  PASS  the start frontier did not move
+  PASS  the engine-side report retires it
+  PASS  and only then does the start frontier advance
+already staged: the two paths never retire the same sequence twice
+  PASS  the engine's later report of the same request is a no-op
+  PASS  the sequence was retired exactly once
+already staged: repeated departure reports change nothing
+  PASS  three more departures move nothing
+  PASS  no ledger entry reappeared
+race: the acknowledgement was already in flight when the model left
+  PASS  a late acknowledgement is not an ordering violation
+  PASS  and it does not advance the frontier a second time
+  PASS  the live sequence behind it still admits normally
+race: the acknowledgement wins, so the engine keeps the request
+  PASS  the acknowledged request is still on the engine's books
+  PASS  the sequence was counted once, by admission
+race: a late completion for a retired sequence is a no-op
+  PASS  a late completion does not fail the gate closed
+  PASS  and leaves the frontier where retirement put it
+race: a request that comes back gets a live record, not a ghost
+  PASS  tombstoned after departure
+  PASS  dispatching it again clears the tombstone
+  PASS  the new sequence is admitted through the ordinary gate
+  PASS  the frontier reflects both the retirement and the new admission
+partial: only the unacknowledged sequences retire
+  PASS  the sequence numbers match the production failure
+  PASS  the acknowledged 1158 was left to the engine
+  PASS  1159 was retired
+  PASS  1160 was retired
+  PASS  the live model_6 request was untouched
+  PASS  the admit frontier drained past both retired sequences
+  PASS  and stopped exactly at the live sequence 1161
+  PASS  the start frontier still waits on live 1158
+  PASS  1159 and 1160 wait behind it as retired, not skipped
+  PASS  retiring 1158 drains the start prefix 1158-1160
+  PASS  and stops exactly at the live sequence 1161
+  PASS  the live request behind the leak is admitted
+partial: another model's live sequence is never retired
+  PASS  the other model's sequence is still live
+  PASS  the frontier did not step over it
+  PASS  the departing model's sequence is queued as retired
+  PASS  admitting the live one drains the retired one behind it
+partial: a departure with nothing owned changes nothing
+  PASS  no frontier moved
+  PASS  no tombstone was written
+  PASS  the unrelated request is untouched
+
+49 passed, 0 failed
