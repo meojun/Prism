@@ -36,6 +36,7 @@ while true; do
     if ! git push origin exp/final-baseline-ready >/dev/null 2>&1; then
       echo "push failed; the chain stops before the next expensive stage" \
         > "$EVAL/STOP"
+        bash "$(dirname "${BASH_SOURCE[0]}")/notify_stop.sh" "backup-watcher" "-" "backup watcher stopped the chain" || true
       echo "[backup] PUSH FAILED -- STOP written"
     fi
     ts=$(date -u +%Y%m%dT%H%M%SZ)

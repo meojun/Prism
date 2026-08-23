@@ -46,6 +46,7 @@ verdict=$($PY -c "import json;print(json.load(open('$EVAL/02-tau-calibration/cal
 log "retry interaction gate: $verdict"
 if [ "$verdict" != "PASS" ]; then
   echo "cal-0p00035-s0 retry did not pass the interaction gate" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "cal-0p00035-s0" "$FAILED" "interaction gate failed" || true
   $PY "$SCRIPT_DIR/final_failure_autopsy.py" --run "$FAILED" --label cal-0p00035-s0 \
     --out "$FAILED/FAILURE_AUTOPSY.json" >> "$EVAL/autopsy.log" 2>&1 || true
   log "STOP: the retry finished but the gate did not pass"

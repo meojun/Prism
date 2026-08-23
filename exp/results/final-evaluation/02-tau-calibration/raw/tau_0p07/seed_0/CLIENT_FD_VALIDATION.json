@@ -4,26 +4,14 @@
     "connection_refused": 0,
     "connection_reset": 0,
     "errno_24": 0,
-    "server_disconnected": 1,
+    "server_disconnected": 0,
     "too_many_open_files": 0
   },
-  "client_process_limit_ok": true,
-  "connection_failures": 1,
+  "client_process_limit_ok": null,
+  "connection_failures": 0,
   "fd_exhaustion": 0,
-  "reason": "1 client connection failures with no descriptor exhaustion; responses the server produced were not collected",
-  "recorded_limits": {
-    "benchmark_pid": 930317,
-    "proc_hard_nofile": 524288,
-    "proc_limits_line": "Max open files 65535 524288 files ",
-    "proc_soft_nofile": 65535,
-    "recorded_before_benchmark_start": true,
-    "required_nofile": 65535,
-    "shell_hard_nofile": "524288",
-    "shell_soft_before_raise": "1024",
-    "shell_soft_nofile": "65535"
-  },
+  "recorded_limits": null,
   "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0",
-  "total": 1,
-  "valid": false,
-  "verdict_class": "INVALID_CLIENT_CONNECTION_FAILURES"
+  "total": 0,
+  "valid": true
 }

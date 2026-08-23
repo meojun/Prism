@@ -56,6 +56,7 @@ json.dump({"case": "A", "decided_utc": datetime.datetime.now(datetime.timezone.u
           open(e / "FAIRNESS_DECISION.json", "w"), indent=2)
 PY
   log "CASE A: reusing the prototype arm; the chain's 2 correction runs stand"
+  bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "🟢 Prism Prototype COMPLETE | CASE A: 22 runs reused, 2 corrections stand" || true
   touch "$EVAL/FAIRNESS_GATE_PASS"
   exit 0
 fi
@@ -114,6 +115,7 @@ done
 
 if [ "$ok" != "1" ]; then
   echo "a fresh prototype run failed; see 04b-prototype-fresh" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "prototype-fresh" "-" "a fresh prototype run failed" || true
   log "STOP: a fresh prototype run failed"
   exit 1
 fi
@@ -132,4 +134,5 @@ m["paired_comparison_prototype_source"] = "exp/results/final-evaluation/04b-prot
 json.dump(m, open(e / "FAIRNESS_MANIFEST.json", "w"), indent=2, default=str)
 PY
 log "CASE B complete: 24 fresh prototype runs on the canonical workloads"
+bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "🟢 Prism Prototype COMPLETE | 24/24 fresh runs on the canonical workloads" || true
 touch "$EVAL/FAIRNESS_GATE_PASS"

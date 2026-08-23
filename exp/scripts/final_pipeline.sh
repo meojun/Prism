@@ -53,6 +53,28 @@ rec.update(result=result, reason=reason or None, artifacts=artifacts,
 json.dump(rec, open(path, "w"), indent=2)
 PY
   log "stage $s -> $result ${reason:+($reason)}"
+  # Notification only: it cannot change the outcome or the exit path below.
+  if [ "$result" = "PASS" ]; then
+    case "$s" in
+      02-tau-calibration)
+        valid=$(ls -d "$OUT"/02-tau-calibration/raw/*/seed_[0-9]* 2>/dev/null \
+                | grep -vE 'invalid|attempt' | wc -l)
+        tau=$($PY -c "import json;print(json.load(open('$OUT/02-tau-calibration/FROZEN_TAU.json'))['tau'])" 2>/dev/null || echo "?")
+        bash "$SCRIPT_DIR/notify.sh" "calibration-complete" \
+          "🟢 Prism calibration COMPLETE | ${valid}/12 valid | selected τ=${tau}" || true
+        bash "$SCRIPT_DIR/notify.sh" "tau-frozen" \
+          "🔵 Prism τ FROZEN | τ=${tau} | calibration input locked" || true ;;
+      04-prototype-correction)
+        bash "$SCRIPT_DIR/notify.sh" "stage04-complete" \
+          "🟢 Prism Prototype correction COMPLETE" || true ;;
+      05-final-c)
+        n=$(ls -d "$OUT"/05-final-c/raw/*/rate_*/seed_* 2>/dev/null | wc -l)
+        bash "$SCRIPT_DIR/notify.sh" "finalc-complete" \
+          "🟢 Prism Final evaluation COMPLETE | ${n}/24 runs" || true ;;
+    esac
+  else
+    bash "$SCRIPT_DIR/notify_stop.sh" "$s" "-" "${reason:-stage failed}" || true
+  fi
   [ "$result" = "PASS" ] || { log "CHAIN STOPPED at $s"; exit 1; }
 }
 
@@ -198,4 +220,6 @@ if stage_done 06-aggregate; then log "skip 06-aggregate"; else
   fi
 fi
 
+bash "$SCRIPT_DIR/notify.sh" "pipeline-complete" \
+  "🎉 Prism pipeline COMPLETE | all stages PASS | results in 06-aggregate" || true
 log "CHAIN COMPLETE"

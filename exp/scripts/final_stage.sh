@@ -42,6 +42,7 @@ frozen_blob=$(git -C "$ROOT" rev-parse "${PRISM_RUNTIME_FREEZE:-d849065}:patches
 now_blob=$(git -C "$ROOT" hash-object patches/final_baseline_ready/prism_research_worktree.patch 2>/dev/null)
 if [ -n "$frozen_blob" ] && [ "$frozen_blob" != "$now_blob" ]; then
   echo "frozen source hash mismatch: $frozen_blob != $now_blob" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "-" "frozen source hash mismatch" || true
   echo "[final_stage] STOP: frozen source hash mismatch" >&2
   exit 1
 fi
@@ -55,6 +56,7 @@ case "$LABEL" in
     fi
     if ! grep -q '"verdict": "PASS"' "$sanity" 2>/dev/null; then
       echo "C_I_SANITY_FAIL: see 01-ci-profile/CI_SANITY.json" > "$EVAL/STOP"
+      bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "-" "c_i sanity failed" || true
       echo "[final_stage] STOP: C_I_SANITY_FAIL" >&2
       exit 1
     fi
@@ -74,6 +76,7 @@ case "$LABEL" in
       fi
       if [ "$waited" -ge "${FAIRNESS_WAIT_LIMIT:-43200}" ]; then
         echo "fairness gate never settled after ${waited}s" > "$EVAL/STOP"
+        bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "-" "fairness gate timed out" || true
         echo "[final_stage] STOP: fairness gate timed out" >&2
         exit 1
       fi
@@ -91,6 +94,7 @@ if ! $PY "$SCRIPT_DIR/check_client_fd.py" --mode preflight \
   echo "[final_stage] STOP: client fd preflight failed" >&2
   cat "$STAGE_DIR/client_fd_preflight.json" 2>/dev/null >&2
   echo "client fd preflight failed before $LABEL" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "-" "client fd preflight failed" || true
   exit 1
 fi
 
@@ -137,6 +141,13 @@ for s in "stage-$LABEL" "mon-$LABEL" "$INNER"; do
 done
 pkill -f "sglang.launch_multi_model_server" 2>/dev/null || true
 sleep 8
+# A server that did not exit cleanly leaves /dev/shm/ipc_*_root behind, and the
+# next server dies on the partial set: a killed smoke run left ipc_0_0 through
+# ipc_1_3 without ipc_0_3, and cal-0p07-s0's server was killed at startup with
+# KeyError: '/ipc_0_3_root'. Nothing else owns these names.
+if ! pgrep -f "sglang.launch_multi_model_server" >/dev/null 2>&1; then
+  rm -f /dev/shm/ipc_*_root 2>/dev/null || true
+fi
 
 state=$(python3 - "$status" <<'PY' 2>/dev/null || echo UNKNOWN
 import json, sys
@@ -170,6 +181,7 @@ grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log
   && blocker="no-progress / deadlock"
 if [ -n "$blocker" ]; then
   echo "$blocker in $LABEL ($STAGE_DIR)" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "$STAGE_DIR" "$blocker" || true
   echo "[final_stage] STOP: $blocker -- diagnosing before standing down" >&2
   $PY "$SCRIPT_DIR/final_failure_autopsy.py" --run "$STAGE_DIR" --label "$LABEL" \
     --out "$STAGE_DIR/FAILURE_AUTOPSY.json" \
