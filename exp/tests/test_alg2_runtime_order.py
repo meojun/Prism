@@ -213,7 +213,7 @@ def main():
 
     assert actual == ["A", "B", "C"], actual
     assert [key for key, _ in gpu.redis_client.sent] == [
-        "backend:model1", "backend:model2", "backend:model1"
+        "backend:0:model1", "backend:0:model2", "backend:0:model1"
     ]
 
     events = [json.loads(line) for line in runtime_log_lines]
@@ -232,8 +232,8 @@ def main():
     # Exercise the production backend fetch/staging method. Both model queues
     # are prefetched, but only the shared next sequence is released.
     shared = SharedBarrierRedis({
-        "backend:model1": [expected[0], expected[2]],
-        "backend:model2": [expected[1]],
+        "backend:0:model1": [expected[0], expected[2]],
+        "backend:0:model2": [expected[1]],
     })
     model1 = make_backend("model1", shared)
     model2 = make_backend("model2", shared)

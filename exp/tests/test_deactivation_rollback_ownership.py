@@ -353,7 +353,7 @@ def test_success_releases_everything_once():
     q = RequestQueue({"model_2": 32768})
     q.add_requests([placeholder("model_2#176"), ordinary("model_2#900")])
     g = sched(pool, q)
-    g.redis_client.queues["backend:model_2"] = [ordinary("model_2#901")]
+    g.redis_client.queues["backend:0:model_2"] = [ordinary("model_2#901")]
     g._model_states["model_2"] = "deactivating"
     g._handle_deactivate_result(verdict(success=True))
 

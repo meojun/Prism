@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T13:39:38.558058+00:00",
+ "recorded_utc": "2026-08-23T15:25:29.411922+00:00",
  "previous_runtime_freeze": {
-  "commit": "205e0e9",
-  "patch_blob": "caef46638c450dbd64fc9f3f63b19235dfe839d2"
+  "commit": "16fa9b2",
+  "patch_blob": "245c5b44809802e2539ff2428444651f3274c3eb"
  },
- "change": "observation-only response-path logging, on top of the Algorithm 2 observers",
+ "change": "GPU-scoped backend queue: structural fix for the dispatch ownership violation",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "245c5b44809802e2539ff2428444651f3274c3eb",
+ "patch_blob": "c8ff5e2d2f2430315601c80492e429c09f875d83",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -167,6 +167,43 @@
    "retry",
    "recovery",
    "queue semantics change"
+  ]
+ },
+ "gpu_scoped_backend_queue": {
+  "invariant": "A seq issued by GPU g may only exist in a backend queue owned by GPU g, until an explicit ownership transfer occurs.",
+  "root_cause": "alg2_seq is per GPU; the backend queue was {prefix}:{model}, shared by every GPU. Any drain of that key removed entries another GPU had just dispatched and was still accounting for, and neither drain path could retire a sequence on the issuing GPU's ledger. This orphaned seq 2060 on GPU 0 (GPU 1's deactivation verdict popped backend:model_1 twelve milliseconds after GPU 0 dispatched into it) and seqs 1159/1160 on GPU 0 (its own deactivation drained the key one millisecond after dispatch).",
+  "key_change": "{prefix}:{model_name} -> {prefix}:{gpu_id}:{model_name}",
+  "sites": [
+   "gpu_scheduler.py queue-length probe",
+   "gpu_scheduler.py _handle_deactivate_result pop_all",
+   "gpu_scheduler.py _send_to_backend_queue",
+   "scheduler.py recv_generation_requests fetch",
+   "scheduler.py _drain_backend_queue"
+  ],
+  "not_added": [
+   "new message",
+   "retry",
+   "timeout",
+   "cross-GPU notification",
+   "policy change"
+  ],
+  "explicit_ownership_transfer": "None added, and none needed. A migrating request is re-issued a fresh target-local alg2_seq through the ordinary dispatch path, so the transfer boundary is the request and never the queue entry.",
+  "declared_behaviour_change": {
+   "what": "models_to_skip backlog is now GPU-local rather than global",
+   "where": "request_queue.py:186 and request_queue_mh.py:106, threshold _skip_model_threshold = 10",
+   "classification": "NOT a paper mechanism. It is a pre-existing backpressure guard, and this is a scope correction: the probe now reads this GPU's backlog for the model instead of the cluster's. The two coincide except during migration overlap, where the global reading could make one GPU skip a model because the other had a backlog -- which the paper does not ask for."
+  },
+  "paper_untouched": [
+   "Algorithm 1 (KVPR, tau line-8)",
+   "Algorithm 2 (Moore-Hodgson select, e_i=p_i/c_i)",
+   "deadline and arrival semantics",
+   "per-GPU admission ordering and the sequence frontier",
+   "c_i",
+   "tau",
+   "migration and activation policy",
+   "KV allocator",
+   "workload",
+   "SLOs"
   ]
  }
 }

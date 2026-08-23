@@ -498,7 +498,7 @@ def test_a_dispatch_still_in_redis_is_drained_and_retired():
     print("a dispatch still sitting in Redis when the model deactivates")
     from sglang.srt.managers.io_struct import AdoptGrantReq
     engine = make_engine(model="model_4", gpu_id=1)
-    backend_key = "backend:model_4"
+    backend_key = "backend:1:model_4"
     frontend_key = "frontend:model_4"
     engine.server_args = SimpleNamespace(
         engine_to_gpu_scheduler_key_prefix="e2s",

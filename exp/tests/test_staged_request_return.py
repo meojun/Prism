@@ -102,7 +102,7 @@ def engine(model="model_2", gpu_id=0, staged=(), waiting=(), backend=()):
         backend_generate_request_key_prefix="backend",
         frontend_generate_request_key_prefix="frontend")
     if backend:
-        e.redis_client.queues[f"backend:{model}"] = list(backend)
+        e.redis_client.queues[f"backend:{gpu_id}:{model}"] = list(backend)
     return e
 
 
