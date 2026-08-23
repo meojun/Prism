@@ -5459,7 +5459,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..10f9a54 100644
+index 3cf0db7..12598b1 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5860,8 +5860,7 @@ index 3cf0db7..10f9a54 100644
 +            else:
 +                logger.error("[PAPER-OVERLAP-V6] commit without matching prepare "
 +                             f"model={recv_req.model_name}")
-             if self.tp_rank == 0:
--                logger.warning("Scheduler is already activated")
++            if self.tp_rank == 0:
 +                activate_req_output = ActivateReqOutput(
 +                    rid=recv_req.rid, gpu_id=gpu_id,
 +                    model_name=recv_req.model_name,
@@ -5874,7 +5873,8 @@ index 3cf0db7..10f9a54 100644
 +            return
 +
 +        if self._activated or self._v6_prepared_model is not None:
-+            if self.tp_rank == 0:
+             if self.tp_rank == 0:
+-                logger.warning("Scheduler is already activated")
 +                logger.warning("Scheduler is already activated or prepared")
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
@@ -6049,7 +6049,7 @@ index 3cf0db7..10f9a54 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2143,143 @@ class Scheduler:
+@@ -1823,8 +2143,180 @@ class Scheduler:
          )
          return generate_req
  
@@ -6178,10 +6178,47 @@ index 3cf0db7..10f9a54 100644
 +        # deactivate arrived, the deactivate found the waiting queue empty and
 +        # returned, and the request sat in a slot that was then reassigned to
 +        # model_5 and admitted it 66 s later under the wrong model.
-+        staged_rids = [getattr(req, "rid", None)
-+                       for req in self._alg2_staged_generation_reqs
-+                       if getattr(req, "rid", None)]
++        #
++        # Give the request back before letting go of it. Retiring the sequence
++        # tells this GPU's Algorithm 2 to stop waiting; it delivers the request
++        # to nobody. Releasing the staged list into the ledger alone therefore
++        # left a consistent ledger and a lost request -- model_2#58 took
++        # sequence 1014 on GPU 0, was reported here, had 1014 retired and both
++        # frontiers drained over it, and was never seen again; cal-0p07-s0 sat
++        # at 8,226 of 8,227 with both GPUs idle waiting for it.
++        #
++        # So this path now does what the waiting queue below and the backend
++        # drain already do: return the payload to the frontend exactly once,
++        # then retire the sequence it held here. It will take a new sequence
++        # from whichever GPU picks it up.
++        staged_reqs = list(self._alg2_staged_generation_reqs)
 +        self._alg2_staged_generation_reqs = []
++        staged_rids = [getattr(req, "rid", None) for req in staged_reqs
++                       if getattr(req, "rid", None)]
++        undelivered = []
++        for req in staged_reqs:
++            rid = getattr(req, "rid", None)
++            if not rid:
++                continue
++            try:
++                self.redis_client.send_pyobj(
++                    key=(f"{self.server_args.frontend_generate_request_key_prefix}:"
++                         f"{self.model_name}"),
++                    obj=self._convert_req_to_frontend_reqs(req),
++                )
++            except Exception as e:
++                undelivered.append(rid)
++                logger.error(
++                    f"[PAPER-ALG2-HANDOFF] could not return staged {rid} to the "
++                    f"frontend: {e}")
++        if undelivered:
++            # Loud, because it is the shape of the defect this path just fixed:
++            # a sequence retired for a request nobody received. Reported anyway
++            # -- withholding the retirement would block this GPU's frontier on a
++            # request that has left it either way, which is strictly worse.
++            logger.error("[PAPER-ALG2-HANDOFF] " + json.dumps({
++                "event": "staged_return_failed", "gpu_id": self.gpu_id,
++                "model": self.model_name, "rids": undelivered}, sort_keys=True))
 +        if staged_rids:
 +            self._alg2_report_migrated_away(staged_rids, "staged-never-admitted")
 +
@@ -6193,7 +6230,7 @@ index 3cf0db7..10f9a54 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2292,413 @@ class Scheduler:
+@@ -1837,7 +2329,413 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -6607,7 +6644,7 @@ index 3cf0db7..10f9a54 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1855,6 +2716,7 @@ class Scheduler:
+@@ -1855,6 +2753,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6615,7 +6652,7 @@ index 3cf0db7..10f9a54 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1881,6 +2743,7 @@ class Scheduler:
+@@ -1881,6 +2780,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6623,7 +6660,7 @@ index 3cf0db7..10f9a54 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1898,6 +2761,101 @@ class Scheduler:
+@@ -1898,6 +2798,101 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6725,7 +6762,7 @@ index 3cf0db7..10f9a54 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +2884,7 @@ class Scheduler:
+@@ -1926,6 +2921,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
@@ -6733,7 +6770,7 @@ index 3cf0db7..10f9a54 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
-@@ -1936,6 +2895,7 @@ class Scheduler:
+@@ -1936,6 +2932,7 @@ class Scheduler:
                  self.waiting_queue.append(req)
                  if self.use_kvcached_v0:
                      try:
@@ -6741,7 +6778,7 @@ index 3cf0db7..10f9a54 100644
                          self.tree_cache.cache_finished_req(req)
                      except Exception as e:
                          logger.error(f"Error in cache_finished_req: {e}")
-@@ -1974,6 +2934,9 @@ class Scheduler:
+@@ -1974,6 +2971,9 @@ class Scheduler:
              if_success = False
          return if_success
  
@@ -6751,7 +6788,7 @@ index 3cf0db7..10f9a54 100644
      def abort_request(self, recv_req: AbortReq):
          # Delete requests in the waiting queue
          to_del = None
-@@ -1990,15 +2953,20 @@ class Scheduler:
+@@ -1990,15 +2990,20 @@ class Scheduler:
              for req in self.running_batch.reqs:
                  if req.rid == recv_req.rid and not req.finished():
                      req.finished_reason = FINISH_ABORT()

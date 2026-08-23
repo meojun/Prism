@@ -104,9 +104,11 @@ def test_missing_limits_file_is_not_silently_valid():
 
 # --------------------------------------------------------- the real evidence
 def test_the_real_seed42_run_is_invalid():
-    print("the real seed_42 artifacts are rejected")
+    """The preserved evidence, not the live directory: the contaminated runs
+    were moved aside as .invalid1 when they were re-run clean."""
+    print("the preserved seed_42 evidence is rejected")
     run = (HERE.parent / "results" / "final-evaluation" / "02-tau-calibration"
-           / "raw" / "tau_0p00035" / "seed_42")
+           / "raw" / "tau_0p00035" / "seed_42.invalid1")
     if not (run / "server-logs" / "bench.log").exists():
         check("seed_42 artifacts present", False)
         return
@@ -120,7 +122,7 @@ def test_the_accepted_seed0_run_is_also_invalid():
     """The point accepted as PASS earlier is contaminated by the same fault."""
     print("the previously accepted seed_0 run is rejected too")
     run = (HERE.parent / "results" / "final-evaluation" / "02-tau-calibration"
-           / "raw" / "tau_0p00035" / "seed_0")
+           / "raw" / "tau_0p00035" / "seed_0.invalid1")
     if not (run / "server-logs" / "bench.log").exists():
         check("seed_0 artifacts present", False)
         return
@@ -128,6 +130,22 @@ def test_the_accepted_seed0_run_is_also_invalid():
     check("seed_0 is invalid", r["valid"] is False)
     check("its fd failures are counted",
           r["client_failures"]["too_many_open_files"] > 1000)
+
+
+def test_the_clean_reruns_pass():
+    """And the runs made after the repair must pass, or the gate is useless."""
+    print("the repaired re-runs pass the gate")
+    base = (HERE.parent / "results" / "final-evaluation" / "02-tau-calibration"
+            / "raw" / "tau_0p00035")
+    for name in ("seed_0", "seed_42"):
+        run = base / name
+        if not (run / "server-logs" / "bench.log").exists():
+            check(f"{name} present", False)
+            continue
+        r = postrun(run, 65535)
+        check(f"{name}: no descriptor exhaustion", r["fd_exhaustion"] == 0)
+        check(f"{name}: no connection failures", r["connection_failures"] == 0)
+        check(f"{name}: valid", r["valid"] is True)
 
 
 def test_a_historical_clean_run_still_passes():
@@ -191,6 +209,7 @@ def main():
         test_missing_limits_file_is_not_silently_valid,
         test_the_real_seed42_run_is_invalid,
         test_the_accepted_seed0_run_is_also_invalid,
+        test_the_clean_reruns_pass,
         test_a_historical_clean_run_still_passes,
         test_preflight_measures_the_launch_path,
         test_preflight_would_fail_an_unraisable_environment,

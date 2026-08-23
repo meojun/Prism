@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T05:07:17.742661+00:00",
+ "recorded_utc": "2026-08-23T08:21:04.718202+00:00",
  "previous_runtime_freeze": {
-  "commit": "e3aa0ad",
-  "patch_blob": "843815cf073d25fa94d15e4f6081a5fef5854a11"
+  "commit": "47564b8",
+  "patch_blob": "8916cac57348b7d1388d5bf14ea5a59bc974816d"
  },
- "change": "deactivation rollback correctness + pending-adoption ownership",
+ "change": "staged request return, on top of the deactivation rollback repair",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "8916cac57348b7d1388d5bf14ea5a59bc974816d",
+ "patch_blob": "c939cd311f6057b28ba21a76d9ac010e83dc152a",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -103,5 +103,19 @@
     "frontend_deliveries": 1
    }
   }
+ },
+ "staged_request_return": {
+  "invariant": "Before the source gives up ownership, the request payload is returned to the frontend exactly once; only then is the source-local Algorithm 2 sequence retired.",
+  "root_cause": "_evict_all_waiting_requests released the staged list into the ledger only. _alg2_report_migrated_away tells the GPU scheduler to stop waiting for a sequence; it delivers the request nowhere. So model_2#58 had sequence 1014 retired and both frontiers drained over it while the request itself was discarded, and cal-0p07-s0 sat at 8,226 of 8,227 with both GPUs idle.",
+  "fix": "Each staged request is returned through the existing frontend conversion path before the list is cleared, then the existing staged-never-admitted report retires the sequence -- the same order the waiting-queue and backend-drain paths already use.",
+  "scope": "the staged cleanup inside _evict_all_waiting_requests only",
+  "not_added": [
+   "retry",
+   "timeout",
+   "duplicate guard",
+   "scheduling policy",
+   "ordering change"
+  ],
+  "failure_handling": "A request that cannot be serialised back is logged as staged_return_failed and still reported, matching the waiting-queue path: withholding the retirement would block the frontier on a request that has left this GPU either way."
  }
 }
