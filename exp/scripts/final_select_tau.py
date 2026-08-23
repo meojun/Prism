@@ -30,6 +30,8 @@ def main():
     ap.add_argument("--summary", type=Path, required=True)
     ap.add_argument("--git-sha", required=True)
     ap.add_argument("--ci-file", type=Path, required=True)
+    ap.add_argument("--expect-runs", type=int, default=0,
+                    help="fail unless exactly this many calibration runs were read")
     args = ap.parse_args()
 
     rows, by_tau = [], {}
@@ -62,6 +64,10 @@ def main():
 
     if not rows:
         raise SystemExit("FATAL: no calibration runs found")
+    if args.expect_runs and len(rows) != args.expect_runs:
+        raise SystemExit(f"FATAL: read {len(rows)} calibration runs, expected "
+                         f"{args.expect_runs}; the grid is incomplete or "
+                         "carries runs from another freeze")
 
     fields = sorted({k for r in rows for k in r if not isinstance(r[k], dict)})
     args.summary.parent.mkdir(parents=True, exist_ok=True)

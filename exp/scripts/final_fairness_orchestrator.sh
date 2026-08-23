@@ -56,7 +56,7 @@ json.dump({"case": "A", "decided_utc": datetime.datetime.now(datetime.timezone.u
           open(e / "FAIRNESS_DECISION.json", "w"), indent=2)
 PY
   log "CASE A: reusing the prototype arm; the chain's 2 correction runs stand"
-  bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "🟢 Prism Prototype COMPLETE | CASE A: 22 runs reused, 2 corrections stand" || true
+  bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "✅ SUCCESS | Prototype Evaluation Complete | CASE A reuse" || true
   touch "$EVAL/FAIRNESS_GATE_PASS"
   exit 0
 fi
@@ -134,5 +134,5 @@ m["paired_comparison_prototype_source"] = "exp/results/final-evaluation/04b-prot
 json.dump(m, open(e / "FAIRNESS_MANIFEST.json", "w"), indent=2, default=str)
 PY
 log "CASE B complete: 24 fresh prototype runs on the canonical workloads"
-bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "🟢 Prism Prototype COMPLETE | 24/24 fresh runs on the canonical workloads" || true
+bash "$SCRIPT_DIR/notify.sh" "prototype-complete" "✅ SUCCESS | Prototype Evaluation Complete | 24/24" || true
 touch "$EVAL/FAIRNESS_GATE_PASS"

@@ -66,5 +66,26 @@ tmux new-session -d -s "$MON_SESSION" \
 echo "launched $LABEL"
 echo "  stage dir : $STAGE_DIR"
 echo "  command   : $CMD_FILE"
-echo "  sessions  : $PIPE_SESSION (pipeline), $MON_SESSION (watchdog), $INNER_SESSION (server)"
+# The watchdog must actually exist before the benchmark is allowed to matter.
+# cal-0p07-s42 ran unmonitored for twenty minutes because this session failed to
+# start and nothing checked.
+mon_ok=0
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  if tmux has-session -t "$MON_SESSION" 2>/dev/null \
+     && pgrep -f "monitor_baseline_stage.py --stage-dir $STAGE_DIR" >/dev/null 2>&1; then
+    mon_ok=1; break
+  fi
+  python3 -c "import time;time.sleep(1)"
+done
+if [ "$mon_ok" != "1" ]; then
+  echo "FATAL: watchdog did not start for $LABEL; refusing to run unmonitored" >&2
+  mkdir -p "$STAGE_DIR/monitor"
+  echo "watchdog failed to start" > "$STAGE_DIR/monitor/FAIL"
+  echo 1 > "$STAGE_DIR/pipeline.rc"
+  for s_ in "$PIPE_SESSION" "$MON_SESSION" "$INNER_SESSION"; do
+    tmux kill-session -t "$s_" 2>/dev/null || true
+  done
+  exit 1
+fi
+echo "  sessions  : $PIPE_SESSION (pipeline), $MON_SESSION (watchdog, alive), $INNER_SESSION (server)"
 echo "  status    : $STATUS"

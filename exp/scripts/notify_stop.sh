@@ -51,7 +51,7 @@ PY
   [ -f "$DIR/INVALID" ] && REASON="$REASON ($(cat "$DIR/INVALID" 2>/dev/null | head -1))"
 fi
 
-line="🔴 Prism STOPPED | $stage"
+line="❌ FAILED | $stage"
 [ -n "$tau" ]      && line="$line | τ=$tau${seed:+ seed=$seed}"
 [ -z "$tau" ] && [ -n "$seed" ] && line="$line | seed=$seed"
 [ -n "$progress" ] && line="$line | $progress"
@@ -80,4 +80,8 @@ fi
 stop_at=$(stat -c %Y "$EVAL/STOP" 2>/dev/null || date +%s)
 key="stop-$(echo -n "$run_id|$attempt|$stop_at|$REASON" | md5sum | cut -c1-20)"
 PRISM_NTFY_PRIORITY=high bash "$SCRIPT_DIR/notify.sh" "$key" "$line"
+# The run-level failure, then the pipeline-level state. Two lines, never one:
+# a reader must be able to tell "this run failed" from "everything stopped".
+PRISM_NTFY_PRIORITY=high bash "$SCRIPT_DIR/notify.sh" "${key}-pipeline" \
+  "⛔ STOPPED | Prism Baseline Pipeline | stage=$stage | reason=$REASON"
 exit 0

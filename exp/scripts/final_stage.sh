@@ -29,6 +29,42 @@ fi
 
 ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 . "$SCRIPT_DIR/proc_ownership.sh"
+
+# A run that finished and passed every gate reports itself as a success, in the
+# same shape as the failure path reports a stop. The key includes the run's own
+# rc file timestamp so a re-attempt of the same label is a separate message and
+# is never deduplicated against an earlier one.
+notify_run_success() {
+  local line key stamp v
+  v="$STAGE_DIR/VERIFICATION.json"
+  stamp=$(stat -c %Y "$STAGE_DIR/pipeline.rc" 2>/dev/null || echo 0)
+  key="ok-$(printf '%s|%s|%s' "$STAGE_DIR" "$LABEL" "$stamp" | md5sum | cut -c1-20)"
+  local counts
+  counts=$($PY - "$v" <<'PY2' 2>/dev/null || echo "?/?"
+import json, sys
+try:
+    n = json.load(open(sys.argv[1]))["numbers"]
+    print(f"{n['completed']}/{n['offered_requests']}")
+except Exception:
+    print("?/?")
+PY2
+)
+  case "$LABEL" in
+    cal-*)
+      local tl seed
+      tl=${LABEL#cal-}; seed=${tl##*-s}; tl=${tl%-s*}
+      line="✅ SUCCESS | Calibration | τ=$(echo "$tl" | tr 'p' '.') seed=${seed} | ${counts}" ;;
+    protofresh-*|proto-*)
+      local r; r=${LABEL#protofresh-}; r=${r#proto-}
+      line="✅ SUCCESS | Prototype | $(echo "$r" | tr '-' ' ') | ${counts}" ;;
+    finalc-*)
+      local r; r=${LABEL#finalc-}
+      line="✅ SUCCESS | Final Prism | $(echo "$r" | tr '-' ' ') | ${counts}" ;;
+    *)
+      line="✅ SUCCESS | ${LABEL} | ${counts}" ;;
+  esac
+  bash "$SCRIPT_DIR/notify.sh" "$key" "$line" || true
+}
 EVAL="$ROOT/exp/results/final-evaluation"
 PY=/workspace/prism-exp/prism-venv/bin/python
 
@@ -177,6 +213,23 @@ if ! $PY "$SCRIPT_DIR/check_client_fd.py" --mode postrun --run "$STAGE_DIR" \
 fi
 grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log" "$L/stdout.log" 2>/dev/null \
   && blocker="CUDA OOM"
+# Algorithm 2's runtime invariants -- stale dispatched sequences, ordering and
+# ownership identity -- are checked from the run's own logs before its numbers
+# are allowed to count.
+$PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" \
+  --out "$STAGE_DIR/ALG2_INTERACTION.json" > "$STAGE_DIR/alg2_interaction.log" 2>&1 || true
+if [ -z "$blocker" ] && ! grep -q '"verdict": "PASS"' "$STAGE_DIR/ALG2_INTERACTION.json" 2>/dev/null; then
+  failed=$($PY - "$STAGE_DIR/ALG2_INTERACTION.json" <<'PY2'
+import json, sys
+try:
+    r = json.load(open(sys.argv[1]))
+    print(",".join(c["check"] for c in r["checks"] if not c["pass"]) or "unreadable")
+except Exception:
+    print("interaction report missing")
+PY2
+)
+  blocker="Algorithm 2 interaction gate FAIL: $failed"
+fi
 [ -z "$blocker" ] && grep -qE "NCCL error|ncclUnhandledCudaError|CUDA error:" "$L/server.log" 2>/dev/null \
   && blocker="fatal CUDA/NCCL"
 [ -z "$blocker" ] && grep -q '"order_ok": false' "$L/server.log.gpu_scheduler.log" 2>/dev/null \
@@ -209,4 +262,16 @@ if [ -n "$blocker" ]; then
   exit 1
 fi
 
-[ "$rc" = "0" ] && [ "$state" = "COMPLETE" ]
+if [ "$rc" = "0" ] && [ "$state" = "COMPLETE" ]; then
+  if $PY "$SCRIPT_DIR/final_run_verify.py" --run "$STAGE_DIR" --label "$LABEL" \
+       --out "$STAGE_DIR/VERIFICATION.json" >> "$STAGE_DIR/verification.log" 2>&1; then
+    notify_run_success
+    exit 0
+  fi
+  why=$($PY -c "import json;r=json.load(open('$STAGE_DIR/VERIFICATION.json'));print(','.join(r['failed_gates']+r['gates_without_evidence']) or 'unknown')" 2>/dev/null || echo "verification unreadable")
+  echo "per-run verification failed in $LABEL: $why" > "$EVAL/STOP"
+  bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "$STAGE_DIR" "verification: $why" || true
+  echo "[final_stage] STOP: per-run verification failed -- $why" >&2
+  exit 1
+fi
+exit 1

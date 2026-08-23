@@ -60,6 +60,50 @@ def write_csv(path, rows):
         w.writerows(rows)
 
 
+COMPARED = ("goodput_req_s", "joint_slo_attainment",
+            "achieved_throughput_req_s", "ttft_mean", "ttft_p99",
+            "tpot_mean", "tpot_p99", "e2e_mean", "completed", "aborted")
+
+
+def summarise_groups(rows, keys):
+    """bursty / steady / overall roll-ups, alongside the per-condition table."""
+    out = []
+    groups = {}
+    for r in rows:
+        groups.setdefault((r["arm"], r["workload"]), []).append(r)
+        groups.setdefault((r["arm"], "overall"), []).append(r)
+    for (arm, scope), rs in sorted(groups.items()):
+        row = {"arm": arm, "scope": scope, "n": len(rs)}
+        for k in keys:
+            vals = [r[k] for r in rs if r.get(k) is not None]
+            row[f"{k}_mean"] = statistics.fmean(vals) if vals else None
+            row[f"{k}_std"] = statistics.pstdev(vals) if len(vals) > 1 else 0.0
+            row[f"{k}_n"] = len(vals)
+        out.append(row)
+    return out
+
+
+def group_improvement(groups):
+    """The same paired deltas, at bursty / steady / overall scope."""
+    proto = {g["scope"]: g for g in groups if g["arm"] == "prototype"}
+    out = []
+    for g in groups:
+        if g["arm"] != "final":
+            continue
+        base = proto.get(g["scope"])
+        if not base:
+            continue
+        entry = {"scope": g["scope"], "n_final": g["n"], "n_prototype": base["n"]}
+        for k in COMPARED:
+            a, b = base.get(f"{k}_mean"), g.get(f"{k}_mean")
+            entry[f"prototype_{k}"] = a
+            entry[f"final_{k}"] = b
+            entry[f"delta_{k}"] = (b - a) if (a is not None and b is not None) else None
+            entry[f"relative_{k}"] = ((b - a) / a) if (a not in (None, 0) and b is not None) else None
+        out.append(entry)
+    return out
+
+
 def summarise(rows, keys):
     out = []
     groups = {}
@@ -84,8 +128,9 @@ def finish(args, out, proto_rows, final_rows, decision):
     write_csv(out / "all_runs.csv", proto_rows + final_rows)
     metrics = ["achieved_throughput_req_s", "goodput_req_s",
                "ttft_slo_attainment", "tpot_slo_attainment",
-               "joint_slo_attainment", "ttft_p50", "ttft_p95", "ttft_p99",
-               "tpot_p50", "tpot_p95", "tpot_p99", "e2e_p50", "e2e_p95",
+               "joint_slo_attainment", "ttft_mean", "ttft_p50", "ttft_p95",
+               "ttft_p99", "tpot_mean", "tpot_p50", "tpot_p95", "tpot_p99",
+               "e2e_mean", "e2e_p50", "e2e_p95",
                "e2e_p99", "completed", "aborted", "client_errors",
                "migrations_executed", "weight_bytes", "kv_bytes",
                "exposed_downtime_mean_s", "alg2_order_violations"]
@@ -93,8 +138,9 @@ def finish(args, out, proto_rows, final_rows, decision):
     write_csv(out / "summary.csv", summary)
     write_csv(out / "latency_summary.csv",
               summarise(proto_rows + final_rows,
-                        ["ttft_p50", "ttft_p95", "ttft_p99", "tpot_p50",
-                         "tpot_p95", "tpot_p99", "e2e_p50", "e2e_p95", "e2e_p99"]))
+                        ["ttft_mean", "ttft_p50", "ttft_p95", "ttft_p99",
+                         "tpot_mean", "tpot_p50", "tpot_p95", "tpot_p99",
+                         "e2e_mean", "e2e_p50", "e2e_p95", "e2e_p99"]))
     write_csv(out / "migration_summary.csv",
               summarise(final_rows,
                         ["migrations_executed", "migrations_p2p",
@@ -111,8 +157,7 @@ def finish(args, out, proto_rows, final_rows, decision):
             continue
         entry = {"workload": row["workload"], "rate": row["rate"],
                  "n_final": row["n"], "n_prototype": base["n"]}
-        for k in ("goodput_req_s", "joint_slo_attainment",
-                  "achieved_throughput_req_s", "ttft_p99", "tpot_p99"):
+        for k in COMPARED:
             a, b = base.get(f"{k}_mean"), row.get(f"{k}_mean")
             entry[f"prototype_{k}"] = a
             entry[f"final_{k}"] = b
@@ -120,6 +165,9 @@ def finish(args, out, proto_rows, final_rows, decision):
             entry[f"relative_{k}"] = ((b - a) / a) if (a not in (None, 0) and b is not None) else None
         improvement.append(entry)
     write_csv(out / "improvement.csv", improvement)
+    groups = summarise_groups(proto_rows + final_rows, metrics)
+    write_csv(out / "group_summary.csv", groups)
+    write_csv(out / "group_improvement.csv", group_improvement(groups))
     manifest = {
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "fairness_case": decision.get("case"),
@@ -176,8 +224,9 @@ def main():
 
     metrics = ["achieved_throughput_req_s", "goodput_req_s",
                "ttft_slo_attainment", "tpot_slo_attainment",
-               "joint_slo_attainment", "ttft_p50", "ttft_p95", "ttft_p99",
-               "tpot_p50", "tpot_p95", "tpot_p99", "e2e_p50", "e2e_p95",
+               "joint_slo_attainment", "ttft_mean", "ttft_p50", "ttft_p95",
+               "ttft_p99", "tpot_mean", "tpot_p50", "tpot_p95", "tpot_p99",
+               "e2e_mean", "e2e_p50", "e2e_p95",
                "e2e_p99", "completed", "aborted", "client_errors",
                "migrations_executed", "weight_bytes", "kv_bytes",
                "exposed_downtime_mean_s", "alg2_order_violations"]
@@ -205,8 +254,7 @@ def main():
             continue
         entry = {"workload": row["workload"], "rate": row["rate"],
                  "n_final": row["n"], "n_prototype": base["n"]}
-        for k in ("goodput_req_s", "joint_slo_attainment",
-                  "achieved_throughput_req_s", "ttft_p99", "tpot_p99"):
+        for k in COMPARED:
             a, b = base.get(f"{k}_mean"), row.get(f"{k}_mean")
             entry[f"prototype_{k}"] = a
             entry[f"final_{k}"] = b

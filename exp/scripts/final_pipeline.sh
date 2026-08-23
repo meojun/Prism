@@ -23,8 +23,20 @@ log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$OUT/pipeline.log"; }
 status_path() { echo "$OUT/$1/STATUS.json"; }
 
 stage_done() {
+  # A stage counts as done only if it passed under *this* runtime freeze. A
+  # PASS recorded against another commit is evidence, not a reason to skip.
   local s=$1 f; f=$(status_path "$s")
-  [ -f "$f" ] && grep -q '"result": "PASS"' "$f"
+  [ -f "$f" ] || return 1
+  grep -q '"result": "PASS"' "$f" || return 1
+  # c_i is a measured property of this hardware, not of the runtime, and it is
+  # held fixed across the study by instruction. A passing profile is reused
+  # whatever the freeze; re-measuring it would change c_i.
+  [ "$s" = "01-ci-profile" ] && return 0
+  $PY - "$f" "$RUNTIME_FREEZE" <<'PY2'
+import json, sys
+rec = json.load(open(sys.argv[1]))
+sys.exit(0 if str(rec.get("git_sha", "")) == sys.argv[2] else 1)
+PY2
 }
 
 stage_start() {
@@ -61,16 +73,17 @@ PY
                 | grep -vE 'invalid|attempt' | wc -l)
         tau=$($PY -c "import json;print(json.load(open('$OUT/02-tau-calibration/FROZEN_TAU.json'))['tau'])" 2>/dev/null || echo "?")
         bash "$SCRIPT_DIR/notify.sh" "calibration-complete" \
-          "🟢 Prism calibration COMPLETE | ${valid}/12 valid | selected τ=${tau}" || true
+          "✅ SUCCESS | Calibration Complete | selected τ=${tau}" || true
         bash "$SCRIPT_DIR/notify.sh" "tau-frozen" \
-          "🔵 Prism τ FROZEN | τ=${tau} | calibration input locked" || true ;;
-      04-prototype-correction)
-        bash "$SCRIPT_DIR/notify.sh" "stage04-complete" \
-          "🟢 Prism Prototype correction COMPLETE" || true ;;
+          "✅ SUCCESS | τ frozen | τ=${tau}" || true ;;
+      04-prototype-fresh)
+        n=$(ls -d "$OUT"/04b-prototype-fresh/raw/*/rate_*/seed_* 2>/dev/null | wc -l)
+        bash "$SCRIPT_DIR/notify.sh" "prototype-complete" \
+          "✅ SUCCESS | Prototype Evaluation Complete | ${n}/24" || true ;;
       05-final-c)
         n=$(ls -d "$OUT"/05-final-c/raw/*/rate_*/seed_* 2>/dev/null | wc -l)
         bash "$SCRIPT_DIR/notify.sh" "finalc-complete" \
-          "🟢 Prism Final evaluation COMPLETE | ${n}/24 runs" || true ;;
+          "✅ SUCCESS | Final Evaluation Complete | ${n}/24" || true ;;
     esac
   else
     bash "$SCRIPT_DIR/notify_stop.sh" "$s" "-" "${reason:-stage failed}" || true
@@ -132,10 +145,16 @@ if stage_done 02-tau-calibration; then log "skip 02-tau-calibration"; else
         --calibration "$OUT/02-tau-calibration/raw" \
         --out "$OUT/02-tau-calibration/FROZEN_TAU.json" \
         --summary "$OUT/02-tau-calibration/calibration_summary.csv" \
-        --git-sha "$RUNTIME_FREEZE" --ci-file "$CI_FILE" \
+        --git-sha "$RUNTIME_FREEZE" --ci-file "$CI_FILE" --expect-runs 12 \
         >> "$OUT/02-tau-calibration/calibration.log" 2>&1; then
     stage_end 02-tau-calibration PASS "" "$OUT/02-tau-calibration/FROZEN_TAU.json"
   else
+    if [ -f "$OUT/02-tau-calibration/TAU_REQUIRES_HUMAN_APPROVAL.json" ]; then
+      bash "$SCRIPT_DIR/notify.sh" "tau-approval-$(date +%s)" \
+        "⚠️ APPROVAL REQUIRED | τ=∞ selected | pipeline paused" || true
+      log "TAU=infinity selected -- human approval required"
+      stage_end 02-tau-calibration FAIL "tau=infinity selected; human approval required"
+    fi
     stage_end 02-tau-calibration FAIL "a calibration run failed or tau selection failed"
   fi
 fi
@@ -155,28 +174,56 @@ if stage_done 03-readiness; then log "skip 03-readiness"; else
   fi
 fi
 
+# ------------------------------------------------------- stage 3b fairness
+# Both arms must consume byte-identical canonical workload files. The
+# historical prototype arm cannot establish that (its .pkl traces are gone),
+# so the committed ShareGPT set is frozen as the single canonical set and both
+# arms are run fresh on exactly those files. Any hash mismatch stops the chain.
+if stage_done 03b-fairness; then log "skip 03b-fairness"; else
+  stage_start 03b-fairness
+  if $PY "$SCRIPT_DIR/final_fairness_audit.py" \
+        --final-workloads "$WL" \
+        --out-json "$OUT/FAIRNESS_MANIFEST.json" \
+        --out-csv "$OUT/FAIRNESS_MANIFEST.csv" \
+        > "$OUT/03b-fairness/audit.log" 2>&1; then :; fi
+  if $PY "$SCRIPT_DIR/final_freeze_canonical.py" \
+        --workloads "$WL" --out-dir "$OUT" \
+        >> "$OUT/03b-fairness/audit.log" 2>&1; then
+    touch "$OUT/FAIRNESS_GATE_PASS"
+    stage_end 03b-fairness PASS "" "$OUT/CANONICAL_WORKLOAD_SHA256.json"
+  else
+    stage_end 03b-fairness FAIL "canonical workload provenance could not be established"
+  fi
+fi
+
 # ---------------------------------------------------------------- stage 4
-if stage_done 04-prototype-correction; then log "skip 04-prototype-correction"; else
-  stage_start 04-prototype-correction
+# The released prototype arm: 24 fresh runs on the canonical workloads, under
+# the same server and GPU conditions as the final arm. No historical result is
+# reused and none is overwritten.
+if stage_done 04-prototype-fresh; then log "skip 04-prototype-fresh"; else
+  stage_start 04-prototype-fresh
   ok=1
-  for spec in "bursty 20 3" "steady 20 3"; do
-    set -- $spec; wlkind=$1; rate=$2; seed=$3
-    d="$OUT/04-prototype-correction/raw/${wlkind}/rate_${rate}/seed_${seed}"
-    log "prototype correction $wlkind r$rate s$seed"
-    STAGE_HARD_LIMIT=2400 \
-    bash "$SCRIPT_DIR/final_stage.sh" "$d" "proto-${wlkind}-r${rate}-s${seed}" \
-      v4-released-prototype-${wlkind}-r${rate}-s${seed} -- \
-      env PRISM_ROOT=/workspace/prism-exp PRISM_REPO="$ROOT/prism-research" \
-          PRISM_EXP="$ROOT/exp" BENCHMARK_TIMEOUT=1500 \
-          bash "$SCRIPT_DIR/run_v4_case.sh" released-prototype "$wlkind" "$rate" "$seed" \
-            "$WL/${wlkind}_r${rate}_s${seed}.pkl" "$d" \
-      >> "$OUT/04-prototype-correction/correction.log" 2>&1 || ok=0
-    [ "$ok" = "1" ] || break
+  for spec in "bursty 2" "bursty 4" "bursty 8" "bursty 14" "bursty 20" \
+              "steady 4" "steady 8" "steady 20"; do
+    set -- $spec; wlkind=$1; rate=$2
+    for seed in 1 2 3; do
+      d="$OUT/04b-prototype-fresh/raw/${wlkind}/rate_${rate}/seed_${seed}"
+      log "prototype $wlkind r$rate s$seed"
+      STAGE_HARD_LIMIT=2400 \
+      bash "$SCRIPT_DIR/final_stage.sh" "$d" "protofresh-${wlkind}-r${rate}-s${seed}" \
+        v4-released-prototype-${wlkind}-r${rate}-s${seed} -- \
+        env PRISM_ROOT=/workspace/prism-exp PRISM_REPO="$ROOT/prism-research" \
+            PRISM_EXP="$ROOT/exp" BENCHMARK_TIMEOUT=1500 \
+            bash "$SCRIPT_DIR/run_v4_case.sh" released-prototype "$wlkind" "$rate" "$seed" \
+              "$WL/${wlkind}_r${rate}_s${seed}.pkl" "$d" \
+        >> "$OUT/04-prototype-fresh/prototype.log" 2>&1 || ok=0
+      [ "$ok" = "1" ] || break 2
+    done
   done
   if [ "$ok" = "1" ]; then
-    stage_end 04-prototype-correction PASS "" "$OUT/04-prototype-correction/raw"
+    stage_end 04-prototype-fresh PASS "" "$OUT/04b-prototype-fresh/raw"
   else
-    stage_end 04-prototype-correction FAIL "a prototype correction run failed"
+    stage_end 04-prototype-fresh FAIL "a prototype run failed"
   fi
 fi
 
@@ -221,5 +268,5 @@ if stage_done 06-aggregate; then log "skip 06-aggregate"; else
 fi
 
 bash "$SCRIPT_DIR/notify.sh" "pipeline-complete" \
-  "🎉 Prism pipeline COMPLETE | all stages PASS | results in 06-aggregate" || true
+  "✅ SUCCESS | Prism Baseline Pipeline Complete" || true
 log "CHAIN COMPLETE"
