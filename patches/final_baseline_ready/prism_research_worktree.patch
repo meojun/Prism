@@ -1333,13 +1333,16 @@ index 0000000..c46e342
 +    _emit(record)
 +    return record
 diff --git a/python/sglang/multi_model/request_handler_worker_pool.py b/python/sglang/multi_model/request_handler_worker_pool.py
-index a875b36..9e0abd6 100644
+index a875b36..cd648ed 100644
 --- a/python/sglang/multi_model/request_handler_worker_pool.py
 +++ b/python/sglang/multi_model/request_handler_worker_pool.py
-@@ -83,13 +83,33 @@ asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+@@ -82,14 +82,38 @@ asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+ 
  logger = logging.getLogger(__name__)
  
- 
++_PRISM_OBS = __import__("os").environ.get("PRISM_OBS") == "1"
++
++
 +def _resp_obs(boundary, rid, model=None, final=None, n=None, exc=None,
 +              **extra):
 +    """Response-path observation. Logs and returns; changes nothing.
@@ -1348,6 +1351,8 @@ index a875b36..9e0abd6 100644
 +    client: 1,204 requests in cal-0p07-s0 had no response while every engine
 +    reported itself alive and empty and the Algorithm 2 ledger was clean.
 +    """
++    if not _PRISM_OBS:
++        return
 +    try:
 +        import json as _j, time as _t
 +        logger.info("[PAPER-RESP-OBS] " + _j.dumps(dict(
@@ -1356,7 +1361,7 @@ index a875b36..9e0abd6 100644
 +    except Exception:
 +        pass
 +
-+
+ 
  @dataclasses.dataclass
  class ReqState:
      """Store the state a request."""
@@ -1370,7 +1375,7 @@ index a875b36..9e0abd6 100644
  
  
  class RequestHandlerWorkerPool:
-@@ -369,6 +389,12 @@ class RequestHandlerWorkerPool:
+@@ -369,6 +393,12 @@ class RequestHandlerWorkerPool:
  
          assert self.is_generation, "Only generation models are supported."
  
@@ -1383,7 +1388,7 @@ index a875b36..9e0abd6 100644
          # Send request to the generation queue with model name in the key
          model = obj.model
          try:
-@@ -377,15 +403,17 @@ class RequestHandlerWorkerPool:
+@@ -377,15 +407,17 @@ class RequestHandlerWorkerPool:
                  obj=single_request_obj,
              )
          except asyncio.exceptions.CancelledError:
@@ -1402,7 +1407,7 @@ index a875b36..9e0abd6 100644
  
      async def _handle_single_request(
          self,
-@@ -396,7 +424,7 @@ class RequestHandlerWorkerPool:
+@@ -396,7 +428,7 @@ class RequestHandlerWorkerPool:
          is_cache_for_prefill: Optional[bool] = False,
      ):
          try:
@@ -1411,7 +1416,7 @@ index a875b36..9e0abd6 100644
                  obj,
                  index,
                  input_id_index=input_id_index,
-@@ -406,11 +434,7 @@ class RequestHandlerWorkerPool:
+@@ -406,11 +438,7 @@ class RequestHandlerWorkerPool:
              logger.error(f"Error when handling single request for {obj.model}: {e}")
              raise e
  
@@ -1424,7 +1429,7 @@ index a875b36..9e0abd6 100644
          if not is_cache_for_prefill:
              async for response in self._wait_for_response(state, obj, rid, request):
                  yield response
-@@ -458,14 +482,10 @@ class RequestHandlerWorkerPool:
+@@ -458,14 +486,10 @@ class RequestHandlerWorkerPool:
                      # Here when using parallel sampling we should consider prefill stage so the index is :  j + i * (parallel_sample_num-1) + batch_size - 1
                      index += batch_size - 1 - i
  
@@ -1440,7 +1445,7 @@ index a875b36..9e0abd6 100644
                  generators.append(
                      self._wait_for_response(
                          state,
-@@ -519,17 +539,23 @@ class RequestHandlerWorkerPool:
+@@ -519,17 +543,23 @@ class RequestHandlerWorkerPool:
      ):
          while True:
              try:
@@ -1466,7 +1471,7 @@ index a875b36..9e0abd6 100644
                      obj.return_logprob if index is None else obj.return_logprob[index],
                      (
                          obj.top_logprobs_num
-@@ -538,17 +564,17 @@ class RequestHandlerWorkerPool:
+@@ -538,17 +568,17 @@ class RequestHandlerWorkerPool:
                      ),
                      obj.return_text_in_logprobs,
                  )
@@ -1490,7 +1495,7 @@ index a875b36..9e0abd6 100644
                  del self.rid_to_state[rid]
                  finish_obj = FinishReq(
                      rid=rid,
-@@ -561,7 +587,6 @@ class RequestHandlerWorkerPool:
+@@ -561,7 +591,6 @@ class RequestHandlerWorkerPool:
                  yield out
                  break
  
@@ -1498,7 +1503,7 @@ index a875b36..9e0abd6 100644
              yield out
  
      async def _wait_for_cache_prefill_response(
-@@ -573,8 +598,11 @@ class RequestHandlerWorkerPool:
+@@ -573,8 +602,11 @@ class RequestHandlerWorkerPool:
      ):
          while True:
              try:
@@ -1512,7 +1517,7 @@ index a875b36..9e0abd6 100644
              except asyncio.TimeoutError:
                  if request is not None and await request.is_disconnected():
                      for rid in obj.rid:
-@@ -582,7 +610,6 @@ class RequestHandlerWorkerPool:
+@@ -582,7 +614,6 @@ class RequestHandlerWorkerPool:
                      raise ValueError(f"Abort request {rid}")
                  continue
  
@@ -1520,7 +1525,7 @@ index a875b36..9e0abd6 100644
          del self.rid_to_state[rid]
  
      def flush_cache(self, req: FlushCacheReq):
-@@ -635,18 +662,30 @@ class RequestHandlerWorkerPool:
+@@ -635,18 +666,30 @@ class RequestHandlerWorkerPool:
      async def _send_req_and_wait_for_response(
          self, req: Union[ActivateReqInput, DeactivateReqInput]
      ):
@@ -1555,7 +1560,7 @@ index a875b36..9e0abd6 100644
              success = state.finished
              out = state.out_list[-1]
          except:
-@@ -661,11 +700,15 @@ class RequestHandlerWorkerPool:
+@@ -661,11 +704,15 @@ class RequestHandlerWorkerPool:
  
      async def deactivate(self, req: DeactivateReqInput):
          logger.info(f"Sending deactivate request to GPU scheduler {req.gpu_id}")
@@ -1571,7 +1576,7 @@ index a875b36..9e0abd6 100644
          self._send_req_to_gpu_scheduler(req)
          return True, None
  
-@@ -772,9 +815,18 @@ class RequestHandlerWorkerPool:
+@@ -772,9 +819,18 @@ class RequestHandlerWorkerPool:
                          "embedding": recv_obj.embeddings[i],
                          "meta_info": recv_obj.meta_info[i],
                      }
@@ -5310,18 +5315,19 @@ index 4a8f82c..76a5610 100644
  }
 \ No newline at end of file
 diff --git a/python/sglang/srt/managers/detokenizer_manager.py b/python/sglang/srt/managers/detokenizer_manager.py
-index 09ed33b..b989ebd 100644
+index 09ed33b..7dbfc67 100644
 --- a/python/sglang/srt/managers/detokenizer_manager.py
 +++ b/python/sglang/srt/managers/detokenizer_manager.py
-@@ -259,6 +259,20 @@ class DetokenizerManager:
+@@ -259,6 +259,21 @@ class DetokenizerManager:
                  finished_reason=recv_obj.finished_reason,
              )
  
 +            # OBSERVATION ONLY -- boundary 3: the detokenizer passed it on.
 +            # Logs and returns; no control flow depends on it.
 +            try:
-+                import json as _j, time as _t
-+                for _i, _rid in enumerate(recv_obj.rids):
++                import json as _j, os as _os, time as _t
++                for _i, _rid in enumerate(
++                        recv_obj.rids if _os.environ.get("PRISM_OBS") == "1" else ()):
 +                    logger.info("[PAPER-RESP-OBS] " + _j.dumps({
 +                        "boundary": "detokenizer_send", "time": _t.time(),
 +                        "rid": _rid,
@@ -5534,7 +5540,7 @@ index 9f0b700..1885826 100644
          self.prefill_finish_timestamp = None
          self.decode_timestamps = (
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index 3cf0db7..37ccc7e 100644
+index 3cf0db7..37c438c 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
 @@ -47,6 +47,8 @@ from sglang.srt.managers.io_struct import (
@@ -5558,7 +5564,21 @@ index 3cf0db7..37ccc7e 100644
      PreemptMode,
      ProfileReq,
      ResizeMemPoolReqInput,
-@@ -130,6 +134,12 @@ class Scheduler:
+@@ -103,6 +107,13 @@ from sglang.utils import cleanup_zmq_ipc, get_exception_traceback
+ 
+ logger = logging.getLogger(__name__)
+ 
++# Diagnostic per-request observation (PAPER-RESP-OBS, PAPER-ALG2-OBS). Added to
++# locate the dispatch-ownership and response-path faults; those are found, so it
++# is off unless explicitly asked for. Read once at import: when off, every
++# observer returns on a single boolean and no per-request work is done.
++_PRISM_OBS = __import__("os").environ.get("PRISM_OBS") == "1"
++
++
+ # Crash on warning if we are running CI tests
+ crash_on_warning = os.getenv("SGLANG_IS_IN_CI", "false") == "true"
+ 
+@@ -130,6 +141,12 @@ class Scheduler:
          self.server_args = server_args
          self.gpu_id = gpu_id
          self.tp_rank = tp_rank
@@ -5571,7 +5591,7 @@ index 3cf0db7..37ccc7e 100644
          self.tp_size = server_args.tp_size
          self.schedule_policy = server_args.schedule_policy
          self.disable_regex_jump_forward = server_args.disable_regex_jump_forward
-@@ -338,6 +348,24 @@ class Scheduler:
+@@ -338,6 +355,24 @@ class Scheduler:
          self.last_tput_update_time = time.time()
          self.model_name = server_args.model_name
          self.instance_idx = getattr(server_args, "instance_idx", 0)
@@ -5596,7 +5616,7 @@ index 3cf0db7..37ccc7e 100644
  
          self.tput_update_thread = threading.Thread(
              target=self._send_token_tput_updates, daemon=True
-@@ -454,6 +482,10 @@ class Scheduler:
+@@ -454,6 +489,10 @@ class Scheduler:
              if deactivate_req:
                  self.handle_deactivate_request(deactivate_req)
  
@@ -5607,7 +5627,7 @@ index 3cf0db7..37ccc7e 100644
              if self._activated:
                  recv_generation_requests = self.recv_generation_requests()
                  if len(recv_generation_requests) > 0:
-@@ -605,12 +637,37 @@ class Scheduler:
+@@ -605,12 +644,37 @@ class Scheduler:
              max_prefill_count = (
                  int(approx_remain_prefill_tokens // self.avg_input_len) + 1
              )
@@ -5648,7 +5668,7 @@ index 3cf0db7..37ccc7e 100644
              # if max_fetch_count > 0:
              #     recv_reqs = self.redis_client.recv_pyobj_non_block(
              #         key=f"{self.server_args.backend_generate_request_key_prefix}:{self.model_name}",
-@@ -666,8 +723,40 @@ class Scheduler:
+@@ -666,8 +730,40 @@ class Scheduler:
      def process_input_gen_requests(self, recv_reqs: List):
          for recv_req in recv_reqs:
              assert isinstance(recv_req, GenerateReqInput)
@@ -5689,7 +5709,7 @@ index 3cf0db7..37ccc7e 100644
  
      def process_input_other_requests(self, recv_reqs: List):
          recv_deactivate_reqs = []
-@@ -778,6 +867,9 @@ class Scheduler:
+@@ -778,6 +874,9 @@ class Scheduler:
              obj.lora_path,
              obj.arrival_time,
              obj.slo,
@@ -5699,7 +5719,7 @@ index 3cf0db7..37ccc7e 100644
          )
          return tokenized_obj
  
-@@ -807,6 +899,9 @@ class Scheduler:
+@@ -807,6 +906,9 @@ class Scheduler:
              lora_path=recv_req.lora_path,
              arrival_time=recv_req.arrival_time,
              slo=recv_req.slo,
@@ -5709,7 +5729,7 @@ index 3cf0db7..37ccc7e 100644
          )
          req.tokenizer = self.tokenizer
  
-@@ -862,6 +957,7 @@ class Scheduler:
+@@ -862,6 +964,7 @@ class Scheduler:
          num_used = self.max_total_num_tokens - (
              self.token_to_kv_pool.available_size() + self.tree_cache.evictable_size()
          )
@@ -5717,7 +5737,7 @@ index 3cf0db7..37ccc7e 100644
          throughput = self.num_generated_tokens / (time.time() - self.last_stats_tic)
          self.num_generated_tokens = 0
          self.last_stats_tic = time.time()
-@@ -923,14 +1019,62 @@ class Scheduler:
+@@ -923,14 +1026,62 @@ class Scheduler:
          # Prefill first
          new_batch = self.get_new_batch_prefill()
          if new_batch is not None:
@@ -5786,7 +5806,7 @@ index 3cf0db7..37ccc7e 100644
              return new_batch
  
          # Check memory
-@@ -1045,7 +1189,26 @@ class Scheduler:
+@@ -1045,7 +1196,26 @@ class Scheduler:
          # Update waiting queue
          can_run_list = adder.can_run_list
          if len(can_run_list) == 0:
@@ -5813,7 +5833,7 @@ index 3cf0db7..37ccc7e 100644
          self.waiting_queue = [
              x for x in self.waiting_queue if x not in set(can_run_list)
          ]
-@@ -1156,7 +1319,14 @@ class Scheduler:
+@@ -1156,7 +1326,14 @@ class Scheduler:
                  f"#retracted_reqs: {len(retracted_reqs)}, "
                  f"#new_token_ratio: {old_ratio:.4f} -> {self.new_token_ratio:.4f}"
              )
@@ -5829,7 +5849,7 @@ index 3cf0db7..37ccc7e 100644
          else:
              self.new_token_ratio = max(
                  self.new_token_ratio - self.new_token_ratio_decay,
-@@ -1201,6 +1371,15 @@ class Scheduler:
+@@ -1201,6 +1378,15 @@ class Scheduler:
  
      def process_batch_result(self, batch: ScheduleBatch, result):
          if batch.forward_mode.is_decode():
@@ -5845,7 +5865,7 @@ index 3cf0db7..37ccc7e 100644
              self.process_batch_result_decode(batch, result)
              if batch.is_empty():
                  self.running_batch = None
-@@ -1208,6 +1387,7 @@ class Scheduler:
+@@ -1208,6 +1394,7 @@ class Scheduler:
              self.process_batch_result_prefill(batch, result)
  
      def process_batch_result_prefill(self, batch: ScheduleBatch, result):
@@ -5853,7 +5873,7 @@ index 3cf0db7..37ccc7e 100644
          if self.is_generation:
              logits_output, next_token_ids, bid = result
  
-@@ -1241,11 +1421,13 @@ class Scheduler:
+@@ -1241,11 +1428,13 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5867,7 +5887,7 @@ index 3cf0db7..37ccc7e 100644
                          self.tree_cache.cache_finished_req(req)
                      elif not batch.decoding_reqs or req not in batch.decoding_reqs:
                          self.tree_cache.cache_unfinished_req(req)
-@@ -1278,16 +1460,38 @@ class Scheduler:
+@@ -1278,16 +1467,38 @@ class Scheduler:
                      req.is_inflight_req -= 1
                  else:
                      # Inflight reqs' prefill is not finished
@@ -5907,7 +5927,7 @@ index 3cf0db7..37ccc7e 100644
          self.stream_output(batch.reqs)
  
      def process_batch_result_decode(self, batch: ScheduleBatch, result):
-@@ -1333,6 +1537,7 @@ class Scheduler:
+@@ -1333,6 +1544,7 @@ class Scheduler:
  
              if req.finished():
                  req.set_finish_time()
@@ -5915,7 +5935,7 @@ index 3cf0db7..37ccc7e 100644
                  self.tree_cache.cache_finished_req(req)
  
              if req.return_logprob:
-@@ -1423,8 +1628,36 @@ class Scheduler:
+@@ -1423,8 +1635,38 @@ class Scheduler:
  
          return num_input_logprobs
  
@@ -5929,6 +5949,8 @@ index 3cf0db7..37ccc7e 100644
 +    # would behave identically.
 +    def _resp_obs(self, boundary, rid, model=None, final=None, n=None,
 +                  exc=None):
++        if not _PRISM_OBS:
++            return
 +        try:
 +            logger.info("[PAPER-RESP-OBS] " + json.dumps({
 +                "boundary": boundary, "time": time.time(), "rid": rid,
@@ -5943,7 +5965,7 @@ index 3cf0db7..37ccc7e 100644
      def stream_output(self, reqs: List[Req]):
          """Stream the output to detokenizer."""
 +        # OBSERVATION ONLY -- boundary 1: what the engine produced.
-+        for _r in reqs:
++        for _r in (reqs if _PRISM_OBS else ()):
 +            _fin = getattr(_r, "finished_reason", None)
 +            if _fin is not None:
 +                self._resp_obs("engine_output", getattr(_r, "rid", None),
@@ -5952,7 +5974,7 @@ index 3cf0db7..37ccc7e 100644
          output_rids = []
          output_meta_info = []
          output_finished_reason: List[BaseFinishReason] = []
-@@ -1472,6 +1705,8 @@ class Scheduler:
+@@ -1472,6 +1714,8 @@ class Scheduler:
                              else None
                          ),
                          "arrival_timestamp": req.arrival_time,
@@ -5961,12 +5983,12 @@ index 3cf0db7..37ccc7e 100644
                          "out_queue_timestamp": req.out_queue_timestamp,
                          "prefill_finish_timestamp": req.prefill_finish_timestamp,
                          "finish_timestamp": req.finish_timestamp,
-@@ -1502,6 +1737,12 @@ class Scheduler:
+@@ -1502,6 +1746,12 @@ class Scheduler:
          # Send to detokenizer
          if output_rids:
              if self.is_generation:
 +                # OBSERVATION ONLY -- boundary 2: handed to the detokenizer.
-+                for _i, _rid in enumerate(output_rids):
++                for _i, _rid in enumerate(output_rids if _PRISM_OBS else ()):
 +                    self._resp_obs(
 +                        "stream_output_send", _rid,
 +                        final=output_finished_reason[_i] is not None
@@ -5974,7 +5996,7 @@ index 3cf0db7..37ccc7e 100644
                  self.send_to_detokenizer.send_pyobj(
                      BatchTokenIDOut(
                          output_rids,
-@@ -1596,9 +1837,49 @@ class Scheduler:
+@@ -1596,9 +1846,49 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -6026,7 +6048,7 @@ index 3cf0db7..37ccc7e 100644
                  activate_req_output = ActivateReqOutput(
                      rid=recv_req.rid,
                      gpu_id=gpu_id,
-@@ -1606,6 +1887,7 @@ class Scheduler:
+@@ -1606,6 +1896,7 @@ class Scheduler:
                      instance_idx=recv_req.instance_idx,
                      success=False,
                      memory_usage=self.get_memory_usage(),
@@ -6034,7 +6056,7 @@ index 3cf0db7..37ccc7e 100644
                  )
                  self.send_to_detokenizer.send_pyobj(
                      activate_req_output
-@@ -1619,6 +1901,26 @@ class Scheduler:
+@@ -1619,6 +1910,26 @@ class Scheduler:
          assert self.last_batch is None, "Last batch should be None"
          assert self.running_batch is None, "Running batch should be None"
  
@@ -6061,7 +6083,7 @@ index 3cf0db7..37ccc7e 100644
          start_time = time.perf_counter()
  
          self.tp_worker.activate_model_runner(
-@@ -1651,16 +1953,22 @@ class Scheduler:
+@@ -1651,16 +1962,22 @@ class Scheduler:
          self.update_memory_pool()
          logger.info("Memory pool updated")
          # restore waiting queue
@@ -6090,7 +6112,7 @@ index 3cf0db7..37ccc7e 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1674,6 +1982,7 @@ class Scheduler:
+@@ -1674,6 +1991,7 @@ class Scheduler:
                  instance_idx=recv_req.instance_idx,
                  success=True,
                  memory_usage=memory_usage,
@@ -6098,7 +6120,7 @@ index 3cf0db7..37ccc7e 100644
              )
              self.send_to_detokenizer.send_pyobj(activate_req_output)
  
-@@ -1690,10 +1999,20 @@ class Scheduler:
+@@ -1690,10 +2008,20 @@ class Scheduler:
          else:
              gpu_id = recv_req.gpu_id
  
@@ -6120,7 +6142,7 @@ index 3cf0db7..37ccc7e 100644
              if self.tp_rank == 0:
                  logger.warning("Scheduler is already deactivated")
                  deactivate_req_output = DeactivateReqOutput(
-@@ -1715,6 +2034,7 @@ class Scheduler:
+@@ -1715,6 +2043,7 @@ class Scheduler:
              return
  
          start_time = time.perf_counter()
@@ -6128,7 +6150,7 @@ index 3cf0db7..37ccc7e 100644
          logger.info(
              f"In handle deactivate request, waiting queue size: {len(self.waiting_queue)}. Running batch size: {0 if self.running_batch is None else len(self.running_batch.reqs)}, last batch size: {0 if self.last_batch is None else len(self.last_batch.reqs)}"
          )
-@@ -1748,12 +2068,58 @@ class Scheduler:
+@@ -1748,12 +2077,58 @@ class Scheduler:
                      f"Preempt mode {preempt_mode} is not supported"
                  )
          t1 = time.perf_counter()
@@ -6187,7 +6209,7 @@ index 3cf0db7..37ccc7e 100644
  
          if self.tp_size > 1:
              self.tp_worker.model_runner.tp_group.barrier()
-@@ -1816,6 +2182,8 @@ class Scheduler:
+@@ -1816,6 +2191,8 @@ class Scheduler:
              lora_path=req.lora_path,
              arrival_time=req.arrival_time,
              slo=req.slo,
@@ -6196,7 +6218,7 @@ index 3cf0db7..37ccc7e 100644
              image_data=None,
              model=self.model_name,
              prompt_len=len(req.origin_input_ids),
-@@ -1823,8 +2191,184 @@ class Scheduler:
+@@ -1823,8 +2200,184 @@ class Scheduler:
          )
          return generate_req
  
@@ -6381,7 +6403,7 @@ index 3cf0db7..37ccc7e 100644
              return
          try:
              # send back to frontend queue
-@@ -1837,7 +2381,495 @@ class Scheduler:
+@@ -1837,7 +2390,501 @@ class Scheduler:
              logger.info(f"Evicted {len(self.waiting_queue)} requests back to Redis.")
          except Exception as e:
              logger.error(f"Error evicting requests to Redis: {e}")
@@ -6732,6 +6754,8 @@ index 3cf0db7..37ccc7e 100644
 +            return None
 +
 +    def _alg2_obs_fetch(self, fetched):
++        if not _PRISM_OBS:
++            return
 +        try:
 +            token = self._alg2_obs_token()
 +            for req in fetched:
@@ -6750,6 +6774,8 @@ index 3cf0db7..37ccc7e 100644
 +
 +    def _alg2_obs_no_promote(self, next_seq):
 +        """Staged work exists and nothing matched the token."""
++        if not _PRISM_OBS:
++            return
 +        try:
 +            staged = self._alg2_staged_generation_reqs
 +            if not staged:
@@ -6770,6 +6796,8 @@ index 3cf0db7..37ccc7e 100644
 +            pass
 +
 +    def _alg2_obs_heartbeat(self):
++        if not _PRISM_OBS:
++            return
 +        try:
 +            now = time.time()
 +            if now - getattr(self, "_alg2_obs_last_beat", 0.0) < 5.0:
@@ -6877,7 +6905,7 @@ index 3cf0db7..37ccc7e 100644
  
      def _restore_waiting_requests(self):
          self.waiting_queue.extend(self.waiting_queue_stash)
-@@ -1855,6 +2887,7 @@ class Scheduler:
+@@ -1855,6 +2902,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6885,7 +6913,7 @@ index 3cf0db7..37ccc7e 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1881,6 +2914,7 @@ class Scheduler:
+@@ -1881,6 +2929,7 @@ class Scheduler:
                      req.set_finish_time()
                      if self.use_kvcached_v0:
                          try:
@@ -6893,7 +6921,7 @@ index 3cf0db7..37ccc7e 100644
                              self.tree_cache.cache_finished_req(req)
                          except Exception as e:
                              logger.error(f"Error in cache_finished_req: {e}")
-@@ -1898,6 +2932,101 @@ class Scheduler:
+@@ -1898,6 +2947,101 @@ class Scheduler:
  
          self._retract_running_batch_normal()
  
@@ -6995,7 +7023,7 @@ index 3cf0db7..37ccc7e 100644
      def _retract_running_batch_normal(self):
          # merge the prefill batch into the running batch
          if (
-@@ -1926,6 +3055,7 @@ class Scheduler:
+@@ -1926,6 +3070,7 @@ class Scheduler:
          len_output_ids = []
          if self.running_batch is not None:
              for req in self.running_batch.reqs:
@@ -7003,7 +7031,7 @@ index 3cf0db7..37ccc7e 100644
                  req.prefix_indices = []
                  req.last_node = None
                  req.extend_input_len = 0
-@@ -1936,6 +3066,7 @@ class Scheduler:
+@@ -1936,6 +3081,7 @@ class Scheduler:
                  self.waiting_queue.append(req)
                  if self.use_kvcached_v0:
                      try:
@@ -7011,7 +7039,7 @@ index 3cf0db7..37ccc7e 100644
                          self.tree_cache.cache_finished_req(req)
                      except Exception as e:
                          logger.error(f"Error in cache_finished_req: {e}")
-@@ -1974,6 +3105,9 @@ class Scheduler:
+@@ -1974,6 +3120,9 @@ class Scheduler:
              if_success = False
          return if_success
  
@@ -7021,7 +7049,7 @@ index 3cf0db7..37ccc7e 100644
      def abort_request(self, recv_req: AbortReq):
          # Delete requests in the waiting queue
          to_del = None
-@@ -1990,15 +3124,20 @@ class Scheduler:
+@@ -1990,15 +3139,20 @@ class Scheduler:
              for req in self.running_batch.reqs:
                  if req.rid == recv_req.rid and not req.finished():
                      req.finished_reason = FINISH_ABORT()

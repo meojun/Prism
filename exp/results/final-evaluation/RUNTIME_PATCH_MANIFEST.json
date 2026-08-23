@@ -1,10 +1,10 @@
 {
- "recorded_utc": "2026-08-23T15:25:29.411922+00:00",
+ "recorded_utc": "2026-08-23T15:51:41.545588+00:00",
  "previous_runtime_freeze": {
-  "commit": "16fa9b2",
-  "patch_blob": "245c5b44809802e2539ff2428444651f3274c3eb"
+  "commit": "dd9e25b",
+  "patch_blob": "c8ff5e2d2f2430315601c80492e429c09f875d83"
  },
- "change": "GPU-scoped backend queue: structural fix for the dispatch ownership violation",
+ "change": "diagnostic observation logging gated off by default (PRISM_OBS)",
  "b_root_cause": "_evict_all_waiting_requests released the staged list only after an early return that an empty waiting queue took, so a staged request survived a deactivation and its sequence was never retired. The release and its report now run before any return; the Redis drain the early return exists for is unchanged.",
  "a_identity": "The ordinary BackendAdmitReq tagged itself with self.model_name, which follows the reused worker slot rather than the request. It now carries the model Algorithm 2 scheduled the request under, matching what 84f880f already does for adoption grants.",
  "explicitly_unchanged": [
@@ -25,7 +25,7 @@
   "audited_utc": "2026-08-23T05:07:17.742678+00:00"
  },
  "new_runtime_patch_blob": "dd92b92110ccd905ba55281011d2d9fb392d2ebd",
- "patch_blob": "c8ff5e2d2f2430315601c80492e429c09f875d83",
+ "patch_blob": "cc700f89a96764042784ed74b99538847af6f6be",
  "ownership_invariant": "A dispatched Algorithm 2 sequence is owned by the GPU scheduler until the backend acknowledges admission; after that acknowledgement ownership passes to the engine-side lifecycle accounting.",
  "dispatch_seq_ownership": {
   "root_cause": "A sequence issued at dispatch for a request the engine never fetched was invisible to every retirement path: the engine cannot report a request it never held, and the backend drain found an empty queue. GPU 0's frontier froze on seq 1159 (model_4#140) for the rest of the run while the request itself was re-dispatched on GPU 1 as seq 2110 and served.",
@@ -202,6 +202,27 @@
    "tau",
    "migration and activation policy",
    "KV allocator",
+   "workload",
+   "SLOs"
+  ]
+ },
+ "observation_gate": {
+  "why": "D3 run 9 passed every correctness check but measured 11.64 req/s against run 8's 18.49, with p99 TTFT 308 s against 85 s. Two candidates: the diagnostic per-request logging (42,151 PAPER-RESP-OBS + 10,046 PAPER-ALG2-OBS events, 14 MB of server.log against run 8's 2.7 MB) and the GPU-scoped queue itself. This gate separates them.",
+  "flag": "PRISM_OBS=1 enables; unset disables",
+  "evaluated": "once at import; when off each observer returns on a single boolean",
+  "gated": [
+   "scheduler.py _resp_obs, _alg2_obs_fetch, _alg2_obs_no_promote, _alg2_obs_heartbeat, and the two per-request loops in stream_output",
+   "detokenizer_manager.py boundary-3 loop",
+   "request_handler_worker_pool.py _resp_obs"
+  ],
+  "not_gated": "gpu_scheduler.py's PAPER-ALG2-RUNTIME log -- that is paper evidence for the admission order, not diagnostics, and every correctness gate reads it",
+  "unchanged": [
+   "GPU-scoped backend queue",
+   "models_to_skip scope",
+   "runtime policy",
+   "queue topology",
+   "tau",
+   "c_i",
    "workload",
    "SLOs"
   ]
