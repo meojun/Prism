@@ -54,3 +54,17 @@ remote: warning: File exp/results/final-evaluation/02-tau-calibration/raw/tau_0p
 remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
 To https://github.com/meojun/Prism.git
    b7b11f1..2e293f5  exp/final-baseline-ready -> exp/final-baseline-ready
+{
+  "classification": "new lifecycle class, not seen before",
+  "symptoms": {
+    "cuda_oom": 0,
+    "fatal_cuda_nccl": 0,
+    "alg2_order_violations": 0,
+    "activation_waits": 0,
+    "decode_retractions": 0,
+    "killed": false,
+    "watchdog": "benchmark: no actual progress event",
+    "pipeline_rc": "143"
+  },
+  "causal_chain": "the watchdog ended the run: benchmark: no actual progress event"
+}

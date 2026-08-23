@@ -7,3 +7,6 @@ curl: (7) Failed to connect to 127.0.0.1 port 9 after 0 ms: Couldn't connect to 
 [2026-08-23T08:24:15Z] SENT stop-5082897be48b7ff9 -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=0 | 8226/8227 | request loss (INVALID_CLIENT_FD_EXHAUSTION) | autopsy ready
 [2026-08-23T08:25:19Z] SENT rehearse-cal -- 🟢 Prism calibration COMPLETE | 12/12 valid | selected τ=0.10
 [2026-08-23T08:25:19Z] SENT rehearse-done -- 🎉 Prism pipeline COMPLETE | all stages PASS | results in 06-aggregate
+[2026-08-23T08:33:09Z] SENT subscribe-confirm-1787473989 -- ✅ Prism ntfy subscription confirmed | 08:33:09Z | pipeline alerts will arrive here
+[2026-08-23T08:38:59Z] SENT resub-confirm-1787474338 -- ✅ Prism alerts live | 08:38:58Z | correct topic, subscription confirmed
+[2026-08-23T08:44:33Z] SENT stop-69bba8864b922ee3 -- 🔴 Prism STOPPED | tau-calibration | τ=0.07 seed=0 | 8001/8227 | client fd exhaustion / connection failures (INVALID_CLIENT_FD_EXHAUSTION)

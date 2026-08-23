@@ -1,9 +1,9 @@
 {
   "stage": "02-tau-calibration",
-  "result": "FAIL",
+  "result": "RUNNING",
   "git_sha": "d849065",
-  "started_at": "2026-08-23T08:21:41.543002+00:00",
-  "finished_at": "2026-08-23T08:24:33.956619+00:00",
-  "reason": "a calibration run failed or tau selection failed",
+  "started_at": "2026-08-23T08:27:45.473983+00:00",
+  "finished_at": null,
+  "reason": null,
   "artifacts": []
 }

@@ -1,0 +1,60 @@
+{
+  "generated_utc": "2026-08-23T08:44:33.942424+00:00",
+  "run": "/root/Prism-final-regression-diagnosis/exp/results/final-evaluation/02-tau-calibration/raw/tau_0p07/seed_0",
+  "label": "cal-0p07-s0",
+  "symptoms": {
+    "cuda_oom": 0,
+    "fatal_cuda_nccl": 0,
+    "alg2_order_violations": 0,
+    "activation_waits": 0,
+    "decode_retractions": 0,
+    "killed": false,
+    "watchdog": "benchmark: no actual progress event",
+    "pipeline_rc": "143"
+  },
+  "alg2_frontier_by_gpu": {
+    "1": {
+      "dispatch": {
+        "last": 4956,
+        "n": 4956
+      },
+      "backend_admit": {
+        "last": 4956,
+        "n": 4954
+      },
+      "prefill_start": {
+        "last": 4956,
+        "n": 4953
+      },
+      "prefill_complete": {
+        "last": 4956,
+        "n": 4953
+      }
+    },
+    "0": {
+      "dispatch": {
+        "last": 3115,
+        "n": 3115
+      },
+      "backend_admit": {
+        "last": 3112,
+        "n": 3112
+      },
+      "prefill_start": {
+        "last": 3112,
+        "n": 3112
+      },
+      "prefill_complete": {
+        "last": 3112,
+        "n": 3112
+      }
+    }
+  },
+  "violations": [],
+  "failing_request_lifecycles": [],
+  "classification": "new lifecycle class, not seen before",
+  "matched_known_classes": [],
+  "causal_chain": "the watchdog ended the run: benchmark: no actual progress event",
+  "proposed_minimal_fix": "Establish the causal chain before proposing a change.",
+  "policy": "Diagnosis only. No runtime change, no timeout, no bypass, no retry was made; the pipeline is left stopped."
+}
