@@ -58,7 +58,26 @@ line="🔴 Prism STOPPED | $stage"
 line="$line | $REASON"
 [ -n "$autopsy" ]  && line="$line | $autopsy"
 
-# One key per STOP content, so the same stop cannot buzz twice.
-key="stop-$(echo -n "$LABEL|$REASON" | md5sum | cut -c1-16)"
+# The key must be unique per ATTEMPT, not per failure kind. Keying on
+# label+reason silently swallowed a real STOP: cal-0p07-s0 failed the same way
+# at 08:44 and again at 10:18, and the second was logged DUP and never reached
+# the phone. Identity is therefore the absolute run directory, whatever makes
+# this attempt distinct within it, and the moment the STOP was created --
+# so re-entering the same hook for the same stop is still deduplicated, while a
+# fresh attempt is always a fresh notification.
+if [ "$DIR" != "-" ] && [ -d "$DIR" ]; then
+  run_id=$(cd "$DIR" 2>/dev/null && pwd -P)
+  # Whatever exists to distinguish this attempt: the run's own rc/start marker,
+  # else the directory's mtime.
+  attempt=$(stat -c %Y "$DIR/pipeline.rc" 2>/dev/null \
+            || stat -c %Y "$DIR/STAGE_CMD.sh" 2>/dev/null \
+            || stat -c %Y "$DIR" 2>/dev/null || echo 0)
+else
+  run_id="$EVAL/$LABEL"
+  attempt=0
+fi
+# The STOP file's creation time pins the event itself.
+stop_at=$(stat -c %Y "$EVAL/STOP" 2>/dev/null || date +%s)
+key="stop-$(echo -n "$run_id|$attempt|$stop_at|$REASON" | md5sum | cut -c1-20)"
 PRISM_NTFY_PRIORITY=high bash "$SCRIPT_DIR/notify.sh" "$key" "$line"
 exit 0
