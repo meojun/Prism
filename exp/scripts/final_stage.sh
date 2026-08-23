@@ -28,6 +28,7 @@ if [ -f "$rc_file" ] && [ "$(cat "$rc_file")" = "0" ] \
 fi
 
 ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
+. "$SCRIPT_DIR/proc_ownership.sh"
 EVAL="$ROOT/exp/results/final-evaluation"
 PY=/workspace/prism-exp/prism-venv/bin/python
 
@@ -139,13 +140,17 @@ done
 for s in "stage-$LABEL" "mon-$LABEL" "$INNER"; do
   tmux kill-session -t "$s" 2>/dev/null || true
 done
-pkill -f "sglang.launch_multi_model_server" 2>/dev/null || true
+# Only the process group this run started. The wildcard that was here matched
+# every server on the machine, and two servers died to an unexplained SIGKILL on
+# 2026-08-23 that it could not be ruled out for.
+prism_kill_server "$STAGE_DIR" "final_stage teardown" 2>/dev/null || true
 sleep 8
 # A server that did not exit cleanly leaves /dev/shm/ipc_*_root behind, and the
 # next server dies on the partial set: a killed smoke run left ipc_0_0 through
 # ipc_1_3 without ipc_0_3, and cal-0p07-s0's server was killed at startup with
 # KeyError: '/ipc_0_3_root'. Nothing else owns these names.
 if ! pgrep -f "sglang.launch_multi_model_server" >/dev/null 2>&1; then
+  # Read-only probe: pgrep only lists, it never signals.
   rm -f /dev/shm/ipc_*_root 2>/dev/null || true
 fi
 
@@ -176,6 +181,15 @@ grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log
   && blocker="fatal CUDA/NCCL"
 [ -z "$blocker" ] && grep -q '"order_ok": false' "$L/server.log.gpu_scheduler.log" 2>/dev/null \
   && blocker="Algorithm 2 ordering violation"
+# If the server disappeared without the harness asking it to, gather the
+# evidence now, while /proc and the cgroup counters still mean something.
+if grep -q "inner server session exited without result" \
+     "$STAGE_DIR/monitor/FAIL" 2>/dev/null \
+   || grep -q "Killed  " "$L/stdout.log" 2>/dev/null; then
+  prism_capture_death "$STAGE_DIR" "server vanished during $LABEL" \
+    >> "$EVAL/autopsy.log" 2>&1 || true
+fi
+
 [ -z "$blocker" ] && [ -f "$STAGE_DIR/monitor/FAIL" ] \
   && grep -q "no actual progress" "$STAGE_DIR/monitor/FAIL" 2>/dev/null \
   && blocker="no-progress / deadlock"
@@ -186,7 +200,7 @@ if [ -n "$blocker" ]; then
   $PY "$SCRIPT_DIR/final_failure_autopsy.py" --run "$STAGE_DIR" --label "$LABEL" \
     --out "$STAGE_DIR/FAILURE_AUTOPSY.json" \
     >> "$EVAL/autopsy.log" 2>&1 || true
-  pkill -f "sglang.launch_multi_model_server" 2>/dev/null || true
+  prism_kill_server "$STAGE_DIR" "final_stage blocker path" 2>/dev/null || true
   sleep 5
   ( cd "$ROOT" && git add -A -- exp/results/final-evaluation >/dev/null 2>&1 \
     && git -c user.name="Prism Baseline Agent" -c user.email="causslab@gmail.com" \

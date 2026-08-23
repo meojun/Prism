@@ -19,6 +19,9 @@
 # warm-up and measurement window are identical by construction.
 set -euo pipefail
 
+SCRIPT_DIR_EARLY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+. "$SCRIPT_DIR_EARLY/proc_ownership.sh"
+
 # ---------------------------------------------------------------- client fds
 # The benchmark client runs in THIS shell, not in the server's tmux command,
 # and a tmux child inherits a soft nofile limit of 1024 while the hard limit is
@@ -233,7 +236,9 @@ cleanup() {
   # not expected"). Only ever signal a PID we actually started.
   [ -n "${SAMPLER:-}" ] && kill "$SAMPLER" 2>/dev/null || true
   tmux kill-session -t "$SESSION" 2>/dev/null || true
-  pkill -f "launch_multi_model_server.*--port $PORT" 2>/dev/null || true
+  # Signal only the process group this run started. The pattern kill that used
+  # to live here could match another run's server.
+  prism_kill_server "$OUTDIR" "run_v4_case cleanup" 2>/dev/null || true
   sleep 3
 }
 trap cleanup EXIT
@@ -282,6 +287,9 @@ for _ in $(seq 1 600); do
 done
 [ "$READY" = 1 ] || { echo " -> timeout, see $LOGDIR/stdout.log"; exit 1; }
 echo " -> ready"
+# Ownership: from here on, teardown signals this pid/pgid and nothing else.
+prism_record_server "$OUTDIR" "$PORT" "$EXP" || \
+  echo "[proc] WARNING: could not record the server pid; teardown will be a no-op" >&2
 
 ( while true; do
     echo "$(date +%s.%N) $(nvidia-smi --query-gpu=index,memory.used,utilization.gpu \
