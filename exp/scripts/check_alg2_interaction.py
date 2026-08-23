@@ -237,6 +237,11 @@ def main():
     )
 
     # ---- 5. outstanding work was fully retired ---------------------------
+    # A sequence leaves a GPU in one of two ways: it completes there, or it is
+    # retired because the request left. Counting only completions made every
+    # legitimate eviction look like leaked work -- D3 run 9 was failed on a net
+    # of +1 for GPU 0, which was seq 1172 (model_1#398), admitted and then
+    # retired with reason "evicted-to-frontend" after being served elsewhere.
     outstanding = {}
     for event in events:
         gpu = event.get("gpu_id")
@@ -245,11 +250,16 @@ def main():
             outstanding[gpu] = outstanding.get(gpu, 0) + 1
         elif name in ("prefill_complete", "complete"):
             outstanding[gpu] = outstanding.get(gpu, 0) - 1
+    for gpu, seqs in retired_seqs.items():
+        outstanding[gpu] = outstanding.get(gpu, 0) - len(seqs["admit"] | seqs["start"])
     reported = re.findall(r"outstanding at shutdown[^\n]*", scheduler_text)
     record(
         "outstanding_work_retired",
         all(v <= 0 for v in outstanding.values()) if outstanding else True,
-        {"net_by_gpu": outstanding, "shutdown_lines": reported[:4]},
+        {"net_by_gpu": outstanding,
+         "retired_by_gpu": {g: len(s["admit"] | s["start"])
+                            for g, s in retired_seqs.items()},
+         "shutdown_lines": reported[:4]},
     )
 
     # ---- 6. the run neither deadlocked nor lost anything ------------------

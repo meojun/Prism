@@ -1,0 +1,2 @@
+[final_stage] RUN d3-gpuscoped -> /root/Prism-final-regression-diagnosis/exp/results/final-baseline-ready/raw/interaction-D3/run9-gpuscoped
+[final_stage] d3-gpuscoped rc=0 state=COMPLETE
