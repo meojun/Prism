@@ -1,9 +1,9 @@
 {
   "what_this_is": "The frozen state of the paper-faithful Prism baseline: the runtime under evaluation, the calibration that chose tau, the canonical workloads both arms ran, and the environment they ran in. Read FINAL_BASELINE_HANDOFF.md for how to run it on another server.",
   "final_runtime_sha": "6618671",
-  "handoff_sha": null,
+  "handoff_sha": "438f54b",
   "runtime": {
-    "experiment_repo_commit": "4a63ad6a07f81b10075bffead694a2e6166409f8",
+    "experiment_repo_commit": "438f54b40b416c14180f7ab4ced8206b2177ed04",
     "experiment_repo_branch": "exp/final-baseline-ready",
     "source_repo_base_commit": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
     "worktree_patch": "patches/final_baseline_ready/prism_research_worktree.patch",
@@ -939,7 +939,9 @@
     "secret_note": "values live outside the repository; see .env.example for the names"
   },
   "server_invocation": {
-    "launch_flags": {},
+    "launch_flags": {
+      "__source__": "exp/scripts/run_v4_case.sh (command not persisted by this run; later runs write SERVER_COMMAND.txt beside themselves)"
+    },
     "observed_environment": {
       "PRISM_ROOT": "/workspace/prism-exp",
       "PRISM_REPO": "/root/Prism-final-regression-diagnosis/prism-research",
