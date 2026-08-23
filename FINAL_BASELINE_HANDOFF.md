@@ -2,7 +2,7 @@
 
     PIPELINE_STATUS   = STOPPED
     FINAL_RUNTIME_SHA = 6618671
-    HANDOFF_SHA       = b8f3a72
+    HANDOFF_SHA       = 23a6089
     selected tau      = 0.00035
 
 `FINAL_RUNTIME_SHA` is the runtime the benchmarks ran on. `HANDOFF_SHA`
@@ -42,7 +42,7 @@ and KV migration between them.
 
 ```bash
 git clone <this repo> prism-exp && cd prism-exp
-git checkout b8f3a72
+git checkout 23a6089
 ./bootstrap.sh              # pinned; see setup/pins.env + setup/requirements.lock.txt
 cp .env.example /workspace/.env && chmod 600 /workspace/.env
 $EDITOR /workspace/.env     # HF_TOKEN is required; the Llama models are gated
@@ -140,7 +140,7 @@ python exp/scripts/final_aggregate.py --out-dir exp/results/final-evaluation
 
 ```bash
 git clone <this repo> prism-exp && cd prism-exp
-git checkout b8f3a72
+git checkout 23a6089
 ./bootstrap.sh
 cp .env.example /workspace/.env && $EDITOR /workspace/.env
 source exp/scripts/env.sh
