@@ -1,0 +1,44 @@
+{
+ "pipeline_version": "prism_final_auto_v1",
+ "RUN_CODE_COMMIT": "413f9ee44aa7563afd7570f06ca74100b738dad8",
+ "RUNTIME_SOURCE_TREE_HASH": "7fbd431c6a636df0c72bb6a40324f851d002d204",
+ "runtime_worktree_patch_sha256": "49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d",
+ "runtime_base_commit": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
+ "current_stage": "14_tau_calibration",
+ "current_condition": null,
+ "stages_completed": [
+  "02_correctness_regressions",
+  "03_correctness_report",
+  "04_runtime_freeze",
+  "05_report_reorganization",
+  "06_reference_audit",
+  "08_pipeline_state"
+ ],
+ "correctness": {
+  "MIGRATION_LIFECYCLE_FAILURE_CONTAINMENT_FIX": "FIX VERIFIED",
+  "ROLLBACK_PATH_BUG": "DISPROVEN",
+  "SHUTDOWN_TRIGGER_ROOT_CAUSE": "INCONCLUSIVE",
+  "BROKEN_REPORT_REFERENCES": 0
+ },
+ "valid_completed_conditions": [],
+ "invalid_attempts": [
+  {
+   "phase": "4het-tau-calibration",
+   "arm": "T0",
+   "cond": "steady_r8_s3",
+   "path": "exp/results/4het-tau-calibration/raw/prism-T0/steady/rate_8/seed_3.stall-attempt1",
+   "reason": "migration-lifecycle stall, preserved, excluded from all analysis"
+  }
+ ],
+ "retry_history": [],
+ "FINAL_TAU": null,
+ "tau_candidates_frozen_sha256": null,
+ "trace_manifests": {
+  "calibration_seeds_3_4": "exp/results/4het-window-calibration/CALIBRATION_TRACE_MANIFEST.json"
+ },
+ "final_baseline_manifest_hash": null,
+ "last_checkpoint_commit": null,
+ "last_successful_remote_push": null,
+ "push_status": "PENDING_CLEAN_BRANCH (51c5405 is an ancestor of the local branch; remote is clean; checkpoint uses a new branch off a clean base)",
+ "timestamp": "2026-08-25T12:43:31.424356+00:00"
+}

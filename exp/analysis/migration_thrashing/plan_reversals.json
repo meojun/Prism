@@ -1,0 +1,848 @@
+[
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787607886.452763,
+  "second_t": 1787607916.7574716,
+  "interval_s": 30.3,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787607916.7574716,
+  "second_t": 1787607948.3370922,
+  "interval_s": 31.58,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787607948.3370922,
+  "second_t": 1787607978.4184785,
+  "interval_s": 30.08,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787607978.4184785,
+  "second_t": 1787608010.5967417,
+  "interval_s": 32.18,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_5",
+  "first_t": 1787608076.3882182,
+  "second_t": 1787608106.5621896,
+  "interval_s": 30.17,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "model": "model_5",
+  "first_t": 1787608106.5621896,
+  "second_t": 1787608138.8126953,
+  "interval_s": 32.25,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787609067.5272422,
+  "second_t": 1787609099.243375,
+  "interval_s": 31.72,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787609099.243375,
+  "second_t": 1787609358.2291777,
+  "interval_s": 258.99,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787609180.712751,
+  "second_t": 1787609210.8882802,
+  "interval_s": 30.18,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787609210.8882802,
+  "second_t": 1787609256.1420496,
+  "interval_s": 45.25,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787609256.1420496,
+  "second_t": 1787609286.381818,
+  "interval_s": 30.24,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787609286.381818,
+  "second_t": 1787609459.3355734,
+  "interval_s": 172.95,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787609358.2291777,
+  "second_t": 1787609388.5573213,
+  "interval_s": 30.33,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787609388.5573213,
+  "second_t": 1787609489.878533,
+  "interval_s": 101.32,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787610244.7481675,
+  "second_t": 1787610274.8818693,
+  "interval_s": 30.13,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787610274.8818693,
+  "second_t": 1787610404.4313362,
+  "interval_s": 129.55,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787610308.5958288,
+  "second_t": 1787610338.98414,
+  "interval_s": 30.39,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787610338.98414,
+  "second_t": 1787610374.19243,
+  "interval_s": 35.21,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787610374.19243,
+  "second_t": 1787610489.173493,
+  "interval_s": 114.98,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787610404.4313362,
+  "second_t": 1787610552.0628297,
+  "interval_s": 147.63,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "model": "model_5",
+  "first_t": 1787610458.8898191,
+  "second_t": 1787610519.482461,
+  "interval_s": 60.59,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787620549.66283,
+  "second_t": 1787620579.731,
+  "interval_s": 30.07,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787620579.731,
+  "second_t": 1787620765.9338882,
+  "interval_s": 186.2,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787620765.9338882,
+  "second_t": 1787620796.604929,
+  "interval_s": 30.67,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787620796.604929,
+  "second_t": 1787620862.716518,
+  "interval_s": 66.11,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787620862.716518,
+  "second_t": 1787620893.1213422,
+  "interval_s": 30.4,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787632122.9430425,
+  "second_t": 1787632133.3504903,
+  "interval_s": 10.41,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_4",
+  "first_t": 1787632128.2468565,
+  "second_t": 1787632144.06553,
+  "interval_s": 15.82,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787632133.3504903,
+  "second_t": 1787632159.1302824,
+  "interval_s": 25.78,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_4",
+  "first_t": 1787632144.06553,
+  "second_t": 1787632154.104499,
+  "interval_s": 10.04,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_4",
+  "first_t": 1787632154.104499,
+  "second_t": 1787632209.4036674,
+  "interval_s": 55.3,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_6",
+  "first_t": 1787632159.1302824,
+  "second_t": 1787632229.5050235,
+  "interval_s": 70.37,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_4",
+  "first_t": 1787632209.4036674,
+  "second_t": 1787632219.4699776,
+  "interval_s": 10.07,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "model": "model_4",
+  "first_t": 1787632219.4699776,
+  "second_t": 1787632224.4874408,
+  "interval_s": 5.02,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787632731.1731691,
+  "second_t": 1787632737.4785883,
+  "interval_s": 6.31,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787632737.4785883,
+  "second_t": 1787632971.8328836,
+  "interval_s": 234.35,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632743.5725222,
+  "second_t": 1787632804.0148556,
+  "interval_s": 60.44,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632804.0148556,
+  "second_t": 1787632814.0466692,
+  "interval_s": 10.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632814.0466692,
+  "second_t": 1787632819.0696194,
+  "interval_s": 5.02,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632819.0696194,
+  "second_t": 1787632829.120266,
+  "interval_s": 10.05,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632829.120266,
+  "second_t": 1787632839.1517444,
+  "interval_s": 10.03,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632839.1517444,
+  "second_t": 1787632849.190263,
+  "interval_s": 10.04,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632849.190263,
+  "second_t": 1787632949.8698468,
+  "interval_s": 100.68,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632949.8698468,
+  "second_t": 1787632965.0251708,
+  "interval_s": 15.16,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632965.0251708,
+  "second_t": 1787632984.1591175,
+  "interval_s": 19.13,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787632971.8328836,
+  "second_t": 1787632976.8651326,
+  "interval_s": 5.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787632976.8651326,
+  "second_t": 1787632991.0983396,
+  "interval_s": 14.23,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787632984.1591175,
+  "second_t": 1787633021.0558271,
+  "interval_s": 36.9,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_6",
+  "first_t": 1787632991.0983396,
+  "second_t": 1787633026.1206307,
+  "interval_s": 35.02,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787633021.0558271,
+  "second_t": 1787633052.663158,
+  "interval_s": 31.61,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787633052.663158,
+  "second_t": 1787633130.2604327,
+  "interval_s": 77.6,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_3",
+  "first_t": 1787633113.415759,
+  "second_t": 1787633145.4190993,
+  "interval_s": 32.0,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787633130.2604327,
+  "second_t": 1787633151.5602274,
+  "interval_s": 21.3,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "model": "model_4",
+  "first_t": 1787633151.5602274,
+  "second_t": 1787633156.6105967,
+  "interval_s": 5.05,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_3",
+  "first_t": 1787633340.027755,
+  "second_t": 1787633345.0319414,
+  "interval_s": 5.0,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_3",
+  "first_t": 1787633345.0319414,
+  "second_t": 1787633475.7053547,
+  "interval_s": 130.67,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633375.1461353,
+  "second_t": 1787633380.1544473,
+  "interval_s": 5.01,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633380.1544473,
+  "second_t": 1787633385.1643088,
+  "interval_s": 5.01,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633385.1643088,
+  "second_t": 1787633413.8915868,
+  "interval_s": 28.73,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787633390.174727,
+  "second_t": 1787633406.33528,
+  "interval_s": 16.16,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787633406.33528,
+  "second_t": 1787633424.0193112,
+  "interval_s": 17.68,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633413.8915868,
+  "second_t": 1787633418.968172,
+  "interval_s": 5.08,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633418.968172,
+  "second_t": 1787633455.600087,
+  "interval_s": 36.63,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787633424.0193112,
+  "second_t": 1787633435.2879496,
+  "interval_s": 11.27,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787633435.2879496,
+  "second_t": 1787633445.5480192,
+  "interval_s": 10.26,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_6",
+  "first_t": 1787633445.5480192,
+  "second_t": 1787633450.577971,
+  "interval_s": 5.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633455.600087,
+  "second_t": 1787633460.622473,
+  "interval_s": 5.02,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633460.622473,
+  "second_t": 1787633485.762146,
+  "interval_s": 25.14,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_3",
+  "first_t": 1787633475.7053547,
+  "second_t": 1787633500.8496566,
+  "interval_s": 25.14,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633485.762146,
+  "second_t": 1787633490.78802,
+  "interval_s": 5.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633490.78802,
+  "second_t": 1787633505.8780951,
+  "interval_s": 15.09,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_3",
+  "first_t": 1787633500.8496566,
+  "second_t": 1787633551.2390747,
+  "interval_s": 50.39,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633505.8780951,
+  "second_t": 1787633510.9073884,
+  "interval_s": 5.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633510.9073884,
+  "second_t": 1787633515.9381003,
+  "interval_s": 5.03,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633515.9381003,
+  "second_t": 1787633520.969762,
+  "interval_s": 5.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633520.969762,
+  "second_t": 1787633546.20183,
+  "interval_s": 25.23,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633546.20183,
+  "second_t": 1787633556.2739336,
+  "interval_s": 10.07,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "model": "model_4",
+  "first_t": 1787633556.2739336,
+  "second_t": 1787633561.311181,
+  "interval_s": 5.04,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787633944.0669515,
+  "second_t": 1787633964.1605656,
+  "interval_s": 20.09,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787633964.1605656,
+  "second_t": 1787633994.2850893,
+  "interval_s": 30.12,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787633994.2850893,
+  "second_t": 1787634004.340849,
+  "interval_s": 10.06,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634004.340849,
+  "second_t": 1787634014.3724928,
+  "interval_s": 10.03,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634014.3724928,
+  "second_t": 1787634019.404268,
+  "interval_s": 5.03,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634019.404268,
+  "second_t": 1787634145.3849437,
+  "interval_s": 125.98,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634145.3849437,
+  "second_t": 1787634155.4703252,
+  "interval_s": 10.09,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634155.4703252,
+  "second_t": 1787634165.5513537,
+  "interval_s": 10.08,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_6",
+  "first_t": 1787634160.5137763,
+  "second_t": 1787634180.679001,
+  "interval_s": 20.17,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634165.5513537,
+  "second_t": 1787634190.8225331,
+  "interval_s": 25.27,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634190.8225331,
+  "second_t": 1787634256.5430138,
+  "interval_s": 65.72,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634256.5430138,
+  "second_t": 1787634271.7195408,
+  "interval_s": 15.18,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634271.7195408,
+  "second_t": 1787634297.0858803,
+  "interval_s": 25.37,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634297.0858803,
+  "second_t": 1787634312.2798684,
+  "interval_s": 15.19,
+  "path": "0->1 then 1->0"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634312.2798684,
+  "second_t": 1787634337.6333387,
+  "interval_s": 25.35,
+  "path": "1->0 then 0->1"
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "model": "model_4",
+  "first_t": 1787634337.6333387,
+  "second_t": 1787634342.6991694,
+  "interval_s": 5.07,
+  "path": "0->1 then 1->0"
+ }
+]

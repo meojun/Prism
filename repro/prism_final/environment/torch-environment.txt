@@ -1,0 +1,6 @@
+torch 2.4.0+cu121
+torch.version.cuda 12.1
+cudnn 90100
+device_count 2
+gpu0 NVIDIA A100-SXM4-80GB 79.2GiB sm 8.0
+gpu1 NVIDIA A100-SXM4-80GB 79.2GiB sm 8.0

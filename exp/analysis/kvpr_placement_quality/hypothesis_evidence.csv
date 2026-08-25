@@ -1,0 +1,7 @@
+hypothesis,verdict,evidence
+H1_memory_compute_conflict,SUPPORTED,large-large globally KVPR-optimal in 24.3% of 1149 replay-confirmed OLD cycles (max 50.3% bursty s2); Qwen7B TPOT p95 worse in 17/21 runs median 1.204; attainment lower 15/21 median -0.070
+H2_seed1_trace_specific,DISPROVEN,"highest optLL is bursty seed2 50.3%; bursty seed1 only 16.2%; governing variable is rank-1 model (small 57.6% vs large 0.7%), not seed index"
+H3_steady_regime_dependence,SUPPORTED,attainment delta steady -0.1015 (10/11 lower) vs bursty +0.0139 (5/10); TPOT ratio similar 1.193 vs 1.229
+H4_prototype_pairing_advantage,SUPPORTED,"Prototype 3+6|4+5 in 100% of snapshots in all 10 steady conditions, 0.0% large-large, 0 migrations; bursty 4.2-80.0%; matches -36.9% steady vs -2% bursty Prism deficit"
+H5_estimator_creates_bad_preference,PARTIALLY SUPPORTED,"pooled optimum LL +10.4pp, plan +9.4pp, residency +8.9pp: optimum moved comparably to realization; amplifies existing lean, inverts nothing, rank-1 unchanged. Corrects Phase 7b wording"
+H6_alg1_objective_limitation,SUPPORTED,replay 1491/1685=88.5% (NEW 97.4%); Phase 7b critical cycles rank 1 of 14; faithful Alg1 selects compute-hostile composition because KVPR is memory-only

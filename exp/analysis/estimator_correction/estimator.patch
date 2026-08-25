@@ -1,0 +1,78 @@
+--- a/model_queue_tracker.py	2026-08-24 14:25:13.055338810 +0000
++++ prism-research/python/sglang/multi_model/scheduling/model_queue_tracker.py	2026-08-25 06:02:11.601545325 +0000
+@@ -118,6 +118,33 @@
+         self.prefill_token_tput = 0.0  # Prefill throughput
+         self.decode_token_tput = 0.0  # Decode throughput
+ 
++        # Paper Appendix A.4 states KVPR consumes a sliding-window moving
++        # average of token rates.  Keep raw decode-token counts with the wall
++        # clock at which the engine reported them, so the decode component of
++        # token_rate obeys the same window semantics as the input component
++        # rather than being a cached short-interval achieved throughput.
++        self.decode_token_events: deque = deque()
++
++    def record_decode_tokens(self, timestamp: float, count: int) -> None:
++        """Record one engine report of decode tokens produced since its last."""
++        if count:
++            self.decode_token_events.append((timestamp, int(count)))
++
++    def decode_token_rate(self, now: float, window: float) -> float:
++        """Decode tokens produced in the last ``window`` seconds, per second.
++
++        Events leave by wall clock, so a model that stops producing -- idle,
++        deactivated, or migrating -- decays to zero on its own and no stale
++        value can persist.  The denominator is the configured window, the same
++        constant the input component divides by, so both halves of token_rate
++        share one time base.
++        """
++        cutoff = now - window
++        events = self.decode_token_events
++        while events and events[0][0] < cutoff:
++            events.popleft()
++        return sum(count for _, count in events) / window
++
+     def _get_req_from_queue(self, queue: deque[Req], rid: str) -> Optional[Req]:
+         """Helper method to find and remove a request from a queue."""
+         req = next((r for r in queue if r.rid == rid), None)
+--- a/controller_global.py	2026-08-24 14:41:59.093929637 +0000
++++ prism-research/python/sglang/multi_model/scheduling/controller_global.py	2026-08-25 06:02:11.601545325 +0000
+@@ -354,6 +354,10 @@
+                 self.model_queues[model_name].decode_token_tput = (
+                     recv_req.decode_token_tput
+                 )
++                # Feed the sliding-window estimator that Algorithm 1 reads.
++                self.model_queues[model_name].record_decode_tokens(
++                    time.time(), recv_req.decode_token_count
++                )
+             else:
+                 raise ValueError(f"Unknown request type: {type(recv_req)}")
+ 
+--- /tmp/claude-0/-root/314d3c62-403d-45fe-913f-b87b57cadf16/scratchpad/kvpr_global.py	2026-08-24 14:41:59.093929637 +0000
++++ prism-research/python/sglang/multi_model/scheduling/policy/kvpr_global.py	2026-08-25 06:02:11.601545325 +0000
+@@ -110,7 +110,10 @@
+                         continue
+                     input_tokens += req.prompt_len or 0
+             input_rate = input_tokens / self.rate_window
+-            decode_rate = float(getattr(queue, "decode_token_tput", 0.0) or 0.0)
++            if queue is not None and hasattr(queue, "decode_token_rate"):
++                decode_rate = queue.decode_token_rate(now, self.rate_window)
++            else:
++                decode_rate = float(getattr(queue, "decode_token_tput", 0.0) or 0.0)
+             token_rate = input_rate + decode_rate
+             token_size = float(self.model_weights_info[name]["cell_size"])
+             slo = self._tpot_slo(name)
+--- /tmp/claude-0/-root/314d3c62-403d-45fe-913f-b87b57cadf16/scratchpad/scheduler.py	2026-08-24 14:41:59.095929636 +0000
++++ prism-research/python/sglang/srt/managers/scheduler.py	2026-08-25 06:02:11.602545325 +0000
+@@ -433,7 +433,11 @@
+                 current_time = time.time()
+                 elapsed_time = current_time - self.last_tput_update_time
+ 
+-                if elapsed_time > 0 and self._activated:
++                # Report unconditionally: while deactivated the counters are
++                # zero, and skipping the update would freeze
++                # last_tput_update_time so the first report after reactivation
++                # divided a ~1 s token count by the whole inactive gap.
++                if elapsed_time > 0:
+ 
+                     # throughput
+                     token_tput = (

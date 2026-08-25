@@ -1,0 +1,515 @@
+[
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "start": 1787607891.6619616,
+  "end": 1787607923.2666855,
+  "duration_s": 31.6,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "start": 1787607953.3474362,
+  "end": 1787607985.4653628,
+  "duration_s": 32.12,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "start": 1787608016.0123277,
+  "end": 1787608046.183672,
+  "duration_s": 30.17,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s1",
+  "start": 1787608081.4134288,
+  "end": 1787608113.3873432,
+  "duration_s": 31.97,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 4
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "start": 1787609074.1310253,
+  "end": 1787609105.4113595,
+  "duration_s": 31.28,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "start": 1787609185.7411108,
+  "end": 1787609215.916557,
+  "duration_s": 30.18,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "start": 1787609261.1703248,
+  "end": 1787609292.3753548,
+  "duration_s": 31.21,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "start": 1787609363.2741523,
+  "end": 1787609393.5975766,
+  "duration_s": 30.32,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady8s2",
+  "start": 1787609464.6163626,
+  "end": 1787609494.9513586,
+  "duration_s": 30.33,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "start": 1787610249.83832,
+  "end": 1787610283.476051,
+  "duration_s": 33.64,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "start": 1787610313.6133945,
+  "end": 1787610344.0028448,
+  "duration_s": 30.39,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "start": 1787610379.2153904,
+  "end": 1787610413.4164019,
+  "duration_s": 34.2,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "start": 1787610463.9528174,
+  "end": 1787610494.2139835,
+  "duration_s": 30.26,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 3
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s1",
+  "start": 1787610526.8125658,
+  "end": 1787610557.110039,
+  "duration_s": 30.3,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "start": 1787620554.6668968,
+  "end": 1787620584.7428157,
+  "duration_s": 30.08,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "start": 1787620770.971077,
+  "end": 1787620801.646879,
+  "duration_s": 30.68,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown30",
+  "cond": "steady10s2",
+  "start": 1787620867.7952614,
+  "end": 1787620898.178406,
+  "duration_s": 30.38,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632128.2468565,
+  "end": 1787632133.3504903,
+  "duration_s": 5.1,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632139.0421576,
+  "end": 1787632149.072073,
+  "duration_s": 10.03,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632159.1302824,
+  "end": 1787632164.168588,
+  "duration_s": 5.04,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632209.4036674,
+  "end": 1787632214.4249015,
+  "duration_s": 5.02,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632219.4699776,
+  "end": 1787632224.4874408,
+  "duration_s": 5.02,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s1",
+  "start": 1787632229.5050235,
+  "end": 1787632234.8519661,
+  "duration_s": 5.35,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632737.4785883,
+  "end": 1787632743.5725222,
+  "duration_s": 6.09,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632748.577047,
+  "end": 1787632809.0304725,
+  "duration_s": 60.45,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632819.0696194,
+  "end": 1787632824.083206,
+  "duration_s": 5.01,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632834.1355011,
+  "end": 1787632844.1696346,
+  "duration_s": 10.03,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632854.2488697,
+  "end": 1787632954.9426544,
+  "duration_s": 100.69,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632971.8328836,
+  "end": 1787632976.8651326,
+  "duration_s": 5.03,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787632984.1591175,
+  "end": 1787632991.0983396,
+  "duration_s": 6.94,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787633000.8465967,
+  "end": 1787633026.1206307,
+  "duration_s": 25.27,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787633047.56879,
+  "end": 1787633057.7163904,
+  "duration_s": 10.15,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787633120.1398292,
+  "end": 1787633135.3112912,
+  "duration_s": 15.17,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady8s2",
+  "start": 1787633151.5602274,
+  "end": 1787633156.6105967,
+  "duration_s": 5.05,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633345.0319414,
+  "end": 1787633350.0950606,
+  "duration_s": 5.06,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633380.1544473,
+  "end": 1787633385.1643088,
+  "duration_s": 5.01,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633390.174727,
+  "end": 1787633396.2548716,
+  "duration_s": 6.08,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633413.8915868,
+  "end": 1787633418.968172,
+  "duration_s": 5.08,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633424.0193112,
+  "end": 1787633430.2564702,
+  "duration_s": 6.24,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633445.5480192,
+  "end": 1787633450.577971,
+  "duration_s": 5.03,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633455.600087,
+  "end": 1787633460.622473,
+  "duration_s": 5.02,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633465.6464837,
+  "end": 1787633480.7342482,
+  "duration_s": 15.09,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 2
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633490.78802,
+  "end": 1787633495.8189223,
+  "duration_s": 5.03,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633505.8780951,
+  "end": 1787633510.9073884,
+  "duration_s": 5.03,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633515.9381003,
+  "end": 1787633520.969762,
+  "duration_s": 5.03,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633526.0142744,
+  "end": 1787633551.2390747,
+  "duration_s": 25.22,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 4
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633556.2739336,
+  "end": 1787633561.311181,
+  "duration_s": 5.04,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s1",
+  "start": 1787633566.34829,
+  "end": 1787633571.7665467,
+  "duration_s": 5.42,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787633949.0718372,
+  "end": 1787633969.1684227,
+  "duration_s": 20.1,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787633999.3244045,
+  "end": 1787634009.3545554,
+  "duration_s": 10.03,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634019.404268,
+  "end": 1787634024.4406679,
+  "duration_s": 5.04,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634150.42101,
+  "end": 1787634160.5137763,
+  "duration_s": 10.09,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634165.5513537,
+  "end": 1787634170.5914207,
+  "duration_s": 5.04,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634185.744792,
+  "end": 1787634195.8676097,
+  "duration_s": 10.12,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634261.6026118,
+  "end": 1787634276.780554,
+  "duration_s": 15.18,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634302.1444848,
+  "end": 1787634317.3486161,
+  "duration_s": 15.2,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "cooldown0",
+  "cond": "steady10s2",
+  "start": 1787634342.6991694,
+  "end": 1787634347.766691,
+  "duration_s": 5.07,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ }
+]

@@ -141,7 +141,7 @@ def main():
             "The frozen state of the paper-faithful Prism baseline: the runtime "
             "under evaluation, the calibration that chose tau, the canonical "
             "workloads both arms ran, and the environment they ran in. Read "
-            "FINAL_BASELINE_HANDOFF.md for how to run it on another server."),
+            "reports/prism/00_project/FINAL_BASELINE_HANDOFF.md for how to run it on another server."),
         "final_runtime_sha": args.runtime_freeze,
         "handoff_sha": args.handoff_sha,
         "runtime": {
@@ -244,8 +244,8 @@ def main():
             "resume": "exp/final-handoff/resume_manifest.json",
             "resume_sha256": sha256_file(root / "exp/final-handoff/resume_manifest.json"),
             "local_dependencies": "exp/final-handoff/local_dependencies.json",
-            "document": "FINAL_BASELINE_HANDOFF.md",
-            "results_index": "CURRENT_RESULTS_INDEX.md",
+            "document": "reports/prism/00_project/FINAL_BASELINE_HANDOFF.md",
+            "results_index": "reports/prism/00_project/CURRENT_RESULTS_INDEX.md",
             "bootstrap": "exp/scripts/bootstrap_final_baseline.sh",
             "preflight": "exp/scripts/handoff_preflight.py",
             "restore_workloads": "exp/scripts/restore_workloads.sh",
@@ -254,7 +254,7 @@ def main():
         "pipeline_state": load(ev / "PIPELINE_STATE.json"),
         "results": {
             "aggregation_manifest": aggregation,
-            "index": "CURRENT_RESULTS_INDEX.md",
+            "index": "reports/prism/00_project/CURRENT_RESULTS_INDEX.md",
         },
         "notes": notes,
     }

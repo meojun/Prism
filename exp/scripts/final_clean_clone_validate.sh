@@ -64,7 +64,7 @@ else
 fi
 
 for f in bootstrap.sh setup/pins.env setup/requirements.lock.txt \
-         .env.example FINAL_BASELINE_HANDOFF.md exp/final_baseline_manifest.json \
+         .env.example reports/prism/00_project/FINAL_BASELINE_HANDOFF.md exp/final_baseline_manifest.json \
          exp/scripts/env.sh exp/scripts/handoff_preflight.py \
          exp/scripts/final_pipeline.sh exp/scripts/run_v4_case.sh \
          exp/configs/v2/6model_2gpu.json exp/configs/v2/slo_base.json; do
@@ -77,7 +77,7 @@ for f in exp/final-handoff/workloads_manifest.json \
          exp/final-handoff/resume_manifest.json \
          exp/scripts/restore_workloads.sh exp/scripts/verify_workloads.py \
          exp/scripts/bootstrap_final_baseline.sh exp/scripts/resume_baseline.sh \
-         exp/FINAL_BASELINE_MANIFEST.json CURRENT_RESULTS_INDEX.md; do
+         exp/FINAL_BASELINE_MANIFEST.json reports/prism/00_project/CURRENT_RESULTS_INDEX.md; do
   [ -e "$WORK/$f" ] && record "present: $f" PASS "tracked" \
                     || record "present: $f" FAIL "missing from the clean clone"
 done

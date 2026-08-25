@@ -172,6 +172,31 @@ case "$SYSTEM" in
       # the ModelService fork sees it regardless of parse order.
       export PRISM_V6_KV_MIGRATION=1
       ;;
+  paper-faithful-v6-nooverlap)
+      # Diagnostic ONLY: byte-identical to paper-faithful-v6 except that
+      # --overlap-migration is omitted. The flag is `action="store_true"` with
+      # `overlap_migration: bool = False`, so omitting it is the OFF state --
+      # it is not a new value, it is the parser default.
+      #
+      # What OFF changes (see action_order_v6.build_action_batches and
+      # controller_global.execute_actions):
+      #   - actions run as ONE batch instead of 5 serialized phases
+      #   - activate/deactivate become fire-and-forget instead of
+      #     _send_req_and_wait_for_response (the readiness barrier)
+      #   - action timeout 600 s -> None
+      #   - the "skip source deactivation if target activation failed" guard
+      #     is not applied
+      # Migration itself is NOT disabled; only its execution semantics change.
+      CONTROLLER+=(--policy kvpr-global-v4 --kvpr-tau "$KVPR_TAU"
+                   --kvpr-rate-window "$KVPR_WINDOW" --slo-base-file "$SLO_BASE"
+                   --kvpr-migration-cooldown "$KVPR_COOLDOWN"
+                   --kvpr-tpot-slo-scale "$TPOT_SCALE"
+                   --enable-moore-hodgson --prefill-speed-file "$PREFILL_SPEED"
+                   --enable-kv-migration)
+      export PRISM_V4_PAGELOCK=${V5_PAGELOCK:-${PRISM_V4_PAGELOCK:-1}}
+      export PRISM_V4_P2P_MIGRATION=${V5_P2P:-${PRISM_V4_P2P_MIGRATION:-1}}
+      export PRISM_V6_KV_MIGRATION=1
+      ;;
   paper-migration-only)
       # Diagnostic D2: identical v6 migration runtime, with Algorithm 2
       # deliberately absent so the run isolates migration integration.
@@ -190,13 +215,13 @@ esac
 # Any arm other than v4 must see the v3 code path, even if the shell that
 # invoked us had the switches set.
 case "$SYSTEM" in
-  paper-faithful-v4|paper-faithful-v6|paper-migration-only) ;;
+  paper-faithful-v4|paper-faithful-v6|paper-faithful-v6-nooverlap|paper-migration-only) ;;
   *) unset PRISM_V4_PAGELOCK PRISM_V4_P2P_MIGRATION ;;
 esac
 # Likewise: only the v6 arm may see the KV-migration switch, whatever the
 # invoking shell had set.
 case "$SYSTEM" in
-  paper-faithful-v6|paper-migration-only) export PRISM_V6_KV_TRACE="$OUTDIR/kv_transfers.jsonl" ;;
+  paper-faithful-v6|paper-faithful-v6-nooverlap|paper-migration-only) export PRISM_V6_KV_TRACE="$OUTDIR/kv_transfers.jsonl" ;;
   *) unset PRISM_V6_KV_MIGRATION PRISM_V6_KV_TRACE ;;
 esac
 # Per-run raw record of every weight transfer.
@@ -377,12 +402,12 @@ count_file() { local n; n=$(grep -cF -- "$1" "$2" 2>/dev/null || true); echo "${
   # having to recover the launcher command line from a log.
   echo "model_config_file=$CFG"
   echo "flashinfer_workspace_size=${FLASHINFER_WORKSPACE_SIZE:-unset}"
-  if [ "$SYSTEM" = "paper-faithful-v4" ] || [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
+  if [ "$SYSTEM" = "paper-faithful-v4" ] || [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-faithful-v6-nooverlap" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
     echo "alg1_log_lines=$(count_gc '[PAPER-ALG1-V4]')"
     echo "alg1_migrations=$(count_gc '"migration_decision": "MIGRATE"')"
     echo "v4_weight_transfers=$(wc -l < "$OUTDIR/weight_transfers.jsonl" 2>/dev/null || echo 0)"
     echo "v4_p2p_transfers=$(count_file '"bytes_p2p":' "$OUTDIR/weight_transfers.jsonl")"
-    if [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
+    if [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-faithful-v6-nooverlap" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
       echo "v6_kv_transfers=$(wc -l < "$OUTDIR/kv_transfers.jsonl" 2>/dev/null || echo 0)"
       echo "v6_p2p_transfers=$(count_file '"transfer_path": "gpu-to-gpu-p2p"' "$OUTDIR/kv_transfers.jsonl")"
       echo "v6_resumed_requests=$(count_file '"event": "resume"' "$LOGDIR/server.log")"
@@ -396,7 +421,7 @@ count_file() { local n; n=$(grep -cF -- "$1" "$2" 2>/dev/null || true); echo "${
   fi
   echo "alg2_log_lines=$(count_gs '[PAPER-ALG2]')"
   echo "alg2_underadmission_warnings=$(count_gs '[PAPER-ALG2-WARN]')"
-  if [ "$SYSTEM" = "paper-faithful-v3" ] || [ "$SYSTEM" = "paper-faithful-v4" ] || [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
+  if [ "$SYSTEM" = "paper-faithful-v3" ] || [ "$SYSTEM" = "paper-faithful-v4" ] || [ "$SYSTEM" = "paper-faithful-v6" ] || [ "$SYSTEM" = "paper-faithful-v6-nooverlap" ] || [ "$SYSTEM" = "paper-migration-only" ]; then
     echo "proto_migrations=0"
   else
     echo "proto_migrations=$(count_gc 'Reason: migrate model')"

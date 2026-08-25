@@ -1,0 +1,272 @@
+[
+ {
+  "arm": "old",
+  "cond": "steady8s1",
+  "start": 1787607891.6619616,
+  "end": 1787607923.2666855,
+  "duration_s": 31.6,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s1",
+  "start": 1787607953.3474362,
+  "end": 1787607985.4653628,
+  "duration_s": 32.12,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s1",
+  "start": 1787608016.0123277,
+  "end": 1787608046.183672,
+  "duration_s": 30.17,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s1",
+  "start": 1787608081.4134288,
+  "end": 1787608113.3873432,
+  "duration_s": 31.97,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 4
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s2",
+  "start": 1787609074.1310253,
+  "end": 1787609105.4113595,
+  "duration_s": 31.28,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s2",
+  "start": 1787609185.7411108,
+  "end": 1787609215.916557,
+  "duration_s": 30.18,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s2",
+  "start": 1787609261.1703248,
+  "end": 1787609292.3753548,
+  "duration_s": 31.21,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s2",
+  "start": 1787609363.2741523,
+  "end": 1787609393.5975766,
+  "duration_s": 30.32,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady8s2",
+  "start": 1787609464.6163626,
+  "end": 1787609494.9513586,
+  "duration_s": 30.33,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s1",
+  "start": 1787610249.83832,
+  "end": 1787610283.476051,
+  "duration_s": 33.64,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s1",
+  "start": 1787610313.6133945,
+  "end": 1787610344.0028448,
+  "duration_s": 30.39,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s1",
+  "start": 1787610379.2153904,
+  "end": 1787610413.4164019,
+  "duration_s": 34.2,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s1",
+  "start": 1787610463.9528174,
+  "end": 1787610494.2139835,
+  "duration_s": 30.26,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 3
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s1",
+  "start": 1787610526.8125658,
+  "end": 1787610557.110039,
+  "duration_s": 30.3,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s2",
+  "start": 1787620554.6668968,
+  "end": 1787620584.7428157,
+  "duration_s": 30.08,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s2",
+  "start": 1787620770.971077,
+  "end": 1787620801.646879,
+  "duration_s": 30.68,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "old",
+  "cond": "steady10s2",
+  "start": 1787620867.7952614,
+  "end": 1787620898.178406,
+  "duration_s": 30.38,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s1",
+  "start": 1787638114.7001376,
+  "end": 1787638145.686184,
+  "duration_s": 30.99,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s1",
+  "start": 1787638175.7791069,
+  "end": 1787638208.0064497,
+  "duration_s": 32.23,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s1",
+  "start": 1787638238.1285253,
+  "end": 1787638268.2862167,
+  "duration_s": 30.16,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s1",
+  "start": 1787638298.499838,
+  "end": 1787638354.3155055,
+  "duration_s": 55.82,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 8
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s2",
+  "start": 1787638953.7680619,
+  "end": 1787638984.76467,
+  "duration_s": 31.0,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady8s2",
+  "start": 1787639065.566757,
+  "end": 1787639101.8179371,
+  "duration_s": 36.25,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s1",
+  "start": 1787639377.2571433,
+  "end": 1787639411.0426714,
+  "duration_s": 33.79,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s1",
+  "start": 1787639461.612478,
+  "end": 1787639491.7857218,
+  "duration_s": 30.17,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s1",
+  "start": 1787639525.8942978,
+  "end": 1787639558.7811992,
+  "duration_s": 32.89,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s1",
+  "start": 1787639589.1208386,
+  "end": 1787639619.7478626,
+  "duration_s": 30.63,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s1",
+  "start": 1787639651.9922347,
+  "end": 1787639682.3546205,
+  "duration_s": 30.36,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s2",
+  "start": 1787639982.5609255,
+  "end": 1787640038.0912898,
+  "duration_s": 55.53,
+  "end_cause": "superseded_by_new_plan",
+  "memory_blocked_cycles": 0
+ },
+ {
+  "arm": "new",
+  "cond": "steady10s2",
+  "start": 1787640295.8053029,
+  "end": 1787640326.1766748,
+  "duration_s": 30.37,
+  "end_cause": "swap_completed",
+  "memory_blocked_cycles": 0
+ }
+]

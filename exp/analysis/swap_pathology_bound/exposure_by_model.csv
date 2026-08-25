@@ -1,0 +1,17 @@
+workload,rate,seed,model,model_name,decode_time_s,decode_time_3model_s,decode_exposure_pct
+steady,8,1,model_3,Llama-3.2-3B,4710.9,3111.3,66.0
+steady,8,1,model_4,Qwen2.5-3B,3657.3,2742.7,75.0
+steady,8,1,model_5,Llama-3.1-8B,5187.6,4035.8,77.8
+steady,8,1,model_6,Qwen2.5-7B,8154.9,2899.4,35.6
+steady,8,2,model_3,Llama-3.2-3B,4115.8,857.6,20.8
+steady,8,2,model_4,Qwen2.5-3B,2374.7,949.0,40.0
+steady,8,2,model_5,Llama-3.1-8B,6831.1,1720.1,25.2
+steady,8,2,model_6,Qwen2.5-7B,5998.1,2659.8,44.3
+steady,10,1,model_3,Llama-3.2-3B,5145.2,1440.7,28.0
+steady,10,1,model_4,Qwen2.5-3B,4642.6,2095.5,45.1
+steady,10,1,model_5,Llama-3.1-8B,5295.8,1593.0,30.1
+steady,10,1,model_6,Qwen2.5-7B,13303.4,4490.8,33.8
+steady,10,2,model_3,Llama-3.2-3B,5893.5,1496.4,25.4
+steady,10,2,model_4,Qwen2.5-3B,2762.6,743.0,26.9
+steady,10,2,model_5,Llama-3.1-8B,8578.1,0,0.0
+steady,10,2,model_6,Qwen2.5-7B,6810.3,1629.9,23.9

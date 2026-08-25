@@ -1,0 +1,5 @@
+rank1_model,name,cycles,share_pct,p_optimum_large_large,p_plan_large_large,p_residency_large_large
+model_3,Llama-3.2-3B,625,41.9,57.1,77.6,46.1
+model_4,Qwen2.5-3B,10,0.7,90.0,50.0,30.0
+model_5,Llama-3.1-8B,698,46.8,0.3,0.4,10.5
+model_6,Qwen2.5-7B,158,10.6,2.5,2.5,12.7

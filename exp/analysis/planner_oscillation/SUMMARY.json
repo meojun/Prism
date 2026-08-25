@@ -1,0 +1,43 @@
+{
+ "total_reversals": 94,
+ "exogenous": 16,
+ "endogenous_service_feedback": 38,
+ "mixed": 13,
+ "neither_alone": 18,
+ "unknown": 9,
+ "by_arm": {
+  "cooldown30": {
+   "MIXED": 2,
+   "ENDOGENOUS_SERVICE_FEEDBACK": 10,
+   "UNKNOWN": 7,
+   "EXOGENOUS_LOAD_CHANGE": 6,
+   "NEITHER_ALONE": 1
+  },
+  "cooldown0": {
+   "EXOGENOUS_LOAD_CHANGE": 10,
+   "MIXED": 11,
+   "ENDOGENOUS_SERVICE_FEEDBACK": 28,
+   "UNKNOWN": 2,
+   "NEITHER_ALONE": 17
+  }
+ },
+ "reconstruction": {
+  "method": "line8 partial ratios + recorded kvpr, solved as a linear system",
+  "cycles": 677,
+  "exact_resid_lt_1e-6": 677,
+  "max_rel_residual": 5.6e-07
+ },
+ "offline_greedy_validation": {
+  "reproduced_recorded_plan": 602,
+  "of_cycles": 677,
+  "pct": 88.9
+ },
+ "estimator": {
+  "input_rate": "30 s sliding, exogenous",
+  "decode_token_tput": "~1 s achieved engine throughput, gated on activation, endogenous",
+  "endogenous_share_of_demand_pct": "30-56"
+ },
+ "tau_now": 0.00035,
+ "tau_historical_mitigation": 0.35,
+ "median_delta_over_tau": 46
+}

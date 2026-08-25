@@ -1,0 +1,3 @@
+regression,arm,tau,workload,rate,seed,kvpr_window,cooldown,rc,verdict,failed_gates,offered,completed,aborted,alg2_order_violations,staged_return_failures,migrations,seconds,lifecycle_gate,run_dir
+A,T0,0.0,steady,8,3,60,30,0,PASS,0,3406,3406,0,0,0,4,594,PASS,exp/results/4het-containment-regression/raw/prism-T0/steady/rate_8/seed_3
+B,T1,0.00035,steady,8,3,60,30,0,PASS,0,3406,3406,0,0,0,2,594,PASS,exp/results/4het-containment-regression/raw/prism-T1/steady/rate_8/seed_3

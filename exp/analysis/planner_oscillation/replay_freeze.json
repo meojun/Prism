@@ -1,0 +1,41 @@
+[
+ {
+  "variant": "primary",
+  "hold_cycles": 2,
+  "mode": "hold",
+  "total": 94,
+  "suppressed": 14,
+  "suppressed_pct": 14.9,
+  "EXOGENOUS_LOAD_CHANGE": "0/16",
+  "ENDOGENOUS_SERVICE_FEEDBACK": "7/38",
+  "MIXED": "4/13",
+  "NEITHER_ALONE": "2/18",
+  "UNKNOWN": "1/9"
+ },
+ {
+  "variant": "persistence",
+  "hold_cycles": 3,
+  "mode": "hold",
+  "total": 94,
+  "suppressed": 16,
+  "suppressed_pct": 17.0,
+  "EXOGENOUS_LOAD_CHANGE": "0/16",
+  "ENDOGENOUS_SERVICE_FEEDBACK": "9/38",
+  "MIXED": "4/13",
+  "NEITHER_ALONE": "2/18",
+  "UNKNOWN": "1/9"
+ },
+ {
+  "variant": "drop_only",
+  "hold_cycles": 2,
+  "mode": "drop",
+  "total": 94,
+  "suppressed": 4,
+  "suppressed_pct": 4.3,
+  "EXOGENOUS_LOAD_CHANGE": "0/16",
+  "ENDOGENOUS_SERVICE_FEEDBACK": "3/38",
+  "MIXED": "0/13",
+  "NEITHER_ALONE": "1/18",
+  "UNKNOWN": "0/9"
+ }
+]

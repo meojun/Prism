@@ -1,0 +1,9 @@
+arm,cond,colocated_s,total_s,large_model_coresidency_pct
+old,steady8s1,168.2,429.6,39.1
+new,steady8s1,369.4,478.0,77.3
+old,steady8s2,57.3,432.4,13.3
+new,steady8s2,20.3,430.9,4.7
+old,steady10s1,172.7,429.2,40.2
+new,steady10s1,285.3,432.9,65.9
+old,steady10s2,15.1,430.0,3.5
+new,steady10s2,0.0,430.6,0.0

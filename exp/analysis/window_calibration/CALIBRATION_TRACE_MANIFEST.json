@@ -1,0 +1,326 @@
+{
+  "what_this_is": "the 20 canonical 4-model traces both arms run, frozen before any benchmark; a mismatch stops the sweep",
+  "created_utc": "2026-08-25T07:30:58.745865+00:00",
+  "generator": "exp/scripts/build_paired_workload.py",
+  "duration_s": 420,
+  "model_set": {
+    "model_3": "13afe5124825b4f3751f836b40dafda64c1ed062",
+    "model_4": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "model_5": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+    "model_6": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "slo_base": "/workspace/prism-exp/exp/configs/v4het/slo_base.json",
+  "matrix": {
+    "kinds": [
+      "bursty",
+      "steady"
+    ],
+    "rates": [
+      8,
+      10
+    ],
+    "seeds": [
+      3,
+      4
+    ]
+  },
+  "files": {
+    "bursty_r8_s3.pkl": {
+      "sha256": "60be4c9d12767865c20223b1b1b717ab6225b2b7d3befe400f9c4f23b659cade",
+      "requests": 3406,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 621,
+        "model_4": 613,
+        "model_5": 989,
+        "model_6": 1183
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 185323,
+        "model_4": 181693,
+        "model_5": 318494,
+        "model_6": 374783
+      },
+      "per_model_output_tokens": {
+        "model_3": 102817,
+        "model_4": 106706,
+        "model_5": 164157,
+        "model_6": 190767
+      },
+      "prompt_tokens": 1060293,
+      "output_tokens": 564447,
+      "arrival_span_s": 419.54762,
+      "achieved_mean_arrival_rate_req_s": 8.118268,
+      "peak_10s_arrival_rate_req_s": 10.5,
+      "sequence_fingerprint": "edf96f4513c7660bf38c556a335499d676d235658506bf7e8cdcc43151297f36",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 3
+    },
+    "bursty_r8_s4.pkl": {
+      "sha256": "a000cf22307e017a2f11d43d3eae33275f26bbcf6292b5f2b808a0808335a699",
+      "requests": 3345,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 1193,
+        "model_4": 470,
+        "model_5": 623,
+        "model_6": 1059
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 367335,
+        "model_4": 148352,
+        "model_5": 196911,
+        "model_6": 330779
+      },
+      "per_model_output_tokens": {
+        "model_3": 189076,
+        "model_4": 80108,
+        "model_5": 96665,
+        "model_6": 172586
+      },
+      "prompt_tokens": 1043377,
+      "output_tokens": 538435,
+      "arrival_span_s": 419.892508,
+      "achieved_mean_arrival_rate_req_s": 7.966325,
+      "peak_10s_arrival_rate_req_s": 10.9,
+      "sequence_fingerprint": "f74baa1e82874e3a58abce0688a76374405aacdbafef8c7be4ed7a6a0ebbff6f",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 4
+    },
+    "bursty_r10_s3.pkl": {
+      "sha256": "e7afd7e09bac67809ac6ab6dd1fc732c631f90bbc2ba9945d135adf90370b8b0",
+      "requests": 4272,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 754,
+        "model_4": 734,
+        "model_5": 1274,
+        "model_6": 1510
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 222366,
+        "model_4": 222969,
+        "model_5": 413195,
+        "model_6": 483933
+      },
+      "per_model_output_tokens": {
+        "model_3": 128199,
+        "model_4": 125723,
+        "model_5": 209240,
+        "model_6": 238943
+      },
+      "prompt_tokens": 1342463,
+      "output_tokens": 702105,
+      "arrival_span_s": 419.84731,
+      "achieved_mean_arrival_rate_req_s": 10.175128,
+      "peak_10s_arrival_rate_req_s": 13.2,
+      "sequence_fingerprint": "c48471ca1c390bd01ba91068808f1b76b997fbeb3d2694b0a632244f794dee48",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 3
+    },
+    "bursty_r10_s4.pkl": {
+      "sha256": "c913720ee52bb33408ca6e9da5e414d1904922114ce88d3d223a729ded62f220",
+      "requests": 4324,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 1509,
+        "model_4": 584,
+        "model_5": 759,
+        "model_6": 1472
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 467791,
+        "model_4": 180444,
+        "model_5": 234484,
+        "model_6": 447460
+      },
+      "per_model_output_tokens": {
+        "model_3": 244932,
+        "model_4": 89717,
+        "model_5": 121908,
+        "model_6": 240029
+      },
+      "prompt_tokens": 1330179,
+      "output_tokens": 696586,
+      "arrival_span_s": 419.879782,
+      "achieved_mean_arrival_rate_req_s": 10.298186,
+      "peak_10s_arrival_rate_req_s": 13.1,
+      "sequence_fingerprint": "9725af8044a6b2c08e2d4a9c444333122796a664918d35b92a91183e70f05159",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 4
+    },
+    "steady_r8_s3.pkl": {
+      "sha256": "492d79a4a2f34cccb78dfb5cc7428efa1b82ce20b56a8f83ca8111ecfaab1790",
+      "requests": 3406,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 621,
+        "model_4": 613,
+        "model_5": 989,
+        "model_6": 1183
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 185323,
+        "model_4": 181693,
+        "model_5": 318494,
+        "model_6": 374783
+      },
+      "per_model_output_tokens": {
+        "model_3": 102817,
+        "model_4": 106706,
+        "model_5": 164157,
+        "model_6": 190767
+      },
+      "prompt_tokens": 1060293,
+      "output_tokens": 564447,
+      "arrival_span_s": 419.619973,
+      "achieved_mean_arrival_rate_req_s": 8.116868,
+      "peak_10s_arrival_rate_req_s": 10.9,
+      "sequence_fingerprint": "da5014e8b5fc0338d163073d3005e24c928a0780281e6289bcf0ce0de4d2a64a",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 3
+    },
+    "steady_r8_s4.pkl": {
+      "sha256": "cbfb24e42d0b2fde25151322bec013ffbfe659bb4efb18028bf14c66ad975cef",
+      "requests": 3345,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 1193,
+        "model_4": 470,
+        "model_5": 623,
+        "model_6": 1059
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 367335,
+        "model_4": 148352,
+        "model_5": 196911,
+        "model_6": 330779
+      },
+      "per_model_output_tokens": {
+        "model_3": 189076,
+        "model_4": 80108,
+        "model_5": 96665,
+        "model_6": 172586
+      },
+      "prompt_tokens": 1043377,
+      "output_tokens": 538435,
+      "arrival_span_s": 419.795659,
+      "achieved_mean_arrival_rate_req_s": 7.968162,
+      "peak_10s_arrival_rate_req_s": 10.4,
+      "sequence_fingerprint": "23830d564e467a4db48a669562dd8da48f3148348d00abbefb90384fcaf71a95",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 4
+    },
+    "steady_r10_s3.pkl": {
+      "sha256": "c6939afccd79409cef0d609c3e3817c30743c64e1b7596617cef5740d1223988",
+      "requests": 4272,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 754,
+        "model_4": 734,
+        "model_5": 1274,
+        "model_6": 1510
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 222366,
+        "model_4": 222969,
+        "model_5": 413195,
+        "model_6": 483933
+      },
+      "per_model_output_tokens": {
+        "model_3": 128199,
+        "model_4": 125723,
+        "model_5": 209240,
+        "model_6": 238943
+      },
+      "prompt_tokens": 1342463,
+      "output_tokens": 702105,
+      "arrival_span_s": 419.619973,
+      "achieved_mean_arrival_rate_req_s": 10.18064,
+      "peak_10s_arrival_rate_req_s": 12.9,
+      "sequence_fingerprint": "590fa2cb50934c62841d0370f2da154ee938a435a11b6f47aa14eb9541c45738",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 3
+    },
+    "steady_r10_s4.pkl": {
+      "sha256": "66fe74fb51c61215045f358db20c59db361fbdb8179df8118c96ab4e6be71376",
+      "requests": 4324,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 1509,
+        "model_4": 584,
+        "model_5": 759,
+        "model_6": 1472
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 467791,
+        "model_4": 180444,
+        "model_5": 234484,
+        "model_6": 447460
+      },
+      "per_model_output_tokens": {
+        "model_3": 244932,
+        "model_4": 89717,
+        "model_5": 121908,
+        "model_6": 240029
+      },
+      "prompt_tokens": 1330179,
+      "output_tokens": 696586,
+      "arrival_span_s": 419.861994,
+      "achieved_mean_arrival_rate_req_s": 10.298622,
+      "peak_10s_arrival_rate_req_s": 13.4,
+      "sequence_fingerprint": "0b18a733b5cebd7ee4aa7489ac9a0dbdd57c0746b55f122cba6e12e8aea137be",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 4
+    }
+  },
+  "pair_consistency": "bursty and steady differ in arrival timing only, as designed"
+}

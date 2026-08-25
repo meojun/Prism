@@ -1,0 +1,43 @@
+{
+ "what_this_is": "correctness verdicts for the migration-lifecycle failure containment work",
+ "generated_utc": "2026-08-25T12:39:34.876722+00:00",
+ "runtime_source_worktree_sha256": "49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d",
+ "previous_runtime_source_worktree_sha256": "2b5430c1b04b21e9623e1d8271c7edf806eee186a434248dd7586535fb6e3a41",
+ "git_head_at_verification": "bc3ae081042fbdd515d4a94a6daa8e6d1c8b23f2",
+ "git_tree_at_verification": "a1e79a43c0e12940a76d5c99a85d54c73b2c51d1",
+ "verdicts": {
+  "ROLLBACK_PATH_BUG": "DISPROVEN",
+  "GPU_SCHEDULER_UNEXPECTED_SHUTDOWN": "PROVEN",
+  "SHUTDOWN_TRIGGER_ROOT_CAUSE": "INCONCLUSIVE",
+  "UNBOUNDED_CONTROL_WAIT": "PROVEN",
+  "SILENT_CAPACITY_DEGRADATION_RISK": "PROVEN",
+  "CONTROL_PATH_TIMEOUT_FIX": "FIX VERIFIED",
+  "SCHEDULER_LIVENESS_GUARD": "FIX VERIFIED",
+  "FAIL_CLOSED_SHUTDOWN_PROPAGATION": "FIX VERIFIED",
+  "MIGRATION_LIFECYCLE_FAILURE_CONTAINMENT_FIX": "FIX VERIFIED"
+ },
+ "explicit_non_claims": [
+  "The unknown root trigger that set _shutdown_event was NOT fixed.",
+  "FIX VERIFIED does not imply any E2E performance improvement.",
+  "The observed stall was not caused by tau=0."
+ ],
+ "evidence": {
+  "targeted_tests": {
+   "control_path": "6/6 PASS",
+   "failure_containment": "10/10 PASS",
+   "total": "16/16 PASS"
+  },
+  "historical_lifecycle_audit": "45/45 valid runs PASS; 1 preserved known-bad stall correctly FAILs",
+  "e2e_regressions": "2/2 PASS (T0 tau=0 and T1 tau=0.00035, steady r8 s3, window 60, cooldown 30)",
+  "e2e_role": "regression confirmation only; never used as fix evidence"
+ },
+ "runtime_diff": {
+  "files": 2,
+  "lines_added": 107,
+  "lines_removed": 6,
+  "files_changed": [
+   "multi_model/request_handler_worker_pool.py",
+   "multi_model/scheduling/gpu/gpu_scheduler.py"
+  ]
+ }
+}

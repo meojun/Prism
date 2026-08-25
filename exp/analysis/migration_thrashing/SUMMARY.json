@@ -1,0 +1,72 @@
+{
+ "rate_estimator": {
+  "window_s": 30.0,
+  "kind": "sliding, recomputed at each decision",
+  "update_cadence_s": 5.0,
+  "smoothing": "none in the policy",
+  "terms": "input_rate (30s sliding prompt tokens) + decode_token_tput (count/elapsed, engine-reported)"
+ },
+ "controller_interval_s": 5.0,
+ "migrations": {
+  "cooldown30": 35,
+  "cooldown0": 81
+ },
+ "ping_pong": {
+  "cooldown30": 26,
+  "cooldown0": 68,
+  "interval_p50_s": {
+   "cooldown30": 31.95,
+   "cooldown0": 15.125
+  },
+  "interval_min_s": {
+   "cooldown30": 30.07,
+   "cooldown0": 5.0
+  }
+ },
+ "plan_lifetime_p50_s": {
+  "cooldown30": [
+   5.25,
+   8.33,
+   10.08,
+   10.32
+  ],
+  "cooldown0": [
+   5.06,
+   10.04,
+   7.54,
+   12.63
+  ]
+ },
+ "line8_delta_over_tau_p50": {
+  "cooldown30": 45,
+  "cooldown0": 47
+ },
+ "counterfactual": [
+  {
+   "arm": "cooldown30",
+   "cooldown_waits_same_plan_cycles": 26,
+   "cooldown_waits_same_plan_seconds": 130.0,
+   "cooldown_waits_new_plan_cycles": 95,
+   "total_3plus1_s": 529.1,
+   "share_3plus1_from_same_plan_wait_pct": 24.6,
+   "new_plan_migrations": 31,
+   "swap_completion_migrations": 4,
+   "ping_pong": 26,
+   "episodes": 17,
+   "episodes_swap_completed": 8
+  },
+  {
+   "arm": "cooldown0",
+   "cooldown_waits_same_plan_cycles": 0,
+   "cooldown_waits_same_plan_seconds": 0.0,
+   "cooldown_waits_new_plan_cycles": 0,
+   "total_3plus1_s": 484.7,
+   "share_3plus1_from_same_plan_wait_pct": 0.0,
+   "new_plan_migrations": 63,
+   "swap_completion_migrations": 18,
+   "ping_pong": 68,
+   "episodes": 40,
+   "episodes_swap_completed": 25
+  }
+ ]
+}

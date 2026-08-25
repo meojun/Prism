@@ -1,0 +1,76 @@
+{
+ "what_this_is": "tau candidates frozen BEFORE any new tau E2E run; the list may not be changed after Stage B begins",
+ "frozen_utc": "2026-08-25T11:03:51.665757+00:00",
+ "derivation_rule": "T0=0, T1=historical 0.00035, T2/T3/T4 = pooled positive delta_r P50/P75/P90 from Stage A, T5=migration-disabled control. Quantiles used at full precision, not rounded.",
+ "source_hash": "2b5430c1b04b21e9623e1d8271c7edf806eee186a434248dd7586535fb6e3a41",
+ "kvpr_window_s": 60,
+ "cooldown_s": 30,
+ "stage_a": {
+  "cycles": 687,
+  "positive": 206,
+  "frac_positive": 0.2999,
+  "frac_gt_historical_tau": 0.2795,
+  "p50": 0.012859417696566448,
+  "p75": 0.02595037368602512,
+  "p90": 0.03916286292302117
+ },
+ "calibration_conditions": [
+  "steady_r8_s3",
+  "steady_r8_s4",
+  "steady_r10_s3",
+  "steady_r10_s4",
+  "bursty_r8_s3",
+  "bursty_r8_s4",
+  "bursty_r10_s3",
+  "bursty_r10_s4"
+ ],
+ "trace_sha256": {
+  "bursty_r10_s3.pkl": "e7afd7e09bac67809ac6ab6dd1fc732c631f90bbc2ba9945d135adf90370b8b0",
+  "bursty_r10_s4.pkl": "c913720ee52bb33408ca6e9da5e414d1904922114ce88d3d223a729ded62f220",
+  "bursty_r8_s3.pkl": "60be4c9d12767865c20223b1b1b717ab6225b2b7d3befe400f9c4f23b659cade",
+  "bursty_r8_s4.pkl": "a000cf22307e017a2f11d43d3eae33275f26bbcf6292b5f2b808a0808335a699",
+  "steady_r10_s3.pkl": "c6939afccd79409cef0d609c3e3817c30743c64e1b7596617cef5740d1223988",
+  "steady_r10_s4.pkl": "66fe74fb51c61215045f358db20c59db361fbdb8179df8118c96ab4e6be71376",
+  "steady_r8_s3.pkl": "492d79a4a2f34cccb78dfb5cc7428efa1b82ce20b56a8f83ca8111ecfaab1790",
+  "steady_r8_s4.pkl": "cbfb24e42d0b2fde25151322bec013ffbfe659bb4efb18028bf14c66ad975cef"
+ },
+ "candidates": [
+  {
+   "id": "T0",
+   "tau": 0.0,
+   "role": "maximum sensitivity / actuation control",
+   "derivation": "fixed 0"
+  },
+  {
+   "id": "T1",
+   "tau": 0.00035,
+   "role": "historical reference only",
+   "derivation": "historical value, selected under old estimator semantics"
+  },
+  {
+   "id": "T2",
+   "tau": 0.012859417696566448,
+   "role": "selective migration threshold",
+   "derivation": "Stage A pooled positive-delta_r P50"
+  },
+  {
+   "id": "T3",
+   "tau": 0.02595037368602512,
+   "role": "selective migration threshold",
+   "derivation": "Stage A pooled positive-delta_r P75"
+  },
+  {
+   "id": "T4",
+   "tau": 0.03916286292302117,
+   "role": "selective migration threshold",
+   "derivation": "Stage A pooled positive-delta_r P90"
+  },
+  {
+   "id": "T5",
+   "tau": 1000000000.0,
+   "role": "migration-disabled static control (diagnostic only)",
+   "derivation": "conceptually infinity; implemented as 1e9, which is >1e10x the observed max delta_r (0.0933) so no migration can ever fire. A literal float('inf') would serialize as non-strict JSON in the cycle trace; 1e9 is behaviourally identical and parses cleanly."
+  }
+ ],
+ "selection_rule": "TRADEOFF_SCORE = sqrt(A_norm^2 + B_norm^2) over FINITE candidates only; T5 excluded from selection. Ties within 5% relative broken by: lower mean regret, then lower pingpong/migration ratio, then lower tau. Goodput is never a selection or tie-break criterion."
+}

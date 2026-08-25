@@ -76,7 +76,7 @@ step archive bash "$SCRIPT_DIR/final_archive_raw.sh"
 
 # 6. one index over everything
 step results-index $PY "$SCRIPT_DIR/final_results_index.py" \
-  --root "$ROOT" --out "$ROOT/FINAL_RESULTS_INDEX.md"
+  --root "$ROOT" --out "$ROOT/reports/prism/00_project/FINAL_RESULTS_INDEX.md"
 
 # 7. nothing secret may be about to leave the machine
 step secret-scan bash "$SCRIPT_DIR/final_secret_scan.sh" "$HANDOFF/SECRET_SCAN.txt"
@@ -98,7 +98,7 @@ fi
 
 # 9. the document a person reads first
 step handoff-document $PY "$SCRIPT_DIR/final_handoff_doc.py" \
-  --root "$ROOT" --out "$ROOT/FINAL_BASELINE_HANDOFF.md" \
+  --root "$ROOT" --out "$ROOT/reports/prism/00_project/FINAL_BASELINE_HANDOFF.md" \
   --handoff-sha "$(git rev-parse --short HEAD)"
 
 # 10. commit and push; the push is only real once the remote says so.
@@ -142,10 +142,10 @@ step clean-clone bash "$SCRIPT_DIR/final_clean_clone_validate.sh"
 # commit above. Regenerate and amend it in, so the checkout instructions in
 # the pushed file point at the pushed file.
 $PY "$SCRIPT_DIR/final_handoff_doc.py" --root "$ROOT" \
-  --out "$ROOT/FINAL_BASELINE_HANDOFF.md" \
+  --out "$ROOT/reports/prism/00_project/FINAL_BASELINE_HANDOFF.md" \
   --handoff-sha "$(git rev-parse --short HEAD)" >> "$HANDOFF/handoff-document.log" 2>&1 || true
-if ! git diff --quiet -- FINAL_BASELINE_HANDOFF.md; then
-  git add FINAL_BASELINE_HANDOFF.md
+if ! git diff --quiet -- reports/prism/00_project/FINAL_BASELINE_HANDOFF.md; then
+  git add reports/prism/00_project/FINAL_BASELINE_HANDOFF.md
   git -c user.name="Prism Baseline Agent" -c user.email="causslab@gmail.com" \
     commit -q -m "Point the handoff document at the commit it ships in" \
     >> "$HANDOFF/commit.log" 2>&1 || true
@@ -186,7 +186,7 @@ conditions = {
     "resume_point_recorded": bool((state.get("resume") or {}).get("stage") is not None
                                   or status == "SUCCESS"),
     "provenance_recorded": (root / "exp/final_baseline_manifest.json").is_file(),
-    "handoff_document": (root / "FINAL_BASELINE_HANDOFF.md").is_file(),
+    "handoff_document": (root / "reports/prism/00_project/FINAL_BASELINE_HANDOFF.md").is_file(),
     "clean_clone_validation": clone.get("verdict") == "PASS",
     "no_secrets_in_git": "secret-scan" not in failed,
     "runtime_unchanged_by_packaging": "runtime-unchanged" not in failed,

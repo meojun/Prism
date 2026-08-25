@@ -1,0 +1,17 @@
+idx,window_s,workload,rate,seed,run_dir,source_hash,tau,cooldown_s,rc,verdict,failed_gates,completed,offered,aborted,client_errors,alg2_order_violations,staged_return_failures,migrations,seconds,valid
+1,30,steady,8,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/steady/rate_8/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3406,3406,0,0,0,0,6,600,True
+2,60,steady,8,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/steady/rate_8/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3406,3406,0,0,0,0,2,594,True
+3,30,steady,8,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/steady/rate_8/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3345,3345,0,0,0,0,4,604,True
+4,60,steady,8,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/steady/rate_8/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3345,3345,0,0,0,0,2,603,True
+5,30,steady,10,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/steady/rate_10/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4271,4272,0,1,0,0,4,597,True
+6,60,steady,10,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/steady/rate_10/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4271,4272,0,1,0,0,4,603,True
+7,30,steady,10,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/steady/rate_10/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4324,4324,0,0,0,0,4,600,True
+8,60,steady,10,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/steady/rate_10/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4324,4324,0,0,0,0,2,604,True
+9,30,bursty,8,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/bursty/rate_8/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3406,3406,0,0,0,0,11,603,True
+10,60,bursty,8,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/bursty/rate_8/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3404,3406,0,2,0,0,13,596,True
+11,30,bursty,8,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/bursty/rate_8/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3345,3345,0,0,0,0,11,593,True
+12,60,bursty,8,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/bursty/rate_8/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,3344,3345,0,1,0,0,11,604,True
+13,30,bursty,10,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/bursty/rate_10/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4272,4272,0,0,0,0,13,604,True
+14,60,bursty,10,3,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/bursty/rate_10/seed_3,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4271,4272,0,1,0,0,13,597,True
+15,30,bursty,10,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w30/bursty/rate_10/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4324,4324,0,0,0,0,10,599,True
+16,60,bursty,10,4,/workspace/prism-exp/exp/results/4het-window-calibration/raw/prism-w60/bursty/rate_10/seed_4,2b5430c1b04b21e9,0.00035,30,0,PASS,0,4324,4324,0,0,0,0,11,607,True

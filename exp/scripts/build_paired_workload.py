@@ -157,11 +157,19 @@ def steady_arrivals(rng, counts, duration, models):
             for m in models}
 
 
-def sample_payloads(sharegpt, counts, seed, out_lo, out_hi):
+def sample_payloads(sharegpt, counts, seed, out_lo, out_hi,
+                    model_paths=None, revisions=None):
     """One ShareGPT (prompt, answer) pair per request, tokenised with the
     tokenizer of the model that will serve it -- prompt_len must be the count
-    the engine actually sees, and the six models do not share a tokenizer."""
+    the engine actually sees, and the models do not share a tokenizer.
+
+    `revisions` pins each tokenizer to an exact Hugging Face revision. Without
+    it the tokenizer is whatever `main` resolves to on the day, which is a
+    silent provenance hole: the same seed could tokenise differently later.
+    """
     from transformers import AutoTokenizer
+    model_paths = model_paths or MODELS
+    revisions = revisions or {}
     with open(sharegpt) as f:
         data = json.load(f)
     pairs = [(c["conversations"][0]["value"], c["conversations"][1]["value"])
@@ -171,7 +179,8 @@ def sample_payloads(sharegpt, counts, seed, out_lo, out_hi):
 
     payloads, cursor = {}, 0
     for m in sorted(counts):
-        tok = AutoTokenizer.from_pretrained(MODELS[m])
+        kw = {"revision": revisions[m]} if m in revisions else {}
+        tok = AutoTokenizer.from_pretrained(model_paths[m], **kw)
         got = []
         while len(got) < counts[m]:
             if cursor >= len(pairs):
@@ -230,10 +239,27 @@ def main():
     ap.add_argument("--sharegpt", default="/workspace/datasets/sharegpt/ShareGPT_V3_unfiltered_cleaned_split.json")
     ap.add_argument("--slo-base", default="/workspace/prism-exp/exp/configs/v2/slo_base.json")
     ap.add_argument("--outdir", required=True)
+    ap.add_argument("--models", default=None,
+                    help="comma-separated subset of the model keys, e.g. "
+                         "model_3,model_4,model_5,model_6. Default: all of them. "
+                         "The keys keep their identity so the SLO base and the "
+                         "measured c_i carry over without remapping.")
+    ap.add_argument("--revisions", default=None,
+                    help="JSON file mapping model key -> exact HF revision, "
+                         "used to pin each tokenizer")
     a = ap.parse_args()
 
     os.makedirs(a.outdir, exist_ok=True)
-    models = sorted(MODELS)
+    if a.models:
+        keys = [k.strip() for k in a.models.split(",") if k.strip()]
+        unknown = [k for k in keys if k not in MODELS]
+        if unknown:
+            raise SystemExit(f"unknown model keys: {unknown}")
+        model_paths = {k: MODELS[k] for k in keys}
+    else:
+        model_paths = dict(MODELS)
+    revisions = json.load(open(a.revisions)) if a.revisions else {}
+    models = sorted(model_paths)
     slo_base = json.load(open(a.slo_base))
     rng = random.Random(a.seed)
 
@@ -246,7 +272,8 @@ def main():
     steady = steady_arrivals(random.Random(a.seed + 10_000), counts, a.duration, models)
     assert {m: len(v) for m, v in steady.items()} == counts
 
-    payloads = sample_payloads(a.sharegpt, counts, a.seed, a.out_lo, a.out_hi)
+    payloads = sample_payloads(a.sharegpt, counts, a.seed, a.out_lo, a.out_hi,
+                               model_paths=model_paths, revisions=revisions)
 
     tag = f"r{a.rate:g}_s{a.seed}"
     b_reqs = make_requests(payloads, burst, slo_base, models)
@@ -260,6 +287,7 @@ def main():
                   for i, p in enumerate(payloads[m])] for m in models}
     json.dump({
         "rate": a.rate, "duration": a.duration, "seed": a.seed,
+        "models": model_paths, "tokenizer_revisions": revisions,
         "total_requests": total, "per_model_requests": counts,
         "average_offered_load_req_s": total / a.duration,
         "prompt_tokens_total": {m: sum(p["prompt_len"] for p in payloads[m]) for m in models},

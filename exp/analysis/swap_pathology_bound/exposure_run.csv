@@ -1,0 +1,5 @@
+workload,rate,seed,run_span_s,run_3plus1_s,run_3plus1_pct,decode_time_s,decode_time_3model_s,decode_exposure_pct,episodes
+steady,8,1,432.0,300.4,69.5,21710.6,12789.2,58.9,5
+steady,8,2,432.3,153.2,35.4,19319.8,6186.5,32.0,5
+steady,10,1,429.3,158.8,37.0,28387.0,9620.0,33.9,5
+steady,10,2,430.1,91.1,21.2,24044.5,3869.3,16.1,3

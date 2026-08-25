@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CURRENT_RESULTS_INDEX.md -- every result and artifact, in one place.
+"""reports/prism/00_project/CURRENT_RESULTS_INDEX.md -- every result and artifact, in one place.
 
 Written for the state the work is actually in, which right now is partway
 through. It says what exists, what does not, where each thing lives and what it
@@ -169,7 +169,7 @@ def main():
     A("| tau selector output | `exp/results/final-evaluation/02-tau-calibration/FROZEN_TAU.json` |")
     A("| per-run verification | `<run>/VERIFICATION.json` |")
     A("| Algorithm 2 interaction | `<run>/ALG2_INTERACTION.json` |")
-    A("| how to continue | `FINAL_BASELINE_HANDOFF.md` |")
+    A("| how to continue | `reports/prism/00_project/FINAL_BASELINE_HANDOFF.md` |")
     A("")
 
     A("## Correctness findings this run produced")
@@ -181,7 +181,7 @@ def main():
       "and the preserved run "
       "`02-tau-calibration/raw/tau_0p00035/seed_0.staged-return-defect1`.")
     A("- **GPU-scoped backend queue**: `alg2_seq` is per-GPU while the backend "
-      "queue was per-model and shared. See `FINAL_BASELINE_HANDOFF.md`; do not "
+      "queue was per-model and shared. See `reports/prism/00_project/FINAL_BASELINE_HANDOFF.md`; do not "
       "merge those queues back together.")
     A("")
 

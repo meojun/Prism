@@ -1,0 +1,119 @@
+--- /tmp/claude-0/-root/314d3c62-403d-45fe-913f-b87b57cadf16/scratchpad/gpu_scheduler.orig.py	2026-08-25 12:03:57.368220758 +0000
++++ prism-research/python/sglang/multi_model/scheduling/gpu/gpu_scheduler.py	2026-08-25 12:04:20.052221474 +0000
+@@ -156,6 +156,10 @@
+             model_tp_sizes=getattr(self, "_tp_model_sizes", None),  # PAPER-FAITHFUL-TP
+         )
+         self._shutdown_event = Event()
++        # Why this scheduler stopped. Anything other than NORMAL_SHUTDOWN means
++        # the GPU left service unexpectedly, which must fail the whole run
++        # rather than silently continue on the remaining GPUs.
++        self._shutdown_reason = None
+         self._receiver_thread = None
+         if self.server_args.enable_worker_pool:
+             self._init_models(init_model_names)
+@@ -372,6 +376,9 @@
+                 if self._shutdown_event.is_set():
+                     break
+                 logger.error(f"Receiver error: {get_exception_traceback()}")
++                # The thread is about to die; without this the main loop would
++                # keep spinning with nothing feeding it.
++                self._request_shutdown("receiver_thread_error", error=repr(e))
+                 raise e
+ 
+     def _recv_from_frontend_queue(self):
+@@ -622,7 +629,7 @@
+             )
+             self._mh_runtime_log("backend_admit", message, record, order_ok)
+             if not order_ok:
+-                self._shutdown_event.set()
++                self._request_shutdown("alg2_backend_admit_order_violation")
+                 raise RuntimeError(
+                     "Algorithm-2 backend admission order violation: "
+                     f"expected_seq={self._mh_next_backend_admit_seq}, "
+@@ -655,7 +662,7 @@
+             event = "prefill_start" if newly_started else "prefill_chunk_start"
+             self._mh_runtime_log(event, message, record, order_ok)
+             if not order_ok:
+-                self._shutdown_event.set()
++                self._request_shutdown("alg2_prefill_order_violation")
+                 raise RuntimeError(
+                     "Algorithm-2 runtime prefill order violation: "
+                     f"expected_seq={self._mh_next_prefill_start_seq}, "
+@@ -694,7 +701,7 @@
+                 records[0] if records else None, order_ok,
+             )
+             if not order_ok:
+-                self._shutdown_event.set()
++                self._request_shutdown("alg2_prefill_completion_violation")
+                 raise RuntimeError(
+                     "Algorithm-2 runtime prefill completion violation: "
+                     f"outstanding={self._mh_outstanding_prefills}, actual={message}"
+@@ -950,9 +957,25 @@
+             for model_name, model_path in self._model_name_to_paths.items()
+         }
+ 
+-    def shutdown(self):
+-        """Shutdown the scheduler."""
++    NORMAL_SHUTDOWN = "normal_shutdown"
++
++    def _request_shutdown(self, reason: str, **detail):
++        """Record why this scheduler is stopping, then stop it.
++
++        The first reason wins: a tripwire that fires and then triggers the
++        normal teardown path must still be reported as the tripwire. Logging
++        only -- no scheduling behaviour changes here.
++        """
++        if self._shutdown_reason is None:
++            self._shutdown_reason = reason
++            logger.error("[LIFECYCLE-SHUTDOWN] " + json.dumps(
++                {"event": "scheduler_shutdown_requested", "reason": reason,
++                 "gpu_id": self.gpu_id, **detail}, sort_keys=True, default=str))
+         self._shutdown_event.set()
++
++    def shutdown(self, reason: str = None):
++        """Shutdown the scheduler."""
++        self._request_shutdown(reason or self.NORMAL_SHUTDOWN)
+         try:
+             if hasattr(self, "redis_client") and self.redis_client is not None:
+                 try:
+@@ -1048,9 +1071,40 @@
+ 
+         gpu_scheduler.run_scheduling_loop()
+ 
++        # Fail closed. Reaching here means the scheduling loop stopped. If it
++        # stopped for any reason other than a normal shutdown, this GPU has
++        # left service: its worker pool is about to be torn down and the
++        # controller has no way to learn that. Continuing would leave the run
++        # serving on the remaining GPUs while the controller still believes
++        # this one is live -- the silent single-GPU removal that produced a
++        # 601.8 s controller stall and 1596 aborted requests. Take the whole
++        # run down instead, so the harness records an explicit failure.
++        reason = getattr(gpu_scheduler, "_shutdown_reason", None)
++        if reason is not None and reason != GPUScheduler.NORMAL_SHUTDOWN:
++            logger.error("[LIFECYCLE-SHUTDOWN] " + json.dumps(
++                {"event": "run_fatal_unexpected_scheduler_shutdown",
++                 "reason": reason, "gpu_id": gpu_id}, sort_keys=True))
++            gpu_scheduler.shutdown()
++            kill_parent_process()
++            return
++        if reason is None:
++            logger.error("[LIFECYCLE-SHUTDOWN] " + json.dumps(
++                {"event": "run_fatal_unexpected_scheduler_shutdown",
++                 "reason": "scheduling_loop_returned_without_reason",
++                 "gpu_id": gpu_id}, sort_keys=True))
++            gpu_scheduler.shutdown()
++            kill_parent_process()
++            return
++
+     except Exception as e:
+         msg = get_exception_traceback()
+         logger.error(msg)
+         if gpu_scheduler:
++            gpu_scheduler._request_shutdown("scheduler_process_exception",
++                                            error=repr(e))
+             gpu_scheduler.shutdown()
++        logger.error("[LIFECYCLE-SHUTDOWN] " + json.dumps(
++            {"event": "run_fatal_unexpected_scheduler_shutdown",
++             "reason": "scheduler_process_exception", "gpu_id": gpu_id},
++            sort_keys=True))
+         kill_parent_process()

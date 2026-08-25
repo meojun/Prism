@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write FINAL_RESULTS_INDEX.md: one place that points at every result.
+"""Write reports/prism/00_project/FINAL_RESULTS_INDEX.md: one place that points at every result.
 
 Raw benchmark output is large and mostly stays off GitHub, so the index records
 what exists, where it lives on this machine, how big it is and what it hashes

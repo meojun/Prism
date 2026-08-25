@@ -45,12 +45,20 @@ notify_run_success() {
 import json, sys
 try:
     n = json.load(open(sys.argv[1]))["numbers"]
-    print(f"{n['completed']}/{n['offered_requests']}")
+    g = n.get("joint_slo_goodput_req_s")
+    g = f"{g:.4f}" if isinstance(g, (int, float)) else "?"
+    print(f"{n['completed']}/{n['offered_requests']} | goodput={g}")
 except Exception:
     print("?/?")
 PY2
 )
   case "$LABEL" in
+    p4het-proto-*)
+      local r; r=${LABEL#p4het-proto-}
+      line="✅ SUCCESS | Prototype 4-HET | $(echo "$r" | tr '-' ' ') | ${counts}" ;;
+    p4het-prism-*)
+      local r; r=${LABEL#p4het-prism-}
+      line="✅ SUCCESS | Prism 4-HET | $(echo "$r" | tr '-' ' ') | ${counts}" ;;
     cal-*)
       local tl seed
       tl=${LABEL#cal-}; seed=${tl##*-s}; tl=${tl%-s*}
@@ -90,7 +98,7 @@ fi
 # resume that walks past an unverified run would let a stage report 24 of 24 on
 # runs nobody looked at.
 if [ "$ALREADY_COMPLETE" = "1" ]; then
-  case "$LABEL" in protofresh-*|proto-*) arm=prototype ;; *) arm=prism ;; esac
+  case "$LABEL" in protofresh-*|proto-*|p4het-proto-*) arm=prototype ;; *) arm=prism ;; esac
   if [ ! -f "$STAGE_DIR/ALG2_INTERACTION.json" ] \
      || ! grep -q '"verdict": "PASS"' "$STAGE_DIR/ALG2_INTERACTION.json" 2>/dev/null; then
     $PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" --arm "$arm" \
@@ -241,7 +249,7 @@ grep -qE "torch\.OutOfMemoryError|CUDA out of memory|cuMemCreate" "$L/server.log
 # Algorithm 2's runtime invariants -- stale dispatched sequences, ordering and
 # ownership identity -- are checked from the run's own logs before its numbers
 # are allowed to count.
-case "$LABEL" in protofresh-*|proto-*) arm=prototype ;; *) arm=prism ;; esac
+case "$LABEL" in protofresh-*|proto-*|p4het-proto-*) arm=prototype ;; *) arm=prism ;; esac
 $PY "$SCRIPT_DIR/check_alg2_interaction.py" --run "$STAGE_DIR" --arm "$arm" \
   --out "$STAGE_DIR/ALG2_INTERACTION.json" > "$STAGE_DIR/alg2_interaction.log" 2>&1 || true
 if [ -z "$blocker" ] && ! grep -q '"verdict": "PASS"' "$STAGE_DIR/ALG2_INTERACTION.json" 2>/dev/null; then
@@ -294,7 +302,18 @@ if [ -n "$blocker" ]; then
   exit 1
 fi
 
-if [ "$rc" = "0" ] && [ "$state" = "COMPLETE" ]; then
+# A run that exited 0 AND wrote its result file finished, whatever the monitor
+# managed to record. The monitor polls every 5 s and gives the wrapper only a
+# short grace to publish pipeline.rc, so a server that exits during the
+# post-benchmark teardown is reported as "inner server session exited without
+# result" even though the client had already saved its results. prism steady
+# r10 s1 hit exactly that: rc=0, 4138 of 4139 served, every gate passing --
+# and it was discarded, stopping a sweep two runs from the end. The resume path
+# (ALREADY_COMPLETE, above) has always treated this state as valid and merely
+# verified it; this makes the in-line path agree. Verification still decides:
+# a run that does not verify still stops the chain.
+if [ "$rc" = "0" ] && { [ "$state" = "COMPLETE" ] \
+     || ls "$STAGE_DIR"/*_e2e_*rep.json >/dev/null 2>&1; }; then
   if $PY "$SCRIPT_DIR/final_run_verify.py" --run "$STAGE_DIR" --label "$LABEL" \
        --out "$STAGE_DIR/VERIFICATION.json" >> "$STAGE_DIR/verification.log" 2>&1; then
     notify_run_success
@@ -306,4 +325,8 @@ if [ "$rc" = "0" ] && [ "$state" = "COMPLETE" ]; then
   echo "[final_stage] STOP: per-run verification failed -- $why" >&2
   exit 1
 fi
+# Falling through means rc != 0 with no blocker identified above. Leave a STOP
+# so the failure is classifiable rather than a silent vanish.
+echo "run did not finish: $LABEL rc=$rc state=$state ($STAGE_DIR)" > "$EVAL/STOP"
+bash "$SCRIPT_DIR/notify_stop.sh" "$LABEL" "$STAGE_DIR" "rc=$rc state=$state" || true
 exit 1

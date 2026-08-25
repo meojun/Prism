@@ -1,0 +1,3 @@
+arm,cooldown_waits_same_plan_cycles,cooldown_waits_same_plan_seconds,cooldown_waits_new_plan_cycles,total_3plus1_s,share_3plus1_from_same_plan_wait_pct,new_plan_migrations,swap_completion_migrations,ping_pong,episodes,episodes_swap_completed
+cooldown30,26,130.0,95,529.1,24.6,31,4,26,17,8
+cooldown0,0,0.0,0,484.7,0.0,63,18,68,40,25

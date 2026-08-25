@@ -1,0 +1,41 @@
+Tue Aug 25 12:50:11 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.173.02             Driver Version: 580.173.02     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100-SXM4-80GB          On  |   00000000:01:00.0 Off |                    0 |
+| N/A   52C    P0             99W /  400W |   40278MiB /  81920MiB |     41%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA A100-SXM4-80GB          On  |   00000000:C1:00.0 Off |                    0 |
+| N/A   42C    P0            181W /  400W |   38918MiB /  81920MiB |     42%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A         1148535      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    0   N/A  N/A         1148856      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    0   N/A  N/A         1149208      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    0   N/A  N/A         1149571      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    0   N/A  N/A         1149915      C   ...sm-exp/prism-venv/bin/python3      10370MiB |
+|    0   N/A  N/A         1149916      C   ...sm-exp/prism-venv/bin/python3      19800MiB |
+|    0   N/A  N/A         1149919      C   ...sm-exp/prism-venv/bin/python3        416MiB |
+|    0   N/A  N/A         1149920      C   ...sm-exp/prism-venv/bin/python3       7388MiB |
+|    0   N/A  N/A         1152454      C   ...sm-exp/prism-venv/bin/python3        416MiB |
+|    1   N/A  N/A         1148535      C   ...sm-exp/prism-venv/bin/python3        732MiB |
+|    1   N/A  N/A         1148856      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    1   N/A  N/A         1149208      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    1   N/A  N/A         1149571      C   ...sm-exp/prism-venv/bin/python3        436MiB |
+|    1   N/A  N/A         1149915      C   ...sm-exp/prism-venv/bin/python3        416MiB |
+|    1   N/A  N/A         1149917      C   ...sm-exp/prism-venv/bin/python3       9778MiB |
+|    1   N/A  N/A         1149918      C   ...sm-exp/prism-venv/bin/python3      18700MiB |
+|    1   N/A  N/A         1149919      C   ...sm-exp/prism-venv/bin/python3       7424MiB |
+|    1   N/A  N/A         1152454      C   ...sm-exp/prism-venv/bin/python3        416MiB |
++-----------------------------------------------------------------------------------------+

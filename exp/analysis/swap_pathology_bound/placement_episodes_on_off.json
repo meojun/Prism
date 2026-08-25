@@ -1,0 +1,408 @@
+[
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 31.6
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 32.12
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 30.17
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 31.97
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 172.25
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 31.28
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 30.18
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 31.21
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 30.32
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 30.33
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 33.64
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 30.39
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 34.2
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 30.26
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 30.3
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 30.08
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 30.68
+ },
+ {
+  "arm": "cooldown30",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 30.38
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 5.1
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 10.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 5.04
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 5.02
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 5.02
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 1,
+  "duration_s": 5.35
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 6.09
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 60.45
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 5.01
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 10.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 100.69
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 5.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 6.94
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 25.27
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 10.15
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 15.17
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 8,
+  "seed": 2,
+  "duration_s": 5.05
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.06
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.01
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 6.08
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.08
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 6.24
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.02
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 15.09
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 25.22
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.04
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 1,
+  "duration_s": 5.42
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 20.1
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 10.03
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 5.04
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 10.09
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 5.04
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 10.12
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 15.18
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 15.2
+ },
+ {
+  "arm": "cooldown0",
+  "workload": "steady",
+  "rate": 10,
+  "seed": 2,
+  "duration_s": 5.07
+ }
+]
