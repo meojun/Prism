@@ -41,7 +41,7 @@ no statistical significance is claimed.
 | **safe branch** | `research/prism-final-baseline` |
 | clean base | `3ef6adb1c7c138f6537d882c73d48a56df026b27` (tag `final-baseline-handoff`) |
 | **RUN_CODE_COMMIT** | `413f9ee44aa7563afd7570f06ca74100b738dad8` |
-| final tag | `prism-final-baseline-v1` |
+| **final tag** | **`prism-final-baseline-v1.1`** (supersedes `v1`) |
 
 **Never push `exp/4het-paired-evaluation`.** Its history reaches local commit
 `51c5405`, which contains the ShareGPT dump. The remote has never had it.
@@ -244,7 +244,7 @@ Before every push: dangerous-history check (`git merge-base --is-ancestor
 
 ## 56–59. Tag, limitations, interpretation, future work
 
-Final tag `prism-final-baseline-v1`.
+Final tag **`prism-final-baseline-v1.1`**. `v1` has identical results but predates three reproducibility fixes; use v1.1.
 
 **Limitations.** Two GPUs; two seeds per condition; synthetic workloads; the
 favourable regime is bursty-only; the `nccl_port` race is unfixed; the trigger
@@ -269,7 +269,7 @@ fixed and the baseline re-frozen.
 # 1. clone and check out the exact handoff point
 git clone https://github.com/meojun/Prism.git prism-exp
 cd prism-exp
-git checkout prism-final-baseline-v1
+git checkout prism-final-baseline-v1.1
 
 # 2. read this first
 less reports/prism/11_handoff/PRISM_SERVER_HANDOFF.md
