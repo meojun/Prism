@@ -289,9 +289,42 @@ bash repro/prism_final/bootstrap.sh
 #    dataset -> exp/manifests/prism_final/DATASET_MANIFEST.md
 sha256sum "$SHAREGPT_JSON"          # compare with DATASET_MANIFEST.md
 
-# 6. rebuild the exact serving runtime
+# 6. obtain and rebuild the exact serving runtime
+#    prism-research is a SEPARATE repository and is gitignored here.
+git clone https://github.com/Multi-LLM/prism-research.git prism-research
 git -C prism-research reset --hard 595ec1f170e75a43897a7a2ad58ac5a9820aa2e8
 git -C prism-research apply patches/lifecycle_containment/prism_research_worktree.patch
+PRISM_REPO=$PWD/prism-research bash exp/scripts/snapshot_source_patch.sh /tmp/v verify
+sha256sum /tmp/v/prism_research_worktree.patch   # must match WORKTREE_PATCH_SHA256
+
+# 6b. regenerate the canonical traces -- they are NOT committed
+#     tau calibration set (seeds 3,4)
+for r in 8 10; do for s in 3 4; do
+  prism-venv/bin/python exp/scripts/build_paired_workload.py --rate $r --duration 420 --seed $s \
+    --models model_3,model_4,model_5,model_6 \
+    --revisions exp/configs/v4het/model_revisions.json \
+    --slo-base exp/configs/v4het/slo_base.json --sharegpt "$SHAREGPT_JSON" \
+    --outdir exp/workloads/4het-cal
+done; done
+#     final 4-HET hold-out (seeds 5,6)
+for r in 2 4 6 8 10; do for s in 5 6; do
+  prism-venv/bin/python exp/scripts/build_paired_workload.py --rate $r --duration 420 --seed $s \
+    --models model_3,model_4,model_5,model_6 \
+    --revisions exp/configs/v4het/model_revisions.json \
+    --slo-base exp/configs/v4het/slo_base.json --sharegpt "$SHAREGPT_JSON" \
+    --outdir exp/workloads/4het-final
+done; done
+#     Prism-favorable many-model (seeds 7,8)
+for r in 2 4 6 8 10; do for s in 7 8; do
+  prism-venv/bin/python exp/scripts/build_paired_workload.py --rate $r --duration 540 --seed $s \
+    --models model_1,model_2,model_3,model_4,model_5,model_6 \
+    --revisions exp/configs/v2/model_revisions.json \
+    --slo-base exp/configs/v2/slo_base.json --sharegpt "$SHAREGPT_JSON" \
+    --hot-sets "model_5,model_1|model_6,model_2|model_3,model_4" \
+    --phase-duration 180 --hot-share 0.9 --outdir exp/workloads/many_model_pf
+done; done
+# every regenerated trace must match the frozen SHA256 in
+# exp/manifests/prism_final/*TRACE_MANIFEST.json -- verify_artifacts.sh checks this
 
 # 7. verify, in this order
 bash repro/prism_final/verify_environment.sh     # NEW_SERVER_REPRO_STATUS = READY
@@ -301,6 +334,11 @@ bash repro/prism_final/smoke_test.sh             # SMOKE_TEST = PASS
 # 8. what would run? (should be 0 — the evaluation is closed)
 bash repro/prism_final/resume.sh --status
 ```
+
+Before step 6b, `verify_artifacts.sh` reports `ARTIFACT_VERIFICATION =
+NOT_PROVISIONED` — traces are not committed, so their absence is expected on a
+fresh clone and is distinguished from a hash mismatch. After 6b it must report
+`PASS`.
 
 If step 7 reports READY / PASS / PASS and step 8 reports
 `PENDING_CONDITIONS = 0`, the server reproduces the frozen baseline and the

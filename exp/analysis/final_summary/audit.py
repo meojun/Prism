@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Complete offline audit of every authoritative final result (section 2)."""
-import csv, hashlib, json, re, subprocess, sys
+import csv, hashlib, json, os, re, subprocess, sys
 from pathlib import Path
-R = Path("/workspace/prism-exp"); OUT = R / "exp/analysis/final_summary"
+# Repository root is derived from this file, never hard-coded, so the audit
+# runs correctly from a clone at any path.
+R = Path(__file__).resolve().parents[3]; OUT = R / "exp/analysis/final_summary"
 RUNTIME = (R / "patches/lifecycle_containment/WORKTREE_PATCH_SHA256").read_text().strip()
 FINAL_TAU = 0.012859417696566448
 GATE = R / "exp/scripts/lifecycle_validity_gate.py"
-PY_ = "/workspace/prism-exp/prism-venv/bin/python"
+PY_ = os.environ.get("PRISM_PYTHON") or sys.executable
 
 
 def sha(p):
@@ -18,7 +20,7 @@ def sha(p):
 
 
 FAMILIES = [
-    ("tau", R/"exp/results/4het-tau-final/raw", R/"exp/results/4het-window-calibration/CALIBRATION_TRACE_MANIFEST.json",
+    ("tau", R/"exp/results/4het-tau-final/raw", R/"exp/manifests/prism_final/TAU_CALIBRATION_TRACE_MANIFEST.json",
      R/"exp/workloads/4het-cal", [(a,"steady",r,s) for a in ("T0","T1","T2","T3","T4","T5") for r in (8,10) for s in (3,4)]
      + [(a,"bursty",r,s) for a in ("T0","T1","T2","T3","T4","T5") for r in (8,10) for s in (3,4)], 48),
     ("many_model", R/"exp/results/many-model-final/raw", R/"exp/manifests/prism_final/MANY_MODEL_TRACE_MANIFEST.json",

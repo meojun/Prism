@@ -29,26 +29,43 @@ echo "=== trace hashes ==="
 "$PY" - "$ROOT" <<'PYEOF'
 import json, sys, hashlib
 from pathlib import Path
-R=Path(sys.argv[1]); bad=0; n=0
-SETS=[("tau",R/"exp/results/4het-window-calibration/CALIBRATION_TRACE_MANIFEST.json",R/"exp/workloads/4het-cal"),
+R=Path(sys.argv[1]); bad=0; n=0; unprov=False
+SETS=[("tau",R/"exp/manifests/prism_final/TAU_CALIBRATION_TRACE_MANIFEST.json",R/"exp/workloads/4het-cal"),
       ("many_model",R/"exp/manifests/prism_final/MANY_MODEL_TRACE_MANIFEST.json",R/"exp/workloads/many_model_pf"),
       ("final_4het",R/"exp/manifests/prism_final/FINAL_4HET_TRACE_MANIFEST.json",R/"exp/workloads/4het-final")]
 for name,man,wl in SETS:
-    files=json.load(open(man))["files"]; miss=0
+    files=json.load(open(man))["files"]; absent=0; mism=0
     for fn,meta in files.items():
-        p=wl/fn; n+=1
-        if not p.exists(): miss+=1; bad+=1; continue
-        h=hashlib.sha256(); 
-        with open(p,"rb") as f:
+        q=wl/fn; n+=1
+        if not q.exists(): absent+=1; continue
+        h=hashlib.sha256()
+        with open(q,"rb") as f:
             for b in iter(lambda: f.read(1<<20), b""): h.update(b)
-        if h.hexdigest()!=meta["sha256"]: miss+=1; bad+=1
-    print(("  PASS  " if miss==0 else "  FAIL  ")+f"{name}: {len(files)-miss}/{len(files)} traces match the frozen manifest")
+        if h.hexdigest()!=meta["sha256"]: mism+=1
+    okc=len(files)-absent-mism
+    if mism:
+        print(f"  FAIL  {name}: {mism} trace(s) DIFFER from the frozen manifest"); bad+=1
+    elif absent==len(files):
+        print(f"  ABSENT {name}: 0/{len(files)} traces present -- not provisioned yet, regenerate")
+        globals()["unprov"]=True
+    elif absent:
+        print(f"  PARTIAL {name}: {okc}/{len(files)} present and matching, {absent} absent")
+        globals()["unprov"]=True
+    else:
+        print(f"  PASS  {name}: {okc}/{len(files)} traces match the frozen manifest")
 print(f"        {n} trace files checked")
-sys.exit(1 if bad else 0)
+sys.exit(1 if bad else (2 if unprov else 0))
 PYEOF
 rc2=$?
+if [ "$rc2" = 2 ]; then
+  echo
+  echo "ARTIFACT_VERIFICATION = NOT_PROVISIONED"
+  echo "  Traces are not committed. Regenerate them, then re-run this script:"
+  echo "    see reports/prism/11_handoff/PRISM_SERVER_HANDOFF.md section 60"
+  exit 2
+fi
 echo "=== authoritative results ==="
-"$PY" "$ROOT/exp/analysis/final_summary/audit.py" 2>&1 | sed 's/^/  /'
+PRISM_PYTHON="$PY" "$PY" "$ROOT/exp/analysis/final_summary/audit.py" 2>&1 | sed 's/^/  /'
 rc3=${PIPESTATUS[0]}
 echo
 if [ "$rc1" = 0 ] && [ "$rc2" = 0 ] && [ "$rc3" = 0 ]; then

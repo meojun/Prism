@@ -47,7 +47,11 @@ fi
 
 echo "=== 3. trace generator determinism (no GPU) ==="
 SG=${SHAREGPT_JSON:-/workspace/datasets/sharegpt/ShareGPT_V3_unfiltered_cleaned_split.json}
-if [ -f "$SG" ]; then
+REF="$ROOT/exp/workloads/4het-cal/steady_r8_s3.pkl"
+if [ ! -f "$REF" ]; then
+  echo "  SKIP  reference trace absent ($REF)"
+  echo "        traces are not committed; regenerate them first -- handoff section 60"
+elif [ -f "$SG" ]; then
   T="$OUT/regen"; mkdir -p "$T"
   "$PY" "$ROOT/exp/scripts/build_paired_workload.py" --rate 8 --duration 420 --seed 3 \
     --models model_3,model_4,model_5,model_6 \
