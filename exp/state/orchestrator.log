@@ -1,0 +1,212 @@
+[2026-08-25T13:06:49Z] [orch] waiting for the 48-run tau matrix
+[2026-08-25T13:46:50Z] [orch] HALT: tau calibration stopped: [2026-08-25T13:46:44Z] [tau-cal] STOPPED: run T0 bursty_r10_s3 failed (rc=1)
+ORCH_EXIT=1
+[2026-08-25T14:13:34Z] [orch] waiting for the 48-run tau matrix
+[2026-08-25T14:13:34Z] [orch] HALT: tau calibration stopped: [2026-08-25T13:46:44Z] [tau-cal] STOPPED: run T0 bursty_r10_s3 failed (rc=1)
+ORCH_EXIT=1
+[2026-08-25T14:14:18Z] [orch] waiting for the 48-run tau matrix (ignoring the first 23 existing log lines)
+[2026-08-25T18:35:21Z] [orch] HALT: tau calibration stopped: [2026-08-25T18:35:02Z] [tau-cal] STOPPED: run T4 steady_r8_s3 failed (rc=1)
+ORCH_EXIT=1
+[2026-08-25T21:35:14Z] [orch] waiting for the 48-run tau matrix (ignoring the first 112 existing log lines)
+[2026-08-25T21:35:14Z] [orch] tau matrix complete: 48/48
+  id                     tau     A regret   B GB/min  mig/min  A_norm  B_norm    SCORE   role
+  T0                       0     0.006348      9.376    1.084   0.143   1.000   1.0101   maximum sensitivity / actuation contro
+  T1                 0.00035     0.005779      8.617    1.013   0.065   0.792   0.7946   historical reference only
+  T2         0.0128594176966     0.005301      6.955    0.752   0.000   0.336   0.3364   selective migration threshold
+  T3          0.025950373686     0.007444      6.671    0.735   0.292   0.258   0.3898   selective migration threshold
+  T4          0.039162862923     0.012648      5.728    0.613   1.000   0.000   1.0000   selective migration threshold
+  T5              1000000000     0.013937      0.000    0.000   1.176  -1.570 excluded   migration-disabled static control (dia
+
+cost metric B = B_migration_gb_per_min
+
+FINAL_TAU = 0.012859417696566448   (T2)
+[2026-08-25T21:35:15Z] [orch] FINAL_TAU = 0.012859417696566448
+FINAL_BASELINE_FROZEN = YES  manifest sha256 056846b8b341d94b
+  FINAL_TAU = 0.012859417696566448
+  MANY_MODEL_PROTOCOL_FROZEN.json / .md written
+  FINAL_4HET_PROTOCOL_FROZEN.json written
+  bursty_r16_s9.pkl        8764 reqs  span=  539.9s  mean= 16.23/s  peak10s= 21.40/s  071d3861aa50
+  steady_r16_s9.pkl        8764 reqs  span=  540.0s  mean= 16.23/s  peak10s= 20.30/s  44d1dac03269
+
+2/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_PILOT_TRACE_MANIFEST.json
+[2026-08-25T21:48:11Z] [orch] HALT: pilot run failure
+RECOVERY_CHAIN_EXIT=1
+[2026-08-26T00:44:58Z] [orch] waiting for the 48-run tau matrix (ignoring the first 112 existing log lines)
+[2026-08-26T00:44:58Z] [orch] tau matrix complete: 48/48
+  id                     tau     A regret   B GB/min  mig/min  A_norm  B_norm    SCORE   role
+  T0                       0     0.006348      9.376    1.084   0.143   1.000   1.0101   maximum sensitivity / actuation contro
+  T1                 0.00035     0.005779      8.617    1.013   0.065   0.792   0.7946   historical reference only
+  T2         0.0128594176966     0.005301      6.955    0.752   0.000   0.336   0.3364   selective migration threshold
+  T3          0.025950373686     0.007444      6.671    0.735   0.292   0.258   0.3898   selective migration threshold
+  T4          0.039162862923     0.012648      5.728    0.613   1.000   0.000   1.0000   selective migration threshold
+  T5              1000000000     0.013937      0.000    0.000   1.176  -1.570 excluded   migration-disabled static control (dia
+
+cost metric B = B_migration_gb_per_min
+
+FINAL_TAU = 0.012859417696566448   (T2)
+[2026-08-26T00:44:59Z] [orch] FINAL_TAU = 0.012859417696566448
+FINAL_BASELINE_FROZEN = YES  manifest sha256 b6ce3dddf15660c1
+  FINAL_TAU = 0.012859417696566448
+  MANY_MODEL_PROTOCOL_FROZEN.json / .md written
+  FINAL_4HET_PROTOCOL_FROZEN.json written
+  bursty_r16_s9.pkl        8764 reqs  span=  539.9s  mean= 16.23/s  peak10s= 21.40/s  071d3861aa50
+  steady_r16_s9.pkl        8764 reqs  span=  540.0s  mean= 16.23/s  peak10s= 20.30/s  44d1dac03269
+
+2/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_PILOT_TRACE_MANIFEST.json
+PROTOTYPE_GOODPUT = 0.6903
+PRISM_GOODPUT     = 1.7866
+PRISM_TO_PROTOTYPE_RATIO = 2.5882   -> CASE C
+  prototype: attain=0.0440 thr=15.673 tpot_p99=287.5ms ttft_p99=0.60s migr=0 completed=8764/8764
+      prism: attain=0.1140 thr=15.674 tpot_p99=659.5ms ttft_p99=32.90s migr=5 completed=8764/8764
+PILOT_GATE = PASS  (R >= 0.70 -> proceeding to the full 20-run matrix)
+[2026-08-26T00:58:20Z] [orch] PILOT_GATE = PASS (R >= 0.70) -- proceeding to the full 20-run matrix
+  bursty_r12_s7.pkl        6504 reqs  span=  539.6s  mean= 12.05/s  peak10s= 15.20/s  3a7389b7179e
+  bursty_r12_s8.pkl        6550 reqs  span=  539.9s  mean= 12.13/s  peak10s= 15.30/s  b4d8d05a8386
+  bursty_r16_s7.pkl        8650 reqs  span=  539.9s  mean= 16.02/s  peak10s= 19.50/s  be6d8ce28de6
+  bursty_r16_s8.pkl        8704 reqs  span=  539.9s  mean= 16.12/s  peak10s= 21.30/s  431c5bdd4c82
+  bursty_r20_s7.pkl       10972 reqs  span=  539.9s  mean= 20.32/s  peak10s= 24.60/s  30d55bfce1db
+  bursty_r20_s8.pkl       10975 reqs  span=  539.9s  mean= 20.33/s  peak10s= 25.40/s  09b8b4b605de
+  bursty_r4_s7.pkl         2131 reqs  span=  539.9s  mean=  3.95/s  peak10s=  5.80/s  712a1f1dc04f
+  bursty_r4_s8.pkl         2191 reqs  span=  539.3s  mean=  4.06/s  peak10s=  6.50/s  b80795b59a75
+  bursty_r8_s7.pkl         4274 reqs  span=  540.0s  mean=  7.92/s  peak10s= 10.80/s  a734fd700713
+  bursty_r8_s8.pkl         4374 reqs  span=  539.5s  mean=  8.11/s  peak10s= 11.50/s  d902cb7cda27
+  steady_r12_s7.pkl        6504 reqs  span=  539.9s  mean= 12.05/s  peak10s= 15.00/s  f81ab593ed4c
+  steady_r12_s8.pkl        6550 reqs  span=  539.7s  mean= 12.14/s  peak10s= 15.70/s  28c82963ef61
+  steady_r16_s7.pkl        8650 reqs  span=  539.9s  mean= 16.02/s  peak10s= 19.30/s  83b1bfef4404
+  steady_r16_s8.pkl        8704 reqs  span=  539.7s  mean= 16.13/s  peak10s= 20.10/s  8b3db9cb2c34
+  steady_r20_s7.pkl       10972 reqs  span=  539.9s  mean= 20.32/s  peak10s= 24.70/s  9c6803fb5690
+  steady_r20_s8.pkl       10975 reqs  span=  539.9s  mean= 20.33/s  peak10s= 24.20/s  15d8d19c9c0c
+  steady_r4_s7.pkl         2131 reqs  span=  539.8s  mean=  3.95/s  peak10s=  6.00/s  26c9957a289b
+  steady_r4_s8.pkl         2191 reqs  span=  539.5s  mean=  4.06/s  peak10s=  6.10/s  090febbff522
+  steady_r8_s7.pkl         4274 reqs  span=  539.8s  mean=  7.92/s  peak10s= 10.20/s  72adfbd81a7a
+  steady_r8_s8.pkl         4374 reqs  span=  539.7s  mean=  8.10/s  peak10s= 11.10/s  7395d95623a1
+
+20/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_TRACE_MANIFEST.json
+[2026-08-26T02:12:44Z] [orch] waiting for the 48-run tau matrix (ignoring the first 112 existing log lines)
+[2026-08-26T02:12:44Z] [orch] tau matrix complete: 48/48
+  id                     tau     A regret   B GB/min  mig/min  A_norm  B_norm    SCORE   role
+  T0                       0     0.006348      9.376    1.084   0.143   1.000   1.0101   maximum sensitivity / actuation contro
+  T1                 0.00035     0.005779      8.617    1.013   0.065   0.792   0.7946   historical reference only
+  T2         0.0128594176966     0.005301      6.955    0.752   0.000   0.336   0.3364   selective migration threshold
+  T3          0.025950373686     0.007444      6.671    0.735   0.292   0.258   0.3898   selective migration threshold
+  T4          0.039162862923     0.012648      5.728    0.613   1.000   0.000   1.0000   selective migration threshold
+  T5              1000000000     0.013937      0.000    0.000   1.176  -1.570 excluded   migration-disabled static control (dia
+
+cost metric B = B_migration_gb_per_min
+
+FINAL_TAU = 0.012859417696566448   (T2)
+[2026-08-26T02:12:45Z] [orch] FINAL_TAU = 0.012859417696566448
+FINAL_BASELINE_FROZEN = YES  manifest sha256 86550a993711c467
+  FINAL_TAU = 0.012859417696566448
+  MANY_MODEL_PROTOCOL_FROZEN.json / .md written
+  FINAL_4HET_PROTOCOL_FROZEN.json written
+  bursty_r16_s9.pkl        8764 reqs  span=  539.9s  mean= 16.23/s  peak10s= 21.40/s  071d3861aa50
+  steady_r16_s9.pkl        8764 reqs  span=  540.0s  mean= 16.23/s  peak10s= 20.30/s  44d1dac03269
+
+2/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_PILOT_TRACE_MANIFEST.json
+PROTOTYPE_GOODPUT = 0.6903
+PRISM_GOODPUT     = 1.7866
+PRISM_TO_PROTOTYPE_RATIO = 2.5882   -> CASE C
+  prototype: attain=0.0440 thr=15.673 tpot_p99=287.5ms ttft_p99=0.60s migr=0 completed=8764/8764
+      prism: attain=0.1140 thr=15.674 tpot_p99=659.5ms ttft_p99=32.90s migr=5 completed=8764/8764
+PILOT_GATE = PASS  (R >= 0.70 -> proceeding to the full 20-run matrix)
+[2026-08-26T02:12:46Z] [orch] PILOT_GATE = PASS (R >= 0.70) -- proceeding to the full 20-run matrix
+  bursty_r10_s7.pkl        5280 reqs  span=  540.0s  mean=  9.78/s  peak10s= 13.00/s  b6b540a4fdd1
+  bursty_r10_s8.pkl        5335 reqs  span=  539.6s  mean=  9.89/s  peak10s= 13.10/s  c76d4cda6d50
+  bursty_r2_s7.pkl         1015 reqs  span=  539.3s  mean=  1.88/s  peak10s=  3.10/s  29754202a3e3
+  bursty_r2_s8.pkl         1050 reqs  span=  539.1s  mean=  1.95/s  peak10s=  3.20/s  186fb2c07b22
+  bursty_r4_s7.pkl         2131 reqs  span=  539.9s  mean=  3.95/s  peak10s=  5.80/s  712a1f1dc04f
+  bursty_r4_s8.pkl         2191 reqs  span=  539.3s  mean=  4.06/s  peak10s=  6.50/s  b80795b59a75
+  bursty_r6_s7.pkl         3196 reqs  span=  539.6s  mean=  5.92/s  peak10s=  7.90/s  14454c567878
+  bursty_r6_s8.pkl         3239 reqs  span=  539.5s  mean=  6.00/s  peak10s=  8.80/s  1a2461795fae
+  bursty_r8_s7.pkl         4274 reqs  span=  540.0s  mean=  7.92/s  peak10s= 10.80/s  a734fd700713
+  bursty_r8_s8.pkl         4374 reqs  span=  539.5s  mean=  8.11/s  peak10s= 11.50/s  d902cb7cda27
+  steady_r10_s7.pkl        5280 reqs  span=  539.9s  mean=  9.78/s  peak10s= 12.50/s  4ad71625e720
+  steady_r10_s8.pkl        5335 reqs  span=  539.7s  mean=  9.88/s  peak10s= 13.10/s  1db428ef1771
+  steady_r2_s7.pkl         1015 reqs  span=  539.8s  mean=  1.88/s  peak10s=  3.30/s  627c62370506
+  steady_r2_s8.pkl         1050 reqs  span=  537.4s  mean=  1.95/s  peak10s=  3.50/s  30e20e18ce1b
+  steady_r4_s7.pkl         2131 reqs  span=  539.8s  mean=  3.95/s  peak10s=  6.00/s  26c9957a289b
+  steady_r4_s8.pkl         2191 reqs  span=  539.5s  mean=  4.06/s  peak10s=  6.10/s  090febbff522
+  steady_r6_s7.pkl         3196 reqs  span=  539.8s  mean=  5.92/s  peak10s=  8.50/s  ca4972663758
+  steady_r6_s8.pkl         3239 reqs  span=  539.7s  mean=  6.00/s  peak10s=  8.90/s  f93bab028b8d
+  steady_r8_s7.pkl         4274 reqs  span=  539.8s  mean=  7.92/s  peak10s= 10.20/s  72adfbd81a7a
+  steady_r8_s8.pkl         4374 reqs  span=  539.7s  mean=  8.10/s  peak10s= 11.10/s  7395d95623a1
+
+20/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_TRACE_MANIFEST.json
+[2026-08-26T04:42:53Z] [orch] HALT: many-model final run failure
+ORCH_EXIT=1
+[2026-08-26T06:04:38Z] [orch] waiting for the 48-run tau matrix (ignoring the first 112 existing log lines)
+[2026-08-26T06:04:38Z] [orch] tau matrix complete: 48/48
+  id                     tau     A regret   B GB/min  mig/min  A_norm  B_norm    SCORE   role
+  T0                       0     0.006348      9.376    1.084   0.143   1.000   1.0101   maximum sensitivity / actuation contro
+  T1                 0.00035     0.005779      8.617    1.013   0.065   0.792   0.7946   historical reference only
+  T2         0.0128594176966     0.005301      6.955    0.752   0.000   0.336   0.3364   selective migration threshold
+  T3          0.025950373686     0.007444      6.671    0.735   0.292   0.258   0.3898   selective migration threshold
+  T4          0.039162862923     0.012648      5.728    0.613   1.000   0.000   1.0000   selective migration threshold
+  T5              1000000000     0.013937      0.000    0.000   1.176  -1.570 excluded   migration-disabled static control (dia
+
+cost metric B = B_migration_gb_per_min
+
+FINAL_TAU = 0.012859417696566448   (T2)
+[2026-08-26T06:04:39Z] [orch] FINAL_TAU = 0.012859417696566448
+FINAL_BASELINE_FROZEN = YES  manifest sha256 18ddbbd20bbcf24b
+  FINAL_TAU = 0.012859417696566448
+  MANY_MODEL_PROTOCOL_FROZEN.json / .md written
+  FINAL_4HET_PROTOCOL_FROZEN.json written
+  bursty_r16_s9.pkl        8764 reqs  span=  539.9s  mean= 16.23/s  peak10s= 21.40/s  071d3861aa50
+  steady_r16_s9.pkl        8764 reqs  span=  540.0s  mean= 16.23/s  peak10s= 20.30/s  44d1dac03269
+
+2/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_PILOT_TRACE_MANIFEST.json
+PROTOTYPE_GOODPUT = 0.6903
+PRISM_GOODPUT     = 1.7866
+PRISM_TO_PROTOTYPE_RATIO = 2.5882   -> CASE C
+  prototype: attain=0.0440 thr=15.673 tpot_p99=287.5ms ttft_p99=0.60s migr=0 completed=8764/8764
+      prism: attain=0.1140 thr=15.674 tpot_p99=659.5ms ttft_p99=32.90s migr=5 completed=8764/8764
+PILOT_GATE = PASS  (R >= 0.70 -> proceeding to the full 20-run matrix)
+[2026-08-26T06:04:40Z] [orch] PILOT_GATE = PASS (R >= 0.70) -- proceeding to the full 20-run matrix
+  bursty_r10_s7.pkl        5280 reqs  span=  540.0s  mean=  9.78/s  peak10s= 13.00/s  b6b540a4fdd1
+  bursty_r10_s8.pkl        5335 reqs  span=  539.6s  mean=  9.89/s  peak10s= 13.10/s  c76d4cda6d50
+  bursty_r2_s7.pkl         1015 reqs  span=  539.3s  mean=  1.88/s  peak10s=  3.10/s  29754202a3e3
+  bursty_r2_s8.pkl         1050 reqs  span=  539.1s  mean=  1.95/s  peak10s=  3.20/s  186fb2c07b22
+  bursty_r4_s7.pkl         2131 reqs  span=  539.9s  mean=  3.95/s  peak10s=  5.80/s  712a1f1dc04f
+  bursty_r4_s8.pkl         2191 reqs  span=  539.3s  mean=  4.06/s  peak10s=  6.50/s  b80795b59a75
+  bursty_r6_s7.pkl         3196 reqs  span=  539.6s  mean=  5.92/s  peak10s=  7.90/s  14454c567878
+  bursty_r6_s8.pkl         3239 reqs  span=  539.5s  mean=  6.00/s  peak10s=  8.80/s  1a2461795fae
+  bursty_r8_s7.pkl         4274 reqs  span=  540.0s  mean=  7.92/s  peak10s= 10.80/s  a734fd700713
+  bursty_r8_s8.pkl         4374 reqs  span=  539.5s  mean=  8.11/s  peak10s= 11.50/s  d902cb7cda27
+  steady_r10_s7.pkl        5280 reqs  span=  539.9s  mean=  9.78/s  peak10s= 12.50/s  4ad71625e720
+  steady_r10_s8.pkl        5335 reqs  span=  539.7s  mean=  9.88/s  peak10s= 13.10/s  1db428ef1771
+  steady_r2_s7.pkl         1015 reqs  span=  539.8s  mean=  1.88/s  peak10s=  3.30/s  627c62370506
+  steady_r2_s8.pkl         1050 reqs  span=  537.4s  mean=  1.95/s  peak10s=  3.50/s  30e20e18ce1b
+  steady_r4_s7.pkl         2131 reqs  span=  539.8s  mean=  3.95/s  peak10s=  6.00/s  26c9957a289b
+  steady_r4_s8.pkl         2191 reqs  span=  539.5s  mean=  4.06/s  peak10s=  6.10/s  090febbff522
+  steady_r6_s7.pkl         3196 reqs  span=  539.8s  mean=  5.92/s  peak10s=  8.50/s  ca4972663758
+  steady_r6_s8.pkl         3239 reqs  span=  539.7s  mean=  6.00/s  peak10s=  8.90/s  f93bab028b8d
+  steady_r8_s7.pkl         4274 reqs  span=  539.8s  mean=  7.92/s  peak10s= 10.20/s  72adfbd81a7a
+  steady_r8_s8.pkl         4374 reqs  span=  539.7s  mean=  8.10/s  peak10s= 11.10/s  7395d95623a1
+
+20/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/MANY_MODEL_TRACE_MANIFEST.json
+  bursty_r10_s5.pkl        4247 reqs  span=  419.9s  mean= 10.11/s  peak10s= 13.00/s  8275f904a477
+  bursty_r10_s6.pkl        4197 reqs  span=  419.9s  mean= 10.00/s  peak10s= 12.70/s  1dca1c3210ee
+  bursty_r2_s5.pkl          818 reqs  span=  419.7s  mean=  1.95/s  peak10s=  3.30/s  f396357c3a0a
+  bursty_r2_s6.pkl          789 reqs  span=  419.8s  mean=  1.88/s  peak10s=  3.10/s  bafec5fdb723
+  bursty_r4_s5.pkl         1686 reqs  span=  420.0s  mean=  4.01/s  peak10s=  6.30/s  ad05f7a42188
+  bursty_r4_s6.pkl         1659 reqs  span=  419.8s  mean=  3.95/s  peak10s=  5.70/s  03cc5f6aafe7
+  bursty_r6_s5.pkl         2583 reqs  span=  419.9s  mean=  6.15/s  peak10s=  8.30/s  9d6e69f2e3a7
+  bursty_r6_s6.pkl         2483 reqs  span=  419.8s  mean=  5.91/s  peak10s=  7.90/s  815ef9a9c5e8
+  bursty_r8_s5.pkl         3350 reqs  span=  419.9s  mean=  7.98/s  peak10s= 10.50/s  ceed399543f0
+  bursty_r8_s6.pkl         3358 reqs  span=  419.7s  mean=  8.00/s  peak10s= 12.10/s  920b083c23d0
+  steady_r10_s5.pkl        4247 reqs  span=  419.8s  mean= 10.12/s  peak10s= 13.10/s  5b7e410178d7
+  steady_r10_s6.pkl        4197 reqs  span=  419.9s  mean=  9.99/s  peak10s= 12.40/s  c0aabe109d91
+  steady_r2_s5.pkl          818 reqs  span=  419.8s  mean=  1.95/s  peak10s=  3.20/s  5bb86c5b1527
+  steady_r2_s6.pkl          789 reqs  span=  419.9s  mean=  1.88/s  peak10s=  3.30/s  b27f01d234dc
+  steady_r4_s5.pkl         1686 reqs  span=  419.8s  mean=  4.02/s  peak10s=  5.90/s  5f812af71420
+  steady_r4_s6.pkl         1659 reqs  span=  419.9s  mean=  3.95/s  peak10s=  5.70/s  e8e378c22d99
+  steady_r6_s5.pkl         2583 reqs  span=  419.8s  mean=  6.15/s  peak10s=  9.10/s  a46e81e2ff24
+  steady_r6_s6.pkl         2483 reqs  span=  419.9s  mean=  5.91/s  peak10s=  8.50/s  8141f1258cb4
+  steady_r8_s5.pkl         3350 reqs  span=  419.8s  mean=  7.98/s  peak10s= 11.20/s  088ec6cd6a86
+  steady_r8_s6.pkl         3358 reqs  span=  419.9s  mean=  8.00/s  peak10s= 10.50/s  fa010c64cb6c
+
+20/20 traces frozen -> /workspace/prism-exp/exp/manifests/prism_final/FINAL_4HET_TRACE_MANIFEST.json
+[2026-08-26T13:29:33Z] [orch] ALL EXPERIMENT STAGES COMPLETE -- reports pending
+ORCH_EXIT=0

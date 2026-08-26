@@ -1,0 +1,5 @@
+regime,prototype_goodput_mean,prism_goodput_mean,delta_pct_of_means,mean_paired_delta_pct,conditions,prism_wins
+prism_favorable_many_model,2.22948,2.4048,7.86,8.16,10,7
+final_4het_overall,4.76863,3.59368,-24.64,-21.95,20,0
+final_4het_steady,4.99995,3.91003,-21.8,-19.29,10,0
+final_4het_bursty,4.53731,3.27733,-27.77,-24.62,10,0

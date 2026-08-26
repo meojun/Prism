@@ -1,0 +1,9 @@
+dimension,prism_favorable,final_4het
+models,6,4
+consolidation,high,low
+active set,"shifting hot pair, 90/10 skew",all models active
+workloads,bursty only,steady + bursty
+seeds,"7,8","5,6 (hold-out)"
+framing,deliberate best case,unbiased hold-out
+overall delta,+7.9%,-24.6%
+conditions Prism wins,7/10,0/20

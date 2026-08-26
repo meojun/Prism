@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate reports/prism/00_project/FINAL_BASELINE_HANDOFF.md -- what the next server needs, only that.
+"""Generate reports/prism/00_overview/FINAL_BASELINE_HANDOFF.md -- what the next server needs, only that.
 
 Written for somebody who has never seen this work and cannot ask anyone about
 it. Facts come from the manifest and the pipeline state, so the document says
@@ -285,7 +285,7 @@ def main():
     A("")
     A("## Results and evidence")
     A("")
-    A("- `reports/prism/00_project/FINAL_RESULTS_INDEX.md` -- every table and where the raw runs live")
+    A("- `reports/prism/00_overview/FINAL_RESULTS_INDEX.md` -- every table and where the raw runs live")
     A("- `exp/final_baseline_manifest.json` -- what the evaluation used")
     A("- `exp/HANDOFF_LOCAL_DEPENDENCIES.md` -- what this baseline needs that")
     A("  git does not carry")

@@ -4,7 +4,7 @@
  "RUNTIME_SOURCE_TREE_HASH": "7fbd431c6a636df0c72bb6a40324f851d002d204",
  "runtime_worktree_patch_sha256": "49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d",
  "runtime_base_commit": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
- "current_stage": "14_tau_calibration",
+ "current_stage": "46_awaiting_reports",
  "current_condition": null,
  "stages_completed": [
   "02_correctness_regressions",
@@ -12,7 +12,11 @@
   "04_runtime_freeze",
   "05_report_reorganization",
   "06_reference_audit",
-  "08_pipeline_state"
+  "08_pipeline_state",
+  "13_checkpoint_1",
+  "21_six_model_set_recovered",
+  "22_pairing_predeclared",
+  "52_environment_captured"
  ],
  "correctness": {
   "MIGRATION_LIFECYCLE_FAILURE_CONTAINMENT_FIX": "FIX VERIFIED",
@@ -30,15 +34,115 @@
    "reason": "migration-lifecycle stall, preserved, excluded from all analysis"
   }
  ],
- "retry_history": [],
- "FINAL_TAU": null,
+ "retry_history": [
+  {
+   "phase": "tau_calibration",
+   "arm": "T0",
+   "cond": "bursty_r10_s3",
+   "attempt": 1,
+   "failure_class": "harness_infrastructure_only",
+   "detail": "EADDRINUSE at server startup; server never started",
+   "evidence": "cuda_oom 0, fatal_cuda_nccl 0, alg2_order_violations 0, no leftover process or port",
+   "action": "one identical retry per section 64; nothing changed",
+   "preserved": "exp/results/4het-tau-final/raw/prism-T0/bursty/rate_10/seed_3.eaddrinuse-attempt1"
+  },
+  {
+   "phase": "tau_calibration",
+   "arm": "T4",
+   "cond": "steady_r8_s3",
+   "failure_class": "harness_infrastructure_only",
+   "evidence": "cuda_oom 0, fatal_cuda_nccl 0, alg2_order_violations 0, killed false, rc=1",
+   "preserved": "raw/prism-T4/steady/rate_8/seed_3.failed-attempt-20260825T184350Z",
+   "outcome": "retry PASS 3406/3406"
+  },
+  {
+   "phase": "many_model_pilot",
+   "arm": "prototype",
+   "cond": "bursty_r16_s9",
+   "failure_class": "harness_label_misclassification_not_a_run_failure",
+   "detail": "label prefix did not match final_stage.sh proto-* convention so arm defaulted to prism",
+   "action": "label fixed + pre-flight arm assertion; gate re-evaluated with --arm prototype; run NOT re-executed",
+   "outcome": "14/14 gate PASS, verification PASS 8764/8764"
+  },
+  {
+   "phase": "many_model_final",
+   "arm": "prism",
+   "cond": "bursty_r8_s7",
+   "attempt": 1,
+   "failure_class": "harness_infrastructure_only",
+   "detail": "nccl_port TOCTOU race at engine startup -> EADDRINUSE; server never started",
+   "evidence": "cuda_oom 0, fatal_cuda_nccl 0, alg2_order_violations 0, zero client failures",
+   "root_cause_doc": "exp/results/many-model-final/KNOWN_RUNTIME_RACE_nccl_port.md",
+   "action": "one identical retry per section 64; runtime NOT modified (would be a hard STOP)",
+   "preserved": "exp/results/many-model-final/raw/prism/bursty/rate_8/seed_7.eaddrinuse-attempt1",
+   "utc": "2026-08-26T06:04:38.557530+00:00"
+  }
+ ],
+ "FINAL_TAU": 0.012859417696566448,
  "tau_candidates_frozen_sha256": null,
  "trace_manifests": {
   "calibration_seeds_3_4": "exp/results/4het-window-calibration/CALIBRATION_TRACE_MANIFEST.json"
  },
- "final_baseline_manifest_hash": null,
- "last_checkpoint_commit": null,
- "last_successful_remote_push": null,
- "push_status": "PENDING_CLEAN_BRANCH (51c5405 is an ancestor of the local branch; remote is clean; checkpoint uses a new branch off a clean base)",
- "timestamp": "2026-08-25T12:43:31.424356+00:00"
+ "final_baseline_manifest_hash": "056846b8b341d94b",
+ "last_checkpoint_commit": "ae755b9c7a2e397ade6b9cc6cf095bc0d66d3eda",
+ "last_successful_remote_push": {
+  "checkpoint": 1,
+  "branch": "research/prism-final-baseline",
+  "commit": "ae755b9c7a2e397ade6b9cc6cf095bc0d66d3eda",
+  "base": "3ef6adb1c7c138f6537d882c73d48a56df026b27",
+  "utc": "2026-08-25T12:56:43.743130+00:00"
+ },
+ "push_status": "SUCCESS",
+ "timestamp": "2026-08-26T13:29:33.509536+00:00",
+ "clean_branch_worktree": "/workspace/clean-branch",
+ "hot_sets": {
+  "HOT_SET_A": [
+   "model_5",
+   "model_1"
+  ],
+  "HOT_SET_B": [
+   "model_6",
+   "model_2"
+  ],
+  "HOT_SET_C": [
+   "model_3",
+   "model_4"
+  ]
+ },
+ "TAU_STATUS": "FINALIZED",
+ "known_defects_fixed": [
+  "prism_final_stage_runner label prefix for the prototype arm",
+  "lifecycle_validity_gate ack check now applicability-guarded (prototype emits no V5-HOP acks)"
+ ],
+ "many_model_rate_grid": {
+  "old": [
+   4,
+   8,
+   12,
+   16,
+   20
+  ],
+  "new": [
+   2,
+   4,
+   6,
+   8,
+   10
+  ],
+  "amended_utc": "2026-08-26T02:12:44.735028+00:00",
+  "scope": "final many-model bursty rate grid only"
+ },
+ "many_model_reused_prototype_runs": [
+  "exp/results/many-model-final/raw/prototype/bursty/rate_4/seed_7",
+  "exp/results/many-model-final/raw/prototype/bursty/rate_4/seed_8",
+  "exp/results/many-model-final/raw/prototype/bursty/rate_8/seed_7",
+  "exp/results/many-model-final/raw/prototype/bursty/rate_8/seed_8"
+ ],
+ "many_model_excluded_historical": [
+  "exp/results/many-model-final/raw/prototype/bursty/rate_12/seed_7 (VALID, EXCLUDED_FROM_FINAL_GRID_PROTOCOL_CHANGE)",
+  "exp/results/many-model-final/raw/prototype/bursty/rate_12/seed_8.incomplete-aborted-by-protocol-amendment (INCOMPLETE)"
+ ],
+ "known_runtime_defects_found_not_fixed": [
+  "nccl_port check-then-use race in PortArgs (server_args.py) -- documented, not fixed because a runtime change after baseline freeze is a hard STOP condition"
+ ]
 }

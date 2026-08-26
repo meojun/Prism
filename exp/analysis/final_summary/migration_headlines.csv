@@ -1,0 +1,7 @@
+regime,workload,arm,migrations_mean,migration_gb_mean
+many_model,bursty,prototype,0,0.0
+many_model,bursty,prism,4.6,29.9
+final_4het,bursty,prototype,0,0.0
+final_4het,steady,prototype,0,0.0
+final_4het,bursty,prism,8.1,80.1
+final_4het,steady,prism,1.4,12.21

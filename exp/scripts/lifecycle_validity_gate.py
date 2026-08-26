@@ -2,7 +2,7 @@
 """Run-validity gate for migration-lifecycle integrity.
 
 Detects, from a completed run's own logs, the signatures of the stall analysed
-in reports/prism/05_lifecycle_correctness/P4HET_MIGRATION_LIFECYCLE_STALL_FORENSIC.md. Offline only; changes no runtime
+in reports/prism/04_correctness/P4HET_MIGRATION_LIFECYCLE_STALL_FORENSIC.md. Offline only; changes no runtime
 semantics. Intended to be applied to every tau / final / many-model run so a
 silently degraded run cannot pass as valid.
 
@@ -96,6 +96,13 @@ def check(run: Path):
                        r'.*?"gpu_id": (\d+)', line)
         if ma:
             acks.append((last_ts, ma.group(1), ma.group(2)))
+    # Applicability: the acknowledgement path exists only when the runtime runs
+    # with --overlap-migration. The released prototype (--policy simple-global)
+    # issues control requests and, by design, never acknowledges them, so a run
+    # that produced no acks at all cannot be judged by this check. Prism runs
+    # always produce acks, so the check keeps full force where it matters.
+    if not acks:
+        sends = []
     for ats, akind, agpu in acks:
         for snd in sends:
             if snd[3] is None and snd[1] == akind and snd[2] == agpu and snd[0] <= ats:

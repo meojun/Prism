@@ -62,6 +62,38 @@ class Request:
     any class named `Request` onto its own dataclass, so this pickles fine."""
 
 
+def build_hot_set_phases(duration, phase_duration, hot_sets, hot_share, models):
+    """Deterministic A->B->C hot-set plan for the Prism-favorable regime.
+
+    Replaces ONLY the phase construction. The arrival process below --
+    per-phase Poisson counts with uniform positions inside the phase, and the
+    renormalisation that holds the aggregate rate constant -- is the canonical
+    historical six-model bursty generator, reused unchanged.
+
+    In each phase `hot_share` of the offered demand goes to that phase's hot
+    pair, split evenly, and the remainder is split evenly across the other four
+    models. Background demand stays strictly positive so every model remains a
+    deployed tenant while demand moves.
+    """
+    phases, t, i = [], 0.0, 0
+    while t < duration - 1e-9:
+        length = min(phase_duration, duration - t)
+        hot = list(hot_sets[i % len(hot_sets)])
+        rest = [m for m in models if m not in hot]
+        w = {}
+        for m in hot:
+            w[m] = hot_share / len(hot)
+        for m in rest:
+            w[m] = (1.0 - hot_share) / len(rest)
+        phases.append({
+            "start": t, "end": t + length, "len": length,
+            "hot": hot, "medium": [], "low": rest, "idle": [],
+            "hot_set_index": i % len(hot_sets), "weights": w,
+        })
+        t += length; i += 1
+    return phases
+
+
 def build_phases(rng, duration, phase_lo, phase_hi, models):
     """Phases of random length; hot set redrawn each phase.
 
@@ -239,6 +271,15 @@ def main():
     ap.add_argument("--sharegpt", default="/workspace/datasets/sharegpt/ShareGPT_V3_unfiltered_cleaned_split.json")
     ap.add_argument("--slo-base", default="/workspace/prism-exp/exp/configs/v2/slo_base.json")
     ap.add_argument("--outdir", required=True)
+    ap.add_argument("--hot-sets", default=None,
+                    help="Prism-favorable mode: pipe-separated hot pairs, e.g. "
+                         "'model_5,model_1|model_6,model_2|model_3,model_4'. "
+                         "When given, the random phase plan is replaced by a "
+                         "deterministic A->B->C rotation.")
+    ap.add_argument("--phase-duration", type=float, default=180.0,
+                    help="length of each hot-set phase, only used with --hot-sets")
+    ap.add_argument("--hot-share", type=float, default=0.9,
+                    help="fraction of offered demand on the phase's hot pair")
     ap.add_argument("--models", default=None,
                     help="comma-separated subset of the model keys, e.g. "
                          "model_3,model_4,model_5,model_6. Default: all of them. "
@@ -263,7 +304,15 @@ def main():
     slo_base = json.load(open(a.slo_base))
     rng = random.Random(a.seed)
 
-    phases = build_phases(rng, a.duration, a.phase_lo, a.phase_hi, models)
+    if a.hot_sets:
+        hot_sets = [tuple(g.split(",")) for g in a.hot_sets.split("|")]
+        for g in hot_sets:
+            for m in g:
+                assert m in models, f"hot set names an unknown model: {m}"
+        phases = build_hot_set_phases(a.duration, a.phase_duration, hot_sets,
+                                      a.hot_share, models)
+    else:
+        phases = build_phases(rng, a.duration, a.phase_lo, a.phase_hi, models)
     burst = bursty_arrivals(rng, phases, a.rate, models)
     counts = {m: len(v) for m, v in burst.items()}
     total = sum(counts.values())
@@ -297,6 +346,9 @@ def main():
     json.dump({
         "seed": a.seed, "rate": a.rate, "duration": a.duration,
         "phase_len_range": [a.phase_lo, a.phase_hi],
+        "hot_sets": a.hot_sets,
+        "phase_duration": a.phase_duration if a.hot_sets else None,
+        "hot_share": a.hot_share if a.hot_sets else None,
         "hot_multiplier_range": HOT_RANGE, "medium_multiplier_range": MEDIUM_RANGE,
         "low_multiplier_range": LOW_RANGE, "base_share": BASE_SHARE,
         "phases": [{k: v for k, v in ph.items()} for ph in phases],

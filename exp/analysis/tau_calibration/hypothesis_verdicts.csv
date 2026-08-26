@@ -1,0 +1,7 @@
+hypothesis,verdict,evidence
+H1_TAU_CONTROLS_MIGRATION_COST,SUPPORTED,migration GB/min falls monotonically with tau: T0 9.376 > T1 8.617 > T2 6.955 > T3 6.671 > T4 5.728 > T5 0.000
+H2_TAU_CREATES_REGRET_COST_TRADEOFF,PARTIALLY_SUPPORTED,"the trade-off is NOT monotone. Regret falls from T0 0.006348 to a minimum at T2 0.005301, then rises to T4 0.012648 and T5 0.013937. Over T0..T2 suppressing migration REDUCES residual regret, so lower cost and lower regret coincide."
+H3_LOW_TAU_CAUSES_EXCESS_CHURN,SUPPORTED,T0 has the highest migration cost (9.376 GB/min) and higher residual regret (0.006348) than T2 (0.005301); the extra migrations do not buy placement quality
+H4_HIGH_TAU_COLLAPSES_DYNAMIC_ADAPTATION,SUPPORTED,"T5 (migration disabled) has the worst residual regret 0.013937 of all candidates, confirming static placement is not sufficient; T4 already trends that way (0.012648)"
+H5_TAU_EFFECT_IS_REGIME_DEPENDENT,SUPPORTED,"positive delta_r is far more frequent in bursty (52.8% of cycles) than steady (7.3%), so tau gates a very different number of decisions per regime"
+H6_GOODPUT_OPTIMUM_MATCHES_MECHANISTIC_TAU,DESCRIPTIVE_ONLY,goodput was not used for selection or tie-breaking; see candidate_summary.csv goodput_mean column for the descriptive comparison

@@ -1,0 +1,28 @@
+{
+ "what_this_is": "seed-9 diagnostic pilot gate thresholds, amended before the pilot ran",
+ "amended_utc": "2026-08-25T13:15:06.895934+00:00",
+ "amended_before_any_pilot_data_existed": true,
+ "original_section_33": {
+  "stop_below": 0.5,
+  "review_below": 0.8,
+  "pass_at_or_above": 0.8
+ },
+ "in_force": {
+  "stop_below": 0.5,
+  "review_below": 0.7,
+  "pass_at_or_above": 0.7
+ },
+ "reason": "explicit instruction: 0.80 was judged too conservative for a diagnostic gate whose only purpose is to avoid spending the remaining budget on a catastrophic regime",
+ "cases": {
+  "A": "R < 0.50 -> hard STOP, forensic analysis",
+  "B": "0.50 <= R < 0.70 -> HALT for resource-management telemetry review",
+  "C": "R >= 0.70 -> PASS, run the full 20-run matrix"
+ },
+ "scope": "seed-9 diagnostic pilot ONLY",
+ "explicitly_not_applied_to": [
+  "final seed7/8 many-model matrix",
+  "final seed5/6 4-HET matrix"
+ ],
+ "final_matrices_have_no_performance_early_stop": true,
+ "R_definition": "Prism Joint-SLO goodput / Prototype Joint-SLO goodput at rate 16, seed 9"
+}

@@ -1,0 +1,245 @@
+{
+ "pairs": [
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 2,
+   "seed": 7,
+   "identical": true,
+   "sha256": "29754202a3e35afa21f6a3624254d41d9492f5d789931100c25d01aa7af5fc0e"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 2,
+   "seed": 8,
+   "identical": true,
+   "sha256": "186fb2c07b22958096d6ddaad501d4a829a0a49297bb66dceb3a731ea49d8f20"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 4,
+   "seed": 7,
+   "identical": true,
+   "sha256": "712a1f1dc04fa7a6a108f3dfc5f0d16138c9f7400d6c5b34e77b0f124b984512"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 4,
+   "seed": 8,
+   "identical": true,
+   "sha256": "b80795b59a75cb8cf9c12a833c710f291b797a0780323c9fe9e17f9d34be07bd"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 6,
+   "seed": 7,
+   "identical": true,
+   "sha256": "14454c567878afb689ccc4ca9c5bcdea05475146cbf639726600953771c3e415"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 6,
+   "seed": 8,
+   "identical": true,
+   "sha256": "1a2461795fae5453292400f2febd5846d9dd5b474031b7c81c8eb77dbf74c9d0"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 8,
+   "seed": 7,
+   "identical": true,
+   "sha256": "a734fd700713eb509361820ad177d2e565fb3016746269e94ea3a1d9311c230a"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 8,
+   "seed": 8,
+   "identical": true,
+   "sha256": "d902cb7cda27a940005a71d9a8f792214f78766f44c50ea00e0096f7603042e5"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 10,
+   "seed": 7,
+   "identical": true,
+   "sha256": "b6b540a4fdd129fb9529c2693aaf465c08f3fcb347409e098686c9fd82c36c46"
+  },
+  {
+   "family": "many_model",
+   "workload": "bursty",
+   "rate": 10,
+   "seed": 8,
+   "identical": true,
+   "sha256": "c76d4cda6d50b5cdf7e96da37ca5294b035a55b938db4c669750c95aad338b04"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 2,
+   "seed": 5,
+   "identical": true,
+   "sha256": "5bb86c5b152793036525b1d988824637eabd74b39562c629acc82a1ac46bcf7a"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 2,
+   "seed": 6,
+   "identical": true,
+   "sha256": "b27f01d234dc51324e8531f5c68290a831678c4f74262880107cc74de8b067c1"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 4,
+   "seed": 5,
+   "identical": true,
+   "sha256": "5f812af7142083e3b515da69c3f3bc100e54bd10970db16f42ec89eb0b42b36c"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 4,
+   "seed": 6,
+   "identical": true,
+   "sha256": "e8e378c22d99fb0a3b8de0013dc49ff3d1816a5244a3ae5e62e64c47d919a385"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 6,
+   "seed": 5,
+   "identical": true,
+   "sha256": "a46e81e2ff24f3183e4f7d5af000a1395b7c20bf823b8b8f696d729d94f0c284"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 6,
+   "seed": 6,
+   "identical": true,
+   "sha256": "8141f1258cb4cb217f0e7b6fa67b8c9759a04925d4f9e0d40ff2d9f602268d36"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 8,
+   "seed": 5,
+   "identical": true,
+   "sha256": "088ec6cd6a861d542d8067bc049d9d6cb83c1ff02318e2b53025e771a4aad2fc"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 8,
+   "seed": 6,
+   "identical": true,
+   "sha256": "fa010c64cb6c0d5adb149f05dd33054f2b83348421eb63ac73e8d2b0e4afc587"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 10,
+   "seed": 5,
+   "identical": true,
+   "sha256": "5b7e410178d742eabae4590e43f94c88cfb69afc7faf5270bccbbacdd6be4cb8"
+  },
+  {
+   "family": "final_4het",
+   "workload": "steady",
+   "rate": 10,
+   "seed": 6,
+   "identical": true,
+   "sha256": "c0aabe109d91b9cca620b918f97cdfab686f1916f8bac01a9765615aa8a104f6"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 2,
+   "seed": 5,
+   "identical": true,
+   "sha256": "f396357c3a0a69d09c36258c0c6db668d3a82e17ed6e2d4fd04e1e8845dd1994"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 2,
+   "seed": 6,
+   "identical": true,
+   "sha256": "bafec5fdb72398bca3b1f8a019f0f5db46a9e89d54b9331f1b007617ae9f01b6"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 4,
+   "seed": 5,
+   "identical": true,
+   "sha256": "ad05f7a42188bfa48fde62e8e1208e62889ae86cff5b9fef7c5475ecbf43d427"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 4,
+   "seed": 6,
+   "identical": true,
+   "sha256": "03cc5f6aafe7b807ee98f69e3db88c41140019b0b3be04e00ba4cc11c76b363b"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 6,
+   "seed": 5,
+   "identical": true,
+   "sha256": "9d6e69f2e3a72b97600759ab21401fa080c947b0535df74692e3ae907c1a780e"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 6,
+   "seed": 6,
+   "identical": true,
+   "sha256": "815ef9a9c5e8e594c51e66d0bfeac06cdc9289650a2e7b112ebeab1ff23f7025"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 8,
+   "seed": 5,
+   "identical": true,
+   "sha256": "ceed399543f073e1eefa289390a4cc53c30c32776378b1ad01f1d9ecfa962daf"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 8,
+   "seed": 6,
+   "identical": true,
+   "sha256": "920b083c23d01c25504ab6814c1d3bf8c8e14b846bc5cf19db4956146cdbaaf2"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 10,
+   "seed": 5,
+   "identical": true,
+   "sha256": "8275f904a47748c7b28e82a8bbd97089c79c96a05f96ecc586f2a45dc0da68e5"
+  },
+  {
+   "family": "final_4het",
+   "workload": "bursty",
+   "rate": 10,
+   "seed": 6,
+   "identical": true,
+   "sha256": "1dca1c3210ee0c1008aa4049092a2a3249f6002adda8749da11ef9c2e11c6b76"
+  }
+ ],
+ "failures": []
+}

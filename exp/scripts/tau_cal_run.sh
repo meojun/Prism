@@ -58,6 +58,12 @@ import json;m=json.load(open('$MAN'));print(m['files']['${kind}_r${rate}_s${seed
     [ "$want" = "$got" ] || stop_all "trace hash mismatch for ${kind}_r${rate}_s${seed}"
 
     d="$OUT/raw/prism-${arm}/${kind}/rate_${rate}/seed_${seed}"
+    # Idempotent: an already-VALID condition is never re-run and never
+    # overwritten, so a restart resumes at the first incomplete condition.
+    if [ -f "$d/VERIFICATION.json" ] && \
+       $PY -c "import json,sys;v=json.load(open('$d/VERIFICATION.json'));sys.exit(0 if int(v['rc'])==0 and v['verdict']=='PASS' and not v.get('failed_gates') else 1)" 2>/dev/null; then
+      log "[$idx/$total] $arm $kind r$rate s$seed already VALID -- skipping"; continue
+    fi
     log "[$idx/$total] $arm tau=$TAU $kind r$rate s$seed (trace ${got:0:12} verified)"
 
     for _ in $(seq 1 30); do

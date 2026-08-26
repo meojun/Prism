@@ -1,0 +1,309 @@
+{
+ "PERFORMANCE_EVALUATION_CLOSED": true,
+ "what_this_is": "immutable record of the final Prism baseline and its evaluation; no future result may silently replace this",
+ "frozen_utc": "2026-08-26T14:08:52.911450+00:00",
+ "git": {
+  "branch": "exp/4het-paired-evaluation",
+  "commit": "d122e01a911d58ba82e2aa83e12487b3fed251c9",
+  "safe_remote_branch": "research/prism-final-baseline"
+ },
+ "runtime": {
+  "RUNTIME_SOURCE_TREE_HASH": "7fbd431c6a636df0c72bb6a40324f851d002d204",
+  "worktree_patch_sha256": "49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d",
+  "base_commit": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
+  "RUN_CODE_COMMIT": "d122e01a911d58ba82e2aa83e12487b3fed251c9"
+ },
+ "config": {
+  "FINAL_TAU": 0.012859417696566448,
+  "KVPR_WINDOW": 60,
+  "COOLDOWN": 30,
+  "alg1_policy": "kvpr-global-v4",
+  "alg2": "Moore-Hodgson (unchanged)",
+  "prototype_policy": "simple-global",
+  "estimator": {
+   "semantics": "token_rate = input tokens of newly admitted requests + decode tokens produced by running requests, both counted over ONE configured sliding window (paper section 4 + appendix A.4)",
+   "window_s": 60,
+   "decode_component": "windowed token counts with wall-clock expiry; not a cached short-interval achieved-throughput scalar",
+   "note": "60 s adopted for paper fidelity (A.4); it did not improve this workload and reduced responsiveness under bursty shifts"
+  }
+ },
+ "models": {
+  "model_1": {
+   "model_path": "meta-llama/Llama-3.2-1B",
+   "revision": "4e20de362430cd3b72f300e6b0f18e50e7166e08",
+   "tp_size": 1,
+   "model_size_gb": 2.279296875,
+   "cell_size_bytes": 32768
+  },
+  "model_2": {
+   "model_path": "Qwen/Qwen2.5-1.5B-Instruct",
+   "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+   "tp_size": 1,
+   "model_size_gb": 3.0078125,
+   "cell_size_bytes": 28672
+  },
+  "model_3": {
+   "model_path": "meta-llama/Llama-3.2-3B",
+   "revision": "13afe5124825b4f3751f836b40dafda64c1ed062",
+   "tp_size": 1,
+   "model_size_gb": 6.0,
+   "cell_size_bytes": 114688
+  },
+  "model_4": {
+   "model_path": "Qwen/Qwen2.5-3B-Instruct",
+   "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+   "tp_size": 1,
+   "model_size_gb": 5.8359375,
+   "cell_size_bytes": 36864
+  },
+  "model_5": {
+   "model_path": "meta-llama/Llama-3.1-8B",
+   "revision": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+   "tp_size": 1,
+   "model_size_gb": 15.080078125,
+   "cell_size_bytes": 131072
+  },
+  "model_6": {
+   "model_path": "Qwen/Qwen2.5-7B-Instruct",
+   "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+   "tp_size": 1,
+   "model_size_gb": 14.283203125,
+   "cell_size_bytes": 57344
+  }
+ },
+ "gpu_topology": {
+  "gpus": "2 x NVIDIA A100-SXM4-80GB",
+  "nvlink": "NV4 between GPU0 and GPU1",
+  "driver": "580.173.02"
+ },
+ "slo": {
+  "definition": "joint: TTFT <= slo_ttft AND TPOT <= slo_tpot, per request",
+  "base_source": "exp/configs/v2/slo_base.json (4-HET: exp/configs/v4het/slo_base.json)",
+  "scale": "solo-unloaded p95 base x5 TTFT, x3 TPOT (paper 7.1 method)",
+  "per_model_base": {
+   "model_1": {
+    "ttft": 0.023970842361450195,
+    "tpot": 0.006344417110085487
+   },
+   "model_2": {
+    "ttft": 0.03220653533935547,
+    "tpot": 0.009332103654742241
+   },
+   "model_3": {
+    "ttft": 0.05561494827270508,
+    "tpot": 0.010592997074127197
+   },
+   "model_4": {
+    "ttft": 0.05283689498901367,
+    "tpot": 0.012399986386299133
+   },
+   "model_5": {
+    "ttft": 0.10985589027404785,
+    "tpot": 0.012781862169504166
+   },
+   "model_6": {
+    "ttft": 0.09897756576538086,
+    "tpot": 0.01164202019572258
+   }
+  }
+ },
+ "workloads": {
+  "tau_calibration": {
+   "rates": [
+    8,
+    10
+   ],
+   "seeds": [
+    3,
+    4
+   ],
+   "workloads": [
+    "steady",
+    "bursty"
+   ],
+   "runs": 48,
+   "traces": {
+    "bursty_r10_s3.pkl": "e7afd7e09bac67809ac6ab6dd1fc732c631f90bbc2ba9945d135adf90370b8b0",
+    "bursty_r10_s4.pkl": "c913720ee52bb33408ca6e9da5e414d1904922114ce88d3d223a729ded62f220",
+    "bursty_r8_s3.pkl": "60be4c9d12767865c20223b1b1b717ab6225b2b7d3befe400f9c4f23b659cade",
+    "bursty_r8_s4.pkl": "a000cf22307e017a2f11d43d3eae33275f26bbcf6292b5f2b808a0808335a699",
+    "steady_r10_s3.pkl": "c6939afccd79409cef0d609c3e3817c30743c64e1b7596617cef5740d1223988",
+    "steady_r10_s4.pkl": "66fe74fb51c61215045f358db20c59db361fbdb8179df8118c96ab4e6be71376",
+    "steady_r8_s3.pkl": "492d79a4a2f34cccb78dfb5cc7428efa1b82ce20b56a8f83ca8111ecfaab1790",
+    "steady_r8_s4.pkl": "cbfb24e42d0b2fde25151322bec013ffbfe659bb4efb18028bf14c66ad975cef"
+   }
+  },
+  "many_model_prism_favorable": {
+   "rates": [
+    4,
+    8,
+    12,
+    16,
+    20
+   ],
+   "seeds": [
+    7,
+    8
+   ],
+   "workloads": [
+    "bursty"
+   ],
+   "runs": 20,
+   "phase_duration_s": 180,
+   "hot_share": 0.9,
+   "hot_sets": {
+    "HOT_SET_A": [
+     "model_5",
+     "model_1"
+    ],
+    "HOT_SET_B": [
+     "model_6",
+     "model_2"
+    ],
+    "HOT_SET_C": [
+     "model_3",
+     "model_4"
+    ]
+   },
+   "phase_sequence": [
+    "HOT_SET_A",
+    "HOT_SET_B",
+    "HOT_SET_C"
+   ],
+   "traces": {
+    "bursty_r10_s7.pkl": "b6b540a4fdd129fb9529c2693aaf465c08f3fcb347409e098686c9fd82c36c46",
+    "bursty_r10_s8.pkl": "c76d4cda6d50b5cdf7e96da37ca5294b035a55b938db4c669750c95aad338b04",
+    "bursty_r2_s7.pkl": "29754202a3e35afa21f6a3624254d41d9492f5d789931100c25d01aa7af5fc0e",
+    "bursty_r2_s8.pkl": "186fb2c07b22958096d6ddaad501d4a829a0a49297bb66dceb3a731ea49d8f20",
+    "bursty_r4_s7.pkl": "712a1f1dc04fa7a6a108f3dfc5f0d16138c9f7400d6c5b34e77b0f124b984512",
+    "bursty_r4_s8.pkl": "b80795b59a75cb8cf9c12a833c710f291b797a0780323c9fe9e17f9d34be07bd",
+    "bursty_r6_s7.pkl": "14454c567878afb689ccc4ca9c5bcdea05475146cbf639726600953771c3e415",
+    "bursty_r6_s8.pkl": "1a2461795fae5453292400f2febd5846d9dd5b474031b7c81c8eb77dbf74c9d0",
+    "bursty_r8_s7.pkl": "a734fd700713eb509361820ad177d2e565fb3016746269e94ea3a1d9311c230a",
+    "bursty_r8_s8.pkl": "d902cb7cda27a940005a71d9a8f792214f78766f44c50ea00e0096f7603042e5",
+    "steady_r10_s7.pkl": "4ad71625e7208e3129be765c2e8c20ca76a02bab58266dc070318ed7b828b3bc",
+    "steady_r10_s8.pkl": "1db428ef1771c312bb46f05f2dc28d3ba2c57120b6c1da08afda882f6bb1ce59",
+    "steady_r2_s7.pkl": "627c62370506e2ac261193413b525e0de32f94be868b1610547682a75765f590",
+    "steady_r2_s8.pkl": "30e20e18ce1b39b657e56c22629424d94fbe118ba4a7be923076adb7bef70bbe",
+    "steady_r4_s7.pkl": "26c9957a289b881d867b7f4bb8148d46d3f5e2e49f6b1da936d68931f08f2802",
+    "steady_r4_s8.pkl": "090febbff522c861832380d5928ac4cf8f11bcb439ba7800782c7bbb136b3f33",
+    "steady_r6_s7.pkl": "ca4972663758b2b1d7256c4df913552ccca9e541ec56bff0cebf6bc90a5f4657",
+    "steady_r6_s8.pkl": "f93bab028b8d8186c3722dc388d7af66162562b6d29e3f634ca3a41c507c63dd",
+    "steady_r8_s7.pkl": "72adfbd81a7a3126cbea09b3b22b7b724f6173bc4dca9b88386f288b00135548",
+    "steady_r8_s8.pkl": "7395d95623a1de0e8c6684cf5e73199defe3703668feae47de2a9b9a7cc613da"
+   }
+  },
+  "final_4het": {
+   "rates": [
+    2,
+    4,
+    6,
+    8,
+    10
+   ],
+   "seeds": [
+    5,
+    6
+   ],
+   "workloads": [
+    "steady",
+    "bursty"
+   ],
+   "runs": 40,
+   "traces": {
+    "bursty_r10_s5.pkl": "8275f904a47748c7b28e82a8bbd97089c79c96a05f96ecc586f2a45dc0da68e5",
+    "bursty_r10_s6.pkl": "1dca1c3210ee0c1008aa4049092a2a3249f6002adda8749da11ef9c2e11c6b76",
+    "bursty_r2_s5.pkl": "f396357c3a0a69d09c36258c0c6db668d3a82e17ed6e2d4fd04e1e8845dd1994",
+    "bursty_r2_s6.pkl": "bafec5fdb72398bca3b1f8a019f0f5db46a9e89d54b9331f1b007617ae9f01b6",
+    "bursty_r4_s5.pkl": "ad05f7a42188bfa48fde62e8e1208e62889ae86cff5b9fef7c5475ecbf43d427",
+    "bursty_r4_s6.pkl": "03cc5f6aafe7b807ee98f69e3db88c41140019b0b3be04e00ba4cc11c76b363b",
+    "bursty_r6_s5.pkl": "9d6e69f2e3a72b97600759ab21401fa080c947b0535df74692e3ae907c1a780e",
+    "bursty_r6_s6.pkl": "815ef9a9c5e8e594c51e66d0bfeac06cdc9289650a2e7b112ebeab1ff23f7025",
+    "bursty_r8_s5.pkl": "ceed399543f073e1eefa289390a4cc53c30c32776378b1ad01f1d9ecfa962daf",
+    "bursty_r8_s6.pkl": "920b083c23d01c25504ab6814c1d3bf8c8e14b846bc5cf19db4956146cdbaaf2",
+    "steady_r10_s5.pkl": "5b7e410178d742eabae4590e43f94c88cfb69afc7faf5270bccbbacdd6be4cb8",
+    "steady_r10_s6.pkl": "c0aabe109d91b9cca620b918f97cdfab686f1916f8bac01a9765615aa8a104f6",
+    "steady_r2_s5.pkl": "5bb86c5b152793036525b1d988824637eabd74b39562c629acc82a1ac46bcf7a",
+    "steady_r2_s6.pkl": "b27f01d234dc51324e8531f5c68290a831678c4f74262880107cc74de8b067c1",
+    "steady_r4_s5.pkl": "5f812af7142083e3b515da69c3f3bc100e54bd10970db16f42ec89eb0b42b36c",
+    "steady_r4_s6.pkl": "e8e378c22d99fb0a3b8de0013dc49ff3d1816a5244a3ae5e62e64c47d919a385",
+    "steady_r6_s5.pkl": "a46e81e2ff24f3183e4f7d5af000a1395b7c20bf823b8b8f696d729d94f0c284",
+    "steady_r6_s6.pkl": "8141f1258cb4cb217f0e7b6fa67b8c9759a04925d4f9e0d40ff2d9f602268d36",
+    "steady_r8_s5.pkl": "088ec6cd6a861d542d8067bc049d9d6cb83c1ff02318e2b53025e771a4aad2fc",
+    "steady_r8_s6.pkl": "fa010c64cb6c0d5adb149f05dd33054f2b83348421eb63ac73e8d2b0e4afc587"
+   }
+  }
+ },
+ "result_roots": {
+  "tau": "exp/results/4het-tau-final",
+  "many_model": "exp/results/many-model-final",
+  "final_4het": "exp/results/4het-final",
+  "pilot_diagnostic": "exp/results/many-model-pilot"
+ },
+ "report_roots": {
+  "index": "reports/prism/REPORT_INDEX.md",
+  "integrated": "reports/prism/09_final_analysis/PRISM_FINAL_BASELINE_AND_REGIME_ANALYSIS.md",
+  "final_4het": "reports/prism/08_final_4het/FINAL_4HET_REPORT.md",
+  "many_model": "reports/prism/07_many_model_prism_favorable/MANY_MODEL_PRISM_FAVORABLE_STRESS_REPORT.md",
+  "tau": "reports/prism/06_tau_calibration/P4HET_TAU_CALIBRATION_REPORT.md"
+ },
+ "analysis_csv_roots": [
+  "exp/analysis/final_summary",
+  "exp/analysis/final_4het",
+  "exp/analysis/many_model_prism_favorable",
+  "exp/analysis/tau_calibration",
+  "exp/analysis/correctness_fix"
+ ],
+ "gates": {
+  "lifecycle_validity_gate": "exp/scripts/lifecycle_validity_gate.py",
+  "alg2_interaction_gate": "exp/scripts/check_alg2_interaction.py",
+  "run_verifier": "exp/scripts/final_run_verify.py",
+  "note": "KVPR flag assertions apply to the Prism arm only; the released prototype runs --policy simple-global and carries no --kvpr-* flags"
+ },
+ "protocol_amendments": [
+  null,
+  {
+   "amended": "pilot gate thresholds",
+   "from": {
+    "pass_at_or_above": 0.8
+   },
+   "to": {
+    "stop_below": 0.5,
+    "review_below": 0.7,
+    "pass_at_or_above": 0.7
+   },
+   "timing": "before the pilot ran",
+   "scope": "seed-9 diagnostic pilot only"
+  }
+ ],
+ "final_results": {
+  "many_model_prism_favorable": {
+   "prototype_goodput_mean": 2.2295,
+   "prism_goodput_mean": 2.4048,
+   "delta_pct": 7.9,
+   "prism_wins": "7/10",
+   "rate_deltas_pct": {
+    "2": -3.6,
+    "4": 7.9,
+    "6": 19.7,
+    "8": 31.6,
+    "10": -14.8
+   },
+   "framing": "PRISM_FAVORABLE_STRESS_REGIME, deliberate best case"
+  },
+  "final_4het": {
+   "prototype_goodput_mean": 4.7686,
+   "prism_goodput_mean": 3.5937,
+   "delta_pct": -24.6,
+   "prism_wins": "0/20",
+   "steady_delta_pct": -21.8,
+   "bursty_delta_pct": -27.8,
+   "framing": "untouched hold-out, seeds 5/6"
+  },
+  "tau": {
+   "FINAL_TAU": 0.012859417696566448,
+   "valid_runs": "48/48"
+  }
+ },
+ "statistical_caution": "two final seeds per condition; no population-level significance is claimed anywhere"
+}

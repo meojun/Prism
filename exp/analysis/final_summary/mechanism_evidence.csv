@@ -1,0 +1,16 @@
+delta_pct,gb_moved,large_large_residency_pct,migrations,rate,regime,tpot_p50_prism_ms,tpot_p50_proto_ms,ttft_p99_prism_s,ttft_p99_proto_s,workload
+-3.56,28.62,,5,2,many_model,25.53,24.64,1.609,0.264,
+7.86,16.24,,3,4,many_model,26.61,28.21,5.256,0.259,
+19.72,35.62,,5,6,many_model,30.93,33.65,4.184,0.268,
+31.55,34.24,,5,8,many_model,34.1,36.66,8.365,0.37,
+-14.79,34.75,,5,10,many_model,41.07,38.12,8.664,0.394,
+-4.12,,0.0,0.5,2,final_4het,,,,,steady
+-27.45,,18.0,1.5,4,final_4het,,,,,steady
+-8.96,,34.9,1,6,final_4het,,,,,steady
+-36.27,,11.0,2,8,final_4het,,,,,steady
+-19.64,,32.9,2,10,final_4het,,,,,steady
+-9.84,,16.8,5.5,2,final_4het,,,,,bursty
+-21.21,,18.6,8.5,4,final_4het,,,,,bursty
+-26.27,,23.5,9,6,final_4het,,,,,bursty
+-29.68,,29.0,9,8,final_4het,,,,,bursty
+-36.11,,23.8,8.5,10,final_4het,,,,,bursty

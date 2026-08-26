@@ -30,7 +30,7 @@ fi
 # (Qwen2.5-7B, GQA 28 query heads to 4 KV heads) asks for 420-455 MiB at the
 # higher rates, and the scheduler treats the failure as fatal: the worker's
 # event loop calls kill_parent_process() and the whole server goes down
-# mid-run. reports/prism/00_project/HANDOVER.md 4.4 and
+# mid-run. reports/prism/00_overview/HANDOVER.md 4.4 and
 # exp/results/paper-faithful-v4/provenance/ENVIRONMENT.md record 1 GiB as the
 # setting for every run and every arm; it lived only in /workspace/.env and was
 # lost when this instance was rebuilt, which killed three D2 runs before the

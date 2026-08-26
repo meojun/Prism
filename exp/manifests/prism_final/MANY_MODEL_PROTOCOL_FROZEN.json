@@ -1,0 +1,70 @@
+{
+ "what_this_is": "frozen Prism-favorable many-model protocol; fixed before the pilot ran",
+ "regime_name": "PRISM_FAVORABLE_STRESS_REGIME",
+ "framing": "deliberately best-case / applicability upper bound. NOT a representative general production workload. If Prism wins here that is not evidence of universal superiority; if it loses here, that is prominent evidence.",
+ "frozen_utc": "2026-08-26T06:04:39.654291+00:00",
+ "models": [
+  "model_1",
+  "model_2",
+  "model_3",
+  "model_4",
+  "model_5",
+  "model_6"
+ ],
+ "hot_sets": {
+  "HOT_SET_A": [
+   "model_5",
+   "model_1"
+  ],
+  "HOT_SET_B": [
+   "model_6",
+   "model_2"
+  ],
+  "HOT_SET_C": [
+   "model_3",
+   "model_4"
+  ]
+ },
+ "phase_sequence": [
+  "HOT_SET_A",
+  "HOT_SET_B",
+  "HOT_SET_C"
+ ],
+ "phase_duration_s": 180,
+ "trace_duration_s": 540,
+ "hot_share": 0.9,
+ "per_hot_model_share": 0.45,
+ "per_background_model_share": 0.025,
+ "arrival_process": "canonical historical six-model bursty generator, reused unchanged; only phase construction is deterministic",
+ "TOTAL_OFFERED_RATES": [
+  4,
+  8,
+  12,
+  16,
+  20
+ ],
+ "final_seeds": [
+  7,
+  8
+ ],
+ "arms": [
+  "prototype",
+  "prism"
+ ],
+ "final_runs": 20,
+ "pilot": {
+  "rate": 16,
+  "seed": 9,
+  "runs": 2,
+  "role": "DIAGNOSTIC ONLY, never in final statistics"
+ },
+ "immutable_after_freeze": [
+  "rates",
+  "seeds",
+  "phase_duration",
+  "hot_share",
+  "hot_sets",
+  "arms"
+ ],
+ "no_performance_early_stop_once_final_matrix_starts": true
+}

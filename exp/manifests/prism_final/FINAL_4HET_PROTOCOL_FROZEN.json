@@ -1,0 +1,29 @@
+{
+ "what_this_is": "frozen final 4-HET protocol; untouched hold-out",
+ "frozen_utc": "2026-08-26T06:04:39.654291+00:00",
+ "workloads": [
+  "steady",
+  "bursty"
+ ],
+ "rates": [
+  2,
+  4,
+  6,
+  8,
+  10
+ ],
+ "seeds": [
+  5,
+  6
+ ],
+ "arms": [
+  "prototype",
+  "prism"
+ ],
+ "conditions": 20,
+ "runs": 40,
+ "role": "unbiased hold-out applicability-boundary evaluation",
+ "seeds_never_used_for_tuning": true,
+ "no_performance_early_stop_once_started": true,
+ "frozen_before_many_model_pilot": true
+}

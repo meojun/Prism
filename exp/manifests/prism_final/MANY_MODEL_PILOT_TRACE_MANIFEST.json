@@ -1,0 +1,118 @@
+{
+  "what_this_is": "the 20 canonical 4-model traces both arms run, frozen before any benchmark; a mismatch stops the sweep",
+  "created_utc": "2026-08-26T06:04:39.883261+00:00",
+  "generator": "exp/scripts/build_paired_workload.py",
+  "duration_s": 420,
+  "model_set": {
+    "model_3": "13afe5124825b4f3751f836b40dafda64c1ed062",
+    "model_4": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "model_5": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+    "model_6": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "slo_base": "/workspace/prism-exp/exp/configs/v4het/slo_base.json",
+  "matrix": {
+    "kinds": [
+      "bursty",
+      "steady"
+    ],
+    "rates": [
+      16
+    ],
+    "seeds": [
+      9
+    ]
+  },
+  "files": {
+    "bursty_r16_s9.pkl": {
+      "sha256": "071d3861aa50c929579842ee3d4bae31382bff279886aa8af3bd42be510fa004",
+      "requests": 8764,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 1398,
+        "model_2": 1487,
+        "model_3": 1487,
+        "model_4": 1462,
+        "model_5": 1454,
+        "model_6": 1476
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 433083,
+        "model_2": 429816,
+        "model_3": 452686,
+        "model_4": 432700,
+        "model_5": 450039,
+        "model_6": 465044
+      },
+      "per_model_output_tokens": {
+        "model_1": 225347,
+        "model_2": 236477,
+        "model_3": 245180,
+        "model_4": 239971,
+        "model_5": 234505,
+        "model_6": 244102
+      },
+      "prompt_tokens": 2663368,
+      "output_tokens": 1425582,
+      "arrival_span_s": 539.896706,
+      "achieved_mean_arrival_rate_req_s": 16.232735,
+      "peak_10s_arrival_rate_req_s": 21.4,
+      "sequence_fingerprint": "ff24ccc7d2ef8ee9020464a002387832db7b363d0905b0a79350df01f8f02510",
+      "workload": "bursty",
+      "rate": 16,
+      "seed": 9
+    },
+    "steady_r16_s9.pkl": {
+      "sha256": "44d1dac03269eb5a7949f082779e4f901491a1b07ec6cf44988d66f461346ec1",
+      "requests": 8764,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 1398,
+        "model_2": 1487,
+        "model_3": 1487,
+        "model_4": 1462,
+        "model_5": 1454,
+        "model_6": 1476
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 433083,
+        "model_2": 429816,
+        "model_3": 452686,
+        "model_4": 432700,
+        "model_5": 450039,
+        "model_6": 465044
+      },
+      "per_model_output_tokens": {
+        "model_1": 225347,
+        "model_2": 236477,
+        "model_3": 245180,
+        "model_4": 239971,
+        "model_5": 234505,
+        "model_6": 244102
+      },
+      "prompt_tokens": 2663368,
+      "output_tokens": 1425582,
+      "arrival_span_s": 539.972635,
+      "achieved_mean_arrival_rate_req_s": 16.230452,
+      "peak_10s_arrival_rate_req_s": 20.3,
+      "sequence_fingerprint": "e7e3e204f4828d6c7d2e3755ef4b4f7bd7b919f363db4e51869d59038503735e",
+      "workload": "steady",
+      "rate": 16,
+      "seed": 9
+    }
+  },
+  "pair_consistency": "bursty and steady differ in arrival timing only, as designed"
+}

@@ -1,0 +1,123 @@
+{
+ "what_this_is": "the frozen final Prism baseline; no parameter here may change because of a performance result",
+ "frozen_utc": "2026-08-26T06:04:39.654291+00:00",
+ "RUN_CODE_COMMIT": "d122e01a911d58ba82e2aa83e12487b3fed251c9",
+ "RUNTIME_SOURCE_TREE_HASH": "7fbd431c6a636df0c72bb6a40324f851d002d204",
+ "runtime_worktree_patch_sha256": "49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d",
+ "runtime_base_commit": "595ec1f170e75a43897a7a2ad58ac5a9820aa2e8",
+ "FINAL_TAU": 0.012859417696566448,
+ "KVPR_WINDOW": 60,
+ "COOLDOWN": 30,
+ "token_rate_estimator": {
+  "semantics": "token_rate = input tokens of newly admitted requests + decode tokens produced by running requests, both counted over ONE configured sliding window (paper section 4 + appendix A.4)",
+  "window_s": 60,
+  "decode_component": "windowed token counts with wall-clock expiry; not a cached short-interval achieved-throughput scalar",
+  "note": "60 s adopted for paper fidelity (A.4); it did not improve this workload and reduced responsiveness under bursty shifts"
+ },
+ "alg1": {
+  "policy": "kvpr-global-v4",
+  "objective": "unchanged from the paper",
+  "tau_mode": "absolute-line8"
+ },
+ "alg2": {
+  "policy": "Moore-Hodgson local arbitration, unchanged"
+ },
+ "migration": {
+  "cooldown_s": 30,
+  "overlap_migration": true,
+  "kv_migration": true,
+  "one_migration_per_cycle": true
+ },
+ "worker_pool": true,
+ "tp_size": 1,
+ "anti_affinity": null,
+ "slo": {
+  "definition": "joint: TTFT <= slo_ttft AND TPOT <= slo_tpot, per request",
+  "base_source": "exp/configs/v2/slo_base.json (4-HET: exp/configs/v4het/slo_base.json)",
+  "scale": "solo-unloaded p95 base x5 TTFT, x3 TPOT (paper 7.1 method)",
+  "per_model_base": {
+   "model_1": {
+    "ttft": 0.023970842361450195,
+    "tpot": 0.006344417110085487
+   },
+   "model_2": {
+    "ttft": 0.03220653533935547,
+    "tpot": 0.009332103654742241
+   },
+   "model_3": {
+    "ttft": 0.05561494827270508,
+    "tpot": 0.010592997074127197
+   },
+   "model_4": {
+    "ttft": 0.05283689498901367,
+    "tpot": 0.012399986386299133
+   },
+   "model_5": {
+    "ttft": 0.10985589027404785,
+    "tpot": 0.012781862169504166
+   },
+   "model_6": {
+    "ttft": 0.09897756576538086,
+    "tpot": 0.01164202019572258
+   }
+  }
+ },
+ "models": {
+  "model_1": {
+   "model_path": "meta-llama/Llama-3.2-1B",
+   "revision": "4e20de362430cd3b72f300e6b0f18e50e7166e08",
+   "tp_size": 1,
+   "model_size_gb": 2.279296875,
+   "cell_size_bytes": 32768
+  },
+  "model_2": {
+   "model_path": "Qwen/Qwen2.5-1.5B-Instruct",
+   "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+   "tp_size": 1,
+   "model_size_gb": 3.0078125,
+   "cell_size_bytes": 28672
+  },
+  "model_3": {
+   "model_path": "meta-llama/Llama-3.2-3B",
+   "revision": "13afe5124825b4f3751f836b40dafda64c1ed062",
+   "tp_size": 1,
+   "model_size_gb": 6.0,
+   "cell_size_bytes": 114688
+  },
+  "model_4": {
+   "model_path": "Qwen/Qwen2.5-3B-Instruct",
+   "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+   "tp_size": 1,
+   "model_size_gb": 5.8359375,
+   "cell_size_bytes": 36864
+  },
+  "model_5": {
+   "model_path": "meta-llama/Llama-3.1-8B",
+   "revision": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+   "tp_size": 1,
+   "model_size_gb": 15.080078125,
+   "cell_size_bytes": 131072
+  },
+  "model_6": {
+   "model_path": "Qwen/Qwen2.5-7B-Instruct",
+   "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+   "tp_size": 1,
+   "model_size_gb": 14.283203125,
+   "cell_size_bytes": 57344
+  }
+ },
+ "trace_generation": {
+  "generator": "exp/scripts/build_paired_workload.py",
+  "duration_4het_s": 420,
+  "duration_many_model_s": 540
+ },
+ "environment": {
+  "python": "Python 3.10.21",
+  "torch": "torch 2.4.0+cu121",
+  "sglang": "sglang 0.3.4.post2",
+  "gpu": "2 x NVIDIA A100-SXM4-80GB",
+  "nvlink": "NV4 between GPU0 and GPU1",
+  "driver": "580.173.02"
+ },
+ "FINAL_BASELINE_FROZEN": "YES"
+}

@@ -1,0 +1,13 @@
+key,value
+RUN_CODE_COMMIT,d122e01a911d58ba82e2aa83e12487b3fed251c9
+RUNTIME_SOURCE_TREE_HASH,7fbd431c6a636df0c72bb6a40324f851d002d204
+runtime_base_commit,595ec1f170e75a43897a7a2ad58ac5a9820aa2e8
+runtime_worktree_patch_sha256,49f47ebd7c75aecdac2d67efea1b3d121b9e599693df514cfd71bfe10724881d
+FINAL_TAU,0.012859417696566448
+KVPR_WINDOW,60
+COOLDOWN,30
+gpu,2 x NVIDIA A100-SXM4-80GB
+nvlink,NV4 between GPU0 and GPU1
+driver,580.173.02
+python,Python 3.10.21
+torch,torch 2.4.0+cu121

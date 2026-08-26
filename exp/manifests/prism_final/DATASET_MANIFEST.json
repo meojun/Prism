@@ -1,0 +1,20 @@
+{
+ "what_this_is": "external datasets required to reproduce; none are committed to Git",
+ "generated_utc": "2026-08-26T14:10:00.652855+00:00",
+ "datasets": [
+  {
+   "logical_name": "ShareGPT_V3_unfiltered_cleaned_split",
+   "origin": "https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered (file ShareGPT_V3_unfiltered_cleaned_split.json)",
+   "local_path": "/workspace/datasets/sharegpt/ShareGPT_V3_unfiltered_cleaned_split.json",
+   "size_bytes": 672837942,
+   "size_gb": 0.627,
+   "sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",
+   "preprocessing": "none; the trace generator reads it directly and samples prompts/outputs",
+   "used_by": "exp/scripts/build_paired_workload.py --sharegpt",
+   "trace_relationship": "prompt text and prompt/output lengths for every generated trace",
+   "committed_to_git": false,
+   "why_not_committed": "~0.8 GB of raw conversation text; a historical local commit (51c5405) that included it is deliberately never pushed",
+   "restore": "download the file from the source above to the local_path and verify the sha256"
+  }
+ ]
+}

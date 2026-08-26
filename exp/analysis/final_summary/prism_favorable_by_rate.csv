@@ -1,0 +1,6 @@
+workload,rate,proto_goodput_mean,prism_goodput_mean,delta_pct_mean,proto_ttft_ok,prism_ttft_ok,proto_tpot_ok,prism_tpot_ok,prism_migrations_mean
+bursty,2,1.48676,1.42014,-3.56,98.74,96.48,78.75,76.93,5
+bursty,4,2.3541,2.5386,7.86,98.31,95.42,60.04,66.7,3
+bursty,6,2.35703,2.81544,19.72,97.63,92.93,40.68,50.36,5
+bursty,8,2.19518,2.89318,31.55,97.88,91.79,28.18,38.39,5
+bursty,10,2.75433,2.35664,-14.79,96.61,87.89,28.73,25.58,5

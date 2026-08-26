@@ -1,0 +1,22 @@
+{
+ "FINAL_TAU": 0.012859417696566448,
+ "tau_id": "T2",
+ "TAU_STATUS": "FINALIZED",
+ "cost_metric": "B_migration_gb_per_min",
+ "tie_note": null,
+ "ranking": [
+  "T2",
+  "T3",
+  "T1",
+  "T4",
+  "T0"
+ ],
+ "scores": {
+  "T0": 1.010121323351049,
+  "T1": 0.7945917261791194,
+  "T2": 0.33642525921217975,
+  "T3": 0.3897545945983975,
+  "T4": 1.0,
+  "T5": null
+ }
+}

@@ -1,0 +1,773 @@
+{
+  "what_this_is": "the 20 canonical 4-model traces both arms run, frozen before any benchmark; a mismatch stops the sweep",
+  "created_utc": "2026-08-26T06:58:05.160286+00:00",
+  "generator": "exp/scripts/build_paired_workload.py",
+  "duration_s": 420,
+  "model_set": {
+    "model_3": "13afe5124825b4f3751f836b40dafda64c1ed062",
+    "model_4": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "model_5": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+    "model_6": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "slo_base": "/workspace/prism-exp/exp/configs/v4het/slo_base.json",
+  "matrix": {
+    "kinds": [
+      "bursty",
+      "steady"
+    ],
+    "rates": [
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "seeds": [
+      5,
+      6
+    ]
+  },
+  "files": {
+    "bursty_r2_s5.pkl": {
+      "sha256": "f396357c3a0a69d09c36258c0c6db668d3a82e17ed6e2d4fd04e1e8845dd1994",
+      "requests": 818,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 91,
+        "model_4": 135,
+        "model_5": 267,
+        "model_6": 325
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 26941,
+        "model_4": 49275,
+        "model_5": 82459,
+        "model_6": 101433
+      },
+      "per_model_output_tokens": {
+        "model_3": 14601,
+        "model_4": 23196,
+        "model_5": 42563,
+        "model_6": 52393
+      },
+      "prompt_tokens": 260108,
+      "output_tokens": 132753,
+      "arrival_span_s": 419.743906,
+      "achieved_mean_arrival_rate_req_s": 1.948807,
+      "peak_10s_arrival_rate_req_s": 3.3,
+      "sequence_fingerprint": "2fca4ce93cc61281c3ba65e754991c2d630e63da69d85a75d28d0bfd96c65b31",
+      "workload": "bursty",
+      "rate": 2,
+      "seed": 5
+    },
+    "bursty_r2_s6.pkl": {
+      "sha256": "bafec5fdb72398bca3b1f8a019f0f5db46a9e89d54b9331f1b007617ae9f01b6",
+      "requests": 789,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 119,
+        "model_4": 402,
+        "model_5": 172,
+        "model_6": 96
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 35141,
+        "model_4": 132169,
+        "model_5": 50077,
+        "model_6": 25104
+      },
+      "per_model_output_tokens": {
+        "model_3": 19086,
+        "model_4": 67846,
+        "model_5": 26102,
+        "model_6": 15112
+      },
+      "prompt_tokens": 242491,
+      "output_tokens": 128146,
+      "arrival_span_s": 419.787973,
+      "achieved_mean_arrival_rate_req_s": 1.87952,
+      "peak_10s_arrival_rate_req_s": 3.1,
+      "sequence_fingerprint": "f9f6a831511fd8bf207af51537808397f99a8322631961e2c278900c9b8cb796",
+      "workload": "bursty",
+      "rate": 2,
+      "seed": 6
+    },
+    "bursty_r4_s5.pkl": {
+      "sha256": "ad05f7a42188bfa48fde62e8e1208e62889ae86cff5b9fef7c5475ecbf43d427",
+      "requests": 1686,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 162,
+        "model_4": 322,
+        "model_5": 533,
+        "model_6": 669
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 49542,
+        "model_4": 107130,
+        "model_5": 165667,
+        "model_6": 220429
+      },
+      "per_model_output_tokens": {
+        "model_3": 25468,
+        "model_4": 53587,
+        "model_5": 82126,
+        "model_6": 115628
+      },
+      "prompt_tokens": 542768,
+      "output_tokens": 276809,
+      "arrival_span_s": 419.954497,
+      "achieved_mean_arrival_rate_req_s": 4.014721,
+      "peak_10s_arrival_rate_req_s": 6.3,
+      "sequence_fingerprint": "b01c239b3b7c5506d9c712849e89360dff335a610cf9b0e921c35bf1717aa3d0",
+      "workload": "bursty",
+      "rate": 4,
+      "seed": 5
+    },
+    "bursty_r4_s6.pkl": {
+      "sha256": "03cc5f6aafe7b807ee98f69e3db88c41140019b0b3be04e00ba4cc11c76b363b",
+      "requests": 1659,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 236,
+        "model_4": 824,
+        "model_5": 402,
+        "model_6": 197
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 80549,
+        "model_4": 258742,
+        "model_5": 110745,
+        "model_6": 57308
+      },
+      "per_model_output_tokens": {
+        "model_3": 39476,
+        "model_4": 133280,
+        "model_5": 68973,
+        "model_6": 31255
+      },
+      "prompt_tokens": 507344,
+      "output_tokens": 272984,
+      "arrival_span_s": 419.774265,
+      "achieved_mean_arrival_rate_req_s": 3.952124,
+      "peak_10s_arrival_rate_req_s": 5.7,
+      "sequence_fingerprint": "ac71e76fed62108cee532c91a410e66e164810a1f26d43708d255fee278f805d",
+      "workload": "bursty",
+      "rate": 4,
+      "seed": 6
+    },
+    "bursty_r6_s5.pkl": {
+      "sha256": "9d6e69f2e3a72b97600759ab21401fa080c947b0535df74692e3ae907c1a780e",
+      "requests": 2583,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 249,
+        "model_4": 505,
+        "model_5": 755,
+        "model_6": 1074
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 80504,
+        "model_4": 157663,
+        "model_5": 243085,
+        "model_6": 309038
+      },
+      "per_model_output_tokens": {
+        "model_3": 42625,
+        "model_4": 79531,
+        "model_5": 123706,
+        "model_6": 178870
+      },
+      "prompt_tokens": 790290,
+      "output_tokens": 424732,
+      "arrival_span_s": 419.899644,
+      "achieved_mean_arrival_rate_req_s": 6.15147,
+      "peak_10s_arrival_rate_req_s": 8.3,
+      "sequence_fingerprint": "f687b425a6101f23fcfacea9eb4581b745e53fb7aabd60f58640c012babf41c4",
+      "workload": "bursty",
+      "rate": 6,
+      "seed": 5
+    },
+    "bursty_r6_s6.pkl": {
+      "sha256": "815ef9a9c5e8e594c51e66d0bfeac06cdc9289650a2e7b112ebeab1ff23f7025",
+      "requests": 2483,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 382,
+        "model_4": 1221,
+        "model_5": 542,
+        "model_6": 338
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 125247,
+        "model_4": 366312,
+        "model_5": 177562,
+        "model_6": 112223
+      },
+      "per_model_output_tokens": {
+        "model_3": 62882,
+        "model_4": 200396,
+        "model_5": 88123,
+        "model_6": 55074
+      },
+      "prompt_tokens": 781344,
+      "output_tokens": 406475,
+      "arrival_span_s": 419.831845,
+      "achieved_mean_arrival_rate_req_s": 5.914273,
+      "peak_10s_arrival_rate_req_s": 7.9,
+      "sequence_fingerprint": "46ca3e875b08a6a666612f6647d7a811c0e1d470d8e582bbc672b54b2c76472a",
+      "workload": "bursty",
+      "rate": 6,
+      "seed": 6
+    },
+    "bursty_r8_s5.pkl": {
+      "sha256": "ceed399543f073e1eefa289390a4cc53c30c32776378b1ad01f1d9ecfa962daf",
+      "requests": 3350,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 304,
+        "model_4": 652,
+        "model_5": 1012,
+        "model_6": 1382
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 99469,
+        "model_4": 205974,
+        "model_5": 316849,
+        "model_6": 386847
+      },
+      "per_model_output_tokens": {
+        "model_3": 50878,
+        "model_4": 102347,
+        "model_5": 167847,
+        "model_6": 226886
+      },
+      "prompt_tokens": 1009139,
+      "output_tokens": 547958,
+      "arrival_span_s": 419.866045,
+      "achieved_mean_arrival_rate_req_s": 7.978735,
+      "peak_10s_arrival_rate_req_s": 10.5,
+      "sequence_fingerprint": "a1414b367d90ed16f352dce502cbd3ac92fb3675ee48d9b628554b2693efebd9",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 5
+    },
+    "bursty_r8_s6.pkl": {
+      "sha256": "920b083c23d01c25504ab6814c1d3bf8c8e14b846bc5cf19db4956146cdbaaf2",
+      "requests": 3358,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 461,
+        "model_4": 1678,
+        "model_5": 802,
+        "model_6": 417
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 152229,
+        "model_4": 515990,
+        "model_5": 267477,
+        "model_6": 133782
+      },
+      "per_model_output_tokens": {
+        "model_3": 76167,
+        "model_4": 274233,
+        "model_5": 127310,
+        "model_6": 67389
+      },
+      "prompt_tokens": 1069478,
+      "output_tokens": 545099,
+      "arrival_span_s": 419.717562,
+      "achieved_mean_arrival_rate_req_s": 8.000618,
+      "peak_10s_arrival_rate_req_s": 12.1,
+      "sequence_fingerprint": "d40c1f088019fc0b4791fe368332f22b6ef540423f028673dc94093921cbd065",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 6
+    },
+    "bursty_r10_s5.pkl": {
+      "sha256": "8275f904a47748c7b28e82a8bbd97089c79c96a05f96ecc586f2a45dc0da68e5",
+      "requests": 4247,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 406,
+        "model_4": 856,
+        "model_5": 1308,
+        "model_6": 1677
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 129780,
+        "model_4": 275062,
+        "model_5": 378476,
+        "model_6": 503809
+      },
+      "per_model_output_tokens": {
+        "model_3": 67659,
+        "model_4": 133089,
+        "model_5": 220358,
+        "model_6": 269555
+      },
+      "prompt_tokens": 1287127,
+      "output_tokens": 690661,
+      "arrival_span_s": 419.887138,
+      "achieved_mean_arrival_rate_req_s": 10.114623,
+      "peak_10s_arrival_rate_req_s": 13.0,
+      "sequence_fingerprint": "ed85998c0334fa8ca55e2ec937c4b668bbc1fcb1734174b7ba51ef297cc8e31a",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 5
+    },
+    "bursty_r10_s6.pkl": {
+      "sha256": "1dca1c3210ee0c1008aa4049092a2a3249f6002adda8749da11ef9c2e11c6b76",
+      "requests": 4197,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 617,
+        "model_4": 2085,
+        "model_5": 958,
+        "model_6": 537
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 196598,
+        "model_4": 658710,
+        "model_5": 312385,
+        "model_6": 164925
+      },
+      "per_model_output_tokens": {
+        "model_3": 100246,
+        "model_4": 341360,
+        "model_5": 151071,
+        "model_6": 83110
+      },
+      "prompt_tokens": 1332618,
+      "output_tokens": 675787,
+      "arrival_span_s": 419.890412,
+      "achieved_mean_arrival_rate_req_s": 9.995465,
+      "peak_10s_arrival_rate_req_s": 12.7,
+      "sequence_fingerprint": "d25fb83a3cbfea52a92f4d7c129aeb60d6e05bad2b800ce1f75d1dee187feb9f",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 6
+    },
+    "steady_r2_s5.pkl": {
+      "sha256": "5bb86c5b152793036525b1d988824637eabd74b39562c629acc82a1ac46bcf7a",
+      "requests": 818,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 91,
+        "model_4": 135,
+        "model_5": 267,
+        "model_6": 325
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 26941,
+        "model_4": 49275,
+        "model_5": 82459,
+        "model_6": 101433
+      },
+      "per_model_output_tokens": {
+        "model_3": 14601,
+        "model_4": 23196,
+        "model_5": 42563,
+        "model_6": 52393
+      },
+      "prompt_tokens": 260108,
+      "output_tokens": 132753,
+      "arrival_span_s": 419.834976,
+      "achieved_mean_arrival_rate_req_s": 1.948385,
+      "peak_10s_arrival_rate_req_s": 3.2,
+      "sequence_fingerprint": "39b83d7adf2932522c42c0d5ccfb7d1301eb09cbf122238cd643520e2344f7e8",
+      "workload": "steady",
+      "rate": 2,
+      "seed": 5
+    },
+    "steady_r2_s6.pkl": {
+      "sha256": "b27f01d234dc51324e8531f5c68290a831678c4f74262880107cc74de8b067c1",
+      "requests": 789,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 119,
+        "model_4": 402,
+        "model_5": 172,
+        "model_6": 96
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 35141,
+        "model_4": 132169,
+        "model_5": 50077,
+        "model_6": 25104
+      },
+      "per_model_output_tokens": {
+        "model_3": 19086,
+        "model_4": 67846,
+        "model_5": 26102,
+        "model_6": 15112
+      },
+      "prompt_tokens": 242491,
+      "output_tokens": 128146,
+      "arrival_span_s": 419.910785,
+      "achieved_mean_arrival_rate_req_s": 1.878971,
+      "peak_10s_arrival_rate_req_s": 3.3,
+      "sequence_fingerprint": "f53e06bae7f82afef8b5f22ec70e7ef1480e41b07aad60929f47378a1a162c4a",
+      "workload": "steady",
+      "rate": 2,
+      "seed": 6
+    },
+    "steady_r4_s5.pkl": {
+      "sha256": "5f812af7142083e3b515da69c3f3bc100e54bd10970db16f42ec89eb0b42b36c",
+      "requests": 1686,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 162,
+        "model_4": 322,
+        "model_5": 533,
+        "model_6": 669
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 49542,
+        "model_4": 107130,
+        "model_5": 165667,
+        "model_6": 220429
+      },
+      "per_model_output_tokens": {
+        "model_3": 25468,
+        "model_4": 53587,
+        "model_5": 82126,
+        "model_6": 115628
+      },
+      "prompt_tokens": 542768,
+      "output_tokens": 276809,
+      "arrival_span_s": 419.834976,
+      "achieved_mean_arrival_rate_req_s": 4.015864,
+      "peak_10s_arrival_rate_req_s": 5.9,
+      "sequence_fingerprint": "75d9c25e94b2464fead0ff0b9a3cc964f90960527c8f52c96028d5e3b3f35af4",
+      "workload": "steady",
+      "rate": 4,
+      "seed": 5
+    },
+    "steady_r4_s6.pkl": {
+      "sha256": "e8e378c22d99fb0a3b8de0013dc49ff3d1816a5244a3ae5e62e64c47d919a385",
+      "requests": 1659,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 236,
+        "model_4": 824,
+        "model_5": 402,
+        "model_6": 197
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 80549,
+        "model_4": 258742,
+        "model_5": 110745,
+        "model_6": 57308
+      },
+      "per_model_output_tokens": {
+        "model_3": 39476,
+        "model_4": 133280,
+        "model_5": 68973,
+        "model_6": 31255
+      },
+      "prompt_tokens": 507344,
+      "output_tokens": 272984,
+      "arrival_span_s": 419.910785,
+      "achieved_mean_arrival_rate_req_s": 3.950839,
+      "peak_10s_arrival_rate_req_s": 5.7,
+      "sequence_fingerprint": "b7e80b5dc88b2803eee06477ae9147dee5d20d8029075df886c865f5edcff06f",
+      "workload": "steady",
+      "rate": 4,
+      "seed": 6
+    },
+    "steady_r6_s5.pkl": {
+      "sha256": "a46e81e2ff24f3183e4f7d5af000a1395b7c20bf823b8b8f696d729d94f0c284",
+      "requests": 2583,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 249,
+        "model_4": 505,
+        "model_5": 755,
+        "model_6": 1074
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 80504,
+        "model_4": 157663,
+        "model_5": 243085,
+        "model_6": 309038
+      },
+      "per_model_output_tokens": {
+        "model_3": 42625,
+        "model_4": 79531,
+        "model_5": 123706,
+        "model_6": 178870
+      },
+      "prompt_tokens": 790290,
+      "output_tokens": 424732,
+      "arrival_span_s": 419.834976,
+      "achieved_mean_arrival_rate_req_s": 6.152417,
+      "peak_10s_arrival_rate_req_s": 9.1,
+      "sequence_fingerprint": "e607f2ef94b8c89803aae58ebb1b02a3466ac782075cefe67113138674f5fc03",
+      "workload": "steady",
+      "rate": 6,
+      "seed": 5
+    },
+    "steady_r6_s6.pkl": {
+      "sha256": "8141f1258cb4cb217f0e7b6fa67b8c9759a04925d4f9e0d40ff2d9f602268d36",
+      "requests": 2483,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 382,
+        "model_4": 1221,
+        "model_5": 542,
+        "model_6": 338
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 125247,
+        "model_4": 366312,
+        "model_5": 177562,
+        "model_6": 112223
+      },
+      "per_model_output_tokens": {
+        "model_3": 62882,
+        "model_4": 200396,
+        "model_5": 88123,
+        "model_6": 55074
+      },
+      "prompt_tokens": 781344,
+      "output_tokens": 406475,
+      "arrival_span_s": 419.910785,
+      "achieved_mean_arrival_rate_req_s": 5.913161,
+      "peak_10s_arrival_rate_req_s": 8.5,
+      "sequence_fingerprint": "8a61f515c2f1b20d614f73263846940c81109f5b6b32b7c2ec99e8372a73eaae",
+      "workload": "steady",
+      "rate": 6,
+      "seed": 6
+    },
+    "steady_r8_s5.pkl": {
+      "sha256": "088ec6cd6a861d542d8067bc049d9d6cb83c1ff02318e2b53025e771a4aad2fc",
+      "requests": 3350,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 304,
+        "model_4": 652,
+        "model_5": 1012,
+        "model_6": 1382
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 99469,
+        "model_4": 205974,
+        "model_5": 316849,
+        "model_6": 386847
+      },
+      "per_model_output_tokens": {
+        "model_3": 50878,
+        "model_4": 102347,
+        "model_5": 167847,
+        "model_6": 226886
+      },
+      "prompt_tokens": 1009139,
+      "output_tokens": 547958,
+      "arrival_span_s": 419.834976,
+      "achieved_mean_arrival_rate_req_s": 7.979326,
+      "peak_10s_arrival_rate_req_s": 11.2,
+      "sequence_fingerprint": "dddc1ed8ec82efc5ed4b6ea97ef22e58f7dda68fdd8c32a163d4b04a45d4a6bc",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 5
+    },
+    "steady_r8_s6.pkl": {
+      "sha256": "fa010c64cb6c0d5adb149f05dd33054f2b83348421eb63ac73e8d2b0e4afc587",
+      "requests": 3358,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 461,
+        "model_4": 1678,
+        "model_5": 802,
+        "model_6": 417
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 152229,
+        "model_4": 515990,
+        "model_5": 267477,
+        "model_6": 133782
+      },
+      "per_model_output_tokens": {
+        "model_3": 76167,
+        "model_4": 274233,
+        "model_5": 127310,
+        "model_6": 67389
+      },
+      "prompt_tokens": 1069478,
+      "output_tokens": 545099,
+      "arrival_span_s": 419.924742,
+      "achieved_mean_arrival_rate_req_s": 7.996671,
+      "peak_10s_arrival_rate_req_s": 10.5,
+      "sequence_fingerprint": "4a63fd434af7d0182825bbdb2e837282353f70b981c61922c6479fb1029e0330",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 6
+    },
+    "steady_r10_s5.pkl": {
+      "sha256": "5b7e410178d742eabae4590e43f94c88cfb69afc7faf5270bccbbacdd6be4cb8",
+      "requests": 4247,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 406,
+        "model_4": 856,
+        "model_5": 1308,
+        "model_6": 1677
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 129780,
+        "model_4": 275062,
+        "model_5": 378476,
+        "model_6": 503809
+      },
+      "per_model_output_tokens": {
+        "model_3": 67659,
+        "model_4": 133089,
+        "model_5": 220358,
+        "model_6": 269555
+      },
+      "prompt_tokens": 1287127,
+      "output_tokens": 690661,
+      "arrival_span_s": 419.834976,
+      "achieved_mean_arrival_rate_req_s": 10.115879,
+      "peak_10s_arrival_rate_req_s": 13.1,
+      "sequence_fingerprint": "952ad5c746b62d330e26612ac9609d200a037db6b8bdcf58cf5437e8bea2642b",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 5
+    },
+    "steady_r10_s6.pkl": {
+      "sha256": "c0aabe109d91b9cca620b918f97cdfab686f1916f8bac01a9765615aa8a104f6",
+      "requests": 4197,
+      "models": [
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_3": 617,
+        "model_4": 2085,
+        "model_5": 958,
+        "model_6": 537
+      },
+      "per_model_prompt_tokens": {
+        "model_3": 196598,
+        "model_4": 658710,
+        "model_5": 312385,
+        "model_6": 164925
+      },
+      "per_model_output_tokens": {
+        "model_3": 100246,
+        "model_4": 341360,
+        "model_5": 151071,
+        "model_6": 83110
+      },
+      "prompt_tokens": 1332618,
+      "output_tokens": 675787,
+      "arrival_span_s": 419.924742,
+      "achieved_mean_arrival_rate_req_s": 9.994648,
+      "peak_10s_arrival_rate_req_s": 12.4,
+      "sequence_fingerprint": "c780067898b7a99c8f7f8b624b59187cdcf223c807e07152d72ebb9fd7cef1b0",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 6
+    }
+  },
+  "pair_consistency": "bursty and steady differ in arrival timing only, as designed"
+}

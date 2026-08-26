@@ -1,0 +1,933 @@
+{
+  "what_this_is": "the 20 canonical 4-model traces both arms run, frozen before any benchmark; a mismatch stops the sweep",
+  "created_utc": "2026-08-26T06:04:41.088626+00:00",
+  "generator": "exp/scripts/build_paired_workload.py",
+  "duration_s": 420,
+  "model_set": {
+    "model_3": "13afe5124825b4f3751f836b40dafda64c1ed062",
+    "model_4": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "model_5": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+    "model_6": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "slo_base": "/workspace/prism-exp/exp/configs/v4het/slo_base.json",
+  "matrix": {
+    "kinds": [
+      "bursty",
+      "steady"
+    ],
+    "rates": [
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "seeds": [
+      7,
+      8
+    ]
+  },
+  "files": {
+    "bursty_r2_s7.pkl": {
+      "sha256": "29754202a3e35afa21f6a3624254d41d9492f5d789931100c25d01aa7af5fc0e",
+      "requests": 1015,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 150,
+        "model_2": 178,
+        "model_3": 190,
+        "model_4": 175,
+        "model_5": 156,
+        "model_6": 166
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 51288,
+        "model_2": 60595,
+        "model_3": 64682,
+        "model_4": 54735,
+        "model_5": 53416,
+        "model_6": 54483
+      },
+      "per_model_output_tokens": {
+        "model_1": 24829,
+        "model_2": 32228,
+        "model_3": 28838,
+        "model_4": 28870,
+        "model_5": 25031,
+        "model_6": 25959
+      },
+      "prompt_tokens": 339199,
+      "output_tokens": 165755,
+      "arrival_span_s": 539.341964,
+      "achieved_mean_arrival_rate_req_s": 1.881923,
+      "peak_10s_arrival_rate_req_s": 3.1,
+      "sequence_fingerprint": "793ff43d1cb3aec2cbc7b489acdaa996dcbb3ad870d37b70fbe4b263f5c40038",
+      "workload": "bursty",
+      "rate": 2,
+      "seed": 7
+    },
+    "bursty_r2_s8.pkl": {
+      "sha256": "186fb2c07b22958096d6ddaad501d4a829a0a49297bb66dceb3a731ea49d8f20",
+      "requests": 1050,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 164,
+        "model_2": 169,
+        "model_3": 162,
+        "model_4": 162,
+        "model_5": 217,
+        "model_6": 176
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 42750,
+        "model_2": 48616,
+        "model_3": 48777,
+        "model_4": 68747,
+        "model_5": 68735,
+        "model_6": 60126
+      },
+      "per_model_output_tokens": {
+        "model_1": 25626,
+        "model_2": 28505,
+        "model_3": 28982,
+        "model_4": 24447,
+        "model_5": 37824,
+        "model_6": 27925
+      },
+      "prompt_tokens": 337751,
+      "output_tokens": 173309,
+      "arrival_span_s": 539.135116,
+      "achieved_mean_arrival_rate_req_s": 1.947564,
+      "peak_10s_arrival_rate_req_s": 3.2,
+      "sequence_fingerprint": "8b371dc5f7494a0567627e38d2609afeb01773daf69baf695ccb10989f15a46d",
+      "workload": "bursty",
+      "rate": 2,
+      "seed": 8
+    },
+    "bursty_r4_s7.pkl": {
+      "sha256": "712a1f1dc04fa7a6a108f3dfc5f0d16138c9f7400d6c5b34e77b0f124b984512",
+      "requests": 2131,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 344,
+        "model_2": 359,
+        "model_3": 363,
+        "model_4": 376,
+        "model_5": 340,
+        "model_6": 349
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 117388,
+        "model_2": 117250,
+        "model_3": 119995,
+        "model_4": 119604,
+        "model_5": 98224,
+        "model_6": 102497
+      },
+      "per_model_output_tokens": {
+        "model_1": 59339,
+        "model_2": 57059,
+        "model_3": 56999,
+        "model_4": 64077,
+        "model_5": 55705,
+        "model_6": 59230
+      },
+      "prompt_tokens": 674958,
+      "output_tokens": 352409,
+      "arrival_span_s": 539.892553,
+      "achieved_mean_arrival_rate_req_s": 3.947082,
+      "peak_10s_arrival_rate_req_s": 5.8,
+      "sequence_fingerprint": "d730814f2c4d3704acd1f79b6cdba7d58309befa67301cc79a62e33875035a68",
+      "workload": "bursty",
+      "rate": 4,
+      "seed": 7
+    },
+    "bursty_r4_s8.pkl": {
+      "sha256": "b80795b59a75cb8cf9c12a833c710f291b797a0780323c9fe9e17f9d34be07bd",
+      "requests": 2191,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 385,
+        "model_2": 345,
+        "model_3": 382,
+        "model_4": 380,
+        "model_5": 333,
+        "model_6": 366
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 108001,
+        "model_2": 127271,
+        "model_3": 125968,
+        "model_4": 132808,
+        "model_5": 100429,
+        "model_6": 106785
+      },
+      "per_model_output_tokens": {
+        "model_1": 63344,
+        "model_2": 55934,
+        "model_3": 64481,
+        "model_4": 56058,
+        "model_5": 58932,
+        "model_6": 59877
+      },
+      "prompt_tokens": 701262,
+      "output_tokens": 358626,
+      "arrival_span_s": 539.323333,
+      "achieved_mean_arrival_rate_req_s": 4.062498,
+      "peak_10s_arrival_rate_req_s": 6.5,
+      "sequence_fingerprint": "dd7d5063382ce9e0e97aa33e2b98ac840e29a518838d09017d660ca4ed4cb417",
+      "workload": "bursty",
+      "rate": 4,
+      "seed": 8
+    },
+    "bursty_r6_s7.pkl": {
+      "sha256": "14454c567878afb689ccc4ca9c5bcdea05475146cbf639726600953771c3e415",
+      "requests": 3196,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 502,
+        "model_2": 514,
+        "model_3": 555,
+        "model_4": 537,
+        "model_5": 519,
+        "model_6": 569
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 171155,
+        "model_2": 168657,
+        "model_3": 168655,
+        "model_4": 158036,
+        "model_5": 159435,
+        "model_6": 163620
+      },
+      "per_model_output_tokens": {
+        "model_1": 83658,
+        "model_2": 82159,
+        "model_3": 92937,
+        "model_4": 90014,
+        "model_5": 85567,
+        "model_6": 92127
+      },
+      "prompt_tokens": 989558,
+      "output_tokens": 526462,
+      "arrival_span_s": 539.590273,
+      "achieved_mean_arrival_rate_req_s": 5.923013,
+      "peak_10s_arrival_rate_req_s": 7.9,
+      "sequence_fingerprint": "11cc43a074a87dd34f9c19fbc2084aea3c0d7786978aa518f77dd143f40ef6d5",
+      "workload": "bursty",
+      "rate": 6,
+      "seed": 7
+    },
+    "bursty_r6_s8.pkl": {
+      "sha256": "1a2461795fae5453292400f2febd5846d9dd5b474031b7c81c8eb77dbf74c9d0",
+      "requests": 3239,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 590,
+        "model_2": 554,
+        "model_3": 578,
+        "model_4": 513,
+        "model_5": 482,
+        "model_6": 522
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 179794,
+        "model_2": 184744,
+        "model_3": 192225,
+        "model_4": 154283,
+        "model_5": 138793,
+        "model_6": 156042
+      },
+      "per_model_output_tokens": {
+        "model_1": 96345,
+        "model_2": 92668,
+        "model_3": 89941,
+        "model_4": 85734,
+        "model_5": 78765,
+        "model_6": 87699
+      },
+      "prompt_tokens": 1005881,
+      "output_tokens": 531152,
+      "arrival_span_s": 539.512505,
+      "achieved_mean_arrival_rate_req_s": 6.003568,
+      "peak_10s_arrival_rate_req_s": 8.8,
+      "sequence_fingerprint": "8589a2df11a471ef5ec289f7eb77eebc224a3ff5fffe4bfeb9894cbe115edf93",
+      "workload": "bursty",
+      "rate": 6,
+      "seed": 8
+    },
+    "bursty_r8_s7.pkl": {
+      "sha256": "a734fd700713eb509361820ad177d2e565fb3016746269e94ea3a1d9311c230a",
+      "requests": 4274,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 707,
+        "model_2": 691,
+        "model_3": 694,
+        "model_4": 731,
+        "model_5": 735,
+        "model_6": 716
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 232747,
+        "model_2": 226321,
+        "model_3": 199629,
+        "model_4": 218000,
+        "model_5": 219493,
+        "model_6": 219583
+      },
+      "per_model_output_tokens": {
+        "model_1": 117112,
+        "model_2": 111729,
+        "model_3": 116592,
+        "model_4": 119851,
+        "model_5": 118846,
+        "model_6": 111756
+      },
+      "prompt_tokens": 1315773,
+      "output_tokens": 695886,
+      "arrival_span_s": 539.950834,
+      "achieved_mean_arrival_rate_req_s": 7.915536,
+      "peak_10s_arrival_rate_req_s": 10.8,
+      "sequence_fingerprint": "114eecdb9f73b832d9510676a1c53d478af92ce7350c65971926b0de68c32553",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 7
+    },
+    "bursty_r8_s8.pkl": {
+      "sha256": "d902cb7cda27a940005a71d9a8f792214f78766f44c50ea00e0096f7603042e5",
+      "requests": 4374,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 733,
+        "model_2": 675,
+        "model_3": 734,
+        "model_4": 711,
+        "model_5": 798,
+        "model_6": 723
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 234192,
+        "model_2": 228826,
+        "model_3": 220619,
+        "model_4": 207796,
+        "model_5": 247687,
+        "model_6": 236097
+      },
+      "per_model_output_tokens": {
+        "model_1": 119445,
+        "model_2": 106114,
+        "model_3": 125913,
+        "model_4": 116032,
+        "model_5": 130214,
+        "model_6": 115595
+      },
+      "prompt_tokens": 1375217,
+      "output_tokens": 713313,
+      "arrival_span_s": 539.450957,
+      "achieved_mean_arrival_rate_req_s": 8.108244,
+      "peak_10s_arrival_rate_req_s": 11.5,
+      "sequence_fingerprint": "774e9c3fc8495b71d7ac4cf04c86765f099e7cd12585c8dfb8482ac43b288e8a",
+      "workload": "bursty",
+      "rate": 8,
+      "seed": 8
+    },
+    "bursty_r10_s7.pkl": {
+      "sha256": "b6b540a4fdd129fb9529c2693aaf465c08f3fcb347409e098686c9fd82c36c46",
+      "requests": 5280,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 902,
+        "model_2": 873,
+        "model_3": 852,
+        "model_4": 904,
+        "model_5": 904,
+        "model_6": 845
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 302935,
+        "model_2": 265761,
+        "model_3": 254505,
+        "model_4": 263425,
+        "model_5": 280185,
+        "model_6": 270314
+      },
+      "per_model_output_tokens": {
+        "model_1": 147770,
+        "model_2": 144298,
+        "model_3": 142286,
+        "model_4": 146352,
+        "model_5": 141430,
+        "model_6": 138115
+      },
+      "prompt_tokens": 1637125,
+      "output_tokens": 860251,
+      "arrival_span_s": 539.960661,
+      "achieved_mean_arrival_rate_req_s": 9.77849,
+      "peak_10s_arrival_rate_req_s": 13.0,
+      "sequence_fingerprint": "4ef70068f06099a298299e9dea1678b96ba3e670e6ffd371c6ce23eeade8f09a",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 7
+    },
+    "bursty_r10_s8.pkl": {
+      "sha256": "c76d4cda6d50b5cdf7e96da37ca5294b035a55b938db4c669750c95aad338b04",
+      "requests": 5335,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 907,
+        "model_2": 836,
+        "model_3": 849,
+        "model_4": 889,
+        "model_5": 982,
+        "model_6": 872
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 287980,
+        "model_2": 280315,
+        "model_3": 245334,
+        "model_4": 273471,
+        "model_5": 322543,
+        "model_6": 277092
+      },
+      "per_model_output_tokens": {
+        "model_1": 150059,
+        "model_2": 132451,
+        "model_3": 143120,
+        "model_4": 143446,
+        "model_5": 157693,
+        "model_6": 144400
+      },
+      "prompt_tokens": 1686735,
+      "output_tokens": 871169,
+      "arrival_span_s": 539.58553,
+      "achieved_mean_arrival_rate_req_s": 9.887218,
+      "peak_10s_arrival_rate_req_s": 13.1,
+      "sequence_fingerprint": "7a5826e1f13a346a0fa09b9b6962f64bbe3df98562cc18c8711f95d78853ccf2",
+      "workload": "bursty",
+      "rate": 10,
+      "seed": 8
+    },
+    "steady_r2_s7.pkl": {
+      "sha256": "627c62370506e2ac261193413b525e0de32f94be868b1610547682a75765f590",
+      "requests": 1015,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 150,
+        "model_2": 178,
+        "model_3": 190,
+        "model_4": 175,
+        "model_5": 156,
+        "model_6": 166
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 51288,
+        "model_2": 60595,
+        "model_3": 64682,
+        "model_4": 54735,
+        "model_5": 53416,
+        "model_6": 54483
+      },
+      "per_model_output_tokens": {
+        "model_1": 24829,
+        "model_2": 32228,
+        "model_3": 28838,
+        "model_4": 28870,
+        "model_5": 25031,
+        "model_6": 25959
+      },
+      "prompt_tokens": 339199,
+      "output_tokens": 165755,
+      "arrival_span_s": 539.838671,
+      "achieved_mean_arrival_rate_req_s": 1.880191,
+      "peak_10s_arrival_rate_req_s": 3.3,
+      "sequence_fingerprint": "c24572133de4e6125ae4f37fb9a000d418514aa7e12fffc2f241bcb86b4384f3",
+      "workload": "steady",
+      "rate": 2,
+      "seed": 7
+    },
+    "steady_r2_s8.pkl": {
+      "sha256": "30e20e18ce1b39b657e56c22629424d94fbe118ba4a7be923076adb7bef70bbe",
+      "requests": 1050,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 164,
+        "model_2": 169,
+        "model_3": 162,
+        "model_4": 162,
+        "model_5": 217,
+        "model_6": 176
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 42750,
+        "model_2": 48616,
+        "model_3": 48777,
+        "model_4": 68747,
+        "model_5": 68735,
+        "model_6": 60126
+      },
+      "per_model_output_tokens": {
+        "model_1": 25626,
+        "model_2": 28505,
+        "model_3": 28982,
+        "model_4": 24447,
+        "model_5": 37824,
+        "model_6": 27925
+      },
+      "prompt_tokens": 337751,
+      "output_tokens": 173309,
+      "arrival_span_s": 537.40622,
+      "achieved_mean_arrival_rate_req_s": 1.953829,
+      "peak_10s_arrival_rate_req_s": 3.5,
+      "sequence_fingerprint": "9e3efe940dfcc66960fa1acc36ec0280cae26c36a9aa76fa9a4d7cb48b2050bd",
+      "workload": "steady",
+      "rate": 2,
+      "seed": 8
+    },
+    "steady_r4_s7.pkl": {
+      "sha256": "26c9957a289b881d867b7f4bb8148d46d3f5e2e49f6b1da936d68931f08f2802",
+      "requests": 2131,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 344,
+        "model_2": 359,
+        "model_3": 363,
+        "model_4": 376,
+        "model_5": 340,
+        "model_6": 349
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 117388,
+        "model_2": 117250,
+        "model_3": 119995,
+        "model_4": 119604,
+        "model_5": 98224,
+        "model_6": 102497
+      },
+      "per_model_output_tokens": {
+        "model_1": 59339,
+        "model_2": 57059,
+        "model_3": 56999,
+        "model_4": 64077,
+        "model_5": 55705,
+        "model_6": 59230
+      },
+      "prompt_tokens": 674958,
+      "output_tokens": 352409,
+      "arrival_span_s": 539.838671,
+      "achieved_mean_arrival_rate_req_s": 3.947476,
+      "peak_10s_arrival_rate_req_s": 6.0,
+      "sequence_fingerprint": "fc60e5b9b42084cf35fefc0ddb8be22d6dcc69139bb0cf062d546306a41a5e25",
+      "workload": "steady",
+      "rate": 4,
+      "seed": 7
+    },
+    "steady_r4_s8.pkl": {
+      "sha256": "090febbff522c861832380d5928ac4cf8f11bcb439ba7800782c7bbb136b3f33",
+      "requests": 2191,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 385,
+        "model_2": 345,
+        "model_3": 382,
+        "model_4": 380,
+        "model_5": 333,
+        "model_6": 366
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 108001,
+        "model_2": 127271,
+        "model_3": 125968,
+        "model_4": 132808,
+        "model_5": 100429,
+        "model_6": 106785
+      },
+      "per_model_output_tokens": {
+        "model_1": 63344,
+        "model_2": 55934,
+        "model_3": 64481,
+        "model_4": 56058,
+        "model_5": 58932,
+        "model_6": 59877
+      },
+      "prompt_tokens": 701262,
+      "output_tokens": 358626,
+      "arrival_span_s": 539.498942,
+      "achieved_mean_arrival_rate_req_s": 4.061176,
+      "peak_10s_arrival_rate_req_s": 6.1,
+      "sequence_fingerprint": "26ca8d2412ba59ce50308d94e81c9b58250f4ec0db01398e9117b1bd1c619a31",
+      "workload": "steady",
+      "rate": 4,
+      "seed": 8
+    },
+    "steady_r6_s7.pkl": {
+      "sha256": "ca4972663758b2b1d7256c4df913552ccca9e541ec56bff0cebf6bc90a5f4657",
+      "requests": 3196,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 502,
+        "model_2": 514,
+        "model_3": 555,
+        "model_4": 537,
+        "model_5": 519,
+        "model_6": 569
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 171155,
+        "model_2": 168657,
+        "model_3": 168655,
+        "model_4": 158036,
+        "model_5": 159435,
+        "model_6": 163620
+      },
+      "per_model_output_tokens": {
+        "model_1": 83658,
+        "model_2": 82159,
+        "model_3": 92937,
+        "model_4": 90014,
+        "model_5": 85567,
+        "model_6": 92127
+      },
+      "prompt_tokens": 989558,
+      "output_tokens": 526462,
+      "arrival_span_s": 539.847202,
+      "achieved_mean_arrival_rate_req_s": 5.920194,
+      "peak_10s_arrival_rate_req_s": 8.5,
+      "sequence_fingerprint": "d72f74c06b008b944097d9afc41d8ce47756ba7ff7e68b287eea50bd3cc411a1",
+      "workload": "steady",
+      "rate": 6,
+      "seed": 7
+    },
+    "steady_r6_s8.pkl": {
+      "sha256": "f93bab028b8d8186c3722dc388d7af66162562b6d29e3f634ca3a41c507c63dd",
+      "requests": 3239,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 590,
+        "model_2": 554,
+        "model_3": 578,
+        "model_4": 513,
+        "model_5": 482,
+        "model_6": 522
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 179794,
+        "model_2": 184744,
+        "model_3": 192225,
+        "model_4": 154283,
+        "model_5": 138793,
+        "model_6": 156042
+      },
+      "per_model_output_tokens": {
+        "model_1": 96345,
+        "model_2": 92668,
+        "model_3": 89941,
+        "model_4": 85734,
+        "model_5": 78765,
+        "model_6": 87699
+      },
+      "prompt_tokens": 1005881,
+      "output_tokens": 531152,
+      "arrival_span_s": 539.724822,
+      "achieved_mean_arrival_rate_req_s": 6.001206,
+      "peak_10s_arrival_rate_req_s": 8.9,
+      "sequence_fingerprint": "be5689619573bb96a8e21b9ed929741e7f441c0a75311d823fc9a213ee8c26dd",
+      "workload": "steady",
+      "rate": 6,
+      "seed": 8
+    },
+    "steady_r8_s7.pkl": {
+      "sha256": "72adfbd81a7a3126cbea09b3b22b7b724f6173bc4dca9b88386f288b00135548",
+      "requests": 4274,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 707,
+        "model_2": 691,
+        "model_3": 694,
+        "model_4": 731,
+        "model_5": 735,
+        "model_6": 716
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 232747,
+        "model_2": 226321,
+        "model_3": 199629,
+        "model_4": 218000,
+        "model_5": 219493,
+        "model_6": 219583
+      },
+      "per_model_output_tokens": {
+        "model_1": 117112,
+        "model_2": 111729,
+        "model_3": 116592,
+        "model_4": 119851,
+        "model_5": 118846,
+        "model_6": 111756
+      },
+      "prompt_tokens": 1315773,
+      "output_tokens": 695886,
+      "arrival_span_s": 539.847202,
+      "achieved_mean_arrival_rate_req_s": 7.917055,
+      "peak_10s_arrival_rate_req_s": 10.2,
+      "sequence_fingerprint": "5e1df0798ca805781a20998fea664bc21798f6de9041a7169100840f77eedef7",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 7
+    },
+    "steady_r8_s8.pkl": {
+      "sha256": "7395d95623a1de0e8c6684cf5e73199defe3703668feae47de2a9b9a7cc613da",
+      "requests": 4374,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 733,
+        "model_2": 675,
+        "model_3": 734,
+        "model_4": 711,
+        "model_5": 798,
+        "model_6": 723
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 234192,
+        "model_2": 228826,
+        "model_3": 220619,
+        "model_4": 207796,
+        "model_5": 247687,
+        "model_6": 236097
+      },
+      "per_model_output_tokens": {
+        "model_1": 119445,
+        "model_2": 106114,
+        "model_3": 125913,
+        "model_4": 116032,
+        "model_5": 130214,
+        "model_6": 115595
+      },
+      "prompt_tokens": 1375217,
+      "output_tokens": 713313,
+      "arrival_span_s": 539.724822,
+      "achieved_mean_arrival_rate_req_s": 8.10413,
+      "peak_10s_arrival_rate_req_s": 11.1,
+      "sequence_fingerprint": "52196f82f0858fa51b0f122f10219299bf043075a4def81276a56b7d1151b702",
+      "workload": "steady",
+      "rate": 8,
+      "seed": 8
+    },
+    "steady_r10_s7.pkl": {
+      "sha256": "4ad71625e7208e3129be765c2e8c20ca76a02bab58266dc070318ed7b828b3bc",
+      "requests": 5280,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 902,
+        "model_2": 873,
+        "model_3": 852,
+        "model_4": 904,
+        "model_5": 904,
+        "model_6": 845
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 302935,
+        "model_2": 265761,
+        "model_3": 254505,
+        "model_4": 263425,
+        "model_5": 280185,
+        "model_6": 270314
+      },
+      "per_model_output_tokens": {
+        "model_1": 147770,
+        "model_2": 144298,
+        "model_3": 142286,
+        "model_4": 146352,
+        "model_5": 141430,
+        "model_6": 138115
+      },
+      "prompt_tokens": 1637125,
+      "output_tokens": 860251,
+      "arrival_span_s": 539.876509,
+      "achieved_mean_arrival_rate_req_s": 9.780014,
+      "peak_10s_arrival_rate_req_s": 12.5,
+      "sequence_fingerprint": "22be77f588e2d83ba5f4dd4a422f042f5777a1eb5468ff7e28fdc19b22171f83",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 7
+    },
+    "steady_r10_s8.pkl": {
+      "sha256": "1db428ef1771c312bb46f05f2dc28d3ba2c57120b6c1da08afda882f6bb1ce59",
+      "requests": 5335,
+      "models": [
+        "model_1",
+        "model_2",
+        "model_3",
+        "model_4",
+        "model_5",
+        "model_6"
+      ],
+      "per_model_requests": {
+        "model_1": 907,
+        "model_2": 836,
+        "model_3": 849,
+        "model_4": 889,
+        "model_5": 982,
+        "model_6": 872
+      },
+      "per_model_prompt_tokens": {
+        "model_1": 287980,
+        "model_2": 280315,
+        "model_3": 245334,
+        "model_4": 273471,
+        "model_5": 322543,
+        "model_6": 277092
+      },
+      "per_model_output_tokens": {
+        "model_1": 150059,
+        "model_2": 132451,
+        "model_3": 143120,
+        "model_4": 143446,
+        "model_5": 157693,
+        "model_6": 144400
+      },
+      "prompt_tokens": 1686735,
+      "output_tokens": 871169,
+      "arrival_span_s": 539.724822,
+      "achieved_mean_arrival_rate_req_s": 9.884667,
+      "peak_10s_arrival_rate_req_s": 13.1,
+      "sequence_fingerprint": "a83b725995ef6732604fb0635e1ea3e417896289b93c8d4bc88fd50e5c2d7443",
+      "workload": "steady",
+      "rate": 10,
+      "seed": 8
+    }
+  },
+  "pair_consistency": "bursty and steady differ in arrival timing only, as designed"
+}
